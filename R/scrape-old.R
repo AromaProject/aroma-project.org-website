@@ -6,13 +6,42 @@ download <- function() {
     ".",
     "getstarted",
       "install",
+
       "setup",
-        "node/66",
+        "setup/annotationData",
         "setup/LocationOfRawDataFiles",
         "setup/QuickSummaryOfRequiredFileStructure",
 
       "vignettes",
+        # Copy-number preprocessing
+        "vignettes/CRMAv2",
+        "vignettes/CRMAv1",
+        "vignettes/ACNE",
+        "vignettes/CalMaTe",
+        "vignettes/tumorboost-highlevel",
+        "vignettes/tumorboost-lowlevel",
         "vignettes/pairedTotalCopyNumberAnalysis",
+        "vignettes/Sex-chromosome_bias-corrected_reference_signals",
+        "vignettes/calculating_raw_total_copy_numbers_manually",
+        # Copy-number segmentation
+        "vignettes/NonPairedCBS",
+        "vignettes/PairedPSCBS-lowlevel",
+        # Integrating copy numbers from multiple platforms
+        "vignettes/MSCN",
+        "vignettes/CreatingBinaryDataFilesContainingCopyNumberEstimates",
+        # Genotyping
+        "vignettes/CRLMM100K500K",
+        # Deprecated
+        "vignettes/total_copy_number_analysis",
+        "vignettes/paired_total_copy_number_analysis",
+        # RNA expression analysis
+        "vignettes/GeneSTArrayAnalysis",
+        "vignettes/FIRMA-HumanExonArrayAnalysis",
+        "vignettes/UsingGenomeGraphsWithFIRMA",
+        # Tiling array analysis
+        "vignettes/MAT-TilingArrayAnalysis",
+        # Miscellaneous
+        "vignettes/probe-signal_densities_and_rank-based_quantile_normalization",
 
       "blocks",
         "blocks/doCRMAv1",
@@ -23,20 +52,27 @@ download <- function() {
         "howtos/ImproveProcessingTime",
         "howtos/UseLongFilenamesOnWindows",
         "howtos/SetupOfAromaUnitNnnCnBinarySet",
+        "howtos/bpmapCluster2Cdf", ## Create a CDF (and associated) files from a BpMap file (tiling arrays)
+        "howtos/CreateUGP", ## Create a Unit Genome Position (UGP) file
 
       "troubleshooting",
         "troubleshooting/DirectoryStructures",
 
     "docs",
       "chipTypes",
+        "chiptypes/Mapping50K_Hind-and-Xba240",
+        "chiptypes/Mapping250K_Nsp-and-Mapping250K_Sty",
+        "chipTypes/Hs_PromPR_v02",
+        "chipTypes/HuEx-1_0-st-v2",
+        "chipTypes/HT_HG-U133_Plus_PM",
+
+
       "definitions",
         "definitions/namesAndTags",
-        "node/82",
+        "definitions/filenames_fullnames_and_filename_extensions",
         "definitions/chipTypesAndCDFs",
       "settings",
         "docs/HowDataFilesAndDataSetsAreLocated",
-      "node/49",
-        "node/50",
       "dosAndDonts",
 
     "features",
@@ -45,10 +81,9 @@ download <- function() {
       "replication",
         "replication/RMA",
         "replication/gcRMA",
-        "node/64",
-        "node/65",
-        "vignettes/CRLMM100K500K",
-        "node/81",
+        "replication/RmaPlm_and_affyPLM",
+        "replication/SNPRMA",
+        "replication/FIRMA_using_RLM_and_median_polish",
 
       "limitations",
 
@@ -56,7 +91,6 @@ download <- function() {
         "features/benchmarks/ACNE-Complexity",
         "benchmarks/DNAcopy_v1.19.2-speedup",
       "features/future",
-        "node/88",
 
     "resources",
       "publications",
@@ -66,8 +100,8 @@ download <- function() {
       "datasets",
         "datasets/Affymetrix",
         "datasets/Illumina",
-      "node/94",
-        "external/ToolsForAffymetrix",
+      "resources/external",
+      "external/ToolsForAffymetrix",
 
     "forum",
     "FAQ",
