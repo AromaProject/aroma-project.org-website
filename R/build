@@ -6,30 +6,6 @@
 ##local({
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Debug
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-mout <- function(..., sep="", collapse="\n", appendLF=FALSE) {
-  msg <- paste(..., sep=sep, collapse=collapse)
-  message(msg, appendLF=appendLF)
-}
-
-mprintf <- function(...) {
-  mout(sprintf(...))
-}
-
-mcat <- function(...) {
-  mout(capture.output(cat(...)), appendLF=TRUE)
-}
-
-mprint <- function(...) {
-  mout(capture.output(print(...)), appendLF=TRUE)
-}
-
-mstr <- function(...) {
-  mout(capture.output(str(...)), appendLF=TRUE)
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Handle source() via URL
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Copied from the R.utils package
@@ -311,7 +287,7 @@ buildPages <- function(srcs=NULL, path=".") {
 } # buildPages()
 
 
-mcat("BHGC.org compiler v1.0 by Henrik Bengtsson\n\n")
+mcat("aroma-project.org compiler v1.0 by Henrik Bengtsson\n\n")
 
 uris <- findURIs()
 nuris <- length(uris)
@@ -331,6 +307,8 @@ buildPages(path=path)
 
 ############################################################################
 # HISTORY:
+# 2014-10-27
+# o CLEANUP: mprint() etc. are now in R.utils.
 # 2014-06-25
 # o Created.
 ############################################################################
