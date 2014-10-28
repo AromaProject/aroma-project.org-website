@@ -83,10 +83,10 @@ download <- function() {
         "chipTypes/HT_HG-U133_Plus_PM",
         "chipTypes/HT_MG-430_PM",
         "chipTypes/Hs_PromPR_v02",
-        "chipTypes/HuEx-1_0-st-v2 (and HuEx-1_0-st-v1",
+        "chipTypes/HuEx-1_0-st-v2",
         "chipTypes/HuGene-1_0-st-v1",
         "chipTypes/HuGene-1_1-st-v1",
-        "chipTypes/HuGeneFL (a.k.a. Hu6800",
+        "chipTypes/HuGeneFL",
         "chipTypes/MOUSEDIVm520650",
         "chipTypes/Mapping10K_Xba131",
         "chipTypes/Mapping10K_Xba142",
@@ -100,7 +100,7 @@ download <- function() {
         "chipTypes/Mouse430_2",
         "chipTypes/PrimeView",
         "chipTypes/RaEx-1_0-st-v1",
-        "chipTypes/RaGene-1-0-st-v1",
+        "chipTypes/RaGene-1_0-st-v1",
         "chipTypes/Rat230_2",
         "chipTypes/Test3",
         "chipTypes/X_laevis_2",
@@ -203,8 +203,8 @@ clean <- function() {
       bfr <- trim(bfr)
 
       # Trim odd characters
-      bfr <- gsub("�", "", bfr)
-      bfr <- gsub("�", " ", bfr) # Hard space to soft space
+      bfr <- gsub(" ", "", bfr)
+      bfr <- gsub("Â", " ", bfr) # Hard space to soft space
 
       # Markdown translation
       bfr <- gsub("[\\]$", "  ", bfr)
@@ -214,6 +214,26 @@ clean <- function() {
     }
   } # for (file ...)
 } # clean()
+
+mdToRsp <- function(fileS, fileD) {
+  bfr <- readLines(fileS, warn=FALSE)
+  bfr <- paste(bfr, collapse="\n")
+
+  # Drop code snippet attributes
+  bfr <- gsub("``` [{][.]brush:[^}]+[}]", "```", bfr)
+
+  # Translate UTF-8 symbols
+  bfr <- gsub('“', '"', bfr, fixed=TRUE)
+  bfr <- gsub('”', '"', bfr, fixed=TRUE)
+  bfr <- gsub('™', '', bfr, fixed=TRUE)
+
+  # Dynamic download links
+  bfr <- gsub(".gz](/data/annotationData/", "](/data/annotationData/", bfr, fixed=TRUE)
+  bfr <- gsub("\\[[^]]+\\][(]/data/annotationData/chipTypes/([^/]+)/([^)]+)[)]", "<%=chipTypeData('\\1', '\\2')%>", bfr)
+  bfr <- gsub("[(](/[^)]+)[)]", "(<%=pathToRoot%>\\1)", bfr)
+
+  cat(bfr, file=fileD)
+} # mdToRsp()
 
 torsp <- function() {
   # All downloaded files
@@ -228,7 +248,7 @@ torsp <- function() {
       mkdirs(dirname(fileD))
       fileS <- file.path("md,trimmed", file)
       printf("Copying: %s -> %s\n", fileS, fileD)
-      file.copy(fileS, fileD)
+      mdToRsp(fileS, fileD)
     }
   } # for (file ...)
 } # torsp()
@@ -249,7 +269,7 @@ tohtml <- function(force=FALSE) {
       printf("Compiling: %s -> %s\n", fileS, fileD)
 
       # Find page title
-      bfr <- readLines(fileS)
+      bfr <- readLines(fileS, warn=FALSE)
       idx <- which(nzchar(bfr))[1L]
       page <- trim(bfr[idx])
 
@@ -287,7 +307,7 @@ build <- function(force=FALSE) {
       printf("Compiling: %s -> %s\n", fileS, fileD)
 
       # Find page title
-      bfr <- readLines(fileS)
+      bfr <- readLines(fileS, warn=FALSE)
       bfr <- grep("<h2>", bfr, value=TRUE)[1L]
       bfr <- gsub("(<h2>|</h2>)", "", bfr)
       page <- trim(bfr)
