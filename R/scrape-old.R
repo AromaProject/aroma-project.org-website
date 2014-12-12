@@ -61,6 +61,7 @@ download <- function() {
     "docs",
       "chipTypes",
         "chipTypes/ATH1-121501",
+        "chipTypes/Axiom_GW_Hu_SNP",
         "chipTypes/Canine_2",
         "chipTypes/CentHindAv2_and_CentXbaAv2",
         "chipTypes/Citrus",
