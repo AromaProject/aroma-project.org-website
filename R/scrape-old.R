@@ -171,21 +171,26 @@ download <- function() {
 clean <- function() {
   # All downloaded files
   files <- list.files("md", pattern="[.]md$", recursive=TRUE)
-
   for (file in files) {
+    fileS <- file.path("md", file)
     fileD <- file.path("md,trimmed", file)
-    if (!file_test("-f", fileD)) {
+    if (!file_test("-f", fileD) || file_test("-nt", fileS, fileD)) {
       mkdirs(dirname(fileD))
       printf("Trimming: %s -> %s\n", file, fileD)
 
       # Read
-      bfr <- readLines(file.path("md", file), warn=FALSE)
+      bfr <- readLines(fileS, warn=FALSE)
 
       # Trim
       start <- grep("/user/password", bfr, fixed=TRUE) + 4L
+      if (length(start) == 0L) {
+        start <- grep("**Search forum:**", bfr, fixed=TRUE) + 4L
+        if (length(start) == 0L) start <- 1L;
+      }
       mprintf("start: %d\n", start)
       end <- grep("Copyright Henrik Bengtsson et al.", bfr, fixed=TRUE) - 1L
       mprintf("end: %d\n", end)
+      if (length(end) == 0L) end <- length(bfr)
       bfr <- bfr[start:end]
 
       # Trim empty lines at the top
@@ -200,14 +205,22 @@ clean <- function() {
 
       # Trim HTML/CSS markup
       bfr <- gsub("[{]style=[^}]*[}]", "", bfr)
-      bfr <- trim(bfr)
+
+      # White space (except for code blocks starting with 4 spaces)
+#      bfr <- trim(bfr)
+      bfr <- gsub("^[ \t]{5,}$", "", bfr);
+      bfr <- gsub("^[ \t]{1,3}$", "", bfr);
+      bfr <- gsub("[ \t]+$", "", bfr);
 
       # Trim odd characters
-      bfr <- gsub(" ", "", bfr)
+      bfr <- gsub(" ", " ", bfr)
       bfr <- gsub("Â", " ", bfr) # Hard space to soft space
 
       # Markdown translation
       bfr <- gsub("[\\]$", "  ", bfr)
+
+      # Trim whitespace in lists
+#      bfr <- gsub("^[-*][ ]+", "\\1 ", bfr)
 
       # Write
       writeLines(bfr, con=fileD)
@@ -228,9 +241,20 @@ mdToRsp <- function(fileS, fileD) {
   bfr <- gsub('™', '', bfr, fixed=TRUE)
 
   # Dynamic download links
+#  cat("\n\n1.--------------\n"); cat(bfr)
   bfr <- gsub(".gz](/data/annotationData/", "](/data/annotationData/", bfr, fixed=TRUE)
-  bfr <- gsub("\\[[^]]+\\][(]/data/annotationData/chipTypes/([^/]+)/([^)]+)[)]", "<%=chipTypeData('\\1', '\\2')%>", bfr)
+#  cat("\n\n2.--------------\n"); cat(bfr)
+
+  # (a) Markdown links for chip-type data
+  bfr <- gsub("\\[[^]]+\\][(]/data/annotationData/chipTypes/([^/)]+)(|/)([^)]*)[)]", "<%=chipTypeData('\\1', '\\3')%>", bfr)
+#  cat("\n\n3.--------------\n"); cat(bfr)
+
+  # (b) All other Markdown links
   bfr <- gsub("[(](/[^)]+)[)]", "(<%=pathToRoot%>\\1)", bfr)
+#  cat("\n\n4.--------------\n"); cat(bfr)
+
+  # Sanity check
+  stopifnot(!any(grepl("chipTypeData(')", bfr, fixed=TRUE)))
 
   cat(bfr, file=fileD)
 } # mdToRsp()
@@ -243,10 +267,10 @@ torsp <- function() {
   pathD <- "md,trimmed,rsp"
   for (file in files) {
     path <- dirname(file)
+    fileS <- file.path("md,trimmed", file)
     fileD <- file.path(pathD, path, "index.md.rsp")
-    if (!file_test("-f", fileD)) {
+    if (!file_test("-f", fileD) || file_test("-nt", fileS, fileD)) {
       mkdirs(dirname(fileD))
-      fileS <- file.path("md,trimmed", file)
       printf("Copying: %s -> %s\n", fileS, fileD)
       mdToRsp(fileS, fileD)
     }
@@ -265,7 +289,7 @@ tohtml <- function(force=FALSE) {
     fileS <- file.path(pathS, file)
     pathD <- file.path("md,trimmed,html", path)
     fileD <- file.path(pathD, gsub(".md.rsp", ".html", basename(fileS)))
-    if (force || !file_test("-f", fileD)) {
+    if (force || !file_test("-f", fileD) || file_test("-nt", fileS, fileD)) {
       printf("Compiling: %s -> %s\n", fileS, fileD)
 
       # Find page title
@@ -281,9 +305,15 @@ tohtml <- function(force=FALSE) {
         pathToRoot <- paste(c(rep("..", times=depth), ""), collapse="/")
       }
 
+      chipTypeData <- function(chipType, filename) {
+        url <- sprintf("http://aroma-project.org/data/annotationData/chipTypes/%s/%s", chipType, filename)
+        sprintf("[%s](%s)", filename, url)
+      } # chipTypeData()
+
       options(markdown.HTML.options="fragment_only")
       args <- list()
       args$pathToRoot <- pathToRoot
+      args$chipTypeData <- chipTypeData
       html <- rfile(fileS, args=args, workdir=pathD)
       print(html)
     }
