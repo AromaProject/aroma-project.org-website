@@ -30,6 +30,7 @@ download <- function() {
         "vignettes/MSCN",
         "vignettes/CreatingBinaryDataFilesContainingCopyNumberEstimates",
         # Genotyping
+        "vignettes/naive-genotyping",
         "vignettes/CRLMM100K500K",
         # Deprecated
         "vignettes/total_copy_number_analysis",
@@ -49,6 +50,7 @@ download <- function() {
         "blocks/doRMA",
 
       "howtos",
+        "howtos/AccessSourceCode",
         "howtos/ImproveProcessingTime",
         "howtos/SetupOfAromaUnitNnnCnBinarySet",
         "howtos/bpmapCluster2Cdf", ## Create a CDF (and associated) files from a BpMap file (tiling arrays)
@@ -72,7 +74,7 @@ download <- function() {
         "howtos/ImproveProcessingTime",
         "howtos/DeleteIntermediateDataFilesWhileKeepingFinalOnes",
         "howtos/ProcessCELFilesWithDifferentChipTypeAliases",
-        "howtos/create_CDF_from_scratch  ",
+        "howtos/create_CDF_from_scratch",
         "howtos/bpmapCluster2Cdf",
         "howtos/createCdfFromBioconductorPlatformDesignInfo",
         "howtos/createCdfFromBioconductorCdfPackage",
@@ -217,9 +219,9 @@ clean <- function() {
         start <- grep("**Search forum:**", bfr, fixed=TRUE) + 4L
         if (length(start) == 0L) start <- 1L;
       }
-      mprintf("start: %d\n", start)
+#      mprintf("start: %d\n", start)
       end <- grep("Copyright Henrik Bengtsson et al.", bfr, fixed=TRUE) - 1L
-      mprintf("end: %d\n", end)
+#      mprintf("end: %d\n", end)
       if (length(end) == 0L) end <- length(bfr)
       bfr <- bfr[start:end]
 
@@ -279,8 +281,8 @@ mdToRsp <- function(fileS, fileD) {
   bfr <- gsub("\\[[^]]+\\][(]/data/annotationData/chipTypes/([^/)]+)(|/)([^)]*)[)]", "<%=chipTypeData('\\1', '\\3')%>", bfr)
 #  cat("\n\n3.--------------\n"); cat(bfr)
 
-  # (b) All other Markdown links
-  bfr <- gsub("[(](/[^)]+)[)]", "(<%=pathToRoot%>\\1)", bfr)
+  # (b) All other Markdown links to local files
+  bfr <- gsub("[(](/[^)]+)[)]", "(<%=pathTo('\\1')%>)", bfr)
 #  cat("\n\n4.--------------\n"); cat(bfr)
 
   # Sanity check
@@ -329,11 +331,20 @@ tohtml <- function(force=FALSE) {
 
       # Find depth
       if (path == ".") {
-        pathToRoot <- ""
+        pathToRoot <- "."
       } else {
         depth <- length(unlist(strsplit(path, split="/")))
         pathToRoot <- paste(c(rep("..", times=depth), ""), collapse="/")
       }
+
+      pathTo <- function(pathname) {
+        url <- sprintf("%s/%s", pathToRoot, pathname);
+        if (!grepl("[.](html|pdf|png)$", pathname, ignore.case=TRUE)) {
+          url <- sprintf("%s/index.html", url)
+        }
+        url <- gsub("[/]+", "/", url)
+        url
+      } # pathTo()
 
       chipTypeData <- function(chipType, filename) {
         url <- sprintf("http://aroma-project.org/data/annotationData/chipTypes/%s/%s", chipType, filename)
@@ -344,6 +355,7 @@ tohtml <- function(force=FALSE) {
       args <- list()
       args$pathToRoot <- pathToRoot
       args$chipTypeData <- chipTypeData
+      args$pathTo <- pathTo;
       html <- rfile(fileS, args=args, workdir=pathD)
       print(html)
     }
