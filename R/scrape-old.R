@@ -239,6 +239,24 @@ githubCodeBlockAuto <- function(bfr, ...) {
   # Nothing to do?
   if (length(empty) <= 1L) return(bfr)
 
+  # Drop empty lines inside GitHub code blocks?
+  for (kk in seq_len(length(empty)-1L)) {
+    from <- empty[kk]+1L
+    if (grepl("^```", bfr[from])) {
+      mprintf("Found beginning: %d\n", from)
+      for (ll in (kk+1L):(length(empty)-1L)) {
+        to <- empty[ll]-1L
+        if (grepl("^```", bfr[to])) {
+          mprintf("Found ending: %d\n", to)
+          # Found end
+          empty[kk:(ll-1L)] <- NA_integer_
+          break
+        }
+      } # for (ll ...)
+    } # for (kk ...)
+  }
+  empty <- na.omit(empty)
+
   pres <- posts <- NULL
 
   # For each potential code block...
@@ -288,9 +306,8 @@ githubCodeBlockAuto <- function(bfr, ...) {
       if (all(grepl("^(#|[\\]#)+ ", code))) {
         isCode <- TRUE
       }
-    printf("%02d [%5s]: '%s'\n", rows, grepl("^(#|[\\]#)+ ", code), code)
-    printf("\n")
-
+      ## printf("%02d [%5s]: '%s'\n", rows, grepl("^(#|[\\]#)+ ", code), code)
+      ## printf("\n")
     }
 
     if (!isCode) next;
@@ -312,8 +329,7 @@ githubCodeBlockAuto <- function(bfr, ...) {
     pres <- c(pres, from)
     posts <- c(posts, to+1L)
 
-    printf("%02d: %s\n", rows, code)
-    printf("\n")
+    ## printf("%02d: %s\n", rows, code); printf("\n")
   }
 
   if (length(pres) > 0L) {
