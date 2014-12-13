@@ -499,7 +499,7 @@ tohtml <- function(force=FALSE) {
 
       pathTo <- function(pathname) {
         url <- sprintf("%s/%s", pathToRoot, pathname);
-        if (!grepl("[.](html|pdf|png)$", pathname, ignore.case=TRUE)) {
+        if (!grepl("[.](html|pdf|png|gif)$", pathname, ignore.case=TRUE)) {
           url <- sprintf("%s/index.html", url)
         }
         url <- gsub("[/]+", "/", url)
