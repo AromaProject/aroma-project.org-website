@@ -200,6 +200,136 @@ download <- function() {
   } # for (dir ...)
 } # download()
 
+githubCodeBlock <- function(bfr, ...) {
+  rows <- grep("^    ", bfr)
+  # Nothing to do?
+  if (length(rows) == 0L) return(bfr)
+
+  seqs <- seqToIntervals(rows)
+  pre <- seqs[,1]-1L
+  keep <- (nchar(trim(bfr[pre])) == 0L)
+  seqs <- seqs[keep,,drop=FALSE]
+  post <- seqs[,2]+1L
+  keep <- (nchar(trim(bfr[post])) == 0L)
+  seqs <- seqs[keep,,drop=FALSE]
+
+  # Nothing to do?
+  if (nrow(seqs) == 0L) return(bfr)
+
+  pres <- posts <- NULL
+  for (kk in seq(nrow(seqs))) {
+    from <- seqs[kk,1]
+    to <- seqs[kk,2]
+    rows <- from:to
+    bfr[rows] <- gsub("^    ", "", bfr[rows])
+  #  print(sprintf("%02d. %s\n", rows, bfr[rows]))
+    pres <- c(pres, from)
+    posts <- c(posts, to+1L)
+  }
+  values <- c(rep("```r", length(pres)), rep("```", length(posts)))
+  bfr <- insert(bfr, ats=c(pres, posts), values=values)
+
+  bfr
+} # githubCodeBlock()
+
+
+githubCodeBlockAuto <- function(bfr, ...) {
+  bfr <- c(bfr, "")
+  empty <- which(nchar(trim(bfr)) == 0L)
+  # Nothing to do?
+  if (length(empty) <= 1L) return(bfr)
+
+  pres <- posts <- NULL
+
+  # For each potential code block...
+  for (kk in seq_len(length(empty)-1L)) {
+    from <- empty[kk]+1L
+    to <- empty[kk+1L]-1L
+    if (to < from) next
+
+    rows <- from:to
+    code <- bfr[rows]
+
+    # (a) Drop for sure
+    # A header?
+    if (any(grepl("^[-]+$", code))) next
+    if (any(grepl("^[=]+$", code))) next
+
+    # A list?
+    if (any(grepl("^-   ", code))) next
+
+    # A label?
+    if (grepl(":$", code[length(code)])) next
+
+    # Already GitHub code block?
+    if (grepl("^```", code[1]) || grepl("^```", code[length(code)])) {
+      code <- gsub(";(|  )$", "", code)
+      bfr[rows] <- code
+      next
+    }
+
+    # (b) Keep for sure
+    isCode <- FALSE
+    if (any(grepl("^[\\]> ", code))) {
+      isCode <- TRUE
+    } else if (any(grepl(" [\\]<- ", code))) {
+      isCode <- TRUE
+    } else if (any(grepl("[\\][$]", code))) {
+      isCode <- TRUE
+    } else if (any(grepl("^[ ]*RAM: [0-9]+.[0-9]+([a-zA-Z]B|bytes)(|[\\]|  )$", code))) {
+      isCode <- TRUE
+    } else if (any(grepl(" (<|&lt;)- ", code)) && any(grepl(";(|[\\]|  )$", code))) {
+      isCode <- TRUE
+    } else if (length(code) == 1L) {
+      if (grepl("^[ ]*library[(](|'|\")[a-zA-Z0-9.]+(|'|\")[)](|;)(|  )$", code)) {
+        isCode <- TRUE
+      }
+    } else if (length(code) > 1L) {
+      if (all(grepl("^(#|[\\]#)+ ", code))) {
+        isCode <- TRUE
+      }
+    printf("%02d [%5s]: '%s'\n", rows, grepl("^(#|[\\]#)+ ", code), code)
+    printf("\n")
+
+    }
+
+    if (!isCode) next;
+
+    # Unescape
+    code <- gsub("^[ ]*[\\]> ", "> ", code)
+    code <- gsub(" [\\]<- ", " <- ", code)
+    code <- gsub(" &lt;- ", " <- ", code)
+    code <- gsub("[\\][$]", "$", code)
+    code <- gsub("[\\]_", "_", code)
+    code <- gsub("[\\]#", "#", code)
+    code <- gsub("[\\]<", "<", code)
+    code <- gsub("[\\]>", ">", code)
+    code <- gsub("^[ ]([^ ])", "\\1", code)
+    code <- gsub("[\\]$", "", code)
+    code <- gsub(";(|  )$", "", code)
+
+    bfr[rows] <- code
+    pres <- c(pres, from)
+    posts <- c(posts, to+1L)
+
+    printf("%02d: %s\n", rows, code)
+    printf("\n")
+  }
+
+  if (length(pres) > 0L) {
+    values <- c(rep("```r", length(pres)), rep("```", length(posts)))
+    bfr <- insert(bfr, ats=c(pres, posts), values=values)
+  }
+
+  # Merge succeeding code blocks
+  bfr <- paste(bfr, collapse="\n")
+  bfr <- gsub("```\n\n```r\n", "\n", bfr, fixed=TRUE)
+  bfr <- unlist(strsplit(bfr, split="\n", fixed=TRUE))
+
+  bfr
+} # githubCodeBlockAuto()
+
+
 clean <- function() {
   # All downloaded files
   files <- list.files("md", pattern="[.]md$", recursive=TRUE)
@@ -237,6 +367,12 @@ clean <- function() {
 
       # Trim HTML/CSS markup
       bfr <- gsub("[{]style=[^}]*[}]", "", bfr)
+
+      # Markdown Code blocks to GitHub-flavored code blocks
+      bfr <- githubCodeBlock(bfr)
+
+      # Automagically convert what looks like code blocks to code blocks
+      bfr <- githubCodeBlockAuto(bfr)
 
       # White space (except for code blocks starting with 4 spaces)
 #      bfr <- trim(bfr)
