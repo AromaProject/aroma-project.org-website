@@ -16,10 +16,8 @@ tohtml <- function(force=FALSE) {
     if (force || !file_test("-f", fileD) || file_test("-nt", fileS, fileD)) {
       printf("Compiling: %s -> %s\n", fileS, fileD)
 
-      # Find page title
+      # Read content
       body <- readLines(fileS, warn=FALSE)
-      idx <- which(nzchar(body))[1L]
-      page <- trim(body[idx])
 
       # Find depth
       if (path == ".") {
@@ -37,6 +35,15 @@ tohtml <- function(force=FALSE) {
         url <- gsub("[/]+", "/", url)
         url
       } # pathTo()
+
+      # Find page title
+      if (pathToRoot == ".") {
+        page <- ""
+      } else {
+        idx <- which(nzchar(body))[1L]
+        page <- trim(gsub("^[ ]*[#]+ *", "", body[idx]))
+      }
+
 
       chipTypeData <- function(chipType, filename) {
         url <- sprintf("http://aroma-project.org/data/annotationData/chipTypes/%s/%s", chipType, filename)
