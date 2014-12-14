@@ -126,6 +126,8 @@ download <- function() {
         "chipTypes/miRNA-1_0",
         "chipTypes/miRNA-2_0",
         "chipTypes/Mitochip_2",
+        "chipTypes/MitoP-1r520451",
+        "chipTypes/MitoP-2r520651",
         "chipTypes/Mm_PromPR_v02",
         "chipTypes/MoEx-1_0-st-v1",
         "chipTypes/MoGene-1_0-st-v1",
@@ -183,7 +185,12 @@ download <- function() {
 
     "getinvolved",
 
-    "packages/aroma"
+    "packages/aroma",
+
+    ## Non-published
+    "chipTypes/HuEx-1_0-st-v2/BrainArrayENSEandENSG",
+    "projects/ChromosomeExplorer2.0",
+    "replication/MPCBSandCBS"
   )
 
   for (dir in dirs) {
