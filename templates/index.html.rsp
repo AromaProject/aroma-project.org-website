@@ -1,0 +1,83 @@
+<%@include file="config.rsp"%>
+<%@ifeq page=""%>
+<%@string short_title="${site_acronym}"%>
+<%@string full_title="UCSF ${site_name}"%>
+<%@else%>
+<%@string short_title="${site_acronym}: ${page}"%>
+<%@string full_title="UCSF ${site_name} (${site_acronym}): ${page}"%>
+<%@endif%>
+<%@meta title="${short_title}"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="<%@meta name="keywords"%>">
+  <meta name="author" content="<%@meta name="author"%>">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="<%=pathTo('assets/ico/favicon.ico')%>">
+  <title title="<%@string name="full_title"%>"><%@meta name="title"%></title>
+  <link href="<%=pathTo('assets/css/bootstrap.min.css')%>" rel="stylesheet">
+  <link href="<%=pathTo('assets/css/cbc-tweaks.css')%>" rel="stylesheet">
+</head>
+<body>
+<%----------------------------------------------------------------------------
+ HEADER
+ ----------------------------------------------------------------------------%>
+<%@include file="navigator.html.rsp"%>
+
+<%----------------------------------------------------------------------------
+ BODY
+ ----------------------------------------------------------------------------%>
+<div id="wrap">
+
+<div class="container">
+<%-- <h1 class="printonly">The Aroma Project</h1> --%>
+<%@include content="${body}"%>
+</div>
+
+</div> <%-- id="wrap" --%>
+
+<%-- Component used to expand such that it's possible 
+     to scroll the first H1 all the way to the top --%>
+<div id="filler"></div>
+
+
+<%----------------------------------------------------------------------------
+ FOOTER
+ ----------------------------------------------------------------------------%>
+<div id="push"></div> <%-- Push footer to the bottom of the page --%>
+<div id="footer" style="height: auto;">
+  <div class="container">
+    <%@include file="footer.html.rsp"%>
+  </div>
+</div>
+
+<%--- Placeholders to detect Bootstrap breakpoints ---%>
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<%--- Bootstrap core JavaScript ---%>
+<%--- Placed at the end of the document so the pages load faster ---%>
+<script src="<%@string name="jquery_url"%>/jquery.min.js"></script>
+<script src="<%@string name="bootstrap_url"%>/js/bootstrap.min.js"></script>
+<%-- Auto-adjust height of navigation bar in case it
+     word wraps into two or more rows or some devices --%>
+<script>
+  $(document).ready(function(){
+      $(document.body).css('padding-top', $('#topnavbar').height() + 10);
+      $(window).resize(function(){
+          $(document.body).css('padding-top', $('#topnavbar').height() + 10);
+      });
+  });
+</script>
+<%-- <%@include file="link-annotation.html.rsp"%> --%>
+<%-- Include any extras that the page wish to add to the end --%>
+<%@ifdef name="footer_tail"%>
+  <%@string name="footer_tail"%><%@string footer_tail=""%>
+<%@endif%>
+<%@include file="google-analytics.html.rsp"%>
+</body>
+</html>

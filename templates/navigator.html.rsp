@@ -1,0 +1,27 @@
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <%-- Navigator --%>
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="<%=pathTo('index.html')%>" title="<%@string name="site_name"%>"><%@string name="site_acronym"%></a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="<%=pathTo('getstarted/index.html')%>">Get Started</a></li>
+        <li><a href="<%=pathTo('docs/index.html')%>">Documentation</a></li>
+        <li><a href="<%=pathTo('features/index.html')%>">Features</a></li>
+        <li><a href="<%=pathTo('resources/index.html')%>">Resources</a></li>
+        <li><a href="<%=pathTo('forum/index.html')%>">Forum</a></li>
+        <li><a href="<%=pathTo('FAQ/index.html')%>">FAQ</a></li>
+        <li><a href="<%=pathTo('developers/index.html')%>">Developers' Corner</a></li>
+        <li><a href="<%=pathTo('about/index.html')%>">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>

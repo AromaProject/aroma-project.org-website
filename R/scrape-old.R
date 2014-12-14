@@ -310,7 +310,7 @@ githubCodeBlockAuto <- function(bfr, ...) {
       ## printf("\n")
     }
 
-    if (!isCode) next;
+    if (!isCode) next
 
     # Unescape
     code <- gsub("^[ ]*[\\]> ", "> ", code)
@@ -363,7 +363,7 @@ clean <- function() {
       start <- grep("/user/password", bfr, fixed=TRUE) + 4L
       if (length(start) == 0L) {
         start <- grep("**Search forum:**", bfr, fixed=TRUE) + 4L
-        if (length(start) == 0L) start <- 1L;
+        if (length(start) == 0L) start <- 1L
       }
 #      mprintf("start: %d\n", start)
       end <- grep("Copyright Henrik Bengtsson et al.", bfr, fixed=TRUE) - 1L
@@ -392,9 +392,9 @@ clean <- function() {
 
       # White space (except for code blocks starting with 4 spaces)
 #      bfr <- trim(bfr)
-      bfr <- gsub("^[ \t]{5,}$", "", bfr);
-      bfr <- gsub("^[ \t]{1,3}$", "", bfr);
-      bfr <- gsub("[ \t]+$", "", bfr);
+      bfr <- gsub("^[ \t]{5,}$", "", bfr)
+      bfr <- gsub("^[ \t]{1,3}$", "", bfr)
+      bfr <- gsub("[ \t]+$", "", bfr)
 
       # Trim odd characters
       bfr <- gsub(" ", " ", bfr)
@@ -402,6 +402,10 @@ clean <- function() {
 
       # Markdown translation
       bfr <- gsub("[\\]$", "  ", bfr)
+
+      bfr <- gsub("[\\]_", "_", bfr)
+      bfr <- gsub("[\\]^", "^", bfr)
+      bfr <- gsub("[\\][*]", "*", bfr)
 
       # Trim whitespace in lists
 #      bfr <- gsub("^[-*][ ]+", "\\1 ", bfr)
@@ -498,8 +502,8 @@ tohtml <- function(force=FALSE) {
       }
 
       pathTo <- function(pathname) {
-        url <- sprintf("%s/%s", pathToRoot, pathname);
-        if (!grepl("[.](html|pdf|png|gif)$", pathname, ignore.case=TRUE)) {
+        url <- sprintf("%s/%s", pathToRoot, pathname)
+        if (!grepl("[.](html|pdf|png|gif|css|js|ico)$", pathname, ignore.case=TRUE)) {
           url <- sprintf("%s/index.html", url)
         }
         url <- gsub("[/]+", "/", url)
@@ -515,54 +519,13 @@ tohtml <- function(force=FALSE) {
       args <- list()
       args$pathToRoot <- pathToRoot
       args$chipTypeData <- chipTypeData
-      args$pathTo <- pathTo;
-      html <- rfile(fileS, args=args, workdir=pathD)
+      args$pathTo <- pathTo
+      md <- rfile(fileS, args=args, workdir=pathD, postprocess=FALSE)
+      html <- RspFileProduct(gsub("[.]md$", ".html", md), mustExist=FALSE)
+      markdownToHTML(md, html, encoding="UTF-8")
       print(html)
     }
   } # for (file ...)
 } # tohtml()
 
-
-build <- function(force=FALSE) {
-  use("R.rsp")
-
-  # All downloaded files
-  pathS <- "md,trimmed,html"
-  files <- list.files(pathS, pattern="[.]html$", recursive=TRUE)
-
-  for (file in files) {
-    path <- dirname(file)
-    fileS <- file.path(pathS, file)
-    pathD <- file.path("html", path)
-    fileD <- file.path(pathD, gsub(".md.rsp", ".html", basename(fileS)))
-    if (force || !file_test("-f", fileD)) {
-      printf("Compiling: %s -> %s\n", fileS, fileD)
-
-      # Find page title
-      bfr <- readLines(fileS, warn=FALSE)
-      bfr <- grep("<h2>", bfr, value=TRUE)[1L]
-      bfr <- gsub("(<h2>|</h2>)", "", bfr)
-      page <- trim(bfr)
-      if (is.na(page)) page <- ""
-
-      # Find depth
-      if (path == ".") {
-        pathToRoot <- ""
-      } else {
-        depth <- length(unlist(strsplit(path, split="/")))
-        pathToRoot <- paste(c(rep("..", times=depth), ""), collapse="/")
-      }
-
-      options(markdown.HTML.options="fragment_only")
-      args <- list()
-      args$pathToRoot <- pathToRoot
-      args$body <- file.path("..", fileS)
-      args$page <- page
-      html <- rfile("includes/index.html.rsp", args=args, workdir=pathD)
-      print(html)
-    }
-  } # for (file ...)
-} # build()
-
-download(); clean(); torsp(); tohtml();
-#build()
+download(); clean(); torsp();
