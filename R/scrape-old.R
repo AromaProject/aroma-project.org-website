@@ -50,7 +50,7 @@ download <- function() {
         "blocks/doRMA",
 
       "howtos",
-        "howtos/AccessSourceCode",
+##        "howtos/AccessSourceCode",
         "howtos/ImproveProcessingTime",
         "howtos/SetupOfAromaUnitNnnCnBinarySet",
         "howtos/bpmapCluster2Cdf", ## Create a CDF (and associated) files from a BpMap file (tiling arrays)
@@ -195,7 +195,9 @@ download <- function() {
     if (!file_test("-f", file)) {
       url <- file.path(root, dir)
       printf("Downloading: %s -> %s\n", url, file)
-      system2("pandoc", args=c("-s", url, "-o", file))
+      opts <- c("--atx-headers")
+#      opts <- NULL
+      system2("pandoc", args=c("-s", url, opts, "-o", file))
     }
   } # for (dir ...)
 } # download()
