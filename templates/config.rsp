@@ -1,10 +1,12 @@
-<%@string site_domain="www.aroma-project.org"%>
+<%@string site_domain="alpha.aroma-project.org"%>
 <%@string site_name="The Aroma Project"%>
 <%@string site_acronym="AROMA"%>
 <%@string site_motto="Yeah!"%>
 <%@string site_image="assets/images/combio3.gif"%>
+<%@string site_author="Henrik Bengtsson"%>
+<%@string site_copyright="Henrik Bengtsson"%>
 <%@meta author="Henrik Bengtsson"%>
 <%@meta keywords="R, Bioconductor, Affymetrix"%>
-<%@string google_analytics_id="UA-56080795-1"%>
+<%@string google_analytics_id=""%>
 <%@string bootstrap_url="http://netdna.bootstrapcdn.com/bootstrap/3.2.0"%>
 <%@string jquery_url="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1"%>

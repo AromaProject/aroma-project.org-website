@@ -1,54 +1,8 @@
-build <- function(force=FALSE) {
-  use("R.rsp")
-
-  # All downloaded files
-  pathS <- "md,trimmed,html"
-  files <- list.files(pathS, pattern="[.]html$", recursive=TRUE)
-
-  for (file in files) {
-    fileS <- file.path(pathS, file)
-    path <- dirname(file)
-    pathD <- file.path("html", path)
-    fileD <- file.path(pathD, gsub(".md.rsp", ".html", basename(fileS)))
-    if (force || !file_test("-f", fileD)) {
-      printf("Compiling: %s -> %s\n", fileS, fileD)
-
-      # Find page title
-      body <- readLines(fileS, warn=FALSE)
-      bfr <- grep("<h2>", body, value=TRUE)[1L]
-      bfr <- gsub("(<h2>|</h2>)", "", bfr)
-      page <- trim(bfr)
-      if (is.na(page)) page <- ""
-
-      # Find depth
-      if (path == ".") {
-        pathToRoot <- ""
-      } else {
-        depth <- length(unlist(strsplit(path, split="/")))
-        pathToRoot <- paste(c(rep("..", times=depth), ""), collapse="/")
-      }
-
-      pathTo <- function(pathname) {
-        url <- sprintf("%s/%s", pathToRoot, pathname)
-        if (!grepl("[.](html|pdf|png|gif|css|js|ico)$", pathname, ignore.case=TRUE)) {
-          url <- sprintf("%s/index.html", url)
-        }
-        url <- gsub("[/]+", "/", url)
-        url
-      } # pathTo()
-
-      args <- list()
-      args$pathTo <- pathTo
-      args$body <- body
-      html <- rfile("templates/index.html.rsp", args=args, workdir=pathD)
-      print(html)
-    }
-  } # for (file ...)
-} # build()
-
+library("R.utils")
 
 tohtml <- function(force=FALSE) {
   use("R.rsp")
+  use("markdown")
 
   # All downloaded files
   pathS <- "md,trimmed,rsp"

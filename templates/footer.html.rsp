@@ -1,4 +1,9 @@
 <p class="muted credit" style="font-size: small;">
-<a href="http://www.aroma-project.org/">The Aroma Project</a>
-<span class="printonly">(http://www.aroma-project.org/)</span>
+<a href="http://<%@string name="site_domain"%>">The Aroma Project</a>
+<span class="printonly">(http://<%@string name="site_domain"%>/)</span>
+::
+Copyright <%@string name="site_copyright"%>
+::
+Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
 </p>
+
