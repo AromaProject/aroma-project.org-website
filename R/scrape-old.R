@@ -446,11 +446,10 @@ mdToRsp <- function(fileS, fileD) {
 
   # Image links
   bfr <- gsub("([.][.]/)*/sites/default/files/images/public/", "assets/images/", bfr)
-  bfr <- gsub("/images/public/", "assets/images/", bfr)
-  bfr <- gsub("([.][.]/)*/sites/default/files/imagecache/fast_gallery_thumb/images/public/", "assets/images_thumbs/", bfr)
   bfr <- gsub("([.][.]/)*/sites/default/files/images/u[5-8]/", "assets/images/", bfr)
+  bfr <- gsub("([.][.]/)*/sites/default/files/imagecache/fast_gallery_thumb/images/public/", "assets/images_thumbs/", bfr)
   bfr <- gsub("([.][.]/)*/sites/default/files/images/", "assets/images/", bfr)
-
+  bfr <- gsub("/images/public/", "assets/images/", bfr)
 
   cat(bfr, file=fileD)
 } # mdToRsp()
