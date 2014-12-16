@@ -1,0 +1,29 @@
+## Publications
+
+<%
+R.utils::use("R.utils")
+R.utils::use("RefManageR")
+## WORKAROUND:
+## Argument 'style' is not fully acknowledged
+## when calling format() below.
+BibOptions(style="markdown")
+
+refs <- ReadBib("references.bib")
+refs <- sort(refs, sorting="ydnt")
+refs[[1]]$citeif <- "CalMaTe"
+%>
+
+<% for (kk in seq_along(refs)) { %>
+<%
+  ref <- refs[[kk]]
+  md <- format(ref, style="markdown")
+  md <- sub("[1] ", "", md, fixed=TRUE)
+  citeif <- ref$aroma_citeif
+  if (!is.null(citeif)) {
+    citeif <- trim(unlist(strsplit(citeif, split=",", fixed=TRUE)))
+    md <- sprintf("%s.  \nPlease cite this whenever using: %s", md, paste(citeif, collapse=", "))
+  }
+  printf("[%d] %s\n\n", kk, md)
+%>
+<% } # for (kk ...) %>
+

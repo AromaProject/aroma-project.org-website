@@ -1,0 +1,20 @@
+<%
+R.utils::use("RefManageR")
+
+## Build dynamic reference list?
+if (!file_test("-f", "references.dynamic.bib")) {
+  R.rsp::rfile("references.dynamic.bib.rsp")
+}
+
+## Import dynamic reference list
+refs.dynamic <- ReadBib("references.dynamic.bib")
+
+## Import static reference list
+refs.static <- ReadBib("references.static.bib")
+
+## Merge
+refs <- c(refs.dynamic, refs.static)
+
+## Output as BibTeX entries
+print(toBiblatex(refs))
+%>
