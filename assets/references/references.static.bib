@@ -8,7 +8,7 @@
   Abstract                 = {Summary: We have developed a cross-platform open-source framework for analyzing Affymetrix data sets consisting of 1 to 1,000s of arrays. By working directly with CDF and CEL files (standard Affymetrix file formats) most chip types are automatically supported, e.g. expression, SNP, and exon arrays. The package provides methods for low-level analysis such as background correction of different kinds, allelic cross-talk calibration, quantile and affine normalization, PCR fragment-length and GC-content normalization, probe-level summarization such as robust log-additive and multiplicative modeling, as well as a set of methods for high-level analysis, e.g. chromosomal segmentation and alternative splicing. Results can be exported to dynamical HTML reports for easy navigation of a large set of arrays both offline and online. All algorithms have been optimized to run in bounded memory (as low as 500MB of RAM) by either redesigning the algorithms or by processing data in chunks. Transformed data and parameter estimates are stored on file in standard file formats, which in turn minimizes the memory overhead, but also makes them immediately accessible to other software. Moreover, storing intermediate results in persistent memory makes computational expensive analyses more robust against system failures and allows for quick resumes. In addition to making common algorithms readily available, this package was designed to allow for quicker development of novel models and incorporation of existing ones, such as Bioconductor methods, and be prepared for future chip types.
 
 Availability: Software, documentation, examples and a user forum are available at http://www.braju.com/R/aroma.affymetrix/.},
-  Keywords                 = {aroma.affymetrix}
+  Keywords                 = {aroma.affymetrix; preprocessing; normalization; quality control; background correction; probe-sequence normalization; quantile normalization; probeset summarization}
 }
 
 
@@ -23,7 +23,7 @@ Availability: Software, documentation, examples and a user forum are available a
 
   ISSN                     = {1609-395X},
   Url                      = {http://www.ci.tuwien.ac.at/Conferences/DSC-2003/},
-  Keywords                 = {R.methodsS3, R.oo}
+  Keywords                 = {R.methodsS3, R.oo, S3}
 }
 
 
@@ -38,5 +38,5 @@ Availability: Software, documentation, examples and a user forum are available a
   Comment                  = {LUTFMS-5027-2002},
   HowPublished             = {http://www.maths.lth.se/publications/},
   ISSN                     = {1403-9338},
-  Keywords                 = {print-tip normalization, print-order effects, plate-order effects}
+  Keywords                 = {print-tip normalization; print-order effects; plate-order effects}
 }
