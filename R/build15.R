@@ -16,7 +16,8 @@ tohtml <- function(path=".", root=c("md,trimmed,rsp", "content"), force=FALSE) {
 
   for (file in files) {
     fileS <- file.path(pathS, file)
-    pathD <- file.path("html", path)
+    dir <- dirname(file)
+    pathD <- file.path("html", dir)
     fileD <- file.path(pathD, gsub(".md.rsp", ".html", basename(fileS)))
     if (force || !file_test("-f", fileD) || file_test("-nt", fileS, fileD)) {
       mprintf("Compiling: %s -> %s\n", fileS, fileD)
@@ -25,10 +26,10 @@ tohtml <- function(path=".", root=c("md,trimmed,rsp", "content"), force=FALSE) {
       body <- readLines(fileS, warn=FALSE)
 
       # Find depth
-      if (path == ".") {
+      if (dir == ".") {
         pathToRoot <- "."
       } else {
-        depth <- length(unlist(strsplit(path, split="/")))
+        depth <- length(unlist(strsplit(dir, split="/")))
         pathToRoot <- paste(c(rep("..", times=depth), ""), collapse="/")
       }
 
@@ -90,5 +91,6 @@ if (!file_test("-d", "html/assets")) {
   copyDirectory("assets", "html/assets", recursive=TRUE, skip=TRUE)
 }
 
+tohtml(root="content")
 tohtml(root="md,trimmed,rsp")
 tohtml(root="content")
