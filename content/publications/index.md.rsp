@@ -20,10 +20,10 @@ refs <- sort(refs, sorting="ydnt")
   md <- format(ref, style="markdown")
   md <- sub("[1] ", "", md, fixed=TRUE)
   md <- gsub("..", ".", md, fixed=TRUE)
-  citeif <- ref$aroma_citeif
-  if (!is.null(citeif)) {
-    citeif <- trim(unlist(strsplit(citeif, split=",", fixed=TRUE)))
-    md <- sprintf("%s  \nPlease cite this whenever using: %s", md, paste(citeif, collapse=", "))
+  keywords <- ref$keywords
+  if (!is.null(keywords)) {
+    keywords <- trim(unlist(strsplit(keywords, split="[,;]")))
+    md <- sprintf("%s  \nKeywords: %s", md, paste(keywords, collapse="; "))
   }
   printf("[%d] %s\n\n", kk, md)
 %>

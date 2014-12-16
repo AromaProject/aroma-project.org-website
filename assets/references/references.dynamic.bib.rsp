@@ -19,21 +19,21 @@ reference <- function(search, ...) {
 } # reference()
 
 refs <- list(
-  reference("22576175", key="OrtizM_etal_2012-CalMaTe", aroma_citeif="CalMaTe"),
+  reference("22576175", key="OrtizM_etal_2012-CalMaTe", keywords="CalMaTe"),
   reference("10.1007/978-3-642-16345-6_11", key="NeuvialP_etal_2011-chapter"),
-  reference("21666266", key="OlshenA_etal_2011-PSCBS", aroma_citeif="PSCBS"),
-  reference("20529889", key="OrtizM_etal_2012-ACNE", aroma_citeif="ACNE"),
-  reference("20462408", key="BengtssonH_etal_2010-TumorBoost", aroma_citeif="TumorBoost"),
-  reference("19535535", key="BengtssonH_etal_2009-CRMAv2", aroma_citeif="CRMA v2"),
-  reference("19463149", key="Robinson_etal_2009-FIRMAGene", aroma_citeif="FIRMAgene"),
-  reference("19193730", key="BengtssonH_etal_2009-MSCN", aroma_citeif="MSCN"),
-  reference("18204055", key="BengtssonH_etal_2009-CRMAv1", aroma_citeif="CRMA v1"),
-  reference("18573797", key="PurdomE_etal_2008-FIRMA", aroma_citeif="FIRMA"),
+  reference("21666266", key="OlshenA_etal_2011-PSCBS", keywords="PSCBS"),
+  reference("20529889", key="OrtizM_etal_2012-ACNE", keywords="ACNE"),
+  reference("20462408", key="BengtssonH_etal_2010-TumorBoost", keywords="TumorBoost"),
+  reference("19535535", key="BengtssonH_etal_2009-CRMAv2", keywords="CRMA v2"),
+  reference("19463149", key="Robinson_etal_2009-FIRMAGene", keywords="FIRMAgene"),
+  reference("19193730", key="BengtssonH_etal_2009-MSCN", keywords="MSCN"),
+  reference("18204055", key="BengtssonH_etal_2009-CRMAv1", keywords="CRMA v1"),
+  reference("18573797", key="PurdomE_etal_2008-FIRMA", keywords="FIRMA"),
   reference("18005448", key="RobinsonM_etal_2007-comparison"),
-  reference("17189563", key="CarvalhoB_etal_2006-CRLMM", aroma_citeif="CRLMM"),
-  reference("16509971", key="BengtssonHossjer_2006-affine", aroma_citeif="affine normalization"),
+  reference("17189563", key="CarvalhoB_etal_2006-CRLMM", keywords="CRLMM"),
+  reference("16509971", key="BengtssonHossjer_2006-affine", keywords="affine normalization"),
   reference("16504173", key="BengtssonBengtsson_2004-morph"),
-  reference("15541170", key="BengtssonH_etal_2004-multiscan", aroma_citeif="multiscan calibration")
+  reference("15541170", key="BengtssonH_etal_2004-multiscan", keywords="multiscan calibration")
 )
 
 print(toBiblatex(refs))
