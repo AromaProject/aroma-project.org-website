@@ -1,20 +1,25 @@
 library("R.utils")
 
-tohtml <- function(force=FALSE) {
+tohtml <- function(path=".", root=c("md,trimmed,rsp", "content"), force=FALSE) {
   use("R.rsp")
   use("markdown")
 
+  # Argument 'pathS':
+  root <- match.arg(root)
+
+  charset <- "UTF-8"
+  if (root == "content") charset <- "ISO-8859-1"
+
   # All downloaded files
-  pathS <- "md,trimmed,rsp"
+  pathS <- file.path(root, path)
   files <- list.files(pathS, pattern="[.]rsp$", recursive=TRUE)
 
   for (file in files) {
-    path <- dirname(file)
     fileS <- file.path(pathS, file)
     pathD <- file.path("html", path)
     fileD <- file.path(pathD, gsub(".md.rsp", ".html", basename(fileS)))
     if (force || !file_test("-f", fileD) || file_test("-nt", fileS, fileD)) {
-      printf("Compiling: %s -> %s\n", fileS, fileD)
+      mprintf("Compiling: %s -> %s\n", fileS, fileD)
 
       # Read content
       body <- readLines(fileS, warn=FALSE)
@@ -42,6 +47,7 @@ tohtml <- function(force=FALSE) {
       } else {
         idx <- which(nzchar(body))[1L]
         page <- trim(gsub("^[ ]*[#]+ *", "", body[idx]))
+mstr(page)
       }
 
 
@@ -57,6 +63,7 @@ tohtml <- function(force=FALSE) {
       args$pathToRoot <- pathToRoot
       args$chipTypeData <- chipTypeData
       args$pathTo <- pathTo
+      args$page <- page
       body <- rstring(body, type="application/x-rsp", args=args, workdir=pathD)
       mcat("RSP Markdown -> Markdown...done\n")
 
@@ -68,12 +75,13 @@ tohtml <- function(force=FALSE) {
       # Compile RSP HTML with content
       mcat("HTML + template -> HTML...\n")
       args$body <- body
+      args$charset <- charset
       mcat("RSP arguments:\n")
       mstr(args)
       html <- rfile("templates/index.html.rsp", args=args, workdir=pathD)
       mcat("HTML + template -> HTML...done\n")
 
-      print(html)
+      mprint(html)
     }
   } # for (file ...)
 } # tohtml()
@@ -82,5 +90,5 @@ if (!file_test("-d", "html/assets")) {
   copyDirectory("assets", "html/assets", recursive=TRUE, skip=TRUE)
 }
 
-tohtml()
-
+tohtml(root="md,trimmed,rsp")
+tohtml(root="content")

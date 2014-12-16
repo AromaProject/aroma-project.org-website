@@ -10,7 +10,7 @@ BibOptions(check.entries=FALSE)
 ## when calling format() below.
 BibOptions(style="markdown")
 
-refs <- ReadBib("references.bib")
+refs <- ReadBib("assets/references/references.bib")
 refs <- sort(refs, sorting="ydnt")
 refs[[1]]$citeif <- "CalMaTe"
 %>

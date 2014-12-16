@@ -74,13 +74,13 @@ check_css:
 # Requires a 'cbc.ucsf.edu' entry in ~/.ssh/config with:
 #
 #  Host cbc.ucsf.edu
-#    User <username on cbc.ucsf.edu> 
+#    User <username on cbc.ucsf.edu>
 
 alpha:
-	rsync -avvz --exclude '*~' --perms --chmod=ugo+rx --progress html/ aroma-project.org:public_html/aroma-project.org-alpha
+	rsync -avvz --exclude '*~' --exclude 'references/*' --perms --chmod=ugo+rx --progress html/ aroma-project.org:public_html/aroma-project.org-alpha
 
 #publish:
-#	rsync -avvz --exclude '*~' --perms --chmod=ugo+rx --progress html/ aroma-project.org:public_html/aroma-project.org-NOT-YET
+#	rsync -avvz --exclude '*~' --exclude 'references/*' --perms --chmod=ugo+rx --progress html/ aroma-project.org:public_html/aroma-project.org-NOT-YET
 
 
 #=====================================================================

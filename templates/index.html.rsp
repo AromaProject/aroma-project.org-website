@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <% if (nzchar(charset)) { %><meta charset="<%=charset%>"><% } %>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="keywords" content="<%@meta name="keywords"%>">
   <meta name="author" content="<%@meta name="author"%>">
@@ -38,7 +38,7 @@
 
 </div> <%-- id="wrap" --%>
 
-<%-- Component used to expand such that it's possible 
+<%-- Component used to expand such that it's possible
      to scroll the first H1 all the way to the top --%>
 <div id="filler"></div>
 

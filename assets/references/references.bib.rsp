@@ -3,12 +3,14 @@
  bib <- R.rsp::rfile("references.bib.rsp")
  ----------------------------------------------------------------%>
 <%
-R.utils::use("RefManageR")
+R.utils::use("R.utils")
+use("RefManageR")
 BibOptions(check.entries=FALSE)
 
 ## Build dynamic reference list?
 if (!file_test("-f", "references.dynamic.bib")) {
-  R.rsp::rfile("references.dynamic.bib.rsp")
+  bib <- R.rsp::rfile("references.dynamic.bib.rsp")
+  mprint(bib)
 }
 
 ## Import dynamic reference list
