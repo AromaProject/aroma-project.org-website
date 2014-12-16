@@ -3,6 +3,8 @@
 <%
 R.utils::use("R.utils")
 R.utils::use("RefManageR")
+BibOptions(check.entries=FALSE)
+
 ## WORKAROUND:
 ## Argument 'style' is not fully acknowledged
 ## when calling format() below.

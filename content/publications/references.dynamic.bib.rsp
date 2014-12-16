@@ -1,5 +1,7 @@
 <%
 R.utils::use("RefManageR")
+BibOptions(check.entries=FALSE)
+
 reference <- function(search, ...) {
   if (grepl("^[0-9]{8}$", search)) {
     ref <- GetPubMedByID(search)
@@ -18,6 +20,7 @@ reference <- function(search, ...) {
 
 refs <- list(
   reference("22576175", key="OrtizM_etal_2012-CalMaTe", aroma_citeif="CalMaTe"),
+  reference("10.1007/978-3-642-16345-6_11", key="NeuvialP_etal_2011-chapter"),
   reference("21666266", key="OlshenA_etal_2011-PSCBS", aroma_citeif="PSCBS"),
   reference("20529889", key="OrtizM_etal_2012-ACNE", aroma_citeif="ACNE"),
   reference("20462408", key="BengtssonH_etal_2010-TumorBoost", aroma_citeif="TumorBoost"),
@@ -33,11 +36,5 @@ refs <- list(
   reference("15541170", key="BengtssonH_etal_2004-multiscan", aroma_citeif="multiscan calibration")
 )
 
-BibOptions(check.entries=FALSE)
-refs <- c(refs, list(
-  reference("10.1007/978-3-642-16345-6_11", key="NeuvialP_etal_2011-chapter")
-))
-
-refs <- Reduce(c, refs)
 print(toBiblatex(refs))
 %>

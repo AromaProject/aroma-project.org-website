@@ -4,6 +4,7 @@
  ----------------------------------------------------------------%>
 <%
 R.utils::use("RefManageR")
+BibOptions(check.entries=FALSE)
 
 ## Build dynamic reference list?
 if (!file_test("-f", "references.dynamic.bib")) {

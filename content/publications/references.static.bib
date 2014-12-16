@@ -1,48 +1,13 @@
-@Article{BengtssonH_etal_2009-aroma.affymetrix,
-  Title                    = {A single-array preprocessing method for estimating full-resolution raw copy numbers from all {Affymetrix} genotyping arrays including {GenomeWideSNP 5 \& 6}},
-  Author                   = {Henrik Bengtsson and Pratyaksha Wirapati and Terence P. Speed},
-  Journal                  = {Bioinformatics},
-  Year                     = {2009},
+@TechReport{BengtssonH_etal_2008-aroma.affymetrix,
+  Title                    = {{aroma.affymetrix}: A generic framework in {R} for analyzing small to very large {Affymetrix} data sets in bounded memory},
+  Author                   = {H. Bengtsson and K. Simpson and J. Bullard and K. Hansen},
+  Institution              = {Department of Statistics, University of California, Berkeley},
+  Year                     = {2008},
+  Month                    = {February},
+  Number                   = {745},
+  Abstract                 = {Summary: We have developed a cross-platform open-source framework for analyzing Affymetrix data sets consisting of 1 to 1,000s of arrays. By working directly with CDF and CEL files (standard Affymetrix file formats) most chip types are automatically supported, e.g. expression, SNP, and exon arrays. The package provides methods for low-level analysis such as background correction of different kinds, allelic cross-talk calibration, quantile and affine normalization, PCR fragment-length and GC-content normalization, probe-level summarization such as robust log-additive and multiplicative modeling, as well as a set of methods for high-level analysis, e.g. chromosomal segmentation and alternative splicing. Results can be exported to dynamical HTML reports for easy navigation of a large set of arrays both offline and online. All algorithms have been optimized to run in bounded memory (as low as 500MB of RAM) by either redesigning the algorithms or by processing data in chunks. Transformed data and parameter estimates are stored on file in standard file formats, which in turn minimizes the memory overhead, but also makes them immediately accessible to other software. Moreover, storing intermediate results in persistent memory makes computational expensive analyses more robust against system failures and allows for quick resumes. In addition to making common algorithms readily available, this package was designed to allow for quicker development of novel models and incorporation of existing ones, such as Bioconductor methods, and be prepared for future chip types.
 
-  Month                    = {Sep},
-  Number                   = {17},
-  Pages                    = {2149--2156},
-  Volume                   = {25},
-
-  Abstract                 = {Motivation:
-High-resolution copy-number (CN) analysis have in recent years gained much
-attention, not only for the purpose of identifying CN aberrations associated with a
-certain phenotype but also for identifying CN polymorphisms. In order for such studies
-to be successful and cost effective, the statistical methods have to be optimized. We
-propose a single-array preprocessing method for estimating full-resolution total CNs. It
-is applicable to all Affymetrix genotyping arrays, including the recent ones that also
-contain non-polymorphic probes. A reference signal is only needed at the last step
-when calculating relative CNs.
-
-Results:
-As with our method for earlier generations of arrays, this one controls for allelic
-crosstalk, probe affinities and PCR fragment-length effects. Additionally, it also corrects
-for probe-sequence effects and co-hybridization of fragments digested by multiple
-enzymes that takes place on the latest chips. We compare our method with Affymetrix'
-CN5 method and the dChip method by assessing how well they differentiate between
-various CN states at the full resolution and various amounts of smoothing. Although
-the others use data from all arrays for their preprocessing, we observe that CRMA v2
-performs as well as or better even if it is a single-array method. This shows that it is
-possible to do online analysis in large-scale projects where additional arrays are
-introduced over time.
-
-Availability:
-A bounded-memory implementation that can process any number of arrays is available
-in the open-source R package aroma.affymetrix.},
-  Doi                      = {10.1093/bioinformatics/btp371},
-  File                     = {:BengtssonH_etal_2009b-CRMAv2.pdf:PDF;Supplementary Notes #1:BengtssonH_etal_2009b-CRMAv2,SupplNotes1,AnnotationSummary.pdf:PDF;Supplementary Notes #2:BengtssonH_etal_2009b-CRMAv2,SupplNotes2,Methods.pdf:PDF;Supplementary Notes #3:BengtssonH_etal_2009b-CRMAv2,SupplNotes3,GSE13372,HCC1143,log2ratios.pdf:PDF},
-  Institution              = {Department of Statistics, University of California, Berkeley, California, USA. hb@stat.berkeley.edu},
-  Keywords                 = {Algorithms; Artificial Intelligence; Base Sequence; Chromosome Mapping, methods; DNA Mutational Analysis, methods; Gene Dosage, genetics; Gene Expression Profiling, methods; Markov Chains; Molecular Sequence Data; Oligonucleotide Array Sequence CRMA v2},
-  Owner                    = {hb},
-  Pii                      = {btn016},
-  Pmid                     = {19535535},
-  Timestamp                = {2009.04.12},
-  Url                      = {http://dx.doi.org/10.1093/bioinformatics/btp371},
+Availability: Software, documentation, examples and a user forum are available at http://www.braju.com/R/aroma.affymetrix/.},
   AROMA_CiteIf             = {aroma.affymetrix}
 }
 
