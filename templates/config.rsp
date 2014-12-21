@@ -1,6 +1,6 @@
 <%@string site_domain="alpha.aroma-project.org"%>
 <%@string site_name="The Aroma Project"%>
-<%@string site_acronym="AROMA"%>
+<%@string site_acronym="Aroma"%>
 <%@string site_motto="Yeah!"%>
 <%@string site_image="assets/images/combio3.gif"%>
 <%@string site_author="Henrik Bengtsson"%>
