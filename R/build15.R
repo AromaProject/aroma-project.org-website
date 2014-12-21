@@ -22,6 +22,8 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
   pathS <- file.path(root, path)
   files <- list.files(pathS, pattern="[.]rsp$", recursive=TRUE)
 
+  sourceDirectory("templates/R/", verbose=-100)
+
   for (file in files) {
     fileS <- file.path(pathS, file)
     dir <- dirname(file)
@@ -61,13 +63,6 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
         page <- trim(gsub("^[ ]*[#]+ *", "", body[idx]))
         mstr(page)
       }
-
-
-      chipTypeData <- function(chipType, filename) {
-        url <- sprintf("http://aroma-project.org/data/annotationData/chipTypes/%s/%s", chipType, filename)
-        sprintf("[%s](%s)", filename, url)
-      } # chipTypeData()
-
 
       # Compile RSP Markdown to Markdown
       mcat("RSP Markdown -> Markdown...\n")
