@@ -1,0 +1,122 @@
+# Vignette: Calculating raw total copy numbers manually
+
+Author: Henrik Bengtsson  
+Created: 2007-12-12  
+Last modified: 2014-12-21
+
+
+You can calculate raw copy numbers (CNs) from chip effect estimates by first "extracting" the chip effects and then taking the log2 ratios.  Basically, first decide for which units you wish to calculate the raw CNs, extract the theta estimates across samples for these units, and calculate the log2 ratios.
+
+Note, a more convenient way to extract raw copy numbers is by using extractRawCopyNumbers() of CopyNumberChromosomalModel.  See Vignettes '[CRMA v1: Total copy number analysis (10K, 100K, 500K)](<%=pathTo('/vignettes/CRMAv1')%>)' and '[CRMAv2: Estimation of total copy numbers using the CRMA v2 method (10K-GWS6)](<%=pathTo('/vignettes/CRMAv1')%>)' for examples.
+
+<% please_cite(c('BengtssonH_etal_2008-aroma.affymetrix', 'BengtssonH_etal_2009-CRMAv1', 'BengtssonH_etal_2009-CRMAv2')) %>
+
+
+## Example
+
+This example assumes you have got a normalized CnChipEffectSet called
+`cesN` consisting of chip-effect estimates for *total copy number
+analysis*.  To obtain these, please see one of the total copy number
+vignettes.
+
+
+Identify all units on chromosome 19:
+```r
+# Get the genome information file
+cdf <- getCdf(cesN)
+gi <- getGenomeInformation(cdf)
+print(gi)
+
+## UgpGenomeInformation:
+## Name: GenomeWideSNP_6
+## Tags: Full,na24,HB20080214
+## Pathname: annotationData/chipTypes/GenomeWideSNP_6/
+##           GenomeWideSNP_6,Full,na24,HB20080214.ugp  
+## File size: 8.97MB  
+## RAM: 0.00MB  
+## Chip type: GenomeWideSNP_6,Full
+```
+
+Get all units on chromosome 19:
+```r
+units <- getUnitsOnChromosome(gi, chromosome=19)
+str(units)
+
+## int [1:30362] 25670 25671 25672 25673 25674 25675 ...
+```
+
+Get the physical position for these units:
+```r
+pos <- getPositions(gi, units=units)
+str(pos)
+
+## int [1:30362] 341341 2705548 2963883 3574534 4367411 4368845 ...
+```
+
+Get the names of the units:
+```r
+unitNames <- getUnitNames(cdf, units=units)
+str(unitNames)
+
+## chr [1:30362] "SNP_A-1938296" "SNP_A-4259059" "SNP_A-1939610" ...
+```
+
+
+Extract the chip effects across samples for these units:
+```r
+theta <- extractMatrix(cesN, units=units)
+rownames(theta) <- unitNames
+print(theta[1:5,])
+```
+
+```
+##                 NA06985   NA06991   NA06993   NA06994   NA07000
+NA07019  
+## SNP_A-1938296  2679.284  2830.551  2657.694  2677.040  3157.389
+2847.244  
+## SNP_A-4259059 14688.840 12187.581 15538.014 11971.401 11002.526
+14254.147  
+## SNP_A-1939610  4901.532  5198.730  6546.090  6711.787  8270.660
+7745.191  
+## SNP_A-1940033 16756.266 16171.789 19242.760 16371.320 15542.183
+19314.775  
+## SNP_A-4259154  2543.355  2915.118  3375.513  2695.686  3262.761
+3523.717
+```
+
+Calculate the raw CNs as the log2-ratio over the robust average across samples:
+```r
+# Robust average unit by unit across samples
+thetaR <- rowMedians(theta, na.rm=TRUE)
+str(thetaR)
+
+## num [1:30362]  2755 13221  6629 16564  3089 ...
+```
+
+Calculate the raw CNs:
+```r
+M <- log2(theta/thetaR)
+print(M[1:5,])
+
+##               NA06985 NA06991 NA06993 NA06994 NA07000 NA07019
+## SNP_A-1938296 -0.0402  0.0391 -0.0518 -0.0414  0.1967  0.0476
+## SNP_A-4259059  0.1519 -0.1174  0.2330 -0.1432 -0.2650  0.1086
+## SNP_A-1939610 -0.4355 -0.3506 -0.0181  0.0179  0.3192  0.2245
+## SNP_A-1940033  0.0167 -0.0346  0.2163 -0.0169 -0.0918  0.2217
+## SNP_A-4259154 -0.2804 -0.0836  0.1280 -0.1965  0.0790  0.1900
+```
+
+In order to calculate paired raw CNs, you have to use a separate
+reference in the denominator for each column.  I leave that as an
+exercise.
+
+Plot the raw CNs along the chromosome for a given sample:
+```r
+xlab <- "Position"
+ylab <- expression(M==log[2](theta/theta[R]))
+sample <- "NA06985"
+plot(pos, M[,sample], pch=20, ylim=c(-3,3), xlab=xlab, ylab=ylab)
+title(main=sample)
+```
+
+  
