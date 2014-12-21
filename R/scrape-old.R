@@ -1,6 +1,9 @@
 R.utils::use("R.utils")
 
-download <- function() {
+download <- function(format=c("md", "html")) {
+  # Argument 'format':
+  format <- match.arg(format)
+
   root <- "http://www.aroma-project.org"
   dirs=c(
     ".",
@@ -193,17 +196,24 @@ download <- function() {
     "replication/MPCBSandCBS"
   )
 
+  ext <- format
+  rootPath <- file.path("scraped", sprintf("1.%s", format))
+  mkdirs(rootPath)
+
+  opts <- NULL
+  if (format == "md") {
+    opts <- c("--atx-headers")
+  }
+
   for (dir in dirs) {
-    path <- file.path("md", dir)
+    path <- file.path(rootPath, dir)
     str(path)
     mkdirs(path)
     prefix <- file.path(path, "index")
-    file <- sprintf("%s.md", prefix)
+    file <- sprintf("%s.%s", prefix, ext)
     if (!file_test("-f", file)) {
       url <- file.path(root, dir)
       printf("Downloading: %s -> %s\n", url, file)
-      opts <- c("--atx-headers")
-#      opts <- NULL
       system2("pandoc", args=c("-s", url, opts, "-o", file))
     }
   } # for (dir ...)
@@ -306,6 +316,9 @@ githubCodeBlockAuto <- function(bfr, ...) {
     } else if (any(grepl("^[ ]*RAM: [0-9]+.[0-9]+([a-zA-Z]B|bytes)(|[\\]|  )$", code))) {
       isCode <- TRUE
     } else if (any(grepl(" (<|&lt;)- ", code)) && any(grepl(";(|[\\]|  )$", code))) {
+      isCode <- TRUE
+    } else if (any(grepl("\\[[1-9][0-9]*(|,)\\] ", code))) {
+        print(code)
       isCode <- TRUE
     } else if (length(code) == 1L) {
       if (grepl("^[ ]*library[(](|'|\")[a-zA-Z0-9.]+(|'|\")[)](|;)(|  )$", code)) {
@@ -536,4 +549,217 @@ tohtml <- function(force=FALSE) {
   } # for (file ...)
 } # tohtml()
 
-download(); clean(); torsp();
+
+cleanHTML <- function() {
+  rootPath <- "scraped"
+  pathS <- file.path(rootPath, "1.html")
+  pathD <- file.path(rootPath, "2.html")
+  mkdirs(pathD)
+
+  # All downloaded files
+  files <- list.files(path=pathS, pattern="[.]html$", recursive=TRUE)
+  for (file in files) {
+    fileS <- file.path(pathS, file)
+    fileD <- file.path(pathD, file)
+    if (!file_test("-f", fileD) || file_test("-nt", fileS, fileD)) {
+      printf("Trimming: %s -> %s\n", fileS, fileD)
+      mkdirs(dirname(fileD))
+
+      # Read
+      bfr <- readLines(fileS, warn=FALSE)
+
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      # Extract content
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      start <- grep("/user/password", bfr, fixed=TRUE) + 2L
+      if (length(start) == 0L) {
+        start <- grep("Search forum:", bfr, fixed=TRUE) + 2L
+        if (length(start) == 0L) start <- 1L
+      }
+#      mprintf("start: %d\n", start)
+      end <- grep("Copyright Henrik Bengtsson et al.", bfr, fixed=TRUE) - 1L
+#      mprintf("end: %d\n", end)
+      if (length(end) == 0L) end <- length(bfr)
+      bfr <- bfr[start:end]
+
+
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      # Trim top and bottom
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      # Trim empty lines at the top
+      idx <- which(nzchar(bfr))[1L]
+      bfr <- bfr[idx:length(bfr)]
+
+      # Trim empty lines at the bottom
+      bfr <- rev(bfr)
+      idx <- which(nzchar(bfr))[1L]
+      bfr <- bfr[idx:length(bfr)]
+      bfr <- rev(bfr)
+
+
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      # Adjust headers
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      hdrs <- grep("<h[1-9]>", bfr)
+
+      # Check second one
+      idx <- hdrs[2L]
+      bump <- 0L
+      if (grepl("<h1>", bfr[idx], fixed=TRUE)) {
+        bump <- 1L
+      } else if (grepl("<h2>", bfr[idx], fixed=TRUE)) {
+        bump <- 0L
+      } else if (grepl("<h3>", bfr[idx], fixed=TRUE)) {
+        bump <- -1L
+      }
+
+      if (bump > 0L) {
+        # Bump headers
+        for (hh in 9:1) {
+          hdrS <- sprintf("h%d[^>]*>", hh)
+          hdrD <- sprintf("h%d>", hh+bump)
+          bfr <- gsub(hdrS, hdrD, bfr)
+        }
+      } else if (bump < 0L) {
+        # Bump headers
+        for (hh in 1:9) {
+          hdrS <- sprintf("h%d[^>]*>", hh)
+          hdrD <- sprintf("h%d>", hh+bump)
+          bfr <- gsub(hdrS, hdrD, bfr)
+        }
+      }
+
+      # Make top one <h1>
+      idx <- hdrs[1L]
+      bfr[idx] <- gsub("h[1-9]>", "h1>", bfr[idx])
+
+      # Write
+      writeLines(bfr, con=fileD)
+    } # if (!file_test(...))
+  } # for (file ...)
+} # cleanHTML()
+
+html2md <- function() {
+  rootPath <- "scraped"
+  pathS <- file.path(rootPath, "2.html")
+  pathD <- file.path(rootPath, "3.md")
+  mkdirs(pathD)
+
+  # All HTML files
+  files <- list.files(path=pathS, pattern="[.]html$", recursive=TRUE)
+  for (file in files) {
+    fileS <- file.path(pathS, file)
+    fileD <- file.path(pathD, sub(".html", ".md", file, fixed=TRUE))
+    if (!file_test("-f", fileD) || file_test("-nt", fileS, fileD)) {
+      printf("Converting: %s -> %s\n", fileS, fileD)
+      mkdirs(dirname(fileD))
+      system2("pandoc", args=c("-s", fileS, "--atx-headers", "-o", fileD))
+    }
+  } # for (dir ...)
+} # html2md()
+
+
+cleanMD <- function() {
+  rootPath <- "scraped"
+  pathS <- file.path(rootPath, "3.md")
+  pathD <- file.path(rootPath, "4.md")
+  mkdirs(pathD)
+
+  # All downloaded files
+  files <- list.files(path=pathS, pattern="[.]md$", recursive=TRUE)
+  for (file in files) {
+    fileS <- file.path(pathS, file)
+    fileD <- file.path(pathD, file)
+    if (!file_test("-f", fileD) || file_test("-nt", fileS, fileD)) {
+      printf("Trimming: %s -> %s\n", fileS, fileD)
+      mkdirs(dirname(fileD))
+
+      # Read
+      bfr <- readLines(fileS, warn=FALSE)
+
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      # Trim top and bottom
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      # Trim empty lines at the top
+      idx <- which(nzchar(bfr))[1L]
+      bfr <- bfr[idx:length(bfr)]
+
+      # Trim empty lines at the bottom
+      bfr <- rev(bfr)
+      idx <- which(nzchar(bfr))[1L]
+      bfr <- bfr[idx:length(bfr)]
+      bfr <- rev(bfr)
+
+
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      # Trim HTML/CSS markup
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      bfr <- gsub("[{]style=[^}]*[}]", "", bfr)
+
+
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      # Trim odd characters
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      bfr <- gsub(" ", " ", bfr)
+      bfr <- gsub("Â", " ", bfr) # Hard space to soft space
+      ch <- rawToChar(as.raw(c(0xC2, 0xA0)))
+      bfr <- gsub(ch, " ", bfr) # Hard space to soft space
+
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      # Code blocks
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      # Markdown Code blocks to GitHub-flavored code blocks
+      bfr <- githubCodeBlock(bfr)
+
+      # Automagically convert what looks like code blocks to code blocks
+      bfr <- githubCodeBlockAuto(bfr)
+
+      # White space (except for code blocks starting with 4 spaces)
+#      bfr <- trim(bfr)
+      bfr <- gsub("^[ \t]{5,}$", "", bfr)
+      bfr <- gsub("^[ \t]{1,3}$", "", bfr)
+      bfr <- gsub("[ \t]+$", "", bfr)
+
+
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      # Special characters
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      # Markdown translation
+      bfr <- gsub("[\\]$", "  ", bfr)
+
+      bfr <- gsub("[\\]_", "_", bfr)
+      bfr <- gsub("[\\]^", "^", bfr)
+      bfr <- gsub("[\\][*]", "*", bfr)
+
+      # Trim whitespace in lists
+#      bfr <- gsub("^[-*][ ]+", "\\1 ", bfr)
+
+      # Write
+      writeLines(bfr, con=fileD)
+    }
+  } # for (file ...)
+} # cleanMD()
+
+md2rsp <- function() {
+  rootPath <- "scraped"
+  pathS <- file.path(rootPath, "4.md")
+  pathD <- file.path(rootPath, "5.rsp")
+  mkdirs(pathD)
+
+  # All downloaded files
+  files <- list.files(path=pathS, pattern="[.]md$", recursive=TRUE)
+  for (file in files) {
+    fileS <- file.path(pathS, file)
+    fileD <- file.path(pathD, sprintf("%s.rsp", file))
+    if (!file_test("-f", fileD) || file_test("-nt", fileS, fileD)) {
+      printf("Converting: %s -> %s\n", fileS, fileD)
+      mkdirs(dirname(fileD))
+      mdToRsp(fileS, fileD)
+    }
+  } # for (file ...)
+} # md2rsp()
+
+
+## download("md"); clean(); torsp();
+download("html"); cleanHTML(); html2md();
+cleanMD(); md2rsp()

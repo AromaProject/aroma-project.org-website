@@ -1,6 +1,6 @@
 library("R.utils")
 
-tohtml <- function(path=".", root=c("md,trimmed,rsp", "content"), force=FALSE) {
+tohtml <- function(path=".", root=c("scraped/5.rsp", "content"), force=FALSE) {
   use("R.rsp")
   use("markdown")
 
@@ -92,5 +92,5 @@ if (!file_test("-d", "html/assets")) {
 }
 
 tohtml(root="content")
-tohtml(root="md,trimmed,rsp")
+tohtml(root="scraped/5.rsp")
 #tohtml(root="content")
