@@ -4,7 +4,7 @@ download <- function(format=c("md", "html")) {
   # Argument 'format':
   format <- match.arg(format)
 
-  root <- "http://www.aroma-project.org"
+  root <- "http://v1.aroma-project.org"
   dirs=c(
     ".",
     "getstarted",
