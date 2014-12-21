@@ -357,7 +357,7 @@ for (rr in seq(along=regions)) {
 }
 ```
 
-In Figures 2-4, Paired tumor-normal BAFs for three (manually identified) copy number regions on chromosome 8 of sample GSM318736 are displayed for each of the following four combinations of preprocessing methods: ASCRMAv2 (top left),
+In Figures 2-4, paired tumor-normal BAFs for three (manually identified) copy number regions on chromosome 8 of sample GSM318736 are displayed for each of the following four combinations of preprocessing methods: ASCRMAv2 (top left),
 ASCRMAv2 + CalMaTe (top right), ASCRMAv2 + TumorBoost (bottom left),
 ASCRMAv2 + CalMaTe + TumorBoost (bottom right)._
 
