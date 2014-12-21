@@ -14,7 +14,7 @@ Note, a more convenient way to extract raw copy numbers is by using extractRawCo
 
 ## Example
 
-This example assumes you have got a normalized CnChipEffectSet called
+This example assumes you have got a normalized CnChipEffectSet object called
 `cesN` consisting of chip-effect estimates for *total copy number
 analysis*.  To obtain these, please see one of the total copy number
 vignettes.
@@ -72,16 +72,11 @@ print(theta[1:5,])
 ```
 ##                 NA06985   NA06991   NA06993   NA06994   NA07000
 NA07019  
-## SNP_A-1938296  2679.284  2830.551  2657.694  2677.040  3157.389
-2847.244  
-## SNP_A-4259059 14688.840 12187.581 15538.014 11971.401 11002.526
-14254.147  
-## SNP_A-1939610  4901.532  5198.730  6546.090  6711.787  8270.660
-7745.191  
-## SNP_A-1940033 16756.266 16171.789 19242.760 16371.320 15542.183
-19314.775  
-## SNP_A-4259154  2543.355  2915.118  3375.513  2695.686  3262.761
-3523.717
+## SNP_A-1938296  2679.284  2830.551  2657.694  2677.040  3157.389  2847.244  
+## SNP_A-4259059 14688.840 12187.581 15538.014 11971.401 11002.526 14254.147  
+## SNP_A-1939610  4901.532  5198.730  6546.090  6711.787  8270.660  7745.191  
+## SNP_A-1940033 16756.266 16171.789 19242.760 16371.320 15542.183 19314.775  
+## SNP_A-4259154  2543.355  2915.118  3375.513  2695.686  3262.761  3523.717
 ```
 
 Calculate the raw CNs as the log2-ratio over the robust average across samples:

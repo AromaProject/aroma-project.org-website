@@ -52,7 +52,7 @@ please_cite <- function(keys, keywords=FALSE, ..., style="html") {
   cat('<div class="alert alert-info" role="alert">\n')
   cat(' <p>\n')
   cat('  <span class="glyphicon glyphicon-thumbs-up" style="font-size: 1.2em;"></span>\n')
-  cat('  <em>To help support this work, please consider citing one or more of the following references in your publications or talks when using the methods on this page:</em>\n')
+  cat('  <em>To help support this work, please consider citing the following relevant references in your publications or talks whenever using their methods or results:</em>\n')
   cat(' </p><br>\n')
   cat(' <ul>\n')
   for (key in keys) {
