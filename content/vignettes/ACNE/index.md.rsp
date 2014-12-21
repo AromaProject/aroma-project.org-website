@@ -12,17 +12,14 @@ there should be three clouds located around (2,0), (1,1) and (0,2).
  Data is from an Mapping250K_Nsp data set.
 
 This document describes how to estimate allele specific copy numbers
-(ASCNs) in aroma.affymetrix using ACNE ([Ortiz-Estevez et al.
-2010](<%=pathTo('/publications/')%>)).  ACNE is a summarization method that provides
-ASCNs.
+(ASCNs) in <% cran('aroma.affymetrix') %> using ACNE <% citep('OrtizM_etal_2012-ACNE') %>.  ACNE is a summarization method that provides ASCNs based on signals normalized in a similar way to as CRMA v2 <% citep('BengtssonH_etal_2009-CRMAv2') %>.
 
 Eight (8) Affymetrix GenomeWideSNP_6 arrays deposited in NCBI-GEO under
-accession numbers <%=geo('GSE14996')%> (GSM374529-36) will be used to illustrate the
+accession numbers <%=geo('GSE14996')%> (GSM374529 -- 36) will be used to illustrate the
 necessary steps in aroma.affymetrix in order to apply ACNE summarization
 method.
 
-Note: This analysis requires the [ACNE add on](<%=pathTo('/addons')%>) in addition to
-aroma.affymetrix.
+Note: This analysis requires the <% cran('ACNE') %> package in addition to aroma.affymetrix.
 
 ## Setup
 
@@ -392,7 +389,4 @@ plot(fracB, xScale=xScale, cex = .3, ylim = c(0,1))
 
 
 ## References
-
- M. Ortiz-Estevez, H. Bengtsson, A. Rubio, [ACNE: a summarization method
-to estimate allele-specific copy numbers for Affymetrix SNP
-arrays](<%=pathTo('/publications/')%>), Bioinformatics, 2010.
+<% biblist() %>
