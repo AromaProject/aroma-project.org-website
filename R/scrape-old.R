@@ -600,7 +600,7 @@ cleanHTML <- function() {
       # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       # Adjust headers
       # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      hdrs <- grep("<h[1-9]>", bfr)
+      hdrs <- grep("<h[1-9].*>", bfr)
 
       # Check second one
       idx <- hdrs[2L]
