@@ -78,6 +78,17 @@
 <%@ifdef name="footer_tail"%>
   <%@string name="footer_tail"%><%@string footer_tail=""%>
 <%@endif%>
+<script>
+  $(document).ready(function(){
+    var oldpage = $('#oldpage');
+    if (oldpage.length > 0) {
+      var url = $(location).attr('href');
+      url = url.replace('alpha.', 'v1.');
+      url = url.replace('www.', 'v1.');
+      oldpage.html('(<a href="'+url+'">old page</a>)');
+    }
+  });
+</script>
 <%@include file="google-analytics.html.rsp"%>
 </body>
 </html>
