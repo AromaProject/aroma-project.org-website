@@ -1,11 +1,19 @@
-library("R.utils")
+R.utils::use("R.utils")
 
-tohtml <- function(path=".", root=c("scraped/5.rsp", "content"), force=FALSE) {
+input <- cmdArg(input="content")
+force <- cmdArg(force=FALSE)
+mstr(list(args=list(input=input, force=force)))
+
+tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), dest="html", force=FALSE) {
   use("R.rsp")
   use("markdown")
 
   # Argument 'pathS':
   root <- match.arg(root)
+
+  # Argument 'dest':
+  mkdirs(dest)
+
 
   charset <- "UTF-8"
   if (root == "content") charset <- "ISO-8859-1"
@@ -17,7 +25,7 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content"), force=FALSE) {
   for (file in files) {
     fileS <- file.path(pathS, file)
     dir <- dirname(file)
-    pathD <- file.path("html", dir)
+    pathD <- file.path(dest, dir)
     fileD <- file.path(pathD, gsub(".md.rsp", ".html", basename(fileS)))
     if (force || !file_test("-f", fileD) || file_test("-nt", fileS, fileD)) {
       mprintf("Compiling: %s -> %s\n", fileS, fileD)
@@ -91,6 +99,16 @@ if (!file_test("-d", "html/assets")) {
   copyDirectory("assets", "html/assets", recursive=TRUE, skip=TRUE)
 }
 
-tohtml(root="content")
-tohtml(root="scraped/5.rsp")
-#tohtml(root="content")
+if (input == "content,tmp") {
+  root <- "content,tmp"
+  tohtml(root=root, force=force)
+} else if (input == "content") {
+  root <- "content"
+  tohtml(root=root, force=force)
+} else if (input == "scrape") {
+  root <-"scraped/5.rsp"
+  tohtml(root=root, dest="content,scraped", force=force)
+  str(root)
+} else {
+  throw("Unknown '--input' value: ", input)
+}

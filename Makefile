@@ -43,8 +43,19 @@ all: html
 scrape:
 	$(R_SCRIPT) "R/scrape-old.R"
 
-build:
-	$(R_SCRIPT) "R/build15.R"
+build_scrape:
+	$(R_SCRIPT) "R/build15.R" --input=scrape
+
+build_content:
+	$(R_SCRIPT) "R/build15.R" --input=content
+
+build_content_tmp:
+	$(MKDIR) content,tmp/
+	rsync -avvz scraped/5.rsp/ content,tmp/
+	rsync -avvz --checksum content/ content,tmp/
+
+build: build_content_tmp
+	$(R_SCRIPT) "R/build15.R" --input=content,tmp
 
 
 spell:
