@@ -27,6 +27,9 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
     dir <- dirname(file)
     pathD <- file.path(dest, dir)
     fileD <- file.path(pathD, gsub(".md.rsp", ".html", basename(fileS)))
+
+##    mstr(list(fileS=file.info(fileS), fileD=file.info(fileD)))
+
     if (force || !file_test("-f", fileD) || file_test("-nt", fileS, fileD)) {
       mprintf("Compiling: %s -> %s\n", fileS, fileD)
 
@@ -56,7 +59,7 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
       } else {
         idx <- which(nzchar(body))[1L]
         page <- trim(gsub("^[ ]*[#]+ *", "", body[idx]))
-mstr(page)
+        mstr(page)
       }
 
 

@@ -600,16 +600,27 @@ cleanHTML <- function() {
       # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       # Adjust headers
       # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      hdrs <- grep("<h[1-9].*>", bfr)
+      repeat {
+        hdrs <- grep("<h[1-9].*>", bfr)
+        if (length(hdrs) <= 1L) break
+
+        # Drop first, iff same as second header
+        hdr1 <- gsub("<[^>]*>", "", bfr[hdrs[1L]])
+        hdr2 <- gsub("<[^>]*>", "", bfr[hdrs[2L]])
+        if (tolower(hdr1) != tolower(hdr2)) break
+
+        # Next
+        bfr <- bfr[-1L]
+      }
 
       # Check second one
-      idx <- hdrs[2L]
+      idx2 <- hdrs[2L]
       bump <- 0L
-      if (grepl("<h1>", bfr[idx], fixed=TRUE)) {
+      if (grepl("<h1>", bfr[idx2], fixed=TRUE)) {
         bump <- 1L
-      } else if (grepl("<h2>", bfr[idx], fixed=TRUE)) {
+      } else if (grepl("<h2>", bfr[idx2], fixed=TRUE)) {
         bump <- 0L
-      } else if (grepl("<h3>", bfr[idx], fixed=TRUE)) {
+      } else if (grepl("<h3>", bfr[idx2], fixed=TRUE)) {
         bump <- -1L
       }
 
@@ -630,8 +641,8 @@ cleanHTML <- function() {
       }
 
       # Make top one <h1>
-      idx <- hdrs[1L]
-      bfr[idx] <- gsub("h[1-9]>", "h1>", bfr[idx])
+      idx1 <- hdrs[1L]
+      bfr[idx1] <- gsub("h[1-9]>", "h1>", bfr[idx1])
 
       # Write
       writeLines(bfr, con=fileD)
