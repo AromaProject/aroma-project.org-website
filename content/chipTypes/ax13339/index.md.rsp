@@ -1,9 +1,10 @@
 # Chip type: ax13339
 
-I have very little information on this chip type, but it "appears" (see
-reference below) to be the Early Access version of the 10K SNP chip.  I
-would appreciate any further comments/references about this chip type
-from anyone who knows.  /Henrik 2008-07-04
+<% alert_help({ %>
+There exists little information on this chip type, but it "appears" (see
+reference below) to be the Early Access version of the 10K SNP chip.
+<em>I would appreciate any further comments/references about this chip type from anyone who knows.  /Henrik 2008-07-04</em>
+<% }) %>
 
 In Zhao X et al. (2004), the ax13339 chip type is referred to as "XbaI
 mapping array 130" (p 3061), which further indicates that this is an

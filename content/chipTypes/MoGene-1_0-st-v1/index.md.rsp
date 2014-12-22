@@ -1,0 +1,45 @@
+# Chip type: MoGene-1_0-st-v1
+
+## Mouse Gene 1.0 ST Array
+
+## MoGene-1_0-st-v1.r3
+
+Note, the CDF downloaded from the Affymetrix website is in an ASCII
+(text) file format.  It is highly recommended to work with binary CDFs
+instead since they are orders of magnitute faster to query and more
+memory efficient to work with.  Use `convertCdf()` in the
+<% bioc('affxparser') %> package to convert an ASCII CDF into binary.
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("MoGene-1_0-st-v1",
+tags="r3")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/MoGene-1_0-st-v1
+Filename: MoGene-1_0-st-v1,r3.cdf
+Filesize: 17.63MB
+Chip type: MoGene-1_0-st-v1,r3
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 1050x1050
+Number of cells: 1102500
+Number of units: 35512
+Cells per unit: 31.05
+Number of QC units: 1
+```
+
+## Resources
+
+By aroma-project.org:
+
+-   <%=chipTypeData('MoGene-1_0-st-v1', 'MoGene-1_0-st-v1,r3.cdf.gz')%>,
+    binary CDF generated from the Affymetrix unsupported text CDF file.
+     Created by: Mark Robinson on 2008-08-28.
+
+By Affymetrix:
+
+-   Product page: [Mouse Gene 1.0 ST
+    Array](http://www.affymetrix.com/browse/products.jsp?navMode=34000&productId=131476&navAction=jump&aId=productsNav#1_1)
+-   Public data sets: [Gene 1.0 ST Array Data
+    Set](http://www.affymetrix.com/support/technical/sample_data/gene_1_0_array_data.affx "http://www.affymetrix.com/support/technical/sample data/500k data.affx"),
+    Tissue/Mixture.

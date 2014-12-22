@@ -1,0 +1,83 @@
+# Chip types: Mapping50K_Hind240 & Mapping50K_Xba240
+
+Affymetrix press release: *New Affymetrix Arrays with 100,000 SNPs Available for Early Technology Access Customers*, [April 5, 2004](http://www.corporate-ir.net/ireye/ir_site.zhtml?ticker=AFFX&script=410&layout=-6&item_id=511452).
+
+The so called 100K SNP chip set, which consists of two chip types *Mapping50K_Hind240* and *Mapping50K_Xba240*, interrogates 116,204 (=57244+58960) SNPs.
+
+## Mapping50K_Hind240
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("Mapping50K_Hind240")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/Mapping50K_Hind240
+Filename: Mapping50K_Hind240.CDF
+Filesize: 53.43MB
+Chip type: Mapping50K_Hind240
+Dimension: 1600x1600
+Number of cells: 2560000
+Number of units: 57299
+Cells per unit: 44.68
+Number of QC units: 9
+```
+
+## Mapping50K_Xba240
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("Mapping50K_Xba240")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/Mapping50K_Xba240
+Filename: Mapping50K_Xba240.CDF
+Filesize: 55.03MB
+Chip type: Mapping50K_Xba240
+Dimension: 1600x1600
+Number of cells: 2560000
+Number of units: 59015
+Cells per unit: 43.38
+Number of QC units: 9
+```
+
+## Enzymes
+
+One array uses the [HindIII](http://en.wikipedia.org/wiki/HindIII) restriction enzyme and the other XbaI.  Both are palindromic (in the DNA sense).
+
+```
+ Enzyme  | Recognizition | Cut                |
+         | sequence      |                    |
+-----------------------------------------------
+ HindIII | 5'AAGCTT      | 5'---A  AGCTT---3' |
+         | 3'TTCGAA      | 3'---TTCGA  A---5' |
+         | Unique: 1     | Unique:            |
+-----------------------------------------------
+ XbaI    | 5'TCTAGA      | 5'---T  CTAGA---3' |
+         | 3'AGATCT      | 3'---AGATC  T---5' |
+         | Unique: 1     | Unique: 1          |
+-----------------------------------------------
+```
+
+## Resources
+
+By aroma-project.org:
+
+-   <%=chipTypeData('Mapping50K_Hind240', 'Mapping50K_Hind240,na26,HB20080916.ufl.gz')%> &
+    <%=chipTypeData('Mapping50K_Xba240', 'Mapping50K_Xba240,na26,HB20080916.ufl.gz')%>  
+    Scripts:
+    <%=chipTypeData('Mapping50K_Hind240', 'scripts/Mapping50K_Hind240,UFL,na26.R')%>,
+    <%=chipTypeData('Mapping50K_Xba240', 'scripts/Mapping50K_Xba240,UFL,na26.R')%>.
+-   <%=chipTypeData('Mapping50K_Hind240', 'Mapping50K_Hind240,na26,HB20080916.ugp.gz')%> &
+    <%=chipTypeData('Mapping50K_Xba240', 'Mapping50K_Xba240,na26,HB20080916.ugp.gz')%>  
+    Scripts:
+    <%=chipTypeData('Mapping50K_Hind240', 'scripts/Mapping50K_Hind240,UGP,na26.R')%>,
+    <%=chipTypeData('Mapping50K_Xba240', 'scripts/Mapping50K_Xba240,UGP,na26.R')%>
+-   <%=chipTypeData('Mapping50K_Hind240', 'Mapping50K_Hind240,HB20080710.acs.gz')%> &
+    <%=chipTypeData('Mapping50K_Xba240', 'Mapping50K_Xba240,HB20080710.acs.gz')%>
+
+By Affymetrix.com:
+
+-   Product page: [GeneChip Human Mapping 100K Set](http://www.affymetrix.com/estore/browse/products.jsp?productId=131458&categoryId=35906)  
+    Support Materials: <http://www.affymetrix.com/support/technical/byproduct.affx?product=100k>  (SNP annotation files with SNP positions, dbSNP ID etc. Probe sequences.)
+
+By dChip.org:
+
+-   dChip data files: [genome information file](http://www.hsph.harvard.edu/cli/complab/dchip/snp.htm#genome_info)

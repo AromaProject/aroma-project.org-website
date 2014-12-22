@@ -1,0 +1,44 @@
+# Chip type: RaGene-1_0-st-v1
+
+## Rat Gene 1.0 ST Array
+
+## RaGene-1_0-st-v1.r3
+
+*Note, the CDF downloaded from the Affymetrix website is in an ASCII
+(text) file format.  It is highly recommended to work with binary CDFs
+instead since they are orders of magnitute faster to query and more
+memory efficient to work with.  Use `convertCdf()` in the
+<% bioc('affxparser') %> package to convert an ASCII CDF into binary.*
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("RaGene-1_0-st-v1",
+tags="r3")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/RaGene-1_0-st-v1
+Filename: RaGene-1_0-st-v1,r3.cdf
+Filesize: 15.71MB
+Chip type: RaGene-1_0-st-v1,r3
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 1050x1050
+Number of cells: 1102500
+Number of units: 29170
+Cells per unit: 37.80
+Number of QC units: 1
+```
+
+## Resources
+
+### By aroma-project.org:
+
+-   [28-08-2008 - Mark Robinson] Conversion (text to binary) of the
+    Affymetrix unsupported CDF files can be downloaded from
+    <%=chipTypeData('RaGene-1_0-st-v1', 'RaGene-1_0-st-v1,r3.cdf.gz')%>
+
+### By Affymetrix:
+
+-   Product page: [Rat Gene 1.0 ST
+    Array](http://www.affymetrix.com/products/arrays/specific/ratgene_1_st/ratgene_1_st.affx "http://www.affymetrix.com/products/arrays/specific/100k.affx")
+-   Public data sets:
+    -   [Gene 1.0 ST Array Data Set](http://www.affymetrix.com/support/technical/sample_data/gene_1_0_array_data.affx "http://www.affymetrix.com/support/technical/sample data/500k data.affx"), Tissue/Mixture.

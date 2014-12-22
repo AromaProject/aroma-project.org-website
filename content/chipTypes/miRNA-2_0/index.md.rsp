@@ -1,0 +1,29 @@
+# Chip type: miRNA-2_0
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("miRNA-2_0")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/miRNA-2_0
+Filename: miRNA-2_0.CDF
+Filesize: 6.08MB
+Chip type: miRNA-2_0
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 478x478
+Number of cells: 228484
+Number of units: 20706
+Cells per unit: 11.03
+Number of QC units: 4
+```
+
+Note that the default CDF provided by Affymetrix is in the text/ASCII
+file format.  It is highly recommended to convert this to the binary/XDA
+format using `convertCdf()` of the <% bioc('affxparser') %> package.
+
+
+## Resources
+
+By affymetrix.com:
+
+* Product page: <http://www.affymetrix.com/products_services/arrays/specific/mi_rna.affx>

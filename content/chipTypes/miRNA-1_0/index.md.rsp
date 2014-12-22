@@ -1,0 +1,38 @@
+# Chip type: miRNA-1_0
+
+Affymetrix' press release: 'Affymetrix and Genisphere Launch
+Best-in-Class Solution for microRNA Expression Research',  [March 16,
+2009](http://www.reuters.com/article/pressRelease/idUS98537+16-Mar-2009+BW20090316).  
+Note: This generation of miRNA Array is discontinued since September 30,
+2011.
+ /[Affymetrix](http://www.affymetrix.com/browse/products.jsp?productId=131473&categoryId=35574#1_1)
+
+## miRNA-1_0
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("miRNA-1_0")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/miRNA-1_0
+Filename: miRNA-1_0.CDF
+Filesize: 6.56MB
+Chip type: miRNA-1_0
+RAM: 0.00MB
+File format: v3 (text; ASCII)
+Dimension: 230x230
+Number of cells: 52900
+Number of units: 7815
+Cells per unit: 6.77
+Number of QC units: 4
+```
+
+Note that the default CDF provided by Affymetrix is in the text/ASCII
+file format.  It is highly recommended to convert this to the binary/XDA
+format using `convertCdf()` of the <% bioc('affxparser') %> package.
+
+
+## Resources
+
+By affymetrix.com:
+
+* Product page: <http://www.affymetrix.com/products_services/arrays/specific/mi_rna.affx>

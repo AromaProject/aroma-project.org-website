@@ -112,3 +112,12 @@ alert_warn <- function(expr, ..., envir=parent.frame(), style="html") {
   eval(expr, envir=envir)
   cat('</div>\n')
 } # alert_warn()
+
+alert_help <- function(expr, ..., envir=parent.frame(), style="html") {
+  oopts <- BibOptions(style=style)
+  on.exit(BibOptions(oopts))
+  cat('<div class="alert alert-info" role="alert">\n')
+  cat('  <span class="glyphicon glyphicon-flag" style="font-size: 1.2em;"></span>\n')
+  eval(expr, envir=envir)
+  cat('</div>\n')
+} # alert_help()

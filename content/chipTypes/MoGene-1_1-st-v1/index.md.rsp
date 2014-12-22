@@ -1,0 +1,41 @@
+# Chip type: MoGene-1_1-st-v1
+
+## Affymetrix Mouse Gene 1.1 ST Array Plate
+
+"The Affymetrix Mouse Gene 1.1 ST Array Plate enables high-throughput
+expression profiling of 16, 24, or 96 samples at a time using the same
+content as the industry-standard GeneChip Mouse Gene 1.0 ST Array."
+
+*Note that Affymetrix does not provide a CDF file for this chip type.
+ Instead, the following CDF has been created from a corresponding
+Bioconductor annotation package.*
+
+```
+> cdf <- AffymetrixCdfFile$byChipType("MoGene-1_1-st-v1", tags="pd.mogene.1.1.st.v1,HB20101204")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/MoGene-1_1-st-v1
+Filename: MoGene-1_1-st-v1,pd.mogene.1.1.st.v1,HB20101204.cdf
+Filesize: 51.18MB
+Chip type: MoGene-1_1-st-v1,pd.mogene.1.1.st.v1,HB20101204
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 1190x990
+Number of cells: 1178100
+Number of units: 241576
+Cells per unit: 4.88
+Number of QC units: 0
+```
+
+
+
+## Resources
+
+By Aroma:
+
+-   <%=chipTypeData('MoGene-1_1-st-v1', 'MoGene-1_1-st-v1,pd.mogene.1.1.st.v1,HB20101204.cdf.gz')%>
+    - binary CDF created from the <% bioc('pd.mogene.1.1.st.v1') %> package by Henrik Bengtsson on 2010-12-04.
+
+By Affymetrix:
+
+-   Product page: <http://www.affymetrix.com/browse/products.jsp?productId=131555>
