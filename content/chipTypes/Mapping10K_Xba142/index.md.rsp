@@ -1,0 +1,49 @@
+# Chip type: Mapping10K_Xba142
+
+## Mapping10K_Xba142
+
+Affymetrix press release: *Affymetrix Launches Mapping 10K Array and
+CustomSeq(TM) Resequencing Array*, [July 23,
+2003](http://www.corporate-ir.net/ireye/ir_site.zhtml?ticker=AFFX&script=419&layout=-6&item_id=434182).
+
+The Mapping10K_Xba142 chip interrogates 10,204 SNPs.
+
+## Mapping10K_Xba142
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("Mapping10K_Xba142")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/Mapping10K_Xba142
+Filename: Mapping10K_Xba142.CDF
+Filesize: 9.53MB
+Chip type: Mapping10K_Xba142
+Dimension: 658x658
+Number of cells: 432964
+Number of units: 10208
+Cells per unit: 42.41
+Number of QC units: 9
+```
+
+## Resources
+
+By aroma-project.org:
+
+-   <%=chipTypeData('Mapping10K_Xba142', 'Mapping10K_Xba142,na26,HB20080916.ufl.gz')%>  
+    <%=chipTypeData('Mapping10K_Xba142', 'scripts/Mapping10K_Xba142,UFL,na26.R')%>
+-   <%=chipTypeData('Mapping10K_Xba142', 'Mapping10K_Xba142,na26,HB20080916.ugp.gz')%>  
+    Script:
+    <%=chipTypeData('Mapping10K_Xba142', 'scripts/Mapping10K_Xba142,UGP,na26.R')%>
+-   <%=chipTypeData('Mapping10K_Xba142', 'Mapping10K_Xba142,HB20080915.acs.gz')%>
+
+By Affymetrix:
+
+-   Product page: [GeneChip Human Mapping 10K 2.0  Array](http://www.affymetrix.com/browse/products.jsp?navMode=34000&productId=131470)
+-   [Support Materials](http://www.affymetrix.com/support/technical/byproduct.affx?product=10k-20)
+    (SNP annotation files with SNP positions, dbSNP ID, fragment lengths
+    etc. Probe sequences.)
+-   Images: [Coverage](http://www.affymetrix.com/en/images/10k2_enlargement.gif)
+
+By dChip.org:
+
+-   dChip data files: [genome information file](http://www.hsph.harvard.edu/cli/complab/dchip/snp.htm#genome_info)
