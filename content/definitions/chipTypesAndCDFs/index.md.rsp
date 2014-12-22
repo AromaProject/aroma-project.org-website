@@ -1,0 +1,84 @@
+# Differences between chip type and chip definition file (CDF)
+
+## Chip type
+
+Each Affymetrix microarray has a particular chip type.  The chip type
+identifies the type array produced in the factory.  The chip type and
+its content, such as the probes, the probe sequences, the probe
+locations, will never change during the life time of the array and array
+type.
+
+Example of chip types are Mapping10K_Xba142, GenomeWideSNP_6,
+HG-U133A, and HuGene-1_0-st-v1.
+
+### Chip type aliases
+
+In early stages, Affymetrix sometimes labels their chip types different.
+ For instance, early on the chip type GenomeWideSNP_6 was also referred
+to as GenomeWideEx_6 and GenomeWideEx_6_v2.  We refer to these as
+*chip type aliases*.
+
+### The aroma framework and chip types
+
+The aroma.affymetrix package expects any annotation data file to be
+located under annotationData/chipTypes/\<chipType\>/, where \<chipType\>
+is the chip type of interest.  For example, all annotation data files
+for chip type GenomeWideSNP_6 should be located
+under annotationData/chipTypes/GenomeWideSNP_6/.  See also page
+'[Setup](<%=pathTo('/setup/')%>)'.
+
+
+
+## Chip definition file (CDF)
+
+A CDF is an type of *annotation file* that contains one (of many
+possible) annotations of a particular chip type.  A CDF typically
+specifies which probes (cells) maps to the same genomic unit of
+interest.  For instance, for gene expression there are CDFs that
+specifies sets of probes that maps to the same gene, and for genotyping
+arrays there are CDFs that specifies which probes interrogates which SNP
+and which allele type.  Different CDFs may be used to interrogate
+different genomic units.  For instance, one CDF may be used to
+interrogate gene transcripts and another CDF to interrogate exons,
+although the two CDFs are for the same chip type.
+
+Affymetrix provides "official" CDFs for most of their chip types.  In
+addition to these, various groups provides so called "custom CDFs" that
+are optimized for various genomic features.  CDFs are typically updated
+when the genome annotation is updated.
+
+Example of CDFs are Mapping10K_Xba142.cdf,
+GenomeWideSNP_6.cdf, GenomeWideSNP_6.Full.cdf, HuEx-1_0-st-v2.cdf
+and HuEx-1_0-st-v2,coreR3,A20071112,EP.cdf.
+
+### Remarks
+
+Note 1: The chip type of CDF GenomeWideSNP_6.Full.cdf
+is GenomeWideSNP_6.
+
+Note 2: Note that the term 'CDF' is sometimes used incorrectly when the
+term 'chip type' is meant.
+
+Note 3: In the Bioconductor project, there are 'CDF environments' and
+'CDF packages'.  Although sometimes referred to as "CDFs" in the
+Bioconductor community, these are not CDFs, but instead R-specific data
+structures that contain all or parts of the information available in a
+CDF.
+
+### The aroma framework and CDFs
+
+As mentioned above, the aroma.affymetrix package expects CDF annotation
+data files to be located under annotationData/chipTypes/\<chipType\>/,
+where \<chipType\> is the chip type of interest.  For example, the
+GenomeWideSNP_6.cdf file should be located
+under annotationData/chipTypes/GenomeWideSNP_6/.
+
+Furthermore, all annotation data files for a particular chip type should
+have filenames that start with the chip type followed by an optional set
+of comma-separated tags, and then the filename extension, i.e.
+\<chipType\>,\<tags\>.\<ext\>.  This means that you may have to rename
+certain annotation data files.  For instance, the
+GenomeWideSNP_6.Full.cdf file needs to be renamed
+to GenomeWideSNP_6,Full.cdf.  For more information on names and tags,
+see page '[Fullnames, names and tags of directories and
+files](<%=pathTo('/definitions/namesAndTags/')%>)'.

@@ -1,0 +1,19 @@
+# Screenshots
+
+<%---
+See also the [Galary of Images](<%=pathTo('assets/images/gallery')%>).
+---%>
+
+[![](<%=pathTo('assets/images/ArrayExplorer%2Cintensities%2CFirefox.png')%>)](<%=pathTo('assets/images/ArrayExplorer%2Cintensities%2CFirefox.png')%>)
+[![](<%=pathTo('assets/images/ArrayExplorer%2Cresiduals%2CFirefox.png')%>)](<%=pathTo('assets/images/ArrayExplorer%2Cresiduals%2CFirefox.png')%>)
+
+*Figure: ArrayExplorer showing spatial data.  Left: Raw probe
+intensities of a Mapping50K_Hind240 array.  Right: Residuals from the
+same area and array obtained by fitting a log-additive probe level model
+across six arrays.*
+
+
+[![](<%=pathTo('assets/images/ChromosomeExplorer_20070108.png')%>)](<%=pathTo('assets/images/ChromosomeExplorer_20070108.png')%>)
+
+*Figure: ChromosomeExplorer displaying a copy-number amplification
+detected by the GLAD method.*

@@ -1,0 +1,216 @@
+# Settings
+
+## Settings
+
+This section describes global options that you set in order change the
+default behavior of the aroma framework.
+
+## Querying and modifying settings
+
+All settings specific to the aroma packages are stored in the R list
+object `aromaSettings`. An overview of the current settings can be
+obtained as:
+
+```r
+> str(as.list(aromaSettings))
+List of 4
+ $ memory:List of 2
+  ..$ ram             : num 1
+  ..$ gcArrayFrequency: num 50
+ $ rules :List of 1
+  ..$ allowAsciiCdfs: logi FALSE
+ $ output:List of 2
+  ..$ checksum           : logi FALSE
+  ..$ timestampsThreshold: num 500
+ $ models:List of 1
+  ..$ RmaPlm:List of 2
+  .. ..$ medianPolishThreshold: num [1:2] 500 6
+  .. ..$ skipThreshold        : num [1:2] 5000 1
+```
+
+A particular setting of this list structure is specified as files on a
+file system, e.g. `"memory/ram"`. For instance,
+
+```r
+value <- getOption(aromaSettings, "memory/ram")
+```
+
+will retrieve the current setting and
+
+```r
+setOption(aromaSettings, "memory/ram", newValue)
+```
+
+will change the same setting.
+
+## Saving settings
+
+After changing some of the aroma settings, they can be saved to disk
+(default `~/.aromaSettings`) such that they will be loaded automatically
+next time an aroma.* package is loaded. In order to do this, do:
+
+```r
+saveAnywhere(aromaSettings)
+```
+
+## Available Settings
+
+### Memory-related settings
+
+#### memory/ram
+
+Value: A positive double.  
+Default: `1.0`
+
+Applies to: Methods processing data in chunks of cells or units, e.g.
+probe-level summarization.
+
+Description: A scale factor controlling the size of each chunk read into
+memory and processed in each iteration. On systems with very limited
+amount of memory it may be set to a smaller value than 1.0. On systems
+with a lot of memory, it may be set to a value greater than 1.0 to allow
+more data to be processed in each chunk, which may decrease the relative
+overhead from the file I/O.
+
+See also: How to '[Improve processing
+time](<%=pathTo('/howtos/ImproveProcessingTime')%>)'.
+
+#### memory/gcArrayFrequency
+
+Value: A positive integer.  
+Default: `50`
+
+Applies to: Methods processing data in chunks.
+
+Description: When processing data in chunks temporary variables are
+allocated and discarded. The built in garbage collector (GC) of the R
+engine will automatically clean up after this when memory is needed.
+However, it may still be the case that the memory will become too
+fragmented and one wish to take a precautious approach and cleaning up
+data more frequently. This settings specifies how many iterations is
+done before calling the GC.
+
+Warning: This settings will be deprecated at some stage. /HB 2009-12-04
+
+### Statistical analysis settings
+
+#### models/RmaPlm/medianPolishThreshold
+
+Value: Two positive integers `c(nbrOfCells, nbrOfArrays)`  
+Default: `c(500, 6)`
+
+Applies to: Fitting an `RmaPlm` model.
+
+Description: This setting specifies when the median polish estimator is
+used instead of the robust linear model estimator. The median polish is
+forced to be used if the number of arrays analyzed is (strictly) greater
+than `nbrOfArrays` and the number of cells in the probeset (unit group)
+is (strictly) greater than `nbrOfCells`.
+
+Motivation: When using robust linear model estimators (the default) for
+`RmaPlm`, the fitting time of a probeset will grow exponentially with
+the number of samples. It will also grow, but not as dramatically with
+the number of cells in the probeset. When the numbers samples is very
+large this will be too expensive. An alternative is then to use the
+median polish estimator instead, whose processing time is linear.
+
+#### models/RmaPlm/skipThreshold
+
+Value: Two positive integers `c(nbrOfCells, nbrOfArrays)`  
+Default: `c(5000, 1)`
+
+Applies to: Fitting an `RmaPlm` model.
+
+Description: This setting specifies when a probeset is skipped. A
+probeset (unit group) is not fitted if the number of arrays analyzed is
+(strictly) greater than `nbrOfCells` and the number of cells in the unit
+is (strictly) greater than `nbrOfCells`. When a probeset is skipped, the
+parameter estimates are set to `NA`.
+
+Motivation: For some CDFs there exists probesets with an extremely large
+number of cells and that will take a long time to fit. Such probesets
+have often no biological meaning, e.g. they contain cells that did not
+map to the genome or map to multiple places. This setting provides a
+convenient way to skip such probesets.
+
+### Rule settings
+
+#### rules/allowAsciiCdfs
+
+Value: A logical value (`TRUE` or `FALSE`).  
+Default: `FALSE`
+
+Applies to: Using/setting a CDF of an `AffymetrixCelSet`.
+
+Description: This setting is used to prevent the usage of ASCII CDFs,
+because they are really slow to work with and the memory overhead is
+large. When it is `FALSE` (default), only binary CDFs are accepted and
+an error will be thrown if an ASCII CDF is used. If `TRUE`, ASCII CDFs
+are accepted.  
+ Comment: Do not use ASCII CDFs unless really necessary. Instead,
+convert existing ASCII CDFs into binary ones.
+
+### Display output settings
+
+#### output/checksum
+
+Value: A logical value (`TRUE` or `FALSE`).  
+Default: `FALSE`  
+Description: NOT IMPLEMENTED
+
+#### output/path
+
+Value: A logical value (`TRUE` or `FALSE`).  
+Default: `TRUE`  
+Description: NOT IMPLEMENTED
+
+#### output/ram
+
+Value: A logical value (`TRUE` or `FALSE`).  
+Default: `TRUE`  
+Description: NOT IMPLEMENTED
+
+#### output/timestampsThreshold
+
+Value: An integer (including `Inf`).  
+Default: `500`
+
+Applies: To the `print()` output of an `AffymetrixCelSet`.
+
+Description: When calling `print()` on an `AffymetrixCelSet`, the range
+of time stamps of all CEL files is reported. This requires that the
+header of each CEL file is queried, which might takes a lot of time if
+the data set is large. This setting allows you to specify the maximum
+number of arrays for which the time stamp range should be reported. If
+the data set contains more arrays, the time stamps are neither queried
+nor reported, which will be much faster for large data sets.
+
+### User profile settings
+
+#### user/initials
+
+Value: A character string.  
+Default: `NULL`
+
+#### user/fullname
+
+Value: A character string.  
+Default: `NULL`
+
+#### user/email
+
+Value: A character string.  
+Default: `NULL`
+
+
+
+### Beta-feature settings
+
+#### devel/dropRootPathTags
+
+Value: A logical value (`TRUE` or `FALSE`).  
+Default: `FALSE`
+
+Description: If `TRUE`, sibling root paths are recognized, otherwise
+ignored. For more details, see '[How data files and data sets are
+located](<%=pathTo('/docs/HowDataFilesAndDataSetsAreLocated/')%>)'.

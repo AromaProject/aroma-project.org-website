@@ -1,0 +1,44 @@
+# Definition: Filenames, fullnames and filename extensions
+
+The current definition of a filename extension is the part of the
+filename that follows the last period in the filename.  Formally, the
+filename consists of a fullname, a period, and the filename extension:
+
+```
+<fullname>.<extension>
+```
+
+where <extension> can contain anything but a period.  Formally, the
+regular expression for the period and the `<extension>` is:
+
+```
+"[.]([^.]*)$"
+```
+
+
+## Possible future changes
+
+We are discussing changing the definition of a filename extension so
+that it may consist of dots as well, e.g. *.birdseed.data.txt.  Note
+that such a change would by definition also change the content of the
+fullname.  For instance, consider filename:
+
+```
+TCGA-02-0079-01A-01D-0310-01.birdseed.data.txt
+```
+
+Currently this is parsed as:
+
+```
+fullname=TCGA-02-0079-01A-01D-0310-01.birdseed.data  
+extension=txt
+```
+
+whereas in the suggested updated this would be parsed as:
+
+```
+fullname=TCGA-02-0079-01A-01D-0310-01  
+extension=birdseed.data.txt
+```
+
+if the extension pattern is `"[.](birdseed[.]data[.]txt)$"`.

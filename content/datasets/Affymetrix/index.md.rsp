@@ -1,0 +1,441 @@
+# Resource: Affymetrix microarray data sets
+
+## Data sets from Affymetrix Inc.
+
+**Affymetrix: Genome-Wide Human SNP Array 5.0 Sample Data Set**  
+Chip type(s): GenomeWideSNP_5  
+Description: 30 (10 trios) HapMap CEU samples.  Among these, 4 are
+replicated 4 times, and one is replicated 3 times.  In total
+25+4*4+1*3 = 44 hybridizations.  
+URL:
+<http://www.affymetrix.com/support/technical/sample_data/genomewide_snp5_data.affx>
+
+**Affymetrix: Genome-Wide Human SNP Array 6.0 Sample Data Set**  
+Chip type(s): GenomeWideSNP_6  
+Description: 270 HapMap samples data set [270 hybridizations], and
+Chromosome X Titration data set (1X, 2X, 3X, 4X, 5X) of five replicates
+[5x5=25 hybridizations].  Note: According to some people, some 5X and 4X
+have been "swapped",
+cf. <http://dchip.forum5.com/viewtopic.php?t=179&mforum=dchip>.  
+Note: This data set need to be ordered from Affymetrix and comes on
+three DVDs together.  
+URL:
+<http://www.affymetrix.com/support/technical/sample_data/genomewide_snp6_data.affx>
+
+**Affymetrix: Human Exon 1.0 ST Array Data Set**  
+Chip type(s): HuEx-1_0-st-v2  
+Description: Tissue/Mixture.  
+URL:
+<http://www.affymetrix.com/support/technical/sample_data/hugene_1_0_array_data.affx>
+
+**Affymetrix: Human Gene 1.0 ST Array Data Set**  
+Chip type(s): HuGene-1_0-st-v1  
+Description: Tissues.  
+URL:
+<http://www.affymetrix.com/support/technical/sample_data/hugene_1_0_array_data.affx>
+
+**Affymetrix: Mouse Gene 1.0 ST Array Data Set**  
+Chip type(s):  
+Description: Tissues.  
+URL:
+<http://www.affymetrix.com/support/technical/sample_data/hugene_1_0_array_data.affx>
+
+**Affymetrix: Rat Gene 1.0 ST Array Data Set**  
+Chip type(s):  
+Description: Tissues.  
+URL:
+<http://www.affymetrix.com/support/technical/sample_data/hugene_1_0_array_data.affx>
+
+**Affymetrix: Human Genome U133 Plus 2.0 Array Data Set**  
+Chip type(s): HG-U133_Plus_2  
+Description: Tissue/Mixture.  
+URL:
+<http://www.affymetrix.com/support/technical/sample_data/hugene_1_0_array_data.affx>
+
+**Affymetrix: Mapping10K_Xba131/Mapping10K_Xba142**  
+Chip type(s): Mapping10K_Xba131, Mapping10K_Xba142  
+Description: CHP files (only) for 5 CEU trios (=15 individuals), 4
+Africans, 2 Asians, 8 Caucasians.  
+URL: <https://www.affymetrix.com/analysis/10ksample.affx>
+
+**Affymetrix: Mapping 100k HapMap Trio Dataset**  
+Chip type(s): Mapping50K_Xba240, Mapping50K_Hind240  
+Description: Affymetrix - 30 CEU trios (= 30x3x2=180 hybridizations)  
+URL:
+<http://www.affymetrix.com/support/technical/sample_data/hapmap_trio_data.affx>
+
+**Affymetrix: 14 Human Mitochondrial Resequencing samples**  
+Chip type(s): Mitochip_2  
+Description: Affymetrix.  This dataset contains 14 Mitov2 array CEL
+files. The probe array files represent 3 sets of CEPH trios including 2
+sets of technical replicates and 2 human mito standard samples.  
+URL: <http://www.affymetrix.com/support/datasets.affx>
+
+**Affymetrix: 270 Mapping 100K HapMap samples**  
+Chip type(s): Mapping50K_Xba240, Mapping50K_Hind240  
+Description: HapMap. All 270 HapMap (CEU, CHB+JPT, YRI) 100K samples.  
+URL:
+<http://www.affymetrix.com/support/technical/sample_data/500k_data.affx>
+
+**Affymetrix: X Chromosome titration set for 100K**  
+Chip type(s): Mapping50K_Xba240, Mapping50K_Hind240  
+Description: Affymetrix - 1X, 2X, 3X, 4X, 5X titration set.  
+URL:
+<http://www.affymetrix.com/support/technical/sample_data/copy_number_data.affx#1_2>
+
+**Affymetrix:** **100K breast cancer cell lines**  
+ Chip type(s): Mapping50K_Xba240, Mapping50K_Hind240  
+Description: Affymetrix - 3 human breast cancer cell lines (SKBR3,
+MCF7, & ZR75-30), and reference DNA (Ref103).  
+URL:
+<http://www.affymetrix.com/support/technical/sample_data/copy_number_data.affx#1_2>
+
+**Affymetrix: 500K Breast cancer cell lines**  
+Chip type(s): Mapping250K_Nsp, Mapping250K_Sty  
+Description: Affymetrix - 3 human breast cancer cell lines (SKBR3,
+MCF7, & ZR75-30), and reference DNA (Ref103).  
+URL:
+<http://www.affymetrix.com/support/technical/sample_data/copy_number_data.affx>
+
+**Affymetrix: 48 Mapping 500k HapMap Trio Dataset**  
+Chip type(s): Mapping250K_Nsp, Mapping250K_Sty  
+Description: Affymetrix, 2005. 48 CEU trios (=13x3x2 Nsp+Sty 500K
+hybridizations).  
+URL: <http://www.affymetrix.com/support/technical/sample_data/500k_data.affx>
+
+**Affymetrix: 270 Mapping 500k HapMap samples**  
+Chip type(s): Mapping250K_Nsp, Mapping250K_Sty  
+Description: HapMap, 2006. All 270 HapMap (CEU, CHB+JPT, YRI) 500K
+samples.  
+URL:
+<http://www.affymetrix.com/support/technical/sample_data/500k_data.affx>
+
+**Affymetrix: Sample Data Sets for Copy Number Analysis**  
+Chip type(s): Mapping250K_Nsp, Mapping250K_Sty  
+Description: 9 Tumor/Normal pairs derived from human cancer cell lines
+(=9x2 samples = 18x2 hybridizations), and X Chromosome titration set
+(3X, 4X, and 5X) with 4 replicates. (=3x4x2 hybridizations). 2006.  
+Note: The data sets are split up in multi-part ZIP archives.  See Page
+'[Affymetrix multi-part DTT/ZIP
+archives](http://groups.google.com/group/aroma-affymetrix/web/affymetrix-multi-part-dtt-zip-archives?hl=en)'
+on how to deal with such files.  
+URL:
+<http://www.affymetrix.com/support/technical/sample_data/copy_number_data.affx>
+
+**Affymetrix: Cytogenetics Sample Data**  
+Chip type(s): GenomeWideSNP_6  
+Description: 10 GWS6 CEL files of samples with UPD on chromosome 15
+(two), DMD-del Xp21.1, Williams Syndrome, Mosaic Trisomy, Turner Mosaic,
+Trisomy 13, Smith-Magenis, Angelman/Prader-Willi, and Normal Male
+Sample.  
+URL:
+<http://www.affymetrix.com/support/technical/sample_data/gtc_cytogenetic_data.affx>
+
+
+
+## Data sets from the HapMap Consortium
+
+**HapMap: HapMap Portal**  
+URL: [**http://www.hapmap.org/**](http://www.hapmap.org/)
+
+ **HapMap: 270** **Affymetrix** **Mapping 100K HapMap samples**  
+Description: All 270 HapMap Phase II (CEU, CHB+JPT, YRI) 100K samples.  
+URL: <http://www.hapmap.org/downloads/raw_data/affy100k/>
+
+**HapMap: 270** **Affymetrix** **Mapping 500K HapMap samples**  
+Chip type(s): Mapping250K_Nsp, Mapping250K_Sty  
+Description: All 270 HapMap Phase II (CEU, CHB+JPT, YRI) 500K samples.  
+URL: <http://www.hapmap.org/downloads/raw_data/affy500k/>
+
+**HapMap: 1200+ Affymetrix GenomeWideSNP_6 HapMap samples**  
+Chip type(s): GenomeWideSNP_6  
+Description: 1200+ HapMap Phase III (many different populations) GWS6
+samples.  
+URL:
+[http://www.hapmap.org/downloads/raw_data/hapmap3_affy6.0/ ](http://www.hapmap.org/downloads/raw_data/hapmap3_affy6.0/)
+
+
+
+## Data sets from EBI ArrayExpress
+
+**ArrayExpress: ArrayExpress Portal**  
+URL:
+[**http://www.ebi.ac.uk/arrayexpress/**](http://www.ebi.ac.uk/arrayexpress/)
+
+**ArrayExpress: Data set E-TABM-185**  
+Chip type: HG-U133A  
+Description: ArrayExpress, EMBL-EBI, March 2007.  5896 (sic!) HG-U133A
+CEL files.  
+URL: <http://www.ebi.ac.uk/arrayexpress/#ae-browse/q=E-TABM-185>
+
+**ArrayExpress: Data set E-MEXP-1481**  
+Chip type: Hs_PromPR_v02  
+Title: Methylation profiling of human normal and cancer tissues to
+identify long range epegenetic aberations.  
+Description: "...25 hybridizations, using 25 samples of species [Homo
+sapiens], using 25 arrays of Affymetrix GeneChip Human Promoter 1.0R
+Array [Hs_PromPR_v02], producing 25 raw data files..."  
+URL:
+<http://www.ebi.ac.uk/microarray-as/ae/browse.html?keywords=E-MEXP-1481>
+
+
+
+## Data sets from the Public Expression Profiling Resource (PEPR)
+
+**PEPR: PEPR Portal**  
+URL: <http://pepr.cnmcresearch.org/>
+
+## Data sets from NCBI's Gene Expression Omnibus (GEO)
+
+**GEO: Data Set Portal**
+
+-   Search: **Affymetrix data sets**  
+    URL:
+    <http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gds&term=affymetrix+AND+GPL%5BETYP%5D>
+-   Search: **GenomeWideSNP_6 data sets**  
+    URL:
+    [http://www.ncbi.nlm.nih.gov/sites/entrez?db=gds&term=GPL6801[Accession]
+    or
+    GPL8226[Accession]&cmd=search](http://www.ncbi.nlm.nih.gov/sites/entrez?db=gds&term=GPL6801[Accession]%20or%20GPL8226[Accession]&cmd=search)
+
+**GSE5258: Connectivity Map dataset (build01)**  
+Chip type(s): HG-U133A  
+Description: "A reference collection of genome-wide transcriptional
+expression data for bioactive small molecules. [...] The current
+collection (build01) contains data for 164 distinct small molecules
+applied to freely cycling human cell lines, represented by 453
+individual treatment and matched vehicle control pairs.".  In total 564
+samples.   
+Reference(s): Lamb J et al. The Connectivity Map: using gene-expression
+signatures to connect small molecules, genes, and disease. Science,
+2006.  
+URL: <http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE5258>
+
+**GSE9222: Structural Variation of Chromosomes in Autism Spectrum
+Disorder.**  
+Chip type(s): Mapping250K_Nsp, Mapping250K_Sty  
+Description: Mapping250K_{Nsp|Sty} CEL files for DNA derived from blood
+or lymphopblasts. In total, 426 unrelated probands were analyzed along
+with 232 parents (116 trios). ...  
+Reference(s): Marshall et al. *Structural Variation of Chromosomes in
+Autism Spectrum Disorder*, Am J Hum Genet, Feb 2008.  
+URL: <http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE9222>
+
+**GSE12019: Fine-scale mapping of copy-number alterations with massively
+parallel sequencing**  
+Chip type(s): Mapping250K_Sty  
+Description: "In order to benchmark the reproducibility of Affymetrix
+Genome-Wide Human SNP Array 6.0 for detecting copy-number alterations,
+we performed replicate hybridizations of 3 tumor cell lines and 2 paired
+normal cell lines obtained from the American Type Culture Collection
+(ATCC). [...] 77 replicates of HCC1143 (breast ductal carcinoma), 69
+replicates of HCC1143BL (matched normal), 42 replicates of HCC1954
+(breast ductal carcinoma), 36 replicates of HCC1954BL (matched normal),
+1 replicate of NCI-H2347 (lung adenocarcinoma)"  
+Reference(s): Chiang, D. Y.; Getz, G.; Jaffe, D. B.; O'Kelly, M. J. T.;
+Zhao, X.; Carter, S. L.; Russ, C.; Nusbaum, C.; Meyerson, M. & Lander,
+E. S. High-resolution mapping of copy-number alterations with massively
+parallel sequencing. Nature Methods, 2009, 6, 99-103  
+URL: <http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE12019>
+
+**GSE13021: Copy number analysis of human glioblastoma multiforme**  
+Chip type(s): Mapping250K_Nsp  
+Description: "Copy number analysis of human GBM samples were performed,
+and a high frequency of deletions of the PTPRD gene on chromosome
+9p23-24.1 were identified. [...] Genomic DNA from 58 GBM tumor samples
+were hybridized to Affymetrix 250K NspI Gene Chip Arrays and analyzed by
+dChip using the hg17 genome assembly."  
+Reference(s): Solomon DA, Kim JS, Cronin JC, Sibenaller Z et al.
+Mutational inactivation of PTPRD in glioblastoma multiforme and
+malignant melanoma. Cancer Res 2008 Dec 15;68(24):10300-6.  
+URL: <http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE13021>
+
+**GSE13372: High-resolution mapping of copy-number alterations with
+massively parallel sequencing**  
+Chip type(s): GenomeWideSNP_6  
+Description: "In order to benchmark the reproducibility of Affymetrix
+238K Sty arrays for detecting copy-number alterations. We performed
+replicate hybridizations of 3 tumor cell lines and 2 paired normal cell
+lines obtained from the American Type Culture Collection (ATCC). [...]
+21 replicates of HCC1143 (breast ductal carcinoma), 21 replicates of
+HCC1143BL (matched normal), 13 replicates of HCC1954 (breast ductal
+carcinoma), 11 replicates of HCC1954BL (matched normal), 1 replicate of
+NCI-H2347 (lung adenocarcinoma), 1 replicate of NCI-H2347BL (matched
+normal)"  
+Reference(s): Chiang, D. Y.; Getz, G.; Jaffe, D. B.; O'Kelly, M. J. T.;
+Zhao, X.; Carter, S. L.; Russ, C.; Nusbaum, C.; Meyerson, M. & Lander,
+E. S. High-resolution mapping of copy-number alterations with massively
+parallel sequencing. Nature Methods, 2009, 6, 99-103  
+URL: <http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE13372>  
+URL: <http://www.broad.mit.edu/cancer/pub/solexa_copy_numbers/>
+
+**GSE14996: Multisampled Lethal Metastatic Prostate Cancer Copy Number
+Analysis**  
+Chip type(s): GenomeWideSNP_6  
+Description: "Purified cancer DNA from frozen metastatic cancer tissue
+obtained at autopsy studied by Affymetrix Genome-Wide Human SNP (single
+nucleotide polymorphism) Array 6.0 analysis (Affy6)."  
+Reference(s): Liu W, Laitinen S, Khan S, Vihinen M et al. Copy number
+analysis indicates monoclonal origin of lethal metastatic prostate
+cancer. Nat Med 2009 May;15(5):559-65.  
+URL: <http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE14996>
+
+**GSE16619: Identification of novel gene amplification events in breast
+cancer**  
+Chip type(s): Mapping250K_Nsp, Mapping250K_Sty, GenomeWideSNP_5  
+Description: To identify novel gene amplification events that may
+contribute to breast cancer progression, we examined copy number
+variation in 161 primary breast cancer samples using the Affymetrix
+250K_Nsp and 250K_Sty microarrays or the Affymetrix SNP5.0
+microarray.  
+Reference(s): Kadota M, Sato M, Duncan B, Ooshima A et al.
+Identification of novel gene amplifications in breast cancer and
+coexistence of gene amplification with an activating mutation of PIK3CA.
+Cancer Res 2009 Sep 15;69(18):7357-65. PMID: 19706770.  
+URL: <http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE16619>
+
+**GSE20584: The mutation spectrum revealed by paired genome sequences
+from a lung cancer patient**  
+Chip type(s): GenomeWideSNP_6  
+Description: One lung tumor and its adjacent normal were profiled for copy-number alterations with the high-resolution Affymetrix SNP6.0 Array.  
+Reference(s): Lee W, Jiang Z, Liu J, Haverty PM et al. The mutation spectrum revealed by paired genome sequences from a lung cancer patient. Nature 2010 May 27;465(7297):473-7. PMID: [20505728](http://www.ncbi.nlm.nih.gov/sites/entrez?Db=Pubmed&term=20505728[UID] "Link to PubMed record")  
+URL: <http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE20584>
+
+
+
+
+
+## Data sets from the Tumor Cancer Genome Atlas (TCGA) project
+
+TCGA: TCGA Data Portal  
+Description: The Cancer Genome Atlas (TCGA) project.  
+URL: <http://tcga-data.nci.nih.gov/tcga/homepage.htm> (Data Access
+Matrix)  
+URL: <http://tcga-data.nci.nih.gov/tcga/findArchives.htm> (Search by
+Archives; old approach)
+
+## Data sets from The Cancer Genome Project (Sanger Institute)
+
+URL: <http://www.sanger.ac.uk/genetics/CGP/>
+CGP: CGP Data Archive  
+Chip type(s): GenomeWideSNP_6  
+Description: The Cancer Genome Project data repository.  
+URL: <http://www.sanger.ac.uk/genetics/CGP/Archive/>
+
+
+
+## Data sets from The Broad Institute
+
+Broad Institute et al.: Broad-Novartis Cancer Cell Line Encyclopedia
+(CCLE)  
+ Chip type(s): GenomeWideSNP_6, HG-U133_Plus_2, Oncomap mutation
+data, Hybrib capture sequencing  
+ Description: "The Cancer Cell Line Encyclopedia (CCLE) project is a
+collaboration between the Broad Institute, and the Novartis Institutes
+for Biomedical Research and its Genomics Institute of the Novartis
+Research Foundation to conduct a detailed genetic and pharmacologic
+characterization of a large panel of human cancer models, to develop
+integrated computational analyses that link distinct pharmacologic
+vulnerabilities to genomic patterns and to translate cell line
+integrative genomics into cancer patient stratification. The CCLE
+provides public access to genomic data, analysis and visualization for
+about 1000 cell lines."  
+ URL: <http://www.broadinstitute.org/ccle/>
+
+Broad Institute: GenomeWideSNP_6 test samples for Birdsuite  
+Chip type(s): GenomeWideSNP_6  
+URL: <http://www.broad.mit.edu/mpg/birdsuite/download.html>  
+Description: 3 male and 3 female GenomeWideSNP_6 CEL files (part of the
+"Test input files").
+
+Broad Institute: Genotyping the 270 HapMap samples for GAIN  
+URL:
+<http://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?id=phs000049>  
+Description: 270 HapMap samples data set [270 hybridizations] - No more
+details.
+
+Broad Institute: Assessing the significance of chromosomal aberrations
+in cancer  
+ Chip type(s): Mapping50K_Hind240, Mapping50K_Xba240  
+ Description: Brain Cancer, SNP/CN Analysis.  154 glioma and 33 normal
+samples each hybridized on the 100K chip set totalling (154+33)*2=374
+hybridizations/CEL files.  Also available at GEO as
+[GSE9635](http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi?acc=GSE9635).  
+ Reference: Beroukhim et al. 2007, Assessing the significance of
+chromosomal aberrations in cancer: Methodology and application to
+glioma, PNAS, December 2007.  
+ URL:
+<http://www.broad.mit.edu/cgi-bin/cancer/publications/pub_paper.cgi?mode=view&paper_id=162&p=t>
+
+Broad Institute et al.: Characterizing the cancer genome in lung
+adenocarcinoma  
+ Chip type(s): Mapping250K_Sty  
+ Description: 2*384=768 Affymetrix Mapping250K_Sty CEL files for 384
+tumor/normal sample pairs for Weir et al. (2007).  
+ Reference: Weir et al. Characterizing the cancer genome in lung
+adenocarcinoma. Nature, December 2007, 450, 893-898.  
+ URL: <http://www.broad.mit.edu/cancer/pub/tsp/>
+
+Broad Institute et al.: ConnectivityMap (02)  
+ Chip type(s): HG-U133A  
+ Description: 6100 Affymetrix HG-U133A CEL files.  
+ Reference: (1) Lamb et al., The Connectivity Map: using gene-expression
+signatures to connect small molecules, genes, and disease, Science,
+2006. (2) J. Lamb, The Connectivity Map: a new tool for biomedical
+research, Nat Rev Cancer, 2007.  
+ URL: <http://www.broadinstitute.org/cmap/>
+
+## Data sets from NIH's REMBRANDT
+
+"REpository for Molecular BRAin Neoplasia DaTa (REMBRANDT) is a robust
+bioinformatics knowledgebase framework that leverages data warehousing
+technology to host and integrate clinical and functional genomics data
+from clinical trials involving patients suffering from Gliomas. The
+knowledge framework will provide researchers with the ability to perform
+ad hoc querying and reporting across multiple data domains, such as Gene
+Expression, Chromosomal aberrations and Clinical data."  
+URL: <https://caintegrator.nci.nih.gov/rembrandt/>
+
+
+
+## Data sets from elsewhere
+
+GSK Cancer Cell Line Genomic Profiling Data  
+Chip types: Mapping 250K_Nsp, Mapping 250K_Sty, HG-U133_Plus_2  
+Description: "GlaxoSmithKline (GSK) has released the genomic profiling
+data for over 300 cancer cell lines via the National Cancer Institute’s
+cancer Bioinformatics Grid (caBIG). Cancer cell lines can be
+manipulated in the laboratory and have been used extensively by GSK in
+the discovery and development of novel cancer therapeutics."  
+Data files: CEL files for in total 676 Affymetrix Mapping 250K_Nsp or
+Mapping 250K_Sty, and 950 HG-U133_Plus_2 hybridizations.  Also MAS5
+summarizes for the expression arrays.  
+URL: <https://cabig.nci.nih.gov/tools/caArray_GSKdata/>
+
+Harvard: The Meyerson Lab  
+Chip types: ax13339 ("Early Access 10K")  
+Description: 58 paired CEL and *.txt genotype files for the ax13339
+("Early Access 10K") used in Zhao X et al. (2004).  
+References: Zhao X et al., An Integrated View of Copy Number and Allelic
+Alterations in the Cancer Genome Using Single Nucleotide Polymorphism
+Arrays, Cancer Research, 64, 3060-3071, May 2004.  
+URL: <http://research.dfci.harvard.edu/meyersonlab/snp/snp.htm> (under
+'Data download')
+
+Personal Genome Project (PGP)  
+Description: Currently there are 10 individuals for which PGP are doing
+SNP, CN, and exon analysis on.  It is not clear if it is ony the results
+or the raw data that is/will be available.  It looks like they will
+publish many more "personal genomes" later.  
+URL: <http://www.personalgenomes.org/public/>
+
+## Miscellaneous
+
+ACTuDB: a database for the integrated analysis of array-CGH and clinical
+data for tumors  
+Author(s): The Curie Institute - Bioinformatics Unit  
+URL: <http://bioinfo-out.curie.fr/actudb/> (see the 'Content' section)  
+Description: Contains a compiled list of publically available
+copy-number data sets.  Some of the data sets also have coupled
+expression data.
+<% geo('GPL6801') %> or <% geo('GPL8226') %>

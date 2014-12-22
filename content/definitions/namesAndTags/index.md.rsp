@@ -1,0 +1,129 @@
+# Definition: Fullnames, names and tags of directories and files
+
+In order to keep track of data sets, samples, chip types etc between
+sessions, the aroma.* packages have well defined rules how to name and
+structure data files and data sets.  In order to explain how this works,
+we have to define a few terms.
+
+## Pathname
+
+A pathname, which consists of a path followed by a filename, refers to
+the string identifying a file.  Formally, we say the format is:
+
+```
+<pathname> = <path>/<filename>
+```
+
+For instance, for a a file with pathname
+/rawData/BooA_2007/Mapping250K_Nsp/C358,2007-01-24.cel the path is
+directory /rawData/BooA_2007/Mapping250K_Nsp/ and the filename is
+C358,2007-01-24.cel.  
+
+
+## Filename
+
+In turn, we say that a filename consists of a fullname, a dot, and a
+filename extension, e.g. the above file has fullname "C358,2007-01-24"
+and filename extension "cel".  The format for this is:
+
+```
+<filename> = <fullname>.<extension>
+```
+
+Footnote: The term "fullname" is our convention. In the *nix world the
+term "basename" is used for the same thing, but in R that term is the
+same as the filename.  To avoid ambiguity, we decided to use the term
+fullname.
+
+
+## Sample names, tags and filenames
+
+Data files typically have filenames that reveals the name of the sample
+plus extra information such as the chip type, the lab the hybridization
+data and so on, followed by the filename extension.
+
+
+### Example
+
+Here are some examples from randomly picked data sets:
+
+* MCF7_Hind.CEL,
+* MCF7_Xba.CEL,
+* C358 Nsp 24-01-2007 250K.CEL, and
+* NA06985_Hind_B5_3005533.CEL.
+
+As humans we infer that the first two files refer to CEL data for a
+sample "MCF7" hybridized to chip types "Hind" and "Xba", that the third
+file is sample "C358" hybridized to an "250K" "Nsp" chip on January 24,
+2007, and that the last file is sample "NA06985" hybridized to a "Hind"
+chip with extra tag "B5_3005533", which do not know what it means.
+
+
+## Fullname
+
+In order for the computer to know what part of the the filename is
+refering to the sample name and what is extra information we define the
+termsname and tag, where name is typically either a sample name or a
+data set name.  Then constraint filenames to have the following format:
+
+```
+<fullname> = <name>(,<tag>)*  
+```
+
+This format is read as "the fullname consists of a name followed by zero
+or more (the `*`) comma-separated tags".  Because of this format,
+*sample names and tags cannot contain commas*.  Footnote: A commas a
+legal character in all file systems we know of, and it has been used
+successfully for a long time in for instance the CVS version control
+system.
+
+
+### Example continued
+
+To follow the above format, we rename the above four CEL files as:
+
+* MCF7,Hind.CEL,  
+* MCF7,Xba.CEL,  
+* C358,Nsp,24-01-2007,250K.CEL, and  
+* NA06985,Hind,B5_3005533.CEL.
+
+With this filename format, the package can identify the sample names
+unambiguously.
+
+
+## Directory names
+
+Analogusly to a filename, a directory name consists of a name followed
+by optional tags:
+
+```
+<dirname> = <fullname>  
+<path> = <path>/<dirname>
+```
+
+In aroma.*, each data set has a its own unique path, and its fullname
+is inferred from the directory name.   For example, the directory name
+"Affymetrix_2006-500k,ACT,QN" refers data set name
+"Affymetrix_2006-500k" with tags "ACT" and "QN".
+
+## Formal grammar
+
+Generic to all (<% cran('R.filesets') %>) data sets:
+
+```
+<pathname> = <path>/<filename>  
+<path> = <path>/<dirname>  
+<dirname> = <fullname>  
+<filename> = <fullname>.<extension>  
+<fullname> = <name>(,<tag>)*
+```
+
+Specific to all aroma.* data files:
+
+```
+<dataPathname> = <rootPath>/<dataSet>/<chipType>/<dataFilename>  
+<dataFilename> = <sampleName>(,<tags>)*.<extension>  
+<rootPath> = ./<dirname>  
+<dataSet> = <dirname>  
+<chipType> = <dirname>
+```

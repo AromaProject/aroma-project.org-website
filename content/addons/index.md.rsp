@@ -1,0 +1,150 @@
+# Add ons
+
+## Addons to the Aroma Framework
+
+### Add on: ACNE
+
+Title: ACNE - Affymetrix SNP probe-summarization using non-negative
+matrix factorization  
+Authors: Maria Ortiz-Estevez, Angel Rubio, Henrik Bengtsson  
+Description: Package for NMF summarization of SNP probes.  
+Chip types: All Affymetrix genotyping and CN arrays.  
+Requirements: Cross platform, aroma.affymetrix  
+References: [M. Ortiz-Estevez, H. Bengtsson, A. Rubio, ACNE: a
+summarization method to estimate allele-specific copy numbers for
+Affymetrix SNP arrays, Bioinformatics, 2010](<%=pathTo('/publications')%>).  
+URL: <http://r-forge.r-project.org/R/?group_id=587>
+
+### Add on: CalMaTe
+
+Title: CalMaTe - A post-calibration process to improve allele-specific
+copy number estimates from SNP microarrays  
+Authors: Maria Ortiz-Estevez, Ander Aramburu, Henrik Bengtsson, Pierre
+Neuvial, Angel Rubio.  
+Description: Package for calibrating allele-specific copy number
+estimates (ASCNs).  
+Chip types: Any genotyping and CN arrays, e.g. Affymetrix and Illumina.  
+Requirements: Cross platform, aroma.core  
+References: [Ortiz-Estevez et al., CalMaTe: A method and software to
+improve allele-specific copy number of SNP arrays for downstream
+segmentation, Bioinformatics, 2012](<%=pathTo('/publications/')%>).  
+URL: <http://r-forge.r-project.org/R/?group_id=587>
+
+### Add on: FIRMAGene
+
+Title: FIRMAGene - differential splicing for Affymetrix Gene 1.0 ST  
+ Authors: Mark Robinson  
+ Description:  
+ Chip types: Affymetrix Gene 1.0 ST  
+ Requirements: Cross platform, aroma.affymetrix  
+ References: [M. Robinson and TS. Speed, Differential splicing using
+whole-transcript microarrays, BMC
+Bioinformatics, 2009](<%=pathTo('/publications/')%>).  
+ URL: <http://r-forge.r-project.org/R/?group_id=424>  
+URL: <http://bioinf.wehi.edu.au/folders/firmagene/>
+
+### Add on: GADA (Genome Alteration Detection Analysis)
+
+Authors: Pique-Regi et al.  
+ Description: "GADA is a fast and accurate method for detecting copy
+number alterations (CNA) from array data. [...]"  
+ Chip types: Generic segmentation method applicable to all raw CNs.  
+ Operating system: ?  
+ References: (1) Pique-Regi R and Gonzalez JR: "R-Gada: a package for
+fast and parallel detection of copy number on multiple samples and
+visualization",  *Bioinformatics*, Submitted Dec 2008, (2) Pique-Regi R,
+Monso-Varona J,Ortega A, Seeger RC, Triche TJ, Asgharzadeh S: "Sparse
+representation and Bayesian detection of the genome copy number
+alterations from microarray data", *Bioinformatics*, Feb 2008  
+URL: <https://r-forge.r-project.org/R/?group_id=915>  
+URL: <http://groups.google.com/group/gadaproject>  
+URL: <http://biron.usc.edu/~piquereg/GADA/>
+
+
+## Other tools leveraging aroma.* packages
+
+### AMDA
+
+Authors: Genopolis  
+Operating system: Cross platform  
+Description: Automated Microarray Data Analysis (AMDA) software  
+References:  
+URL: <http://www.genopolis.it/>
+
+### BRB-ArrayTools
+
+Authors: Richard Simon & BRB-ArrayTools Development Team  
+Operating system: Windows with MS Excel  
+Description: "BRB-ArrayTools is an integrated package for the
+visualization and statistical analysis of DNA microarray gene expression
+data. It was developed by professional statisticians experienced in the
+analysis of microarray data and involved in the development of improved
+methods for the design and analysis of microarray based experiments. The
+array tools package utilizes an Excel front end. Scientists are familiar
+with Excel and utilizing Excel as the front end makes the system
+portable and not tied to any database. [...]"  
+References:   
+URL: <http://linus.nci.nih.gov/BRB-ArrayTools.html>
+
+### Expander
+
+Authors: Ron Shamir's Computational Genomics Laboratory, School of
+Computer Science, Tel Aviv University  
+Operating system: Java  
+Description: "EXPANDER (EXpression Analyzer and DisplayER) is a
+java-based tool for analysis of gene expression data. It is capable of
+(1) clustering (2) visualizing (3) biclustering and (4) performing
+downstream analysis of clusters and biclusters such as functional
+enrichment and promoter analysis. In particular, it can analyze groups
+of genes for enrichment of transcription factor binding sites in their
+promoters."  
+References:   
+URL: <http://acgt.cs.tau.ac.il/expander/>
+
+### O-miner
+
+Authors: Cutts et al, Molecular Oncology, Barts Cancer Institute, Queen
+Mary's School of Medicine and Dentistry, UK.  
+Operating system: Online Server  
+Description: "O-miner is a project designed to automate the analysis and
+annotation of complex -omics data. The software is easy to use and
+freely available to the scientific community. Users can upload data via
+a web page and can be notified by email when their analysis is
+completed. The output includes detailed data analysis reports and
+diagrams.  [As of May 2012] genomics and transcriptomics analysis
+options are available".  
+References: RJ Cutts et al. O-miner: an integrative platform for
+automated analysis and mining of -omics data, NAR 2012.  
+URL: <http://o-miner.org/>
+
+### PECA (Probe-level expression change averaging)
+
+Authors: Laura L. Elo,  Jukka Hiissa  
+ Description: The PECA R-package implements the Probe-level Expression
+Change Averaging (PECA) procedure for the identification of
+differentially expressed genes or differentially spliced exons in
+Affymetrix gene or exon microarray studies.  
+References:   
+URL: <http://www.utu.fi/en/units/sci/units/math/Research/biomathematics/projects/Pages/peca.aspx>
+
+### Progenetix / tastyAroma
+
+Authors: M Baudis  
+ Description: "tastyAroma is a project for providing interfaces and
+standard procedures as well as advanced plotting functions to the
+aroma.affymetrix array analysis packages. ... Additionally, the
+tastyAroma project provides scripts for the integration of analysis
+results into a web portal, relying on libraries of the Progenetix
+project.  
+References:   
+URL: <http://www.progenetix.net/>  
+URL: <http://www.progenetix.net/progenetixWiki/pmwiki.php/TastyAroma/TastyAroma>
+
+### Repitools
+
+Authors: A. Statham et al.  
+Description: "Useful functions for quality assessment, visualization,
+summarization and statistical analysis of epigenomics experiments."  
+References: A. Statham et al., Repitools: an R package for the analysis
+of enrichment-based epigenomic data, Bioinformatics, 2010.  
+URL: <http://repitools.r-forge.r-project.org/>

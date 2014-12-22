@@ -1,0 +1,13 @@
+# Definitions
+
+## Directories and files
+
+-   [Fullnames, names and tags of directories and
+    files](<%=pathTo('/definitions/namesAndTags/')%>)
+-   [Filenames, fullnames and filename
+    extensions](<%=pathTo('/definitions/filenames_fullnames_and_filename_extensions/')%>)
+
+## Terms related to the Affymetrix technology
+
+-   [Differences between chip type and chip definition file
+    (CDF)](<%=pathTo('/definitions/chipTypesAndCDFs/')%>)

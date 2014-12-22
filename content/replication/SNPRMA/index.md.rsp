@@ -1,0 +1,228 @@
+# Replication: Reproducing SNPRMA in the oligo package
+
+Author: Henrik Bengtsson  
+Created on: 2008-12-05  
+Last updated: 2008-12-06
+
+This document show how to reproduce the chip effect estimates produced
+by `justSNPRMA()` as implemented in <% bioc('oligo') %>.
+One advantage of processing
+data in <% cran('aroma.affymetrix') %> is that any number of arrays can be processed
+in bounded memory (approx 1GB of RAM) on any platform.  Moreover, since
+the estimates are stored in persistent memory (on file), rerunning the
+same analysis another day/in another R session will be instantanious.
+
+We show that it is possible to reproduce the estimates whether one
+normalize toward oligo's predefined HapMap reference (target quantiles)
+or not.  This reference is actually located in the Platform Design (PD)
+package for the corresponding chip type/CDF.  When using
+aroma.affymetrix and not normalizing toward this predefined reference,
+there is no need for this PD package (which can be huge or
+non-existing).
+
+*There are some minor discrepancies which are still to be explained.*
+
+## Setup
+
+We will use public HapMap CEL files for this example.  Here we show how
+to do the comparison for Mapping50K_Hind240, Mapping250K_Nsp, and
+GenomeWideSNP_6 data.
+
+```
+annotationData/
+  chipTypes/
+    GenomeWideSNP_6/
+      GenomeWideSNP_6.cdf
+    Mapping250K_Nsp/
+      Mapping250K_Nsp.cdf
+    Mapping50K_Hind240/
+      Mapping50K_Hind240.cdf
+
+rawData/  
+  HapMap270,100K,CEU,testSet/  
+    Mapping50K_Hind240/  
+      NA06985,Hind,B5,3005533.CEL   NA06994,Hind,A7,3005533.CEL  
+      NA06991,Hind,B6,3005533.CEL   NA07000,Hind,A8,3005533.CEL  
+      NA06993,Hind,B4,4000092.CEL   NA07019,Hind,A12,4000092.CEL
+
+  HapMap270,500K,CEU,testSet/  
+    Mapping250K_Nsp/  
+      NA06985.CEL   NA06991.CEL    NA06993.CEL  
+      NA06994.CEL   NA07000.CEL    NA07019.CEL
+
+  HapMap270,6.0,CEU,testSet/  
+    GenomeWideSNP_6/  
+      NA06985.CEL   NA06991.CEL    NA06993.CEL  
+      NA06994.CEL   NA07000.CEL    NA07019.CEL
+```
+
+
+## Processing data
+
+```r
+library("oligo")
+library("aroma.affymetrix")
+log <- Arguments$getVerbose(-8, timestamp=TRUE)
+
+# Change this to FALSE if not normalizing toward the HapMap ref.
+normalizeToHapmap <- TRUE
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Setup data set
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+dataSet <- "HapMap270,100K,CEU,testSet"
+chipType <- "Mapping50K_Hind240"
+
+dataSet <- "HapMap270,500K,CEU,testSet"
+chipType <- "Mapping250K_Nsp"
+
+dataSet <- "HapMap270,6.0,CEU,testSet"
+chipType <- "GenomeWideSNP_6"
+
+cdf <- AffymetrixCdfFile$byChipType(chipType)
+csR <- AffymetrixCelSet$byName(dataSet, cdf=cdf)
+print(csR)
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# SNPRMA according to aroma.affymetrix
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+eSet <- justSNPRMA(csR, normalizeToHapmap=normalizeToHapmap,
+verbose=log)
+print(eSet)
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# SNPRMA according to oligo
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+library("oligo")
+eSet2 <- justSNPRMA(getPathnames(csR),
+normalizeToHapmap=normalizeToHapmap, verbose=TRUE)
+print(eSet2)
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Compare theta estimates
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+theta <- extractTheta(eSet)
+theta2 <- extractTheta(eSet2)
+
+# Assert that the dimensions are the same
+stopifnot(identical(dim(theta), dim(theta2)))
+
+# Assert that the ordering of units and arrays are the same
+stopifnot(identical(dimnames(theta), dimnames(theta2)))
+
+# Assert that the estimates are very similar
+diff <- all.equal(theta, theta2)
+print(diff)
+tol <- 0.012
+stopifnot(all.equal(theta, theta2, tolerance=tol))
+
+# Plotting
+array <- 1
+nbrOfGroups <- dim(theta)[2]
+subplots(nbrOfGroups, ncol=2)
+par(mar=c(4.5,4,1,1))
+lim <- c(0,16)
+
+for (gg in 1:nbrOfGroups) {
+  x <- cbind(theta2[,gg,array], theta[,gg,array])
+  x <- log2(x)
+  plot(NA, xlim=lim, ylim=lim, xlab="oligo", ylab="aroma.affymetrix")
+  stext(side=3, pos=0, line=-1, sprintf("Group: #%d", gg),
+margin=0.5)
+  abline(a=0, b=1, lty=3, col="blue")
+  points(x, pch=".", cex=3)
+}
+
+filename <- sprintf("%s,%s,SNPRMA,pairs.png", dataSet, chipType)
+dev.print(png, file=filename, width=640, height=640*(nbrOfGroups/4))
+
+array <- 1
+lim <- c(0,1)
+nbrOfStrands <- dim(theta)[2]/2
+
+subplots(nbrOfStrands, nrow=1)
+par(mar=c(4.5,4,1,1));
+
+for (ss in 1:nbrOfStrands) {
+  iA <- 2*(ss-1) + 1
+  iB <- 2*(ss-1) + 2
+  freqB <- theta[,iB,array]/(theta[,iA,array]+theta[,iB,array])
+  freqB2 <- theta2[,iB,array]/(theta2[,iA,array]+theta2[,iB,array])
+  plot(NA, xlim=lim, ylim=lim, xlab="oligo", ylab="aroma.affymetrix")
+  stext(side=3, pos=0, line=-1, sprintf("Strand: #%d", ss), argin=0.5)
+  abline(a=0, b=1, lty=3, col="blue");  points(freqB2, freqB, pch=".", cex=3)
+}
+
+filename <- sprintf("%s,%s,SNPRMA,freqB.png", dataSet, chipType)
+dev.print(png, file=filename, width=320*nbrOfStrands, height=320)
+```
+
+## Results
+
+### Mapping50K_Hind240 - Toward Hapmap reference
+
+![](<%=pathTo('assets/images/HapMap270%2C100K%2CCEU%2CtestSet%2CMapping50K_Hind240%2CSNPRMA%2Cpairs%2B%282%29.png')%>)
+
+_Figure: (thetaA+, thetaB+, thetaA-, thetaB-)_
+
+
+![](<%=pathTo('assets/images/HapMap270%2C100K%2CCEU%2CtestSet%2CMapping50K_Hind240%2CSNPRMA%2CfreqB%2B%282%29.png')%>)
+
+_Figure: (freqB+, freqB-)_
+
+
+### Mapping250K_Nsp - Toward Hapmap reference
+
+![](<%=pathTo('assets/images/HapMap270%2C500K%2CCEU%2CtestSet%2CMapping250K_Nsp%2CSNPRMA%2Cpairs.png')%>)
+
+_Figure: (thetaA+, thetaB+, thetaA-, thetaB-)_
+
+
+![](<%=pathTo('assets/images/HapMap270%2C500K%2CCEU%2CtestSet%2CMapping250K_Nsp%2CSNPRMA%2CfreqB.png')%>)
+
+_Figure: (freqB+, freqB-)_
+
+
+### GenomeWideSNP_6- Toward Hapmap reference
+
+![](<%=pathTo('assets/images/HapMap270%2C6.0%2CCEU%2CtestSet%2CGenomeWideSNP_6%2CSNPRMA%2Cpairs%2B%282%29.png')%>)
+
+_Figure: (thetaA, thetaB)_
+
+
+![](<%=pathTo('assets/images/HapMap270%2C6.0%2CCEU%2CtestSet%2CGenomeWideSNP_6%2CSNPRMA%2CfreqB.png')%>)
+
+_Figure: (freqB)_
+
+
+## Session information
+
+```r
+R version 2.8.0 Patched (2008-10-21 r46766)  
+i386-pc-mingw32
+
+locale:  
+LC_COLLATE=English_United States.1252;LC_CTYPE=English_United
+States.1252;LC_MON  
+ETARY=English_United States.1252;LC_NUMERIC=C;LC_TIME=English_United
+States.1252
+
+attached base packages:
+[1] splines   tools     stats     graphics  grDevices utils
+datasets
+[8] methods   base
+
+other attached packages:
+[1] pd.mapping50k.hind240_0.4.1     pd.genomewidesnp.6_0.4.2
+[3] oligoClasses_1.3.8              AnnotationDbi_1.3.12
+[5] preprocessCore_1.3.4            RSQLite_0.7-0
+[7] DBI_0.2-4                       Biobase_2.1.7
+[9] aroma.affymetrix.wrappers_0.1.0 oligo_1.5.9
+[11] aroma.affymetrix_0.9.6          aroma.apd_0.1.4
+[13] R.huge_0.1.6                    affxparser_1.14.1
+[15] aroma.core_0.9.6                aroma.light_1.9.2
+[17] digest_0.3.1                    matrixStats_0.1.3
+[19] R.rsp_0.3.4                     R.cache_0.1.7
+[21] R.utils_1.1.1                   R.oo_1.4.6
+[23] R.methodsS3_1.0.3    pd.mapping250k.nsp_0.4.1
+```

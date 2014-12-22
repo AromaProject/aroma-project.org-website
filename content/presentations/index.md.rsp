@@ -1,0 +1,91 @@
+# Presentations
+
+Below are selected presentations related to aroma-project.org and/or  related statistical methods by us.
+
+## 2012
+
+2012-12-14: Henrik Bengtsson, *aroma.seq: Bringing sequence analysis to the Aroma Framework*, [Bioconductor European Developers' Workshop 2012](http://www.fgcz.ch/Bioconductor2012), UZH/ETH Zurich, 20+5 minutes.  
+Slides (35): [pdf](<%=pathTo('/share/presentations/BengtssonH_20121214-aroma.seq,BiocDevel2012.pdf')%>) [0.6Mb]
+
+## 2011
+
+2011-10-27: Henrik Bengtsson, *Single Tumor-Normal Pair Parent-Specific Copy Number Analysis*, [Workshop II: Transcriptomics and Epigenomics](http://www.ipam.ucla.edu/programs/genws2/), IPAM, UCLA, Los Angeles, CA, 55 minutes.  
+Slides (35+6): [pdf](<%=pathTo('/share/presentations/BengtssonH_20111027-IPAM,full.pdf')%>) [2.3Mb]
+
+2011-07-28: Henrik Bengtsson, *Single Tumor-Normal Pair Parent-Specific Copy Number Analysis*, [BioC2011](https://secure.bioconductor.org/BioC2011/), Seattle, WA, 45 minutes.  
+Slides (34): [pdf](<%=pathTo('/share/presentations/BengtssonH_20110728-BioC2011.pdf')%>) [2.1Mb]
+
+2011-06-21: Henrik Bengtsson, *Single Tumor-Normal Pair Parent-Specific Copy Number Analysis*, Session I6 (IMS) on 'Statistical Methods for High-Throughput Genomic Assays', [WNAR 2011](http://www.wnar.org/), San Luis Obispo, CA, 25 minutes.  
+Slides (28): [pdf](<%=pathTo('/share/presentations/BengtssonH_20110621-WNAR2011.pdf')%>) [1.7Mb]
+
+2011-03-22: Henrik Bengtsson, *Enhanced power for segmenting parent-specific copy numbers*, Session #99 on 'Assessing DNA Copy Number Variation from High-Throughput Technologies', [ENAR 2011](https://www.enar.org/meetings.cfm), Miami, FL, 25 minutes.  
+Slides (25): [pdf](<%=pathTo('/share/presentations/BengtssonH_20110322-ENAR2011.pdf')%>) [1.8Mb]
+
+2011-03-10: Henrik Bengtsson, *Analysis of SNP arrays for parent-specific copy numbers*, Quantitative Biology Discussion Group (QBDG), Helen Diller Family Comprehensive Cancer Center, UCSF, 60 minutes.
+
+## 2010
+
+2010-11-10: Henrik Bengtsson, *Greatly improved parent-specific tumor copy numbers with DNA microarrays when a matched normal is available*, [International Cancer Genome Consortium](http://www.icgc.org/) (ICGC), conference call, 60 minutes.
+
+2010-09-30: Pierre Neuvial, *Statistical analysis of single nucleotide polymorphism microarrays in cancer studies*, [Workshop in Biostatistics](http://med.stanford.edu/biostatistics/workshop.html), Stanford University, CA.  
+Slides (60): [pdf](<%=pathTo('/share/presentations/NeuvialP_20100930-StanfordBiostatisticsWorkshop.pdf')%>) [7.7Mb].
+
+2010-08-18: Pierre Neuvial, *Greatly improved allele-specific tumor copy numbers with DNA microarrays when a matched normal is available*, CSB 2010 (International Conference on Computational Systems Bioinformatics), Stanford University, CA, USA.  
+Slides (9+7): [pdf](<%=pathTo('/share/presentations/neuvial,2010,CSB,TumorBoost,shortTalk.pdf')%>) [1.0Mb].
+
+2010-04-14: Pierre Neuvial, *On detecting and calling DNA copy number alterations in cancer samples from genotyping microarrays*, Institut Curie, Paris.  
+Slides (46): [pdf](http://neuvial.ensae.net/data/talks/neuvial,2010,CSB,TumorBoost,shortTalk.pdf) [2.1Mb].
+
+## 2009
+
+2009-10-01: Pierre Neuvial, *TumorBoost: Normalization of allele-specific tumor copy numbers in paired tumor/normal, designs for genotyping microarrays*, Statistics and Genomics Seminar, UC Berkeley, CA, USA.  
+Slides (36): [pdf](<%=pathTo('/share/presentations/neuvial_20091001_statGen.pdf')%>) [2.1Mb].
+
+2009-10-13: Henrik Bengsson, *Improved copy number analysis*, Department of Epidemiology & Biostatistics, University of California, San Francisco (UCSF), CA.  
+Slides (46): [pdf](<%=pathTo('/share/presentations/BengtssonH_20091013-Improved_copy_number_analysis.pdf')%>) [4.6Mb].
+
+2009-03-16: Henrik Bengtsson, *A Single-Array Preprocessing Method for Estimating Full-Resolution Raw Copy Numbers from all Affymetrix Genotyping Arrays*, Comprehending Copy Number Variation (Tools, Applications and Results), Cambridge Health Institute, March 16, 2009, San Diego, CA.  
+ Slides (39): [ppt](<%=pathTo('/share/presentations/BengtssonH_20090316-CNVMeeting,SanDiego.ppt')%>) [0.8Mb], [pdf](<%=pathTo('/share/presentations/BengtssonH_20090316-CNVMeeting,SanDiego.pdf')%>) [0.8Mb]. Handouts: [6up.pdf](<%=pathTo('/share/presentations/BengtssonH_20090316-CNVMeeting,SanDiego,handouts,6up.pdf')%>)
+[0.7Mb]
+
+## 2008
+
+2008-12-16: Henrik Bengtsson, *Low-Level Copy Number Analysis (CRMA v2 preprocessing)*, CEIT Workshop on SNP arrays, Dec 15-17, 2008, San Sebastian, Spain.  
+ Slides (96): [ppt](<%=pathTo('/share/presentations/BengtssonH_20081216-CEITCNWorkshop,Day2.ppt')%>) [2.0Mb], [pdf](<%=pathTo('/share/presentations/BengtssonH_20081216-CEITCNWorkshop,Day2.pdf')%>) [2.1Mb]
+
+2008-12-15: Henrik Bengtsson, *Low-Level Copy Number Analysis (Part 1-Background, Part 2-Simple preprocessing, Part 3-aroma.affymetrix)*, CEIT Workshop on SNP arrays, Dec 15-17, 2008, San Sebastian, Spain.  
+ Slides (64): [ppt](<%=pathTo('/share/presentations/BengtssonH_20081215-CEITCNWorkshop,Day1.ppt')%>) [10.1Mb], [pdf](<%=pathTo('/share/presentations/BengtssonH_20081215-CEITCNWorkshop,Day1.pdf')%>) [6.6Mb]
+
+2008-04-24: Henrik Bengtsson, *aroma.affymetrix - Processing very large Affymetrix data sets in bounded memory* (Working with Large Datasets), BioC 2008 developers meeting, Lausanne, Switzerland.  
+ Slides: [ppt](<%=pathTo('/share/presentations/BengtssonH_20080124-MBI_Ohio.ppt')%>) [531kb], [pdf](<%=pathTo('/share/presentations/BengtssonH_20080424-BioC2008-aroma.affymetrix.pdf')%>) [445kb]
+
+2008-01-24: Henrik Bengtsson, *Copy-number estimation on the latest generation of high-density oligonucleotide microarrays*, Mathematical Biosciences Institute, The Ohio State University.  
+Slides: [ppt](<%=pathTo('/share/presentations/BengtssonH_20080124-MBI_Ohio.ppt')%>) [4.3Mb], [pdf](<%=pathTo('/share/presentations/BengtssonH_20080124-MBI_Ohio.pdf')%>) [1.9Mb]
+
+## 2007
+
+2007-09-13: Henrik Bengtsson, *Estimating chromosomal copy numbers from Affymetrix SNP & CN chips*, Statistics and Genomics Seminar, UC Berkeley.  
+ Slides: [ppt](<%=pathTo('/share/presentations/BengtssonH_20070913-CRMA6.ppt')%>) [3.3Mb], [pdf](<%=pathTo('/share/presentations/BengtssonH_20070913-CRMA6.pdf')%>) [1.7Mb]
+
+2007-08-07: Henrik Bengtsson, *aroma.affymetrix - Analysis of small to very large Affymetrix data sets*, [BioC2007](http://www.bioconductor.org/workshops/2007/BioC2007) lab session, 13:00-15:00, August 7, 2007, Fred Hutchinson Cancer Research Center, Seattle, US.  
+ Slides: [pdf](<%=pathTo('/share/presentations/BengtssonH_20070807-BioC2007lab.pdf')%>) [0.5Mb], Suppl. slides: [pdf](<%=pathTo('/share/presentations/BengtssonH_20070807-BioC2007sup.pdf')%>) [0.9Mb], [ppt](<%=pathTo('/share/presentations/BengtssonH_20070807-BioC2007sup.ppt')%>) [3.4Mb]  
+ Cut'n'paste code: [src](<%=pathTo('/share/presentations/BengtssonH_20070807-BioC2007cutnpaste.R')%>) [9kb]
+
+2007-05-31: Henrik Bengtsson, *Copy-number estimation using Robust Multichip Analysis.*  
+ Thursday May 31, 2007 @ 9:30-10:45, INSERM Workshop #177 on Statistical Methods and novel strategies to search for genes involved in common diseases, Londe-Les-Maures (Toulon), France.  
+ <http://ist.inserm.fr/BASIS/elgis/fqmat/atelier/SDF?DOC_NUM=177>
+
+2007-04-21: Henrik Bengtsson, *Enhanced method for identifying copy-number aberrations in small to very large oligonucleotide microarray data sets.*  
+Saturday April 21, 2007 @ 13:30-14:00, Affymetrix Low Level Workshop, Oakland Marriott City Center, Oakland, 2007.  
+<http://www.affymetrix.com/corporate/events/low_level_workshop/2007_04_low_level_workshop.affx>
+
+2007-01-08: Henrik Bengtsson, *Crash course: Using aroma.affymetrix for copy-number analysis.*  
+Monday January 8, 2007 @ 13:30-16:00, Bioinformatics, WEHI, Melbourne.  
+ <http://www.maths.lth.se/bioinformatics/calendar/20070108b/>
+
+## 2006
+
+2006-09-28: Henrik Bengtsson, *Package aroma.affymetrix - How to analyze huge Affymetrix data sets in R on a notebook.*  
+ Thursday September 28, 2006 @ 16:00-17:00, Statistics and Genomics  
+Seminar, 1011 Evans Hall, University of California, Berkeley  
+ <http://www.maths.lth.se/bioinformatics/calendar/20060928b/>

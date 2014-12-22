@@ -1,0 +1,20 @@
+# Block: doRMA()
+
+Author: Henrik Bengtsson  
+Created on: 2010-08-05
+
+The Robust Multi-Array (RMA) processing of Affymetrix expression arrays
+can be done either by doing each step explicitly as in the vignettes, or
+using the following `doRMA()` method.
+
+Usage:
+
+```
+ds <- doRMA("Affymetrix-HeartBrain", chipType="HG-U133_Plus_2")
+```
+
+**Argument 'verbose':** Since RMA will take minutes or hours, we suggest
+that you add argument `verbose=-10` to see some verbose output while
+processing the data set.
+
+The methods returns a ChipEffectSet.

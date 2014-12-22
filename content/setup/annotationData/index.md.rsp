@@ -1,0 +1,161 @@
+# Setup: Location of annotation data files
+
+## CDF files
+
+A *chip definition file* (CDF) contains information on which probes
+belong to what probeset, the (x,y) location of each probe, which the
+middle nucleotides in the target and the probe are (from which PM/MM
+status is inferred), and so on.  Note that there might be multiple
+different CDFs for the same chip type.
+
+Aroma.affymetrix searches for CDF files in the annotationData/ directory
+of the current working directory.  Place the CDF for chip type
+<chipType> in a directory of format:
+
+  annotationData/chipTypes/<chip type>/
+
+All other CDF files with filename format <chip type>,<tags>.cdf
+should also go into this directory.  For instance, so called *monocell
+CDFs* named <chip type>,monocell.cdf, should be placed in this
+directory (Footnote: Monocell CDF files are created automatically if
+missing and will/should by default be written to the correct
+directory.).  For example,
+
+  annotationData/chipTypes/Mapping50K_Hind240/Mapping50K_Hind240.cdf   
+
+annotationData/chipTypes/Mapping50K_Hind240/Mapping50K_Hind240,monocell.cdf
+
+Moreover, the name of a CDF file *should always* be identical to the
+name of the chip type followed by filename extension "cdf" (or "CDF"),
+e.g. the CDF for chip type "Mapping250K_Nsp" the filename should be
+"Mapping250K_Nsp.cdf". Indeed, since the CDF itself does not contain
+any information about the chip type, the chip type is inferred from the
+filename.
+
+### **Example**
+
+```
+cdf <- AffymetrixCdfFile$byChipType("Mapping50K_Hind240")
+print(cdf)
+
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/Mapping50K_Hind240
+Filename: Mapping50K_Hind240.CDF
+Filesize: 53.43MB
+File format: v4 (binary; XDA)
+Chip type: Mapping50K_Hind240
+Dimension: 1600x1600
+Number of cells: 2560000
+Number of units: 57299
+Cells per unit: 44.68
+Number of QC units: 9
+RAM: 0.00MB
+```
+
+
+
+## Affymetrix NetAffx CSV files
+
+Affymetrix NetAffx CSV files are comma-separated and tabular ASCII
+files containing data exported from the NetAffx data base. There is no
+well-defined filename convention of these.  Place them under the
+corresponding chip type directory, i.e.
+
+  annotationData/chipTypes/<chipType>/
+
+For further separation of files, they, like any other annotation file,
+may be place un in subdirectories of the above, e.g.
+
+  annotationData/chipTypes/<chipType>/NetAffx/
+
+For example:
+
+annotationData/chipTypes/Mapping50K_Hind240/NetAffx/Mapping50K_Hind240_annot.csv
+
+
+### Example
+
+```r
+csv <- AffymetrixNetAffxCsvFile$byChipType("Mapping50K_Hind240", pattern="_annot[.]csv$")
+
+## AffymetrixNetAffxCsvFile:
+## Name: Mapping50K_Hind240_annot
+## Tags:
+## Pathname:
+## annotationData/chipTypes/Mapping50K_Hind240/NetAffx/Mapping50K_Hind240_annot.csv
+## File size: 59.67MB
+## RAM: 0.00MB
+## Columns [26]: 'Probe Set ID', 'Affy SNP ID', 'dbSNP RS ID',
+## 'Chromosome', 'Genome Version', 'DB SNP Version', 'Physical Position',
+## 'Strand', 'ChrX pseudo-autosomal region', 'Cytoband', 'Flank', 'Allele
+## A', 'Allele B', 'Associated Gene', 'Genetic Map', 'Microsatellite',
+## 'Fragment Length Start Stop', 'Freq Asian', 'FreqAfAm', 'Freq Cauc',
+## 'Het Asian', 'Het AfAm', 'Het Cauc', 'Num chrm Asian', 'Num chrm AfAm',
+## 'Num chrm Cauc'
+```
+
+
+
+## Affymetrix probe-tab files
+
+So called Affymetrix probe-tab files are annotation files containing
+information about probe sequences etc.  They are available from the
+Affymetrix web site.  These are needed in order to do, for
+instance, GCRMA background correction.  Unfortunately, there is
+not formal format for the names of these files, but they are typically
+starting with something that looks like the chip type followed by the
+suffix '*_probe_tab*' without a filename extension.  As for all
+annotation files, place them under the corresponding chip type
+directory, e.g.
+
+annotationData/chipTypes/Mapping50K_Hind240/Mapping50K_Hind_probe_tab
+
+
+
+## DChip annotation files
+
+Aroma.affymetrix recognizes several of the dChip chip-type specific
+annotation file formats, e.g. *SNP information* files and *genome
+information* files.  These are available for several chip types from
+<http://www.dchip.org/>.  Make sure to put these under the corresponding
+directory
+
+  annotationData/chipTypes/<chip type>/
+
+The dChip files do *not* have to be renamed.  In order to organize
+annotation files further, it is possible to put the files in
+subdirectories of the above, e.g.
+
+  annotationData/chipTypes/Mapping50K_Hind240/dChip/50k hind genome
+info AfAm june 05 hg17.xls  
+  annotationData/chipTypes/Mapping50K_Hind240/dChip/Mapping100K_Hind
+snp info.txt
+
+### Example
+
+```r
+si <- DChipSnpInformation$byChipType("Mapping50K_Hind240")
+print(si)
+
+## DChipSnpInformation:  
+## Name: Mapping100K_Hind snp info  
+## Tags:  
+## Pathname:
+## annotationData/chipTypes/Mapping50K_Hind240/dChip/Mapping100K_Hind snp
+## info.txt  
+## File size: 6.76MB  
+## RAM: 0.00MB  
+## Chip type: Mapping50K_Hind240
+
+si <- DChipGenomeInformation$fromChipType("Mapping50K_Hind240")
+print(si)
+
+## DChipGenomeInformation:
+## Name: 50k hind genome info AfAm june 05 hg17
+## Tags:
+## Pathname: annotationData/chipTypes/Mapping50K_Hind240/dChip/50k hind
+## genome info AfAm june 05 hg17.xls
+## File size: 2.47MB
+## RAM: 0.00MB
+## Chip type: Mapping50K_Hind240
+```

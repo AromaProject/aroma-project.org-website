@@ -1,0 +1,82 @@
+# Block: doCRMAv2() / doASCRMAv2()
+
+Author: Henrik Bengtsson  
+ Created on: 2010-05-17  
+ Last updated on: 2012-06-18
+
+The CRMAv2 ([Bengtsson et al., 2009](<%=pathTo('/publications/')%>)) is the recommended
+method for estimating full-resolution copy numbers (CN) from all
+Affymetrix SNP and CN chip types, including custom-made ones. CRMAv2 can
+be done either by doing each step explicitly as in the vignettes, or
+using the following `doCRMAv2()` and `doASCRMAv2()` methods.
+
+Notes:
+
+-   If this is your first analysis within the aroma project, please make
+    sure to first read the '[Setup](<%=pathTo('/setup/')%>)' and
+    '[Definition](<%=pathTo('/definitions/')%>)' pages. This will explain the
+    importance of following a well defined directory structure and file
+    names. *Understanding this is important and will save you a lot of
+    time*.
+-   If this is your first analysis with a given chip type, please visit
+    the 'Setup' section of the [CRMA v2 vignette](<%=pathTo('/vignettes/CRMAv2/')%>) to
+    make sure that your setup contains all the required annotation
+    files.
+
+Usage:
+
+```r
+ds <- doCRMAv2("HapMap270,testSet", chipType="GenomeWideSNP_6")
+ds <- doCRMAv2("HapMap270,testSet", chipType="GenomeWideSNP_6,Full")
+ds <- doCRMAv2("HapMap270,testSet", chipType="GenomeWideSNP_5")
+ds <- doCRMAv2("HapMap270,testSet", chipType="GenomeWideSNP_5,Full,r2")
+ds <- doCRMAv2("HapMap270,testSet", chipType="Mapping250K_Nsp", plm="RmaCnPlm")
+ds <- doCRMAv2("HapMap270,testSet", chipType="Mapping50K_Hind240", plm="RmaCnPlm"
+ds <- doCRMAv2("GSE8605", chipType="Mapping10K_Xba142", plm="RmaCnPlm")
+```
+
+**Argument 'verbose':** Since CRMAv2 will take minutes or hours, we
+suggest that you add argument `verbose=-10` to see some verbose output
+while processing the data set.
+
+**Argument 'plm':** Note how we specify `plm="RmaCnPlm"` for the
+10K-500K platforms. We do this in order to control for probe-affinity
+effects, which are possible to estimate for those chip types.
+Probe-affinity effects are not possible to estimate in the newer chip
+types (e.g. GWS) because there all replicated probes are
+technical/identical replicates. See the CRMAv2 paper for more details.
+
+**Single- vs multi-array method:** When fitting the CRMAv2 model with
+`plm="RmaCnPlm"`, the method is a multi-array method, whereas with the
+default (`plm="AvgCnPlm"`), then method is a single-array method. In the
+latter case the results for one array will be independent of the other
+arrays in the same data set. This make is possible to process a subsets
+of the arrays and postponing the others for later and still get the same
+results. See the CRMAv2 paper for more details.
+
+**Process a subset of the arrays:** In case the single-array method
+(`plm="AvgCnPlm"`) is used it is possible to process a subset of the
+arrays without having to worry about what arrays to including in the
+batch. The results will be the same regardless. For instance, the
+following two cases will give identical results:
+
+```r
+dsA <- doCRMAv2("HapMap270,testSet", chipType="GenomeWideSNP_6")
+dsA <- dsA[c(6,1,3:4)]
+
+dsB <- doCRMAv2("HapMap270,testSet", chipType="GenomeWideSNP_6", arrays=c(6,1,3:4))
+```
+
+Note, this is only the case if `plm="AvgCnPlm"`.
+
+**Allele-specific copy-number (ASCN) estimates:** By adding argument
+`combineAlleles=FALSE` to the above, allele-specific CNs will be
+estimated (for SNPs). The default is to estimate total CNs
+(`combineAlleles=TRUE`). Alternatively, use `doASCRMAv2()`, which is
+short for `doCRMAv2(..., combineAlleles=FALSE)`. The estimated total CNs
+will differ slightly when using the two alternatives and the CRMAv2
+method has been optimized for total CNs (as in CRMAv2 paper). However,
+if you plan to do ASCN analysis, we recommend to use
+`combineAlleles=FALSE` from the beginning, because the statistical
+performance is almost as good while you will save lots of time only
+processing the data once.
