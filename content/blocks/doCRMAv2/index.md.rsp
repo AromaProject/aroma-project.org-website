@@ -4,9 +4,9 @@ Author: Henrik Bengtsson
  Created on: 2010-05-17  
  Last updated on: 2012-06-18
 
-The CRMAv2 ([Bengtsson et al., 2009](<%=pathTo('/publications/')%>)) is the recommended
+The CRMA v2 <% citep('BengtssonH_etal_2009-CRMAv2') %> is the recommended
 method for estimating full-resolution copy numbers (CN) from all
-Affymetrix SNP and CN chip types, including custom-made ones. CRMAv2 can
+Affymetrix SNP and CN chip types, including custom-made ones. CRMA v2 can
 be done either by doing each step explicitly as in the vignettes, or
 using the following `doCRMAv2()` and `doASCRMAv2()` methods.
 
@@ -35,7 +35,7 @@ ds <- doCRMAv2("HapMap270,testSet", chipType="Mapping50K_Hind240", plm="RmaCnPlm
 ds <- doCRMAv2("GSE8605", chipType="Mapping10K_Xba142", plm="RmaCnPlm")
 ```
 
-**Argument 'verbose':** Since CRMAv2 will take minutes or hours, we
+**Argument 'verbose':** Since CRMA v2 will take minutes or hours, we
 suggest that you add argument `verbose=-10` to see some verbose output
 while processing the data set.
 
@@ -44,15 +44,15 @@ while processing the data set.
 effects, which are possible to estimate for those chip types.
 Probe-affinity effects are not possible to estimate in the newer chip
 types (e.g. GWS) because there all replicated probes are
-technical/identical replicates. See the CRMAv2 paper for more details.
+technical/identical replicates. See the CRMA v2 paper for more details.
 
-**Single- vs multi-array method:** When fitting the CRMAv2 model with
+**Single- vs multi-array method:** When fitting the CRMA v2 model with
 `plm="RmaCnPlm"`, the method is a multi-array method, whereas with the
 default (`plm="AvgCnPlm"`), then method is a single-array method. In the
 latter case the results for one array will be independent of the other
 arrays in the same data set. This make is possible to process a subsets
 of the arrays and postponing the others for later and still get the same
-results. See the CRMAv2 paper for more details.
+results. See the CRMA v2 paper for more details.
 
 **Process a subset of the arrays:** In case the single-array method
 (`plm="AvgCnPlm"`) is used it is possible to process a subset of the
@@ -80,3 +80,7 @@ if you plan to do ASCN analysis, we recommend to use
 `combineAlleles=FALSE` from the beginning, because the statistical
 performance is almost as good while you will save lots of time only
 processing the data once.
+
+
+## References
+<% biblist() %>

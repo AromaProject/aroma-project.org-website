@@ -4,17 +4,18 @@ Author: Henrik Bengtsson
 Created on: 2010-05-17  
 Last updated: 2010-08-05
 
-The CRMA, or to better distinguish it from newer versions, CRMAv1, is a
+The CRMA, or to better distinguish it from newer versions, CRMA v1, is a
 preprocessing method for Affymetrix 10K-500K SNP arrays presented
-in [Bengtsson et al. (2008)](<%=pathTo('/publications/')%>).  It was optimized to
+in <% citet('BengtssonH_etal_2009-CRMAv1') %>.  It was optimized to
 estimate high-quality total copy number (TCN) estimates from the 500K
-chip type.  Later the CRMAv2 method was designed, which is what is now
-recommended.   However, in case CRMAv1 is wanted, we provide
-the `doCRMAv1()` and `doASCRMAv1()` methods.
+chip type.  Later the CRMA v2 method <% citep('BengtssonH_etal_2009-CRMAv2') %>
+was designed, which is what is now recommended.
+However, in case CRMAv1 is wanted, we provide the `doCRMAv1()`
+and `doASCRMAv1()` methods.
 
-Usage:
+## Usage
 
-```
+```r
 ds <- doCRMAv1("HapMap270,testSet", chipType="Mapping250K_Nsp")
 ds <- doCRMAv1("HapMap270,testSet", chipType="Mapping50K_Hind240")
 ds <- doCRMAv1("GSE8605", chipType="Mapping10K_Xba142")
@@ -24,15 +25,19 @@ ds <- doCRMAv1("GSE8605", chipType="Mapping10K_Xba142")
 suggest that you add argument `verbose=-10` to see some verbose output
 while processing the data set.
 
-**The CRMAv1 is** by definition a multi-array method, which means that
+**The CRMA v1 is** by definition a multi-array method, which means that
 it is not possible to process a subset of the arrays in a data set
 without affecting the final results.  This is only possible for the
-CRMAv2 method.
+CRMA v2 method.
 
 **Allele-specific copy-number (ASCN) estimates:**  By adding argument
 `combineAlleles=FALSE` to the above, allele-specific CNs will be estimated
 (for SNPs).  Alternatively, use `doASCRMAv1()`, which is short for
 `doCRMAv1(..., combineAlleles=FALSE)`.  The default is to estimate total
 CNs (`combineAlleles=TRUE`).  The estimated total CNs will differ slightly
-when using the two alternatives and the CRMAv1 method has been optimized
+when using the two alternatives and the CRMA v1 method has been optimized
 for total CNs (as in CRMA paper).
+
+
+## References
+<% biblist() %>

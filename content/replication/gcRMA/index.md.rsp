@@ -6,8 +6,7 @@ Last modified: 2010-02-05
 
 ## Description
 
-This test verifies that aroma.affymetrix can reproduce the gcRMA (Wu et
-al. 2004) chip-effect estimates as estimated by the <% bioc('gcrma') %> package.
+This test verifies that <% cran('aroma.affymetrix') %> can reproduce the gcRMA <% citep('WuZ_etal_2004-GCRMA') %> chip-effect estimates as estimated by the <% bioc('gcrma') %> package.
 
 ## Data set
 
@@ -33,8 +32,7 @@ chip type [HG-U133_Plus_2](<%=pathTo('/chipTypes/HG-U133_Plus_2')%>).
 
 ```r
 library("aroma.affymetrix")
-cs <-
-AffymetrixCelSet$byName("Affymetrix-HeartBrain", chipType="HG-U133_Plus_2")
+cs <- AffymetrixCelSet$byName("Affymetrix-HeartBrain", chipType="HG-U133_Plus_2")
 
 # gcRMA background correction
 bc <- GcRmaBackgroundCorrection(cs)
@@ -157,7 +155,4 @@ source(pathname)
 ```
 
 ## References
-
-Z. Wu, R. Irizarry, R. Gentleman, F.M. Murillo & F. Spencer, A Model
-Based Background Adjustment for Oligonucleotide Expression Arrays, JASA,
-2004.
+<% biblist() %>

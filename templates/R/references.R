@@ -13,7 +13,6 @@ references <- ReadBib("assets/references/references.bib")
 ## Sort
 references <- sort(references, sorting="ydnt")
 
-
 get_cite <- function(key, ...) {
   if (!is.element(key, names(references))) {
     throw(sprintf("Reference '%s' not found: %s", key,
@@ -93,8 +92,15 @@ please_cite <- function(keys, keywords=FALSE, ..., style="html") {
   cat('</div>\n')
 } # please_cite()
 
-biblist <- function(.opts=list(check.entries = FALSE, sorting = "ynt"), ...) {
+biblist_clear <- function() {
+  cites_env <- RefManageR:::.cites
+  cites_env$indices <- logical(0L)
+  cites_env$labs <- character(0L)
+} # biblist_clear()
+
+biblist <- function(.opts=list(check.entries = FALSE, sorting = "ynt"), clear=TRUE, ...) {
   PrintBibliography(references, .opts=.opts, ...)
+  if (clear) biblist_clear()
 } # biblist()
 
 
