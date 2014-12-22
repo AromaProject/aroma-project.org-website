@@ -1,0 +1,49 @@
+# How to: Extract probe signals as an 'affy' AffyBatch object
+
+Probe-level data can be exported as an AffyBatch object (defined in the
+<% bioc('affy') %> package) by calling:
+
+```r
+ab <- extractAffyBatch(csR)
+```
+
+where `csR` is an AffymetrixCelSet.  Note that this will load all data
+in to memory.
+
+
+## Example: HG-U133_Plus_2
+
+```r
+csR <- AffymetrixCelSet$byName("Affymetrix-HeartBrain", chipType="HG-U133_Plus_2")
+print(csR)
+
+## AffymetrixCelSet:  
+## Name: Affymetrix-HeartBrain  
+## Tags:  
+## Path: rawData/Affymetrix-HeartBrain/HG-U133_Plus_2  
+## Platform: Affymetrix  
+## Chip type: HG-U133_Plus_2  
+## Number of arrays: 6  
+## Names: u1332plus_ivt_cerebellum_A, u1332plus_ivt_cerebellum_B,
+## ..., u1332plus_ivt_heart_C  
+## Time period: 2005-07-14 14:13:24 -- 2005-07-19 11:54:06  
+## Total file size: 77.55MB  
+## RAM: 0.01MB
+
+
+ab <- extractAffyBatch(csR)
+print(ab)
+
+## AffyBatch object  
+## size of arrays=1164x1164 features (9 kb)  
+## cdf=HG-U133_Plus_2 (54675 affyids)  
+## number of samples=6  
+## number of genes=54675  
+## annotation=hgu133plus2  
+## notes=
+
+
+print(objectSize(ab@assayData))
+
+## [1] 113811880
+```

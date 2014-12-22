@@ -1,0 +1,42 @@
+# How to: Extract probeset summaries (chip effects) as a 'Biobase' eSet object
+
+## ChipEffectSet as eSet*
+
+2010-02-08: The `extractESet()` method is not yet available.
+
+Chip effects can be exported as an eSet object (defined in the <% bioc('Biobase') %> package) by calling:
+
+```r
+es <- extractESet(ces)
+```
+
+The extracted object will be annotated with as much information as
+possible at the time of the call.  Note that this will load all data in
+to memory.
+
+### Example
+
+```r
+ces <- getChipEffectSet(plm)
+ces
+
+## ChipEffectSet:
+## Name: Affymetrix-HeartBrain
+## Tags: RBC,QN,RMA
+## Path: plmData/Affymetrix-HeartBrain,RBC,QN,RMA/HG-U133_Plus_2
+## Platform: Affymetrix
+## Chip type: HG-U133_Plus_2,monocell
+## Number of arrays: 3
+## Names: cerebellum_A, cerebellum_B, cerebellum_C
+## Time period: 2009-08-12 22:21:58 -- 2009-08-12 22:21:59
+## Total file size: 1.73MB
+## RAM: 0.01MB
+## Parameters: (probeModel: chr "pm")
+
+es <- extractESet(ces)
+es
+```
+
+[MISSING]
+
+?

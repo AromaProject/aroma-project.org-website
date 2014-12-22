@@ -1,0 +1,274 @@
+# How to: Create a Unit Fragment Length (UFL) file
+
+## Aroma UFL files
+
+Author: Henrik Bengtsson
+
+Aroma UFL files are binary files storing a (unit, fragment length+) map
+in a tabular format, where the units are implicit, that is, they are not
+stored in the file but instead the rows are assumed to be in the order
+of the corresponding CDF.  The number of fragment lengths may be more
+than one depending on how many enzymes was used in the assay.
+
+## Assays using one or two restriction enzymes
+
+### One restriction enzyme
+
+In the Affymetrix 10K-500K assays, a single restriction enzyme (XbaI,
+HindIII, NspI or StyI) is used per hybridization.  These enzyme is used
+to cut the study DNA into shorter fragments that can be hybridized to
+the array.  Since the restriction enzyme targets certain sequence motifs
+and because we know the sequence of the human genome we can figure out
+at what locations these cuts occur.  The result is that we end up a DNA
+cocktail consisting of a set of DNA fragments of different lengths that
+is unique to each unique enzyme.  After the enzymatic digestion,
+fragments of certain lenghts are selected using PCR techniques (so that
+they can hybridize to the oligomers on the array), e.g. fragments with
+lenghts in 400-1100 base pairs are kept and all others are dropped.  The
+size range is specific for each assay.   Afterwards this filtered enzyme
+cocktail is hybridized to the array.
+
+If we look at a particular DNA fragment that is hybridized to the array,
+we will find that it "carries" zero, one, or more loci of interest.  For
+instance, it may be long enough to have two SNPs and one CN locus
+inbetween.  The other way around, for a particular locus (SNP or CN
+locus) of interest it may be that it is or is not on a filtered DNA
+fragment that ends up being hybridized to the array.   The set of SNPs
+and CN loci that pass the PCR filtering and hybridize to the array are
+can be predicted.  This is how Affymetrix design their arrays and know
+what SNPs and CN loci a particular chip type targets.  To conclude, for
+each unit (SNP or CN locus) on the array we know which DNA fragment it
+is sitting on and especially the length (in base pairs) of this
+fragment.
+
+### Two restriction enzymes
+
+In the Affymetrix GSW5 and GWS6 assays, two restriction enzymes (NspI
+and StyI) are used per hybridization.  First the sample DNA is split up
+in two portions, which each is digested by one of the two enzymes and
+then filtered via PCR independently.  This results in two DNA cocktails
+of (known) filtered DNA fragments.  Next, these two cocktails are mixed
+in equal amounts resulting in a final DNA cocktail consisting of
+filtered fragments originating from both enzymes.  This final cocktail
+is then hybridized to the array.
+
+The difference from the one-enzyme assay, is that the fragments from the
+two enzymes may overlap, that is, a particular locus in the genome may
+be "covered" by zero, one or two unique fragments.  To conclude, for
+each unit (SNP or CN locus) on the array we know which DNA fragments it
+is sitting on, how many they are, and especially the length (in base
+pairs) of each fragment.
+
+
+
+## Examples
+
+### Example #1 - Manually assign values
+
+```r
+cdf <- AffymetrixCdfFile$byChipType("GenomeWideSNP_6")
+
+# Creates an empty UFL file for this CDF and with two enzymes.
+ufl <- AromaUflFile$allocateFromCdf(cdf, tags="HB20091111", nbrOfEnzymes=2)
+print(ufl)
+
+## AromaUflFile:  
+## Name: GenomeWideSNP_6  
+## Tags: HB20091111  
+## Full name: GenomeWideSNP_6,HB20091111  
+## Pathname:
+## annotationData/chipTypes/GenomeWideSNP_6/GenomeWideSNP_6,HB20091111.ufl  
+## File size: 7.08 MB (7424418 bytes)  
+## RAM: 0.00 MB  
+## Number of data rows: 1856069  
+## File format: v1  
+## Dimensions: 1856069x2  
+## Column classes: integer, integer  
+## Number of bytes per column: 2, 2  
+## Footer:
+## <platform>Affymetrix</platform><chipType>GenomeWideSNP_6</chipType>  
+## Chip type: GenomeWideSNP_6  
+## Platform: Affymetrix
+```
+
+Note: The UFL file is all empty.
+
+
+```r
+# The CDF names of some units that we know the fragment lengths of (from other sources)
+
+unitNames <- c("SNP_A-4214434", "SNP_A-2005029", "SNP_A-2005128", "CN_065226", "CN_568310")
+
+# Identify the unit indices (defined by the CDF) of these units
+units <- indexOf(cdf, names=unitNames)
+print(units)
+
+## [1]    1081    1082    1083 1506902 1506903
+
+print(ufl[units,])
+
+##   length length.02  
+## 1     NA        NA  
+## 2     NA        NA  
+## 3     NA        NA  
+## 4     NA        NA  
+## 5     NA        NA
+
+
+# Assign fragment lengths for the first enzyme of these units
+ufl[units,1] <- c(421, 510, NA, 939, 368)
+print(ufl[units,])
+
+##   length length.02  
+## 1    421        NA  
+## 2    510        NA  
+## 3     NA        NA  
+## 4    939        NA  
+## 5    368        NA
+
+
+# Assign fragment lengths for the first enzyme of these units
+ufl[units,2] <- c(1171, 520, 445, NA, 1974)
+print(ufl[units,])
+
+##   length length.02  
+## 1    421      1171  
+## 2    510       520  
+## 3     NA       445  
+## 4    939        NA  
+## 5    368      1974
+```
+
+
+Thus, SNP 'SNP_A-4214434' (unit #1081) is hybridized to the array via
+fragments from both enzymes with lengths 421 and 1171 bp,
+respectively.   CN locus 'CN_065226' (unit #1506902), on the other
+hand, is hybridized to the array via a 939-bp long fragment from the
+first enzyme only.
+
+
+### Example #2 - Import from NetAffx files
+
+```r
+# Define the CDF
+chipType <- "GenomeWideSNP_6"
+cdf <- AffymetrixCdfFile$byChipType(chipType)
+
+# Creates an UFL file for the CDF, if missing.
+ufl <- AromaUflFile$allocateFromCdf(cdf, nbrOfEnzymes=2)
+
+# Define NetAffx SNP position data
+csv <- AffymetrixNetAffxCsvFile$byChipType(chipType, tags=".na23")
+units <- importFrom(ufl, csv)
+
+# Define NetAffx CN probe position data
+csv <- AffymetrixNetAffxCsvFile$byChipType(chipType, tags=".cn.na23")
+units <- importFrom(ufl, csv)
+
+# Get the summary of existing fragment length
+summary(ufl)
+
+##          length        length.02  
+##  Min.   : 100.0   Min.   :    99  
+##  1st Qu.: 414.0   1st Qu.:   608  
+##  Median : 633.0   Median :   996  
+##  Mean   : 692.8   Mean   :  1027  
+##  3rd Qu.: 884.0   3rd Qu.:  1440  
+##  Max.   :2000.0   Max.   :  2000  
+##  NA's   :2029.0   NA's   :863645
+
+
+# Summary of SNPs
+units <- indexOf(cdf, "SNP_")
+summary(ufl[units,])
+
+##          length        length.02  
+##  NA's   :1388   NA's   :411813.0  
+##  Min.   : 100   Min.   :   100.0  
+##  1st Qu.: 526   1st Qu.:   562.0  
+##  Median : 780   Median :   891.0  
+##  Mean   : 842   Mean   :   957.8  
+##  3rd Qu.:1094   3rd Qu.:  1319.0  
+##  Max.   :2000   Max.   :  2000.0
+
+# Summary of CN probes
+units <- indexOf(cdf, "CN_")
+summary(ufl[units,])
+
+##          length        length.02  
+##  Min.   : 121.0   Min.   :    99  
+##  1st Qu.: 349.0   1st Qu.:   685  
+##  Median : 520.0   Median :  1119  
+##  Mean   : 545.5   Mean   :  1100  
+##  3rd Qu.: 729.0   3rd Qu.:  1540  
+##  Max.   :1373.0   Max.   :  1999  
+##  NA's   :  20.0   NA's   :451211
+```
+
+### Example #3 - Import from ASCII tabular files
+
+You can import UFL data from any valid ASCII tabular file given that it
+contains at least two columns: 1) Affymetrix CDF unit names, 2) fragment
+lengths.  It is easier if they are in that order, but not required.
+
+```r
+cdf <- AffymetrixCdfFile$byChipType("GenomeWideSNP_6")
+
+# Creates an empty UFL file for this CDF and with two enzymes.
+ufl <- AromaUflFile$allocateFromCdf(cdf, tags="CSV,HB20091111", nbrOfEnzymes=2)
+print(ufl)
+
+## AromaUflFile:  
+## Name: GenomeWideSNP_6  
+## Tags: CSV,HB20091111  
+## Full name: GenomeWideSNP_6,CSV,HB20091111  
+## Pathname: annotationData/chipTypes/GenomeWideSNP_6/GenomeWideSNP_6,CSV,HB20091111.ufl  
+## File size: 7.08 MB (7424418 bytes)  
+## RAM: 0.00 MB  
+## Number of data rows: 1856069  
+## File format: v1  
+## Dimensions: 1856069x2  
+## Column classes: integer, integer  
+## Number of bytes per column: 2, 2  
+## Footer:
+## <platform>Affymetrix</platform><chipType>GenomeWideSNP_6</chipType>  
+## Chip type: GenomeWideSNP_6  
+## Platform: Affymetrix
+
+
+# Load the ASCII tabular file
+filename <- "GenomeWideSNP_6,fragment-lengths,custom.data.txt"
+path <- "annotationData/chipTypes/GenomeWideSNP_6/myFiles/"
+dat <- TabularTextFile(filename, path=path)
+print(dat)
+
+## TabularTextFile:  
+## Name: GenomeWideSNP_6  
+## Tags: fragment-lengths,custom.data  
+## Full name: GenomeWideSNP_6,fragment-lengths,custom.data  
+## Pathname: annotationData/chipTypes/GenomeWideSNP_6/myFiles/GenomeWideSNP_6,fragment-lengths,custom.data.txt  
+## File size: 629 bytes  
+## RAM: 0.00 MB  
+## Number of data rows: 26  
+## Columns [3]: 'NspI Length', 'StyI Length', 'Probe Set ID'  
+## Number of text lines: 27
+
+# Import data using regular expression matching of column names
+# Note, the reordering of the imported columns using argument 'colOrder'.
+# Missing values are reported as 'NA' or '-' in the source file.
+colClassPatterns=c("^Probe Set ID$"="character", "^NspI Length$"="character", "^StyI Length$"="integer")
+units <- importFrom(ufl, dat, colClassPatterns=colClassPatterns, colOrder=c(3,1,2), na.strings=c("NA", "-"))
+str(units)
+
+## int [1:26] 1800 1804 1808 1812 1816 1820 1824 1828 1832 1836 ...
+
+print(head(ufl[units,]))
+
+##   length length.02  
+## 1     NA       785  
+## 2    561      1575  
+## 3     NA      1025  
+## 4    837        NA  
+## 5     NA       497  
+## 6     NA       792
+```

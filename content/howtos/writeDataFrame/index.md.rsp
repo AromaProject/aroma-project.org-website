@@ -1,0 +1,208 @@
+# How to: Write data as a tab-delimited text file
+
+## Write data as a tab-delimited text file
+
+Author: Henrik Bengtsson  
+Created on: 2010-04-22  
+Last updated: 2010-04-23
+
+Data sets and data files are fundamental concepts in the aroma
+framework, where a data set contains multiple data files in structured
+directories.  There exist multiple methods for extracting signals, that
+is, reading signals into memory, from the data set or individual data
+files.  For more information, see the '[How tos](<%=pathTo('/howtos/')%>)' section.
+However, in some cases there is a need to export the data as
+tab-delimited text files to be imported in other software tools.  In
+this section, we will describe how to write the data to tab-delimited
+text files.  It is possible to generate either (i) one output file per
+data file, or (ii) one output file for the whole data set.
+
+The `writeDataFrame()` method takes either a single file or a data set as
+its first argument.  In addition to this, there are various arguments,
+where maybe the most important one, argument `columns`, specifies which
+columns the generated text file should contain.
+
+For example:
+```r
+dfTxt <- writeDataFrame(ds, columns="*")
+```
+
+will generate a tab-delimited file with one column per signal field
+(typically one field per file), where as:
+
+```r
+dfTxt <- writeDataFrame(ds, columns=c("unitName", "*"))
+```
+
+will in addition to the above insert a column (first column) with unit
+names, which are obtained from the unit names file (e.g. the CDF file).
+ Similarly, if one do:
+
+```r
+dfTxt <- writeDataFrame(ds, columns=c("unitName", "chromosome", "position", "*"))
+```
+
+the second and third columns will contain chromosome and position
+information for each unit (loci), which are obtained from the UGP file.
+
+
+### See also
+
+To write annotation data, see how-to page '[Write annotation data as a
+tab-delimited text file](<%=pathTo('/howtos/annotationData-writeDataFrame')%>)'.
+
+### One data file per tab-delimited text file
+
+#### Example: Export a single data file as a tab-delimited text file with annotation data added
+
+```r
+dataSet <- "HapMap270,6.0,CEU,testSet"
+tags <- "ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY"
+chipType <- "GenomeWideSNP_6"
+
+ds <- AromaUnitTotalCnBinarySet$byName(dataSet, tags=tags, chipType=chipType)
+print(ds)
+
+## AromaUnitTotalCnBinarySet:  
+## Name: HapMap270  
+## Tags: 6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY  
+## Full name: HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY  
+## Number of files: 3  
+## Names: NA06991, NA06993, NA07000 [3]  
+## Path (to the first file):
+## totalAndFracBData/HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY/GenomeWideSNP_6  
+## Total file size: 21.53 MB  
+## RAM: 0.00MB
+
+df <- ds[[2]]
+print(df)
+
+## AromaUnitTotalCnBinaryFile:  
+## Name: NA06993  
+## Tags: total  
+## Full name: NA06993,total  
+## Pathname:
+## totalAndFracBData/HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY/GenomeWideSNP_6/NA06993,total.asb  
+## File size: 7.18 MB (7526121 bytes)  
+## RAM: 0.00 MB  
+## Number of data rows: 1881415  
+## File format: v1  
+## Dimensions: 1881415x1  
+## Column classes: double  
+## Number of bytes per column: 4  
+## Footer: \<createdOn\>20100422 17:46:03
+## CEST\</createdOn\>\<platform\>Affymetrix\</platform\>\<chipType\>GenomeWideSNP_6,Full\</chipType\>  
+## \<srcFile\>\<srcDataSet\>HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY\</srcDataSet\>\<srcChipType\>GenomeWideSNP_6,Full,monocell\</srcChipType\>  
+## \<srcFullName\>NA06993,chipEffects\</srcFullName\>  
+## \<srcChecksum\>1b7625d385394f42f5b31aa988ff43a1\</srcChecksum\>\</srcFile\>  
+## Platform: Affymetrix  
+## Chip type: GenomeWideSNP_6,Full
+
+# Also export a column containing the unit names.
+dfTxt <- writeDataFrame(df, columns=c("unitName", "chromosome", "position", "*"))
+print(dfTxt)
+
+## TabularTextFile:  
+## Name: NA06993  
+## Tags: total  
+## Full name: NA06993,total  
+## Pathname:
+## totalAndFracBData/HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY/GenomeWideSNP_6/NA06993,total.txt  
+## File size: 62.35 MB (65376366 bytes)  
+## RAM: 0.01 MB  
+## Number of data rows: NA  
+## Columns [4]: 'unitName', 'chromosome', 'position', 'NA06993,total'  
+## Number of text lines: NA
+
+data <- readDataFrame(dfTxt, rows=1010:1024)
+print(data)
+
+##           unitName chromosome position NA06993,total
+## 1010 SNP_A-2001589          1 34110291      1022.368
+## 1011 SNP_A-2001596          1 34119149      4317.809
+## 1012 SNP_A-2001598          1 34119693      3229.630
+## 1013 SNP_A-2001642          1 34170728      6060.184
+## 1014 SNP_A-2001643          1 34172791      3469.545
+## 1015 SNP_A-4268291          1 34179429      1953.738
+## 1016 SNP_A-2001684          1 34204360      1353.817
+## 1017 SNP_A-4214101          1 34204556      3615.931
+## 1018 SNP_A-2001700          1 34211296      1784.901
+## 1019 SNP_A-2001835          1 34287073      2973.341
+## 1020 SNP_A-2001840          1 34306289      2415.758
+## 1021 SNP_A-4214120          1 34357252      2631.183
+## 1022 SNP_A-2001896          1 34377866      6363.690
+## 1023 SNP_A-4268333          1 34436399      1606.675
+## 1024 SNP_A-2002002          1 34519557      1946.391
+```
+
+### A whole data set per tab-delimited text file
+
+<% alert_warn({ %>
+<strong>Warning:</strong>
+When writing all of the data available in a data set to a
+single file, there is no limitation in how large the generated file can
+be, that is, the more data files there are in the data set, the larger
+the generated file will be. Some file systems have an upper limit on how
+large a file can be.  Transferring large files is cumbersome. Because of
+this, we recommend to generate one file per data file.
+<% }) %>
+
+
+#### Example: Export all data of a data set to a tab-delimited text file with annotation data added
+
+```r
+dataSet <- "HapMap270,6.0,CEU,testSet"
+tags <- "ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY"
+chipType <- "GenomeWideSNP_6"
+
+ds <- AromaUnitTotalCnBinarySet$byName(dataSet, tags=tags, chipType=chipType)
+print(ds)
+
+## AromaUnitTotalCnBinarySet:  
+## Name: HapMap270  
+## Tags: 6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY  
+## Full name: HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY  
+## Number of files: 3  
+## Names: NA06991, NA06993, NA07000 [3]  
+## Path (to the first file):
+## totalAndFracBData/HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY/GenomeWideSNP_6  
+## Total file size: 21.53 MB  
+## RAM: 0.00MB
+
+# Also export a column containing the unit names.
+dfTxt <- writeDataFrame(ds, columns=c("unitName", "chromosome", "position", "*"))
+print(dfTxt)
+
+## TabularTextFile:  
+## Name: HapMap270  
+## Tags: 6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY  
+## Full name: HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY  
+## Pathname:
+## totalAndFracBData/HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY/GenomeWideSNP_6/HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY.txt  
+## File size: 107.86 MB (113103874 bytes)  
+## RAM: 0.01 MB  
+## Number of data rows: NA  
+## Columns [6]: 'unitName', 'chromosome', 'position', 'NA06991,total',
+## 'NA06993,total', 'NA07000,total'  
+## Number of text lines: NA
+
+data <- readDataFrame(dfTxt, rows=1010:1024)
+print(data)
+
+##           unitName chromosome position NA06991,total NA06993,total NA07000,total
+## 1010 SNP_A-2001589          1 34110291      954.6941      1022.368      1352.647
+## 1011 SNP_A-2001596          1 34119149     4499.8872      4317.809      4380.319
+## 1012 SNP_A-2001598          1 34119693     2138.8340      3229.630      2419.442
+## 1013 SNP_A-2001642          1 34170728     5545.6758      6060.184      5707.734
+## 1014 SNP_A-2001643          1 34172791     3561.7803      3469.545      3780.201
+## 1015 SNP_A-4268291          1 34179429     2454.7314      1953.738      1925.875
+## 1016 SNP_A-2001684          1 34204360     1435.8201      1353.817      1715.853
+## 1017 SNP_A-4214101          1 34204556     3941.3589      3615.931      4174.944
+## 1018 SNP_A-2001700          1 34211296     2232.3728      1784.901      2363.954
+## 1019 SNP_A-2001835          1 34287073     3385.6470      2973.341      3188.489
+## 1020 SNP_A-2001840          1 34306289     2451.4780      2415.758      3017.298
+## 1021 SNP_A-4214120          1 34357252     3204.5381      2631.183      3220.736
+## 1022 SNP_A-2001896          1 34377866     7543.6479      6363.690      6853.816
+## 1023 SNP_A-4268333          1 34436399     1718.2601      1606.675      1876.243
+## 1024 SNP_A-2002002          1 34519557     1620.9423      1946.391      1545.906
+```

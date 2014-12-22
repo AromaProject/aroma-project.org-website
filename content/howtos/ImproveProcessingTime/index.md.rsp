@@ -1,0 +1,176 @@
+# How to: Improve processing time
+
+Author: Henrik Bengtsson  
+Created on: 2008-11-04  
+Last updates: 2010-11-22
+
+The time it takes to process a data set can be important, especially
+when the data set is large or many alternative methods are explored.
+This section covers some parts of the package that affect the processing
+time.
+
+## Working towards a local file system is much faster
+
+Since the package relies heavily on the file system for reading and
+writing data and results, the performance of the file system will have a
+great impact on the overall processing speed.  We know as a fact that
+working with files over a local network (LAN) can substantially slow
+down the processing, whereas working toward a local hard drive is much
+faster.
+
+User success stories:
+
+-   User reports 15x improvement: Thread '[Running aroma.affymetrix on a
+    large dataset and time/space
+    issue](http://groups.google.com/group/aroma-affymetrix/browse_thread/thread/6d51a4bb43f1d360#)'
+    (2010-01-11).
+
+## Allow more memory to be used
+
+As far as possible, the algorithms of the package are designed and
+implemented such that they have a bounded-memory usage.  This can often
+be achieved by redesigning the algorithm to work with data from only a
+few arrays at any time.  However, in some case this is not possible and
+instead the data has to be fitted in chunks.  The fitting of multi-array
+probe-level models (PLMs), is such an example.  For methods processing
+data in chunks, the size of each chunk is by default set so that only
+0.5-1.5MB of RAM is used at any time.  When more RAM is available, one
+might consider increasing the amount of memory used, by for instance,
+
+```r
+# Use 10 times more RAM than the default settings
+setOption(aromaSettings, "memory/ram", 10.0)
+
+plm <- RmaPlm(csN)
+fit(plm)
+```
+
+If argument `ram` is greater than one, more memory is used than the
+default (`ram=1.0`), and vice versa for small values.  For more details,
+see '[Settings](<%=pathTo('/settings/')%>)'. Since there in each chunk is some overhead
+from reading and especially writing data and results, using larger
+chunks will speed up the processing to some extend.  There is a
+system-specific upper limit where the payoff is no longer noticible.
+
+User success stories:
+
+-   A user with 128GB RAM, reports a 5x speedup by using `ram=200` while
+    still only using 4GB of RAM.  All in all this user manage to speed
+    up the processing 65-70 times(!); Thread '[Running aroma.affymetrix
+    on a large dataset and time/space
+    issue](http://groups.google.com/group/aroma-affymetrix/browse_thread/thread/6d51a4bb43f1d360#)'
+    (2010-01-11).
+-   A user with 32GB RAM, reports a 30% speedup by using `ram=10`: Thread
+    '[Processing problem with RmaCnPlm() for 338
+    samples](http://groups.google.com/group/aroma-affymetrix/browse_thread/thread/9d36fe1e6efbc22f/af7feba0658242f6)'
+    (2008-07-07).
+
+
+
+## Fit CN probes separately for PLMs
+
+For the GenomeWideSNP_5 and GenomeWideSNP_6 chip types, the
+non-polymorphic units consists of single CN probes.  Since there is only
+one single observation for each of these loci, the only reasonable
+"summarization" available is to take the probe signal as the
+estimate(\*).   Although this approach has been known for a long time, we
+still haven't had time to implement a general and automatic feature for
+this.  However, in the meanwhile, we provide an ad hoc method for doing
+this manually, e.g.
+
+```r
+plm <- AvgCnPlm(csN)
+if (length(findUnitsTodo(plm)) > 0) fitCnProbes(plm)
+fit(plm)
+```
+
+The method `fitCnProbes()` is available for all ProbeLevelModel:s and will
+copy the probe intensity as is to the corresponding elements and
+chip-effect files.  This will take approximately 5-10 seconds per
+array.  This will decrease the processing time substantially - for large
+data sets with several hours.  The following call to `fit()` will detect
+the already fitted CN units and proceed with the rest.
+
+Footnote: (\*) For log-additive models such as RmaPlm, one might want to
+set the estimate to `NA` if the signal is non-positive.  This is currently
+not implemented in the above approach, where  instead all values are
+copied over as is.
+
+
+
+## Avoid using ASCII CDFs
+
+A CDF in the text/ASCII file format is substantially slower to query
+than the same CDF in the binary (XDA or Calvin) file format.  We
+strongly recommend that any processing is done use binary CDFs.  In
+fact, unless you override the default settings, the package will detect
+when you try to use an ASCII CDF and throw an error telling you not to
+do so.  An ASCII CDF can easily be converted to the binary/XDA file
+format using `convertCdf()` that is available in the <% bioc('affxparser') %> package.
+
+See also [FAQ](<%=pathTo('/faq/')%>).
+
+
+
+## So, what is it that takes time?
+
+In this part we describe some features and behaviors of the package that
+affects the processing time.  Much of what is explained here takes place
+internally and there are often no options for the user to change the
+behavior such that it affects the speed.  We do indeed have specific
+ideas how to improve processing time, which requires some design and
+implementation changes, cf. Page '[Future
+directions](<%=pathTo('/features/future/')%>)' (contributions appreciated).
+
+### Faster over time via memoization
+
+For results that are likely to be generated multiple times, either in
+the same analysis or over a long period of time, the package caches
+those results in files (and sometime in memory) by a process called
+'memoization'.   In other words, the package caches computational
+expensive results for reuse in the future.   For instance, when querying
+the CDF for the cell indices of a subset of units, the 2nd time you
+request the same set of units, the result is almost instant, e.g.
+
+```r
+system.time(cells <- getCellIndices(cdf, units=1:1000))
+##  user  system elapsed  
+##  0.68    0.04    0.77
+
+system.time(cells <- getCellIndices(cdf, units=1:1000))
+##  user  system elapsed  
+##  0.02    0.01    0.01
+```
+
+You will find the latter performance even when you restart R.  Many of
+the internal methods and function calls are optimized this way,
+especially queries and calculations based on annotation data.  The user
+do not have to think about it, because it is all taken care of behind
+the scenes.
+
+For more information, see '[Caching of computational expensive tasks
+(memoization)](<%=pathTo('/archive/memoization/')%>)'.
+
+
+### Creation of monocell CDFs
+
+The very first time you analyze a new chip type, you will find that
+certain steps takes a bit longer than others.  A significant example is
+when you run a probe-level model (PLM) summarization on this new chip
+type, e.g.
+
+```r
+plm <- RmaPlm(csN)
+fit(plm)
+```
+
+In order to store the probe summaries, a template referred to as a
+'monocell CDF' is needed.  If missing, it is automatically generated
+from the (main) CDF.  This process can takes several minutes or more.
+Since this is done only once, the next time you analyze this chip type,
+the monocell CDF will be available momentarily.  The monocell CDF is
+saved in the same directory as the main CDF and it is possible to reuse
+an existing monocell CDF elsewhere by copying it from one system
+to another.
+
+See also [FAQ](<%=pathTo('/faq/')%>).

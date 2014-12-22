@@ -1,0 +1,47 @@
+# How to: Setting up an AromaUnitTotalCnBinarySet or an AromaUnitFracBCnBinarySet
+
+Author: Henrik Bengtsson  
+Created on: 2010-10-24  
+Last updated: 2010-10-24
+
+An AromaUnitTotalCnBinarySet is a data set than consists
+of AromaUnitTotalCnBinaryFile:s, which are binary data files holding
+total copy-number signals independent of technology.  That is,
+an AromaUnitTotalCnBinarySet can hold total CN data from Affymetrix,
+Illumina, Agilent etc.  Analogously, AromaUnitFracBCnBinarySet holds so
+called allele B fraction CN signals specific to SNP technologies.
+
+This how-to page describes how to setup an AromaUnitTotalCnBinarySet.
+ It does *not* show how to create/import/allocate/populate such a data
+set.  For that see dedicated page in the [How tos](<%=pathTo('/howtos/')%>) section.
+
+## Setting up an AromaUnitTotalCnBinarySet
+
+```r
+dataSet <- "HapMap270,6.0,CEU,testSet"
+tags <- "ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY"
+chipType <- "GenomeWideSNP_6"
+
+ds <- AromaUnitTotalCnBinarySet$byName(dataSet, tags=tags, chipType=chipType)
+print(ds)
+
+## AromaUnitTotalCnBinarySet:
+## Name: HapMap270
+## Tags: 6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY
+## Full name: HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY
+## Number of files: 3
+## Names: NA06991, NA06993, NA07000 [3]
+## Path (to the first file):
+## totalAndFracBData/HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY/GenomeWideSNP_6
+## Total file size: 21.53 MB
+## RAM: 0.00MB
+```
+
+An AromaUnitTotalCnBinarySet can for instance be passed to segmentation
+models, e.g. CbsModel.
+
+
+
+## Setting up an AromaUnitFracBCnBinarySet
+
+An AromaUnitFracBCnBinarySet can be setup analogously.

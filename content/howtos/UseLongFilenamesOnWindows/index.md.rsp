@@ -1,0 +1,64 @@
+# How to: Use filenames longer than 255 characters on Windows
+
+The maximum number of symbols in a Windows pathname is 256, including
+file separators '/' or '\\', but excluding the drive letter, and initial
+file separator (e.g. 'C:/'), and the string terminator ('\\0'), cf.
+[MSDN - Naming a File or Directory](http://msdn.microsoft.com/en-us/library/aa365247\(VS.85\).aspx).
+ In R, the limit is one symbol less, i.e. 255.
+
+## Example
+Here is an example of a very long pathname:
+
+```r
+# Working directory:
+pwd <- getwd()
+print(pwd)
+## [1] "C:/Users/AromaUser/Project_2010/TCGA,GBM,analysis/redundancyTests/"
+
+# Result directory:
+path <- "cbsData/broad.mit.edu_GBM.Genome_Wide_SNP_6.4.5.0,pairs/GenomeWideSNP_6/"
+
+# Filename
+filename <- "TCGA-06-0208,01A,01D-0236-01,ratios,ref=TCGA-06-0208,10A,01D-0237-01,log2ratio,total,chr09,dbc39899be02529b41df0a9416537f0a.xdr"
+
+# Complete pathname
+pathname <- file.path(pwd, path, filename)
+print(nchar(pathname))
+
+## [1] 267
+```
+
+## Symptom
+This limitation typically reveals itself as "file" errors.  One example
+is `"In gzfile(file, "wb") : cannot open compressed file '<long pathname>',
+probable reason 'No such file or directory'`.  Another
+example is `"Error in dirname(pathname) : file name conversion problem"`.
+
+## Workaround
+
+1.  Use a working directory that is higher up in the directory
+    structure, e.g. instead of 'C:/way/too/long/path/' use 'C:/short/path/'.
+2.  The [Windows/MS-DOS] console
+    '[subst](http://en.wikipedia.org/wiki/Subst)' utility makes a drive
+    letter to any Windows directory, e.g.
+	`subst Y: 'C:/Documents and Settings/JohnDoe/Documents/My Research/Projects/aroma.affymetrix/ProjectA/'`.
+3.  The following <% cran('R.utils') %> solution maps the current working directory to 'Y:' (using the above internally) and updates the working directory
+    to be 'Y:/':  
+
+```r
+setwd(System$mapDriveOnWindows("Y:"))
+```
+
+<% alert_warn({ %>
+<strong>Not a workaround:</strong>
+ Unfortunately it is <em>not</em> a solution to try to use relative instead
+ of absolute pathnames.  The limitation is deep down in the file
+ system itself and it is the absolute pathname that counts.
+<% }) %>
+
+
+## Comments
+
+One could imagine that aroma should detect too long pathname and give a
+more informative error.  This is still something that has to be
+implemented. /HB 2010-01-06

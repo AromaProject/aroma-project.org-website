@@ -1,0 +1,56 @@
+# How to: Extract probeset summaries (chip effects) as a 'Biobase' ExpressionSet object
+
+## ChipEffectSet as ExpressionSet
+
+Chip-effect sets can be exported as an ExpressionSet object (defined in
+the <% bioc('Biobase') %> package) by calling:
+
+```r
+eset <- extractExpressionSet(ces)
+```
+
+The extracted object will be annotated with as much information as
+possible at the time of the call.  Note that this will load all data in
+to memory.
+
+### Example
+
+```r
+ces <- getChipEffectSet(plm)
+print(ces)
+
+## ChipEffectSet:
+## Name: Affymetrix-HeartBrain
+## Tags: RBC,QN,RMA
+## Path: plmData/Affymetrix-HeartBrain,RBC,QN,RMA/HG-U133_Plus_2
+## Platform: Affymetrix
+## Chip type: HG-U133_Plus_2,monocell
+## Number of arrays: 6
+## Names: u1332plus_ivt_cerebellum_A, u1332plus_ivt_cerebellum_B, u1332plus_ivt_cerebellum_C, ..., u1332plus_ivt_heart_C [6]
+## Time period: 2011-07-09 17:20:17 -- 2011-07-09 17:20:18
+## Total file size: 3.45MB
+## RAM: 0.01MB
+## Parameters: (probeModel: chr "pm")
+
+eset <- extractExpressionSet(ces)
+print(eset)
+
+## ExpressionSet (storageMode: lockedEnvironment)
+## assayData: 54675 features, 6 samples
+##   element names: exprs
+## protocolData: none
+## phenoData: none
+## featureData: none
+## experimentData: use 'experimentData(object)'
+## Annotation:
+
+sampleNames(eset)
+
+## [1] "u1332plus_ivt_cerebellum_A" "u1332plus_ivt_cerebellum_B"
+## [3] "u1332plus_ivt_cerebellum_C" "u1332plus_ivt_heart_A"
+## [5] "u1332plus_ivt_heart_B"      "u1332plus_ivt_heart_C"
+
+featureNames(eset)[101:110]
+## [1] "200018_at"   "200019_s_at" "200020_at"   "200021_at"   "200022_at"
+## [6] "200023_s_at" "200024_at"   "200025_s_at" "200026_at"   "200027_at"
+```

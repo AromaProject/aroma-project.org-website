@@ -1,0 +1,199 @@
+# How to: Extract probeset summaries (chip effects) as a multi-dimensional array
+
+Chip effects can be read as an R array by calling:
+
+```r
+theta <- extractTheta(ces)
+```
+
+The first dimension is always the units, and the last dimension is
+always the arrays.
+
+Note that this will load all data in to memory.
+
+
+## Example: HG-U133_Plus_2
+
+```r
+ces <- getChipEffectSet(plm)
+print(ces)
+
+## ChipEffectSet:
+## Name: Affymetrix-HeartBrain
+## Tags: RBC,QN,RMA
+## Path: plmData/Affymetrix-HeartBrain,RBC,QN,RMA/HG-U133_Plus_2
+## Platform: Affymetrix
+## Chip type: HG-U133_Plus_2,monocell
+## Number of arrays: 3
+## Names: heart_A, heart_B, heart_C
+## Time period: 2009-08-12 22:21:59 -- 2009-08-12 22:21:59
+## Total file size: 1.73MB
+## RAM: 0.01MB
+## Parameters: (probeModel: chr "pm")
+
+
+theta <- extractTheta(ces, units=1401:1406)
+str(theta)
+
+## num [1:6, 1, 1:3] 50.4 1247.7 83.3 56.9 23.7 ...
+## - attr(*, "dimnames")=List of 3
+##   ..$ : NULL
+##   ..$ : NULL
+##   ..$ : chr [1:3] "heart_A" "heart_B" "heart_C"
+
+
+theta <- extractTheta(ces, units=1401:1406, drop=TRUE)
+str(theta)
+
+## num [1:6, 1:3] 50.4 1247.7 83.3 56.9 23.7 ...  
+## - attr(*, "dimnames")=List of 2  
+##  ..$ : NULL  
+##  ..$ : chr [1:3] "heart_A" "heart_B" "heart_C"
+
+
+print(theta)
+
+##         heart_A    heart_B    heart_C
+## [1,]   50.35944   50.97249   44.04873
+## [2,] 1247.74109 1182.60449 1151.22278
+## [3,]   83.30342   81.10368   69.86592
+## [4,]   56.92453   65.28267   54.34821
+## [5,]   23.72381   31.87461   27.95008
+## [6,]  343.54056  326.27948  272.80453
+```
+
+
+
+## Example: HuEx-1_0-st-v2
+
+Illustration: Different number of exons (groups/probesets) per gene
+(unit).  Each entry is therefore of length equal to the number of exons
+(K) of the largest gene holding (theta1, theta2, ..., thetaK) values.
+For genes with fewer exons than K, the "missing" entries have all `NA`s.
+
+```r
+ces <- getChipEffectSet(plm)
+print(ces)
+
+## ExonChipEffectSet:
+## Name: Affymetrix-HeartBrain
+## Tags: RBC,QN,RMA
+## Path: plmData/Affymetrix-HeartBrain,RBC,QN,RMA/HuEx-1_0-st-v2
+## Platform: Affymetrix
+## Chip type: HuEx-1_0-st-v2,coreR3,A20071112,EP,monocell
+## Number of arrays: 3
+## Names: cerebellum_A, cerebellum_B, cerebellum_C
+## Time period: 2009-10-05 23:54:34 -- 2009-10-05 23:54:34
+## Total file size: 8.15MB
+## RAM: 0.01MB
+## Parameters: (probeModel: chr "pm", mergeGroups: logi FALSE)
+
+
+theta <- extractTheta(ces, units=101:103)
+str(theta)
+
+## num [1:3, 1:9, 1:3] 4.98 9.75 8.09 28.01 126.74 ...  
+## - attr(*, "dimnames")=List of 3  
+##  ..$ : NULL  
+##  ..$ : NULL  
+##  ..$ : chr [1:3] "cerebellum_A" "cerebellum_B" "cerebellum_C"
+
+print(theta)
+
+## , , cerebellum_A
+##        [,1]    [,2]   [,3]   [,4]    [,5]   [,6]  [,7]   [,8]   [,9]
+## [1,] 4.9773  28.008 81.885 59.330 11.2939 23.003    NA     NA     NA
+## [2,] 9.7513 126.743 76.986 75.909 39.8756 21.519 69.14 68.302 3.0645
+## [3,] 8.0941  45.513 13.254 12.434  6.8943     NA    NA     NA     NA
+## 
+## , , cerebellum_B
+##         [,1]    [,2]    [,3]   [,4]    [,5]   [,6]   [,7]  [,8]   [,9]
+## [1,]  3.2216  33.484  84.715 78.042 26.5029 20.348     NA    NA     NA
+## [2,]  8.6798 169.581 111.474 77.913 52.8681 38.166 83.859 83.67 8.2662
+## [3,] 10.9351  59.455  24.090 15.839  7.3441     NA     NA    NA     NA
+## 
+## , , cerebellum_C
+##         [,1]    [,2]   [,3]    [,4]    [,5]   [,6]   [,7]   [,8]   [,9]
+## [1,]  4.6035  24.981 90.680 101.175 22.1576 19.260     NA     NA     NA
+## [2,]  8.3373 157.298 79.522  56.661 47.4996 36.600 97.568 80.929 8.9555
+## [3,] 10.2943  85.226 11.685  12.425  5.2567     NA     NA     NA     NA
+```
+
+
+
+## Example: GenomeWideSNP_6
+
+Illustration: Each SNP (unit) has (thetaA, thetaB) groups but each CN
+probe (unit) has only a theta group.  Each entry is therefore of length
+two (by the longest unit) holding (theta1, theta2) values.  For SNPs
+(theta1, theta2) = (thetaA, thetaB) and for CN probes (theta1, theta2) =
+(theta, NA).
+
+```r
+ces <- getChipEffectSet(plm)
+print(ces)
+
+## CnChipEffectSet:
+## Name: HapMap270
+## Tags: 6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG
+## Path:
+## plmData/HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG/GenomeWideSNP_6
+## Platform: Affymetrix
+## Chip type: GenomeWideSNP_6,Full,monocell
+## Number of arrays: 3
+## Names: NA06985, NA06991, NA06993
+## Time period: 2009-10-17 00:49:05 -- 2009-10-17 00:49:05
+## Total file size: 80.85MB
+## RAM: 0.01MB
+## Parameters: (probeModel: chr "pm", mergeStrands: logi TRUE,
+## combineAlleles: logi FALSE)
+
+
+theta <- extractTheta(ces, units=c(2101:2104, 935590:935594))
+str(theta)
+
+## num [1:9, 1:2, 1:3] 4519 9582 420 769 8724 ...  
+## - attr(*, "dimnames")=List of 3  
+##  ..\$ : NULL  
+##  ..\$ : NULL  
+##  ..\$ : chr [1:3] "NA06985" "NA06991" "NA06993"
+
+
+print(theta)
+
+## , , NA06985
+##           [,1]    [,2]
+## [1,]  4518.85  522.05
+## [2,]  9581.92  503.43
+## [3,]   420.19 7162.17
+## [4,]   768.96 1117.02
+## [5,]  8724.15      NA
+## [6,]  7947.55      NA
+## [7,] 12863.29      NA
+## [8,] 14373.10      NA
+## [9,] 23424.00      NA
+## 
+## , , NA06991
+##          [,1]    [,2]
+## [1,]  4922.2  522.58
+## [2,]  5727.6 2966.96
+## [3,]  4732.7 4731.73
+## [4,]  1477.6  358.71
+## [5,]  7612.3      NA
+## [6,]  5970.8      NA
+## [7,] 12642.6      NA
+## [8,] 11287.0      NA
+## [9,] 26139.4      NA
+## 
+## , , NA06993
+##          [,1]    [,2]
+## [1,]  5225.9  725.81
+## [2,]  1274.1 6061.83
+## [3,]  8462.5  207.93
+## [4,]  1134.0  419.36
+## [5,]  8564.7      NA
+## [6,]  6425.6      NA
+## [7,] 12712.8      NA
+## [8,] 10031.6      NA
+## [9,] 17312.8      NA
+```

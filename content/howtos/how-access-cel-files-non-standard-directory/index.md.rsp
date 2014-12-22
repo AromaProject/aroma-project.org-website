@@ -1,0 +1,31 @@
+# How to: Access CEL files in a non-standard directory using links
+
+Q: I work with CEL files from the TCGA project.  I store the data
+mirroring the TCGA directory structure.  How can work with these CEL
+files in aroma without having to move or copy them to rawData/?
+
+A: Assume the CEL files are located in:
+
+pathTo/tcgaData/tcga4yeo/tumor/ov/cgcc/broad.mit.edu/genome_wide_snp_6/snp/broad.mit.edu_OV.Genome_Wide_SNP_6.12.6.0/*.CEL
+
+Then, create the link
+rawData/broad.mit.edu_OV.Genome_Wide_SNP_6.12.6.0/GenomeWideSNP_6/
+that points to the above TCGA target directory as follows:
+
+```r
+target <- "pathTo/tcgaData/tcga4yeo/tumor/ov/cgcc/broad.mit.edu/genome_wide_snp_6/snp/broad.mit.edu_OV.Genome_Wide_SNP_6.12.6.0/"
+path <- filePath("rawData", basename(target), "GenomeWideSNP_6")
+createLink(path, target=target)
+```
+
+Note that directories rawData/ and
+rawData/broad.mit.edu_OV.Genome_Wide_SNP_6.12.6.0/ will be created
+automatically, if missing.
+
+Finally, verify that the data set can be located:
+
+```r
+cdf <- AffymetrixCdfFile$byChipType("GenomeWideSNP_6")
+dataSet <- "broad.mit.edu_OV.Genome_Wide_SNP_6.12.6.0"
+dsR <- AffymetrixCelSet$byName(dataSet, cdf=cdf)
+```

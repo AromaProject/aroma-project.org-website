@@ -1,0 +1,12 @@
+# How to: Use Bioconductor data in aroma.*
+
+Data in a FeatureSet object (defined on the <% bioc('oligo') %> package) can be
+imported to aroma.affymetrix by:
+
+```r
+cs <- AffymetrixCelSet$createFromFeatureSet(fs)
+```
+
+where `fs` is a FeatureSet object.  This will create a new set of CEL
+files.  After being imported, aroma.affymetrix do not need the
+FeatureSet object anymore.

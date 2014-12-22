@@ -1,0 +1,35 @@
+# How to: Migrating all or parts of a project to another file system
+
+THIS DOCUMENT NEEDS A VOLUNTEER FOR:
+
+**AUTHORING:**  
+
+-   Briefly describe how aroma.* reads data from one directory and
+    outputs in another (give one or two examples and show how the
+    directories can be located).
+-   rawData/: The raw data sets must be copied.  
+-   annotationData/: Of course, the annotationData/ directories also
+    have to be available on the new machine, e.g. via copying.  Don't
+    forget about the *,monocell.CDF files; these are created
+    automatically from the main *.CDF file, so it is not a problem if
+    forgotten, but it take quite some time (10-60 minutes) to build them
+    so it is worth copying.  
+-   Show how the data directories/files can be copied, preferable using
+    R (see `copyDirectory()`/`copyFile()` in <% cran('R.utils') %>).  What files to
+    include (there are some files starting with a period (.), which is
+    by default not listed on Unix systems using `ls` (you need `ls -a` to
+    see them).
+-   (Optional): By copying some o the cache files under
+    \~/.Rcache/aroma.affymetrix/ one can save additional processing time
+    on the destination system.  
+
+HB 2009-11-13
+
+**\<STUB\>**
+
+First of all, make sure to read the '[Migrate and reproduce an analysis
+elsewhere'](<%=pathTo('/howtos/MigrateAndReproduceAnAnalysisElsewhere')%>) how to page
+- it explains what the minimal amount data required for migrating a
+project.[  ](../101)
+
+**\</STUB\>**

@@ -1,0 +1,57 @@
+# How to: Use aroma.* data within Bioconductor
+
+Author: Henrik Bengtsson
+
+Both probe-level data and probe-summary data can be exported by
+aroma.affymetrix for further analysis in Bioconductor.  Note that most
+of these methods will export data as in-memory object, because that is
+how most of Bioconductor is designed.  For large probe-level data set
+this often means that it is not possible not export the complete data
+set.  For probe-summarized data, an order of magnitude larger data sets
+can be exported, but for really large data sets working with in-memory
+object will also become a problem.
+
+## Exporting probe-summary data
+
+Probe-summarized data can be exported in various ways depending on chip
+type.
+
+### ChipEffectSet as exprSet
+
+Chip effects can be exported as an exprSet object (defined in the <% bioc('Biobase') %> package) by calling:
+
+
+```r
+es <- extractExprSet(ces)
+```
+
+where `ces` is a ChipEffectSet.  The extracted object will be annotated
+with as much information as possible at the time of the call.  Note that
+this will load all data in to memory.
+
+### ChipEffectSet as eSet
+
+Chip effects can be exported as an eSet object (defined in the <% bioc('Biobase') %> package) by calling:
+
+```r
+es <- extractESet(ces)
+```
+
+The extracted object will be annotated with as much information as
+possible at the time of the call.  Note that this will load all data in
+to memory.
+
+
+### Fitted ProbeLevelModel as PLMset
+
+*Fitted* ProbeLevelModel:s can be exported as an PLMset object (defined
+in the <% bioc('affyPLM') %> package) by calling:
+
+```r
+ps <- extractPLMset(plm)
+```
+
+This call requires that the PLM has been fitted for all units, otherwise
+part of the results will be zero or `NA`.  The extracted object will be
+annotated with as much information as possible at the time of the call.
+Note that this will load all data in to memory.

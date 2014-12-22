@@ -1,0 +1,37 @@
+# How to: Migrate and reproduce an analysis elsewhere
+
+Q: I've just finished a project.  How can my collaborators reproduce the
+results on their machines?
+
+A: In order to replicate an analysis, (1) the annotation data files, (2)
+the raw data files, and (3) the R script need to be available.  By
+transferring (1)-(3) to a new file system and rerunning the script will
+reproduce the results exactly, given the same setup of packages and
+version of R.  This should also be true if this is done between
+different operating systems.  Here is what you need to do in order to
+transfer the analysis to you collaborators:
+
+1.  Identify and copy/zip the content of the raw data set
+    directory/directories, e.g. rawData/HapMap270,CEU/Mapping250K_Nsp/
+    and rawData/HapMap270,CEU/Mapping250K_Sty/.
+2.  Identify and copy/zip the content of the annotation chip type
+    directory/directories, e.g.
+    annotationData/chipTypes/Mapping250K_Nsp/ and
+    annotationData/chipTypes/Mapping250K_Sty/.  If there are auxillary
+    annotation files, you may want to copy only the ones used in the
+    analysis.
+3.  Identify and copy/zip all R scripts.
+
+Note that all of the above data is available from the current working
+directory (either directly or via file/directory links).  Furthermore,
+the R scripts should not have to be modified, but should work "as is"
+regardless of location and operating system.  This is because the
+aroma.* framework is designed to work without explicit file paths (if
+you find that you have to specify a path, you are probably doing
+something wrong).
+
+It is good practice to always do the above and validate the reproducible
+of any analysis completed, before passing it on to collaborators or
+submitting to a journal.  When doing this one often find minor
+discrepances such as not using the annotation files that one believe one
+uses and so on.  It is also a good way to archive the analysis done.

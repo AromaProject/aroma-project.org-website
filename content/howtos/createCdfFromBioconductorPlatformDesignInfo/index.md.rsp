@@ -1,0 +1,55 @@
+# How to: Create a CDF file from Bioconductor Platform Design (PD) Info package
+
+Author: Mark Robinson and Henrik Bengtsson with contributions
+from Samuel Wuest.  
+Created on: 2009-01-15  
+Last updated: 2012-12-06
+
+Below is an example session for converting the <% bioc('pd.hugene.1.0.st.v1') %>
+package (i.e. for the [HuGene-1_0-st-v1](<%=pathTo('/chipTypes/HuGene-1_0-st-v1')%>)
+chip type) created using the <% bioc('pdInfoBuilder') %> package (to create such a
+package from scratch, see section at the end).  The following commands
+will build a CDF file, which you can deposit in the correct directory to
+use with <% cran('aroma.affymetrix') %>:
+
+```r
+library("aroma.affymetrix")
+library("pd.hugene.1.0.st.v1")
+pathname <- writeCdf(pd.hugene.1.0.st.v1, tags="pd.hugene.1.0.st.v1,HB20110111", overwrite=TRUE)
+print(pathname)
+## [1] annotationData/chipTypes/HuGene-1_0-st-v1/HuGene-1_0-st-v1,pd.hugene.1.0.st.v1,HB20110111.cdf
+```
+
+You can [verify](<%=pathTo('/howtos/createCdfFromBioconductorCdfPackage')%>) this CDF
+file against the CDF file you can download from
+the [HuGene-1_0-st-v1](<%=pathTo('/chipTypes/HuGene-1_0-st-v1')%>) page.
+
+
+
+## Creating a Package Design Info (PD) package from Affymetrix annotation files
+
+To create an R package using pdInfoBuilder in the first place, you need
+to download the library files, probe.tab files, and NetAffx Annotation
+files from [Affymetrix (Human Gene 1.0
+ST)](http://www.affymetrix.com/products_services/arrays/specific/hugene_1_0_st.affx#1_6).
+Then use the commands:
+
+```r
+library("pdInfoBuilder")
+chipType <- "HuGene-1_0-st-v1"
+pgfFile <- sprintf("%s.r3.pgf", chipType)
+clfFile <- sprintf("%s.r3.clf", chipType)
+probeFile <- sprintf("%s.probe.tab", chipType)
+transFile <- sprintf("%s.na27.hg18.transcript.csv", chipType)
+pkg <- new("AffyGenePDInfoPkgSeed",
+          version="0.0.1",
+          author="Mark Robinson", email="mrobinson@...",
+          biocViews="AnnotationData",
+          genomebuild="hg18",
+          pgfFile=pgfFile, clfFile=clfFile,
+          probeFile=probeFile, transFile=transFile)
+makePdInfoPackage(pkg, destDir=".")
+```
+
+Don't forget to install the PD package aferward, i.e.
+`install.packages("pd.hugene.1.0.st.v1.tar.gz", repos=NULL)`.

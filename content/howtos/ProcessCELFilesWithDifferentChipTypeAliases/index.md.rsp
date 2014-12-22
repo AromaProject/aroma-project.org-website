@@ -1,0 +1,28 @@
+# How to: Process CEL files with mixed chip type aliases
+
+Process CEL files with mixed chip type aliases
+
+Author: Henrik Bengtsson  
+Created on: 2011-02-23
+
+When Affymetrix develops a new chip type it is often sending it to a
+small number of research groups labelled as an "Early Access" array.
+ For instance, before the HT_HT-U133A chip type was officially released
+it had been available for testing under the alias U133AAofAv2 as well as
+HT_HT-U133A_EA.  Depending on what is the current alias, CEL files for
+the same physical chip type may have different chip type labels in their
+file headers.  Potentially this could cause issues while analyzing the
+data, because the some tools are conservative and assumes that the user
+has made a mistake if mixed chip type labels are detect in the same set
+of CEL files.  Although <% cran('aroma.affymetrix') %> protects users for doing such
+mistakes, it still allows for analyzing CEL files with mixed chip type
+aliases.  There is not need to modify the CEL files.
+
+For instance, the following setup of data set 'MyDataSet' will consider
+all CEL files to be of chip type HT_HG-U133A regardless if the CEL file
+headers indicates chip type HT_HG-U133A, U133AAofAv2 or
+HT_HT-U133A_EA.
+
+```r
+csR <- AffymetrixCelSet$byName("MyDataSet", chipType="HT_HG-U133A")
+```

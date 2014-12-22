@@ -1,0 +1,112 @@
+# How to: Create a CDF (and associated) files from a BpMap file (tiling arrays)
+
+Author: Mark Robinson (pruned by Henrik Bengtsson)  
+Created on: 2009-01-14  
+Last updated: 2012-06-21
+
+Below is a set of commands used to created the CDF file and all the
+other associated files for the Human Promoter tiling array.  The
+starting point is a BPMAP (binary probe mapping) file.  You can get a
+BPMAP file from Affymetrix.  However, if you wish to run the MAT
+normalization, you'll need a "matchscore" for each probe.  The
+matchscore is the number of times that probe maps exactly to the human
+genome.  The BPMAP files that you can download from the [MAT Download
+Page](http://liulab.dfci.harvard.edu/MAT/Download.htm) have the
+matchscore within them.
+
+You will also need to know the number of rows (of probes physically on
+the chip) in order to get the indexing right.  If you don't have this
+handy, look at the output of `readCelHeader()` (from the <% bioc('affxparser') %> package) for a CEL data file that you have.
+
+
+```r
+library("aroma.affymetrix")
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# BPMAP to CDF (and PPS)
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+bpmapFile <- "Hs_PromPR_v01-3_NCBIv36.NR.bpmap"
+chipType <- "Hs_PromPR_v02"
+path <- "."
+pathname <- bpmapCluster2Cdf(bpmapFile, chipType=chipType, rows=2166, cols=2166, verbose=-20)
+# Writes Hs_PromPR_v02.cdf and Hs_PromPR_v02.pps to directory 'path'.
+
+# Move the CDF file into the 'annotationData/chipTypes/Hs_PromPR_v02' directory
+destPath <- file.path("annotationData", "chipTypes", chipType)
+destPathname <- Arguments$getWritablePathname(pathname, path=destPath)
+file.rename(pathname, destPathname)
+
+# Setup the CDF
+cdf <- AffymetrixCdfFile$byChipType(chipType)
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# BPMAP+CDF to ACS (cell sequences)
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+acs <- AromaCellSequenceFile$allocateFromCdf(cdf, tags="", verbose=-80)
+importFromBpMap(acs, bpmapFile, rows=2166, verbose=-80)
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# BPMAP+CDF to ACM (cell match scores)
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+acm <- AromaCellMatchScoreFile$allocateFromCdf(cdf, tags="", verbose=-80)
+importFromBpMap(acm, bpmapFile, rows=2166, verbose=-80)
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Create a "unique" CDF
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Rearranges the data so that multimap probes are copied into separate "cells".
+cdfU <- getUniqueCdf(cdf)
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Create an ACP (cell, chromosome, position) file
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+pathname <- gsub(".cdf", ".pps", getPathname(cdf), fixed=TRUE)
+positions <- unlist(loadObject(pathname), use.names=FALSE)
+cells <- getCellIndices(cdfU, stratifyBy="pm", unlist=TRUE, useNames=TRUE)
+# Sanity check
+stopifnot(length(cells) == length(positions))
+
+# Infer the chromosome indices
+# (Note these exact commands may need to be modified for non-human chips)
+chr <- gsub("FROM.*", "", names(cells))
+chrIdx <- gsub("chr", "", chr)
+chrIdx[chr == "X"] <- 23
+chrIdx[chr == "Y"] <- 24
+chrIdx[chr == "M"] <- 25
+chrIdx <- as.integer(chrIdx)
+
+# Create ACP file
+acp <- AromaCellPositionFile$allocateFromCdf(cdfU, verbose=verbose)
+acp[cells,1] <- chrIdx
+acp[cells,2] <- positions
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Calculate local CpG density around each probe (useful for MeDIP-chip data)
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+library("MEDME")
+library("BSgenome.Hsapiens.UCSC.hg18")
+
+nbrOfCells <- length(cells)
+dummy <- matrix(rnorm(n=2*nbrOfCells), nrow=nbrOfCells, ncol=2L)
+rownames(dummy) <- paste(chr, positions, sep=".")
+
+keep <- which(chr != 25)
+mms <- new("MEDMEset", chr=chr[keep], pos=positions[keep], logR=dummy[keep,,drop=FALSE], organism="hsa")
+
+# Choose a reasonable window size here (based on the size of hybridized fragments?)
+cg600 <- CGcount(data=mms, wsize=600)@CGcounts
+
+# Write to ACC file
+acc <- AromaCellCpgFile$allocateFromCdf(cdfU, verbose=verbose)
+acc[cells[keep],1] <- cg600
+```
+
+
+Alternatively, you can just download these files from
+'[Hs_PromPR_v02](<%=pathTo('/chipTypes/Hs_PromPR_v02')%>)' and place them in the
+annotationData/chipTypes/Hs_PromPR_v02/ directory.

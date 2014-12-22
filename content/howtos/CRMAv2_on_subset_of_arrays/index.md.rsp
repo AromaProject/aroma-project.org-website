@@ -1,0 +1,141 @@
+# How to: Run CRMA v2 on a subset of arrays in a data set
+
+Author: Henrik Bengtsson  
+Created on: 2010-01-04
+
+This document explains how to do CRMAv2 <% citep('BengtssonH_etal_2009-CRMAv2') %> processing on a single array or
+on a subset of arrays in a data set.  To show how this can be done, we
+use the same data and steps as in Vignette '[CRMA v2: Estimation of
+total copy numbers using the CRMA v2 method
+(10K-GWS6)](<%=pathTo('/vignettes/CRMAv2')%>)'.  It is assumed that you have the same
+setup.
+
+<% alert_warn({ %>
+IMPORTANT: This approach will only work with methods such as CRMAv2
+that are truly single-array methods.  If you try it on other methods,
+for instance CRMA (v1), it will process the arrays for you, but you will
+not get the same results if you process each array independently or as
+part of a larger data set.  Currently, it is only CRMAv2 that is a truly
+single-array method.
+<% }) %>
+
+
+Start by loading the complete data set:
+
+```r
+library("aroma.affymetrix")
+verbose <- Arguments$getVerbose(-8, timestamp=TRUE)
+cdf <- AffymetrixCdfFile$byChipType("GenomeWideSNP_6", tags="Full")
+csR <- AffymetrixCelSet$byName("HapMap270,6.0,CEU,testSet", cdf=cdf)
+
+## AffymetrixCelSet:  
+## Name: HapMap270  
+## Tags: 6.0,CEU,testSet  
+## Path: rawData/HapMap270,6.0,CEU,testSet/GenomeWideSNP_6  
+## Platform: Affymetrix  
+## Chip type: GenomeWideSNP_6,Full  
+## Number of arrays: 6  
+## Names: NA06985, NA06991, ..., NA07019  
+## Time period: 2007-03-06 12:13:04 -- 2007-03-06 19:17:16  
+## Total file size: 395.13MB
+```
+
+Then, in order to do CRMAv2 on a subset of the arrays, all we have to do
+is to extract a new data set consisting of the arrays of interest.  Say
+the arrays are number 2, 3, and 5.  To further illustrate that aroma
+correctly preserves both the subset and the order of the arrays
+throughout the analysis, we will process these arrays in the order of 2,
+5, and 3.
+
+```r
+idxs <- c(2,5,3)
+```
+
+Alternatively, if you wish to select the subset based on the *names* of
+the arrays, the use:
+
+```r
+names <- c("NA06991", "NA07000", "NA06993")
+idxs <- indexOf(csR, names)
+print(idxs)
+
+## NA06991 NA07000 NA06993
+##       2       5       3
+```
+
+Extract this subset as a new data set:
+```r
+csR <- csR[idxs]
+print(csR)
+
+## AffymetrixCelSet:  
+## Name: HapMap270  
+## Tags: 6.0,CEU,testSet  
+## Path: rawData/HapMap270,6.0,CEU,testSet/GenomeWideSNP_6  
+## Platform: Affymetrix  
+## Chip type: GenomeWideSNP_6,Full  
+## Number of arrays: 3  
+## Names: NA06991, NA07000, NA06993  
+## Time period: 2007-03-06 16:15:53 -- 2007-03-06 19:17:16  
+## Total file size: 197.56MB
+```
+
+From here, proceed with CRMA v2 as usual.  It is extremely important
+that you use the `target="zero"` arguments throughout, otherwise it will
+not be a truly single-array method.
+
+```r
+acc <- AllelicCrosstalkCalibration(csR, model="CRMAv2")
+csC <- process(acc, verbose=verbose)
+bpn <- BasePositionNormalization(csC, target="zero")
+csN <- process(bpn, verbose=verbose)
+plm <- AvgCnPlm(csN, mergeStrands=TRUE, combineAlleles=TRUE)
+if (length(findUnitsTodo(plm)) > 0) {
+  units <- fitCnProbes(plm, verbose=verbose)
+  units <- fit(plm, verbose=verbose)
+}
+ces <- getChipEffectSet(plm)
+fln <- FragmentLengthNormalization(ces, target="zero")
+cesN <- process(fln, verbose=verbose)
+print(cesN)
+
+## CnChipEffectSet:  
+## Name: HapMap270  
+## Tags: 6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY  
+## Path: plmData/HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY/GenomeWideSNP_6  
+## Platform: Affymetrix  
+## Chip type: GenomeWideSNP_6,Full,monocell  
+## Number of arrays: 3  
+## Names: NA06991, NA07000, NA06993  
+## Time period: 2010-01-04 16:47:13 -- 2010-01-04 16:47:14  
+## Total file size: 80.85MB  
+## Parameters: (probeModel: chr "pm", mergeStrands: logi TRUE,
+## combineAlleles: logi TRUE)
+```
+
+Note that the subset and the ordering(\*) of the arrays is preserved
+through-out the analysis:
+
+```r
+stopifnot(getNames(csC) == getNames(csR))
+stopifnot(getNames(csN) == getNames(csR))
+stopifnot(getNames(ces) == getNames(csR))
+stopifnot(getNames(cesN) == getNames(csR))
+```
+
+Furthermore, this is also true if some or all of the steps have already
+been processed for all or other arrays.  That is, if there are other
+arrays in the same data directories, they will *not* affect the analysis
+of this subset.  This is the key for doing CRMAv2 in batches.  Try for
+instance to repeat the above with `idxs <- c(1,3,4)`.  You can learn
+more about batch processing in separate 'How To'.
+
+
+_Footnotes_:  
+(\*) HYPOTHETICAL ISSUE: It is only the *new* arrays that will actually
+be process if you change the subset.  For instance, if you start with
+arrays `c(2,5,3)` and the later redo it with arrays `c(1,3,4)`, it is only
+arrays `c(1,4)` that has to be processed.  Array 3 will be quietly
+skipped.  The exception is the PLM step, which will also fit array 3
+(again).  This is just a hypothetical problem, because you would most
+likely choose do to `c(1,4)` in the second batch.

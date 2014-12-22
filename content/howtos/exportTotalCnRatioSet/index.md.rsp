@@ -1,0 +1,85 @@
+# How to: Calculate total copy number ratios from from total (non-polymorphic) signals
+
+Author: Henrik Bengtsson  
+Created on: 2011-12-03  
+Last updated: 2011-12-03
+
+Copy-number (CN) preprocessing method such as `doCRMAv2()` and
+`doASCRMAv2()` outputs total signals for each locus.  These signals
+are *not CN ratios,* but only signals that are not comparable across
+loci, meaning they cannot be segmented.  In order to obtain *total
+CNs* (TCN), we need to calculate the ratios for these signals relative
+to corresponding signals of a reference.  For instance, for a tumor the
+reference can be a matched normal.  Another choice of reference is a
+robust average of a large pool of samples.  This section describes how
+to calculate total CN ratios relative to a reference.
+
+## Setting up an already preprocessed data set
+
+Assume that a CEL data set named 'MyDataSet' has previously been
+processed by `doCRMAv2()` and afterward R was quit.  To access the
+results, which was automatically stored on the file system, do:
+
+```r
+dataSet <- "MyDataSet"
+tags <- "ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY";  # Tags added by CRMAv2
+chipType <- "GenomeWideSNP_6"
+ds <- AromaUnitTotalCnBinarySet$byName(dataSet, tags=tags, chipType=chipType)
+```
+
+so that `print(ds)` gives:
+
+```
+AromaUnitTotalCnBinarySet:
+Name: MyDataSet
+Tags: ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY
+Full name: MyDataSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY
+Number of files: 12
+Names: GSA2031T,
+GSA2031N, GSA2032T, GSA2032N, ... [12]
+Path (to the first file):
+totalAndFracBData/MyDataSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY/GenomeWideSNP_6
+Total file size: 21.53 MB
+RAM: 0.00MB
+```
+
+
+
+## Generating paired total copy numbers
+
+In order to calculated paired total copy numbers (TCN), that is, TCN
+ratios of tumors relative to their matched normals, we first need to
+match up the tumor and normals by placing the in two separate data sets
+and making sure their ordering matches.  Then we can
+use `exportTotalCnRatioSet()` to calculate the TCNs for us.  For example:
+
+```r
+# Extract the tumors
+dsT <- ds[indexOf(ds, pattern="T$")]
+
+# Extract the normals
+dsN <- ds[indexOf(ds, pattern="N$")]
+
+# We will assume that the names matches
+stopifnot(gsub("T$", getNames(dsT)) == gsub("N$", getNames(dsN)))
+
+# Calculate TCNs
+dsTN <- exportTotalCnRatioSet(dsT, ref=dsN)
+```
+
+
+## Generating total copy numbers relative to pool of all samples
+
+In order to calculate paired TCNs relative to the average of a set of
+reference samples, do:
+
+```r
+# Use the normals as the reference set
+dsN <- ds[indexOf(ds, pattern="N$")]
+
+# Calculate the average normal
+dfR <- getAverageFile(dsN)
+
+# Calculate TCNs
+dsTR <- exportTotalCnRatioSet(dsT, ref=dfR)
+```

@@ -1,0 +1,105 @@
+# How to: Extract probeset summaries (chip effects) as an 'oligo' SnpQSet or SnpCnvQSet object
+
+## SnpChipEffectSet as SnpQSet
+
+Probe-summarized SNP data can be exported as a SnpQSet object (defined
+in the <% bioc('oligo') %> package) by calling:
+
+```r
+sfs <- extractSnpQSet(ces)
+```
+
+where `ces` is an SnpChipEffectSet.  Note that this will load all data
+in to memory.
+
+
+### Example: Mapping50K_Hind240
+
+```r
+ces <- getChipEffectSet(plm)
+print(ces)
+
+## SnpChipEffectSet:  
+## Name: HapMap270  
+## Tags: 100K,CEU,testSet,QN,HapMapRef,RMA,oligo,+-  
+## Path:
+## plmData/HapMap270,100K,CEU,testSet,QN,HapMapRef,RMA,oligo,+-/Mapping50K_Hind240  
+## Platform: Affymetrix  
+## Chip type: Mapping50K_Hind240,monocell  
+## Number of arrays: 6  
+## Names: NA06985, NA06991, ..., NA07019  
+## Time period: 2009-10-17 00:31:37 -- 2009-10-17 00:31:38  
+## Total file size: 14.08MB  
+## RAM: 0.01MB  
+## Parameters: (probeModel: chr "pm", mergeStrands: logi FALSE)
+
+eSet <- extractSnpQSet(ces)
+print(eSet)
+
+## SnpQSet (storageMode: lockedEnvironment)  
+## assayData: 57244 features, 6 samples  
+##   element names: antisenseThetaA, antisenseThetaB, senseThetaA,
+## senseThetaB  
+## phenoData  
+##   sampleNames: NA06985,Hind,B5,3005533.CEL, NA06991,Hind,B6,3005533.CEL,
+## ..., NA07019,Hind,A12,4000092.CEL  (6 total)  
+##   varLabels and varMetadata description: none  
+## featureData  
+##   featureNames: SNP_A-1641748, SNP_A-1641750, ..., SNP_A-1757800
+## (57244 total)  
+##   fvarLabels and fvarMetadata description: none  
+## experimentData: use 'experimentData(object)'  
+## Annotation: pd.mapping50k.hind240
+```
+
+## SnpChipEffectSet as SnpCnvQSet
+
+Probe-summarized SNP data can be exported as a SnpCnvQSet object
+(defined in the oligo package) by calling:
+
+```r
+eSet <- extractSnpCnvQSet(ces)
+```
+
+where `ces` is an SnpChipEffectSet.  Note that this will load all data
+in to memory.
+
+
+### Example: GenomeWide_SNP_6
+
+```r
+ces <- getChipEffectSet(plm)
+print(ces)
+
+## CnChipEffectSet:  
+## Name: HapMap270  
+## Tags: 6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,1array,AVG  
+## Path:
+## plmData/HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,1array,AVG/GenomeWide_SNP_6  
+## Platform: Affymetrix  
+## Chip type: GenomeWideSNP_6,Full,monocell  
+## Number of arrays: 1  
+## Names: NA06985  
+## Time period: 2009-08-31 12:37:17 -- 2009-08-31 12:37:17  
+## Total file size: 26.95MB  
+## RAM: 0.00MB  
+## Parameters: (probeModel: chr "pm", mergeStrands: logi TRUE,
+## combineAlleles: logi FALSE)
+
+
+eSet <- extractSnpCnvQSet(ces)
+print(eSet)
+
+## SnpCnvQSet (storageMode: lockedEnvironment)  
+## assayData: 931946 features, 3 samples  
+##   element names: thetaA, thetaB  
+## phenoData  
+##   sampleNames: NA06985.CEL, NA06991.CEL, NA06993.CEL  
+##   varLabels and varMetadata description: none  
+## featureData  
+##   featureNames: SNP_A-1780270, SNP_A-1780271, ..., SNP_A-8717615
+## (931946 total)  
+##   fvarLabels and fvarMetadata description: none  
+## experimentData: use 'experimentData(object)'  
+## Annotation: pd.genomewidesnp.6
+```

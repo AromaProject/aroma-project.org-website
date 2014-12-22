@@ -1,0 +1,69 @@
+# How to: Write annotation data as a tab-delimited text file
+
+Author: Henrik Bengtsson  
+Created on: 2010-04-27
+
+
+### See also
+
+To write non-annotation data, see how-to page '[Write data as a
+tab-delimited text file](<%=pathTo('/howtos/writeDataFrame')%>)'.
+
+### Example: Exporting an UGP file to a tab-delimited text file
+
+```r
+library("aroma.core")
+
+ugp <- AromaUgpFile$byChipType("Mapping10K_Xba142")
+print(ugp)
+
+## AromaUgpFile:Name: Mapping10K_Xba142  
+## Tags: na26,HB20080916  
+## Full name: Mapping10K_Xba142,na26,HB20080916  
+## Pathname: annotationData/chipTypes/Mapping10K_Xba142/Mapping10K_Xba142,na26,HB20080916.ugp  
+## File size: 50.45 kB (51663 bytes)  
+## RAM: 0.00 MB  
+## Number of data rows: 10208  
+## File format: v1  
+## Dimensions: 10208x2  
+## Column classes: integer, integer  
+## Number of bytes per column: 1, 4  
+## Footer: \<createdOn\>20080916 18:46:43
+## PDT\</createdOn\>\<platform\>Affymetrix\</platform\>\<chipType\>Mapping10K_Xba142\</chipType\>  
+## \<createdBy\>\<fullname\>Henrik
+## Bengtsson\</fullname\>\<email\>hb@stat.berkeley.edu\</email\>\</createdBy\>  
+## \<srcFiles\>\<srcFile1\>\<filename\>Mapping10K_Xba142.cdf\</filename\>\<filesize\>9995717\</filesize\>  
+## \<checksum\>ad6ef2568ad7c629c4218b3f402a5cf4\</checksum\>\</srcFile1\>  
+## \<srcFile2\>\<filename\>Mapping10K_Xba142.na26.annot.csv\</filename\>\<filesize\>16140044\</filesize\>  
+## \<checksum\>666197b57c567684d370cfa8e68057d2\</checksum\>\</srcFile2\>\</srcFiles\>  
+## Chip type: Mapping10K_Xba142  
+## Platform: Affymetrix
+
+ugpTxt <- writeDataFrame(ugp, columnNamesPrefix="none")
+print(ugpTxt)
+
+## TabularTextFile:  
+## Name: Mapping10K_Xba142  
+## Tags: na26,HB20080916.ugp  
+## Full name: Mapping10K_Xba142,na26,HB20080916.ugp  
+## Pathname: annotationData/chipTypes/Mapping10K_Xba142/Mapping10K_Xba142,na26,HB20080916.ugp.txt
+## File size: 265.78 kB (272154 bytes)  
+## RAM: 0.01 MB  
+## Number of data rows: 10220  
+## Columns [3]: 'unitName', 'chromosome', 'position'  
+## Number of text lines: 10221
+
+data <- readDataFrame(ugpTxt, rows=1:10)
+print(data)
+
+##         unitName chromosome  position  
+## 1    AFFX-5Q-123         NA        NA  
+## 2    AFFX-5Q-456         NA        NA  
+## 3    AFFX-5Q-789         NA        NA  
+## 4    AFFX-5Q-ABC         NA        NA  
+## 5  SNP_A-1513509          6 162491313  
+## 6  SNP_A-1518411          7  42608794  
+## 7  SNP_A-1511066         10  68113302  
+## 8  SNP_A-1517367          1  22754354  
+## 9  SNP_A-1512567         15  28848178  
+## 10 SNP_A-1519604         12  53641300

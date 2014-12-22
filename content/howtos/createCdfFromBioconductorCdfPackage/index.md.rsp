@@ -1,0 +1,56 @@
+# How to: Create a CDF file from Bioconductor CDF package
+
+Author: Mark Robinson and Henrik Bengtsson with contributions
+from Samuel Wuest.  
+Created on: 2009-01-15  
+Last updated: 2012-12-06
+
+For expression arrays, Bioconductor makes available XXXcdf and XXXprobe
+packages for many of the Affymetrix chips (where XXX is the chip name).
+However for the new generation of chips (e.g.
+[HuGene-1_0-st-v1](<%=pathTo('/chipTypes/HuGene-1_0-st-v1/')%>)), this is no longer
+done.  If you find yourself needing to make a CDF file in order to use
+<% cran('aroma.affymetrix') %> and there are R packages available (either
+from Bioconductor or ones that can be made with <% bioc('pdInfoBuilder') %>),
+you may find one of the following two approaches useful.
+
+In order to run these, you will need to have the R package installed as
+well as a CEL data file for the chip you wish to make the CDF file.
+ Below is an example session for converting the <% bioc('hgu133plus2cdf') %>
+R/Bioconductor package into a CDF file (hgu133plus2.cdf in this case).
+
+```r
+library("aroma.affymetrix")
+env2Cdf("hgu133plus2cdf", "u1332plus_ivt_breast_A.CEL", overwrite=TRUE)
+```
+
+## Validation
+
+In this example, we have a CDF file that can be downloaded from
+Affymetrix.  Some quick code to verify that the CDF file from `env2Cdf()`
+captures the same information as stored:
+
+```r
+library("affxparser")
+x <- readCdf("hgu133plus2.cdf")     # created above
+y <- readCdf("HG-U133_Plus_2.cdf")  # from Affymetrix (binary-converted)
+
+g <- intersect(names(x), names(y))
+m <- match(g, names(x))
+x <- x[m]
+m <- match(g, names(y))
+y <- y[m]
+
+checkUnit <- function(xx,yy) {
+  a <- xx$groups[[1]]
+  b <- yy$groups[[1]]
+  all(a$x == b$x & a$y == b$y & a$atom == b$atom & (a$pbase==a$tbase) == (b$pbase==b$tbase))
+}
+
+total <- 0
+for (ii in 1:length(m)) {
+  total <- total + checkUnit(x[[ii]],y[[ii]])
+}
+
+stopifnot(total == length(m))  # if TRUE, then same info is being represented
+```

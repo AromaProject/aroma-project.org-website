@@ -1,0 +1,229 @@
+# How to: Create a Unit Genome Position (UGP) file
+
+## Aroma UGP files
+
+Aroma UGP files are binary files storing a (unit, chromosome, position)
+map in a tabular format.  The unit indices are implicit, that is, they
+are not stored in the file but instead the rows are assumed to be in the
+order of the corresponding unit names file, which if you work with
+Affymetrix data is an Affymetrix CDF file.
+
+## Examples
+
+Below are three different examples how one can create an UGP file from
+scratch.  They all have in common that they allocate the UGP file using
+a CDF as a template.  They differ in how they populate the UGP file.
+
+### Example #1 - Manually assign values
+
+```r
+cdf <- AffymetrixCdfFile$byChipType("GenomeWideSNP_6")
+
+# Creates an empty UGP file for the CDF, if missing.
+ugp <- AromaUgpFile$allocateFromCdf(cdf, tags="HB20081121")
+print(ugp)
+
+## AromaUgpFile:  
+## Name: GenomeWideSNP_6  
+## Tags: HB20081121  
+## Pathname:
+## annotationData/chipTypes/GenomeWideSNP_6/GenomeWideSNP_6,HB20081121.ugp  
+## File size: 8.85MB  
+## RAM: 0.00MB  
+## Number of data rows: 1856069  
+## File format: v1  
+## Dimensions: 1856069x2  
+## Column classes: integer, integer  
+## Number of bytes per column: 1, 4  
+## Footer: \<createdOn\>20081121 09:32:19
+## PST</createdOn><platform>Affymetrix</platform>
+## <chipType>GenomeWideSNP_6</chipType>  
+## Chip type: GenomeWideSNP_6  
+## Platform: Affymetrix
+
+# The CDF names of some units for which we know the genomic locations (from other sources)
+unitNames <- c("SNP_A-4214434", "SNP_A-2005029", "SNP_A-2005128", "CN_065226", "CN_568310")
+
+# Identify the unit indices (defined by the CDF) of these units
+units <- indexOf(cdf, names=unitNames)
+print(units)
+## [1]    1081    1082    1083 1506902 1506903
+
+# The UGP file is all empty
+print(ugp[units,])
+
+##   chromosome position  
+## 1     NA        NA  
+## 2     NA        NA  
+## 3     NA        NA  
+## 4     NA        NA  
+## 5     NA        NA
+
+
+# Assign chromosome
+ugp[units,1] <- c(1, 1, 1, 11, 11)
+print(ugp[units,])
+
+##  chromosome position  
+## 1          1    NA  
+## 2          1    NA  
+## 3          1    NA  
+## 4         11    NA  
+## 5         11    NA
+
+
+# Assign positions
+ugp[units,2] <- c(38692010, 38831590, 38969651, 64488763, 64509535)
+
+# Now data for units is in the UGP file
+print(ugp[units,])
+
+##   chromosome position  
+## 1          1 38692010  
+## 2          1 38831590  
+## 3          1 38969651  
+## 4         11 64488763  
+## 5         11 64509535
+```
+
+
+### Example #2 - Import from NetAffx files
+
+```r
+cdf <- AffymetrixCdfFile$byChipType("GenomeWideSNP_6")
+
+# Creates an empty UGP file for the CDF, if missing.
+ugp <- AromaUgpFile$allocateFromCdf(cdf, tags=c("na23", "HB20081121"));
+
+# Import NetAffx unit position data
+csv <- AffymetrixNetAffxCsvFile$byChipType(chipType, tags=".na23")
+units <- importFrom(ugp, csv)
+str(units)
+
+## int [1:934968] 334945 334944 334942 334941 334940 334939 334910 334937 ...
+
+# Import NetAffx CN probe position data
+csv <- AffymetrixNetAffxCsvFile$byChipType(chipType, tags=".cn.na23")
+units <- importFrom(ugp, csv)
+str(units)
+
+## int [1:945826] 935622 935777 935671 935631 935625 935703 935698 935705 ...
+
+# Available chromosomes
+table(ugp[,1])
+
+##      1      2      3      4      5      6      7      8      9     10  
+## 146524 153732 127815 120360 115731 112895 101093  98306  82225  93655  
+##     11     12     13     14     15     16     17     18     19     20  
+##  89615  87372  66106  57121  53595  54215  46678  52109  30362  43648  
+##     21     22     23     24  
+##  25129  24513  87204   9486
+
+# Get units on chromosome X
+units <- getUnitsAt(ugp, 23)
+str(units)
+
+## int [1:87204] 61101 61102 61103 61104 61105 61106 61107 61108 ...
+```
+
+### Example #3 - Import from ASCII tabular files
+
+You can import UGP data from any valid ASCII tabular file given that it
+contains at least three columns:
+
+1. Affymetrix unit names,
+2. chromosome, and
+3. chromosome positions.
+
+It is easier if they are in that order, but not required.
+
+```r
+cdf <- AffymetrixCdfFile$byChipType("GenomeWideSNP_6")
+
+# Creates an empty UGP file for the CDF, if missing.
+ugp <- AromaUgpFile$allocateFromCdf(cdf, tags=c("CSV", "HB20081121"))
+
+# Load the ASCII tabular file
+filename <- "GenomeWideSNP_6,my-own-tabular-ASCII-file.txt"
+path <- "annotationData/chipTypes/GenomeWideSNP_6/myFiles/"
+dat <- TabularTextFile(filename, path=path)
+print(dat)
+
+## TabularTextFile:  
+## Name: GenomeWideSNP_6  
+## Tags: my-own-tabular-ASCII-file  
+## Pathname: annotationData/chipTypes/GenomeWideSNP_6/myFiles/GenomeWideSNP_6,my-own-tabular-ASCII-file.txt  
+## File size: 1.51kB  
+## Columns [5]: 'Probe Set ID', 'Physical Position', 'Chromosome',
+## 'Strand', 'dbSNP RS ID'
+
+# Import data using regular expression matching of column names
+# Note, the reordering of the imported columns.
+colClassPatterns=c("^Probe Set ID$"="character", "^Chromosome$"="character", "^Physical Position$"="integer")
+units <- importFrom(ugp, dat, colClassPatterns=colClassPatterns, colOrder=c(1,3,2))
+str(units)
+
+## int [1:39] 622 623 624 625 626 627 628 629 630 631 ...
+
+print(ugp[units[1:10],])
+
+##     chromosome position  
+## 622          1  1145994  
+## 623          1  2224111  
+## 624          1  2319424  
+## 625          1  2543484  
+## 626          1  2926730  
+## 627          1  2941694  
+## 628          1  3084986  
+## 629          1  3155127  
+## 630          1  3292731  
+## 631          1  3695086
+```
+
+
+### Example #4 - Import from dChip genome information files
+
+```r
+cdf <- AffymetrixCdfFile$byChipType("Mapping250K_Nsp")
+
+# Create an empty UGP file for this chip type
+ugp <- AromaUgpFile$allocateFromCdf(cdf, tags=("dChip", "HB20081121"))
+
+# Import data from the dChip genome information file
+gi <- DChipGenomeInformation$byChipType(chipType)
+units <- importFrom(ugp, gi)
+
+# Get the chromosomes and physical positions for units 100:102
+print(ugp[100:102,])
+
+##      1        2  
+## 100 10 55075252  
+## 101 22 20865611  
+## 102  8 15317330
+
+# Get the chromosomes and physical positions for three SNPs
+snps <- c("SNP_A-1782949", "SNP_A-4192675", "SNP_A-1783398")
+print(ugp[snps,])
+
+##     chromosome position  
+## 100         10 55075252  
+## 101         22 20865611  
+## 102          8 15317330
+
+# Select all units on chromosome X @ 12.10-12.15Mb
+subset(ugp, chromosome == 23 & 12.10e6 <= position & position <= 12.15e6)
+
+##       chromosome position  
+##  5294         23  1213762  
+##  6032         23  1211686  
+##  9373         23  1212709  
+## 11935         23  1213754  
+## 12794         23  1211867  
+## 13029         23  1211855
+
+# The units in this regions
+units <- as.integer(rownames(ugp))
+units
+
+## [1]  5294  6032  9373 11935 12794 13029
+```
