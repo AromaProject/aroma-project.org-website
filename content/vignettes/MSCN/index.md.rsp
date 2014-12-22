@@ -843,6 +843,6 @@ Low-level functions:
 The basic low-level functions involved for smoothing, fitting, and
 normalizing the data according to MSCN are:
 
-1. Smoothing: kernelSmoothing() in aroma.core.
-2. Fitting S-dimensional principal curve: fitPrincipalCurve() in aroma.light.
-3. Normalization: backtransformPrincipalCurve() in aroma.light.
+1. Smoothing: `kernelSmoothing()` in <% cran('aroma.core') %>.
+2. Fitting S-dimensional principal curve: `fitPrincipalCurve()` in <% bioc('aroma.light') %>.
+3. Normalization: `backtransformPrincipalCurve()` in <% bioc('aroma.light') %>.
