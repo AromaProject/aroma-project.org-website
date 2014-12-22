@@ -1,8 +1,14 @@
 ## Publications
 
+<%
+authors <- c('Bengtsson', 'Neuvial', 'Purdom', 'Robinson', 'Hansen', 'Bullard')
+pattern <- sprintf("(%s)", paste(authors, collapse="|"))
+%>
+
 <% for (kk in seq_along(references)) { %>
 <%
   ref <- references[[kk]]
+  if (!grepl(pattern, ref$author)) next
   md <- format(ref, style="markdown")
   md <- sub("[1] ", "", md, fixed=TRUE)
   md <- gsub("..", ".", md, fixed=TRUE)
