@@ -14,19 +14,26 @@ references <- ReadBib("assets/references/references.bib")
 references <- sort(references, sorting="ydnt")
 
 
+get_cite <- function(key, ...) {
+  if (!is.element(key, names(references))) {
+    throw(sprintf("Reference '%s' not found: %s", key,
+          paste(sQuote(sort(names(references))), collapse=", ")))
+  }
+  references[[key]]
+}
+
 citep <- function(key, ...) {
-  bib <- references[[key]]
-  mprint(bib)
+  bib <- get_cite(key)
   cat(Citep(bib))
 }
 
 citet <- function(key, ...) {
-  bib <- references[[key]]
+  bib <- get_cite(key)
   cat(Citet(bib))
 }
 
 nocite <- function(key, ...) {
-  bib <- references[[key]]
+  bib <- get_cite(key)
   NoCite(bib)
 }
 
@@ -69,3 +76,12 @@ biblist <- function(.opts=list(check.entries = FALSE, sorting = "ynt"), ...) {
   PrintBibliography(references, .opts=.opts, ...)
 } # biblist()
 
+
+alert_warn <- function(expr, ..., envir=parent.frame(), style="html") {
+  oopts <- BibOptions(style=style)
+  on.exit(BibOptions(oopts))
+  cat('<div class="alert alert-warning" role="alert">\n')
+  cat('  <span class="glyphicon glyphicon-exclamation-sign" style="font-size: 1.2em;"></span>\n')
+  eval(expr, envir=envir)
+  cat('</div>\n')
+} # alert_warn()

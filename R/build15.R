@@ -16,7 +16,7 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
 
 
   charset <- "UTF-8"
-  if (root == "content") charset <- "ISO-8859-1"
+  if (grepl("content", root)) charset <- "ISO-8859-1"
 
   # All downloaded files
   pathS <- file.path(root, path)

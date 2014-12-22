@@ -9,7 +9,11 @@ You can calculate raw copy numbers (CNs) from chip effect estimates by first "ex
 
 Note, a more convenient way to extract raw copy numbers is by using extractRawCopyNumbers() of CopyNumberChromosomalModel.  See Vignettes '[CRMA v1: Total copy number analysis (10K, 100K, 500K)](<%=pathTo('/vignettes/CRMAv1')%>)' and '[CRMAv2: Estimation of total copy numbers using the CRMA v2 method (10K-GWS6)](<%=pathTo('/vignettes/CRMAv1')%>)' for examples.
 
-<% please_cite(c('BengtssonH_etal_2008-aroma.affymetrix', 'BengtssonH_etal_2009-CRMAv1', 'BengtssonH_etal_2009-CRMAv2')) %>
+<% please_cite(c(
+  'BengtssonH_etal_2008-aroma.affymetrix',
+  'BengtssonH_etal_2009-CRMAv1',
+  'BengtssonH_etal_2009-CRMAv2'
+)) %>
 
 
 ## Example

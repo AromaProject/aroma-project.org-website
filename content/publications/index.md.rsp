@@ -1,22 +1,8 @@
 ## Publications
 
+<% for (kk in seq_along(references)) { %>
 <%
-R.utils::use("R.utils")
-R.utils::use("RefManageR")
-BibOptions(check.entries=FALSE)
-
-## WORKAROUND:
-## Argument 'style' is not fully acknowledged
-## when calling format() below.
-BibOptions(style="markdown")
-
-refs <- ReadBib("assets/references/references.bib")
-refs <- sort(refs, sorting="ydnt")
-%>
-
-<% for (kk in seq_along(refs)) { %>
-<%
-  ref <- refs[[kk]]
+  ref <- references[[kk]]
   md <- format(ref, style="markdown")
   md <- sub("[1] ", "", md, fixed=TRUE)
   md <- gsub("..", ".", md, fixed=TRUE)
@@ -28,4 +14,3 @@ refs <- sort(refs, sorting="ydnt")
   printf("[%d] %s\n\n", kk, md)
 %>
 <% } # for (kk ...) %>
-
