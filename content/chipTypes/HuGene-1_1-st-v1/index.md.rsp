@@ -1,0 +1,49 @@
+# Chip type: HuGene-1_1-st-v1
+
+## Human Gene 1.1 ST Array
+
+Affymetrix writes: "The Human Gene 1.1 ST Array Plate interrogates more
+than 28,000 well-annotated genes with more than 750,000 distinct probes
+[...] at a time using the same content as the industry-standard
+GeneChip Human Gene 1.0 ST Array. The design is based on the March 2006
+human genome sequence assembly (UCSC hg18, NCBI Build 36), with
+comprehensive coverage of RefSeq, Ensembl, and putative complete CDS
+GenBank transcripts. The Human Gene 1.1 ST Array Plate has greater than
+99 percent coverage of sequences in the RefSeq database."
+
+### HuGene-1_1-st-v1
+
+Note, Affymetrix does not provide a CDF for this chip type. Instead we
+have created one from the <% bioc('pd.hugene.1.st.v1') %> Bioconductor
+annotation package, cf. the [How tos](<%=pathTo('/howtos/')%>) pages.
+
+```
+> cdf <- AffymetrixCdfFile$byChipType("HuGene-1_1-st-v1", tags="pd.hugene.1.st.v1,hg19,BioC2.10,HB20120615")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HuGene-1_1-st-v1
+Filename: HuGene-1_1-st-v1,pd.hugene.1.st.v1,hg19,BioC2.10,HB20120615.cdf
+Filesize: 53.24MB
+Chip type: HuGene-1_1-st-v1,pd.hugene.1.st.v1,hg19,BioC2.10,HB20120615
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 1190x990
+Number of cells: 1178100
+Number of units: 257430
+Cells per unit: 4.58
+Number of QC units: 0
+```
+
+## Resources
+
+By aroma-project.org:
+
+-   <%=chipTypeData('HuGene-1_1-st-v1', 'HuGene-1_1-st-v1,pd.hugene.1.st.v1,hg19,BioC2.10,HB20120615.cdf.gz')%> [55,824,026 bytes] -
+    Created from Bioconductor PD package.  Created by Henrik Bengtsson on 2012-06-15.
+-   <%=chipTypeData('HuGene-1_1-st-v1', 'HuGene-1_1-st-v1,HB20120615.acs.gz')%> [30,631,058 bytes].
+
+
+
+By Affymetrix:
+
+-   Product page: [Human Gene 1.1 ST Array](http://www.affymetrix.com/browse/products.jsp?navMode=34000&productId=131554&navAction=jump&aId=productsNav#1_1)

@@ -1,0 +1,44 @@
+# Custom CDF: HuEx-1_0-st-v2 from BrainArray ENSE and ENSG
+
+Author: Steve Pederson & Henrik Bengtsson  
+Last updated: 2012-01-29
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("HuEx-1_0-st-v2", tags="U-ENSG,G-ENSE,v14.1,SP20120129")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HuEx-1_0-st-v2
+Filename: HuEx-1_0-st-v2,U-ENSG,G-ENSE,v14.1,SP20120129.cdf
+Filesize: 45.27MBChip type: HuEx-1_0-st-v2,U-ENSG,G-ENSE,v14.1,SP20120129
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 2560x2560
+Number of cells: 6553600
+Number of units: 35202Cells per unit: 186.17
+Number of QC units: 0
+```
+
+Downloads:
+
+-   <%=chipTypeData('HuEx-1_0-st-v2', 'HuEx-1_0-st-v2,U-ENSG,G-ENSE,v14.1,SP20120129.cdf.gz')%> -
+    Custom CDF.  Contributed by Steve Pederson (School of Mathematical
+    Sciences, The University of Adelaide), January 2012.
+-   [HuEx-1_0-st-v2,U-ENSG,G-ENSE,v.14.1,SP20120129.supportfiles](http://dl.dropbox.com/u/9309787/HuEx-1_0-st-v2%2CU-ENSG%2CG-ENSE%2Cv14.1%2CSP20120129.supportfiles.zip) -
+    Contains the probe_tab file & mapping of probes to genomic
+    co-ordinates for genome build GRCh37/hg19.
+-   The script used to build the above is available
+    at: [buildCustomCdf.SP20120129.R](http://dl.dropbox.com/u/9309787/buildCustomCdf.SP20120129.R)
+
+Notes:
+
+-   This CDF was created by taking the common probes between v14.1 of
+    the Gene (ENSG) and Exon (ENSE) annotations from
+    [BrainArray](http://brainarray.mbni.med.umich.edu/brainarray/default.asp)
+    (U Michigan).
+-   Probes were placed into 289,999 groups based on common exon
+    mappings.
+-   Probes were placed into 35,202 units based on gene annotations.
+-   Every probe maps uniquely to one group.
+-   Every group maps uniquely to one unit.
+-   Some groups contain more than 4 probes. For a visual summary see
+    [this](http://dl.dropbox.com/u/9309787/ProbeDistributions.png).

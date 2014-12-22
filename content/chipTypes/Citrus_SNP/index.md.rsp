@@ -1,0 +1,27 @@
+# Chip type: Citrus_SNP
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("Citrus_SNP")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/Citrus_SNP
+Filename: Citrus_SNP.cdf
+Filesize: 25.64MB
+Chip type: Citrus_SNP
+RAM: 0.00MB
+Dimension: 984x984
+Number of cells: 968256
+Number of units: 5047
+Cells per unit: 191.85
+Number of QC units: 9
+```
+
+Note that the default CDF provided by Affymetrix is in the text/ASCII
+file format.  It is highly recommended to convert this to the binary/XDA
+format using `convertCdf()` of the <% bioc('affxparser') %> package.
+
+## Resources
+
+By Affymetrix.com:
+
+Product page: <http://www.affymetrix.com/browse/products.jsp?productId=131428>

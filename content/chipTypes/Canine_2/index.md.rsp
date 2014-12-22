@@ -1,0 +1,34 @@
+# Chip type: Canine_2
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("Canine_2")
+> cdf
+
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/Canine_2
+Filename: Canine_2.CDF
+Filesize: 19.64MB
+Chip type: Canine_2
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 984x984
+Number of cells: 968256
+Number of units: 43035
+Cells per unit: 22.50
+Number of QC units: 9
+```
+
+Note that the default CDF provided by Affymetrix is in the text/ASCII
+file format.&nbsp; It is highly recommended to convert this to the
+binary/XDA format using `convertCdf()` of the <% bioc('affxparser') %> package.
+
+## Resources
+
+By Aroma Project:
+
+-   <%=chipTypeData('Canine_2', 'Canine_2,HB20100918.acs.gz')%>
+
+By Affymetrix.com:
+
+-   Product page:
+    <http://www.affymetrix.com/estore/browse/products.jsp?productId=131425>

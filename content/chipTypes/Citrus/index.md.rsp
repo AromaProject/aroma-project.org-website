@@ -1,0 +1,30 @@
+# Chip type: Citrus
+
+Citrus
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("Citrus")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/Citrus
+Filename: Citrus.cdf
+Filesize: 57.58MB
+Chip type: Citrus
+RAM: 0.00MB
+Dimension: 984x984
+Number of cells: 968256
+Number of units: 30395
+Cells per unit: 31.86
+Number of QC units: 9
+```
+
+Note that the default CDF provided by Affymetrix is in the text/ASCII
+file format.  It is highly recommended to convert this to the binary/XDA
+format using `convertCdf()` of the <% bioc('affxparser') %> package.
+
+## Resources
+
+By Affymetrix.com:
+
+Product
+page: <http://www.affymetrix.com/browse/products.jsp?productId=131428>

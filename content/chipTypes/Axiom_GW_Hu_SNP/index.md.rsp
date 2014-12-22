@@ -1,0 +1,58 @@
+# Chip type: Axiom_GW_Hu_SNP
+
+## The Axiom Genotyping Solution
+
+Affymetrix' press release: *Affymetrix The Axiom Genotyping Solution
+Expands Content, Throughput, and Customizable Arrays on a Single
+Platform*, [Oct 14, 2009](http://www.reuters.com/article/pressRelease/idUS122013+14-Oct-2009+BW20091014).
+
+From the press release: "The Axiom Solution will support both
+whole-genome association and candidate gene association studies with a
+level of customization not currently available.  Researchers will no
+longer be constrained by the content of fixed-panel arrays.  The
+complete genotyping platform employs enzyme-mediated, single-base
+sequencing steps for specificity in conjunction with affordable,
+reproducible, and highly automated workflows. [...] With a single
+platform and as few as one-and-a-half full-time technicians, a
+laboratory can process more than 750 samples per week with unmatched,
+minimal user intervention. The first commercial products from this
+offering will support genome-wide association studies and are expected
+to be delivered to customers this month."  More at
+<http://www.axiom.affymetrix.com/>.
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("Axiom_GW_Hu_SNP", tags="r2")
+> cdf
+
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/Axiom_GW_Hu_SNP
+Filename: Axiom_GW_Hu_SNP,r2.cdf
+Filesize: 185.23MB
+Chip type: Axiom_GW_Hu_SNP,r2
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 1190x1190
+Number of cells: 1416100
+Number of units: 575100
+Cells per unit: 2.46
+Number of QC units: 4
+
+> unitNames <- getUnitNames(cdf)
+> seqToHumanReadable(grep("\^AFFX-", unitNames))
+[1] "1-8004"
+> seqToHumanReadable(grep("\^AX-", unitNames))
+[1] "8005-575100"
+```
+
+NOTE: There are no analysis methods in aroma.affymetrix that supports
+this chip type.  There are several reasons for this, one is that the CEL
+files the Axiom platform are so called multi-channel CEL, and none of
+the preprocessing methods are prepared for this.
+
+### Resources
+
+By Affymetrix.com:
+
+-   Product page:
+    <http://www.affymetrix.com/products_services/arrays/specific/axiom_solution.affx>
+-   Public data: ?

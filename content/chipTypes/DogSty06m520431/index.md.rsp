@@ -1,0 +1,129 @@
+# Chip type: DogSty06m520431
+
+The DogSty06m520431 chip type is the 2nd version of a custom Canine SNP
+array.
+
+From Broad's [Canine SNP
+FAQ](http://www.broad.mit.edu/mammals/dog/caninearrayfaq.html)
+(2008-07-21): "The version 2 array (part number 520431) is a 5 um,
+100-format, PM probe only (20 probes/SNP) WGSA design, which can detect
+a total of 127K SNPs. These SNPs were chosen from the 2.5 million SNP
+map generated as part of the dog genome project and include the majority
+of the v1 platinum set SNPs. A "v2 platinum" set of 49,663 SNPs was
+selected to include accurate and robust SNPs, using a panel of \>10
+diverse breeds. The library file (DogSNPs520431P) has masked out the
+SNPs that are not of high quality and thus only will show results for
+the "v2 platinum" SNPs. Also available is the library file for all
+SNPs.".
+
+*Important for aroma.affymetrix users*: The two CDFs available from
+Broad are named DogSty06m520431.cdf and DogSty06m520431P.cdf where the
+'P' indicates 'Platinum'.  Since both CDFs refer to the same (physical)
+chip type, it is more convenient to put the in the same
+annotationData/chipType/DogSty06m520431/ directory.  For
+aroma.affymetrix to be able to locate the Platinum CDF, **rename
+DogSty06m520431P.cdf to DogSty06m520431,Platinum.cdf**.
+
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("DogSty06m520431")
+> cdf
+
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/DogSty06m520431
+Filename: DogSty06m520431.cdf
+Filesize: 84.63MB
+Chip type: DogSty06m520431
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 1612x1612
+Number of cells: 2598544
+Number of units: 127201
+Cells per unit: 20.43
+Number of QC units: 0
+
+> cdf <- AffymetrixCdfFile$byChipType("DogSty06m520431,Platinum")
+> cdf
+
+Path: annotationData/chipTypes/DogSty06m520431
+Filename: DogSty06m520431,Platinum.cdf
+Filesize: 33.27MB
+Chip type: DogSty06m520431,Platinum
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 1612x1612
+Number of cells: 2598544
+Number of units: 49732
+Cells per unit: 52.25
+Number of QC units: 6
+```
+
+
+## Resources
+
+By aroma-project.org:
+
+-   <%=chipTypeData('DogSty06m520431', 'DogSty06m520431,Broad20080721,HB20080721.ugp.gz')%>
+    - Unit Genome Position (UGP) annotation file mapping to the units in
+    the DogSty06m520431.CDF.  Created by: Henrik Bengtsson, 2008-07-21.
+    Sources: Broad's AffyV2_all_probeset.txt (5.74MB; downloaded
+    2008-07-21).
+-   <%=chipTypeData('DogSty06m520431', 'DogSty06m520431,Platinum,Broad20080721,HB20080721.ugp.gz')%>
+    - Unit Genome Position (UGP) annotation file mapping to the units in
+    the DogSty06m520431,Platinum.CDF.  Created by: Henrik Bengtsson,
+    2008-07-21. Sources: Broad's AffyV2_all_probeset.txt (5.74MB;
+    downloaded 2008-07-21).
+-   <%=chipTypeData('DogSty06m520431', 'DogSty06m520431,HB20100920.acs.gz')%> -
+    Aroma Cell Sequence (ACS) annotation file mapping cell indices to
+    25-mer sequences and target strandness.  Sources: Affymetrix
+    probe_tab file (private communication).  Created by: Henrik
+    Bengtsson, 2010-09-20.
+
+By Broad Institute:
+
+-   [Support
+    materials](http://www.broad.mit.edu/mammals/dog/caninearrayfaq.html)
+    (CDFs, annotation data for genome positions etc.)
+
+
+## Appendix
+
+### How the UGP files were created
+
+```r
+library("aroma.affymetrix")
+
+# Choose the CDF to create an UGP file for
+cdf <- AffymetrixCdfFile$byChipType("DogSty06m520431", tags="Platinum")
+cdf <- AffymetrixCdfFile$byChipType("DogSty06m520431")
+
+# Allocate empty UGP file
+ugp <- AromaUgpFile$allocateFromCdf(cdf, tags="Broad20080721,HB20080721")
+
+# Read genome location data from external text file
+tab <- TabularTextFile("AffyV2_all_probeset.txt", path=getPath(cdf))
+colClassPatterns <- c(ProbeId="character", Chr="character", Pos="integer")
+df <- readDataFrame(tab, colClassPatterns=colClassPatterns)
+
+# Coerce chromosome labels to integers
+df$Chr[df$Chr == "X"] <- "39" # Turn ChrX into Chr39.
+df$Chr <- as.integer(df$Chr)
+
+# Write data to UGP file
+units <- indexOf(cdf, names=df$ProbeId)
+
+# Store only units existing in the CDF
+keep <- !is.na(units)
+ugp[units[keep],1] <- df$Chr[keep]
+ugp[units[keep],2] <- df$Pos[keep]
+
+# Update UGP file footer
+footer <- readFooter(ugp)
+footer$createdBy <- list(fullname="Henrik Bengtsson")
+footer$srcFile <- list(
+  filename=getFilename(tab),
+  filesize=getFileSize(tab),
+  checksum=getChecksum(tab)
+)
+writeFooter(ugp, footer)
+```

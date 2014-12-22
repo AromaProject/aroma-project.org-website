@@ -1,0 +1,86 @@
+# Chip type: HuGene-1_0-st-v1
+
+## Human Gene 1.0 ST Array
+
+Affymetrix writes: "The GeneChip Human Gene 1.0 ST Array is the latest
+product in the family of Affymetrix expression arrays offering
+whole-transcript coverage. Each of the 28,869 genes is represented on
+the array by approximately 26 probes spread across the full length of
+the gene, providing a more complete and more accurate picture of gene
+expression than 3' based expression array designs. [...] The Gene 1.0 ST
+Array uses a subset of probes from the Human Exon 1.0 ST Array and
+covers only well-annotated content. Like the Exon 1.0 ST Array,
+"gene-level" analysis of multiple probes on different exons is
+summarized into an expression value representing all transcripts from
+the same gene."
+
+### HuGene-1_0-st-v1.r3
+
+Note, the CDF downloaded from the Affymetrix website is in an ASCII
+(text) file format.  It is highly recommended to work with binary CDFs
+instead since they are orders of magnitute faster to query and more
+memory efficient to work with.  Use `convertCdf()` in the
+<% bioc('affxparser') %> package to convert an ASCII CDF into binary.
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("HuGene-1_0-st-v1",
+tags="r3")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HuGene-1_0-st-v1
+Filename: HuGene-1_0-st-v1,r3.cdf
+Filesize: 16.67MB
+Chip type: HuGene-1_0-st-v1,r3
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 1050x1050
+Number of cells: 1102500
+Number of units: 33252
+Cells per unit: 33.16
+Number of QC units: 0
+```
+
+
+
+### HuGene-1_0-st-v1,Ensembl,exon
+
+
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType(chipType, tags="Ensembl,exon")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HuGene-1_0-st-v1
+Filename: HuGene-1_0-st-v1,Ensembl,exon.cdf
+Filesize: 28.51MB
+Chip type: HuGene-1_0-st-v1,Ensembl,exon
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 1050x1050
+Number of cells: 1102500
+Number of units: 27901
+Cells per unit: 39.51
+Number of QC units: 0
+```
+
+
+
+## Resources
+
+By aroma-project.org:
+
+-   <%=chipTypeData('HuGene-1_0-st-v1', 'HuGene-1_0-st-v1,r3.cdf.gz')%>
+    - The binary version of the Affymetrix unsupported CDF.  Created by
+    Mark Robinson on 2008-08-28.
+-   <%=chipTypeData('HuGene-1_0-st-v1', 'HuGene-1_0-st-v1,Ensembl,exon.cdf.gz')%> -
+    The Ensembl-centric (gene and exon) CDF used in the FIRMAGene paper
+    ([Robinson & Speed, 2007](<%=pathTo('/publications/')%>)).  This file is identical
+    to HuGene_Ensembl_EXON.cdf linked to in that paper.  Created by
+    Mark Robinson in 2007.
+
+
+
+By Affymetrix:
+
+-   Product page: [Human Gene 1.0 ST
+    Array](http://www.affymetrix.com/estore/browse/products.jsp?productId=131453)

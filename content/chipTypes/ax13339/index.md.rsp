@@ -1,0 +1,88 @@
+# Chip type: ax13339
+
+I have very little information on this chip type, but it "appears" (see
+reference below) to be the Early Access version of the 10K SNP chip.  I
+would appreciate any further comments/references about this chip type
+from anyone who knows.  /Henrik 2008-07-04
+
+In Zhao X et al. (2004), the ax13339 chip type is referred to as "XbaI
+mapping array 130" (p 3061), which further indicates that this is an
+early version of the Mapping10K_Xba131 and the successor
+Mapping10K_Xba142.
+
+## ax13339
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("ax13339")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/ax13339
+Filename: ax13339.CDF
+Filesize: 8.22MB
+Chip type: ax13339
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 712x712
+Number of cells: 506944
+Number of units: 10043
+Cells per unit: 50.48
+Number of QC units: 9
+```
+
+Comparing to the Mapping10K_Xba131 chip type, we note that they have
+the same dimensions but different number of units.  This could mean that
+the two chip types ax13339 and Mapping10K_Xba131 are identical, but
+that the annotation has been updated.
+
+All units are listed as 'CustomSeq' (unit type 1) units, whereas for the
+10K SNP chips we should see 'Genotyping' (unit type 2) units:
+
+```r
+> unitTypes <- getUnitTypes(cdf)
+> print(table(unitTypes))
+unitTypes
+   1
+10043
+```
+
+
+
+## Resources
+
+By dChip.org:
+
+-   CDF, dChip genome information file:
+    <http://www.hsph.harvard.edu/cli/complab/dchip/snp.htm>
+
+By Harvard:
+
+-   CDF, dChip genome information file & other genomic annotation files:
+    <http://research.dfci.harvard.edu/meyersonlab/snp/snp.htm> (under
+    'Data download')
+
+## References
+
+[Affymetrix 2007] Affymetrix, *Improved gridding algorithms in AGCC
+produce equivalent biological results*, White paper,
+2007(?). URL: <http://www.affymetrix.com/support/technical/whitepapers/agcc_gridding_whitepaper.pdf>
+
+[GEO-GPL3400] GEO, *Platform GPL3400: Affymetrix GeneChip Mapping
+Pre-Release 10K Array (ax13339)*, August 29, 2006.
+URL: <http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GPL3400>
+
+[LiC_2008] Cheng Li, *dChip: SNP array data processing*, July 2008.
+URL: <http://www.hsph.harvard.edu/cli/complab/dchip/>
+
+[Lindblad-Toh et al. 2000] Lindblad-Toh K et al.,
+*Loss-of-heterozygosity analysis of small-cell lung carcinomas using
+single-nucleotide polymorphism arrays,* Nature Biotechnology  18,
+1001-1005, 2000. [doi:10.1038/79269]
+
+[McCann et al. 2007] McCann et al., *ChIP on SNP-chip for genome-wide
+analysis of human histone H4 hyperacetylation*. BMC Genomics*,*
+**2007***, 8*, 322. [pmid:
+[17868463](http://www.ncbi.nlm.nih.gov/pubmed/17868463)]
+
+[Zhao X et al. 2004] Zhao X et al., *An Integrated View of Copy Number
+and Allelic Alterations in the Cancer Genome Using Single Nucleotide
+Polymorphism Arrays*, Cancer Research, 64, 3060-3071, May 2004.

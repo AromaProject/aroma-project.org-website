@@ -1,0 +1,116 @@
+# Chip type: HuEx-1_0-st-v2
+
+## GeneChip Human Exon 1.0 ST Array
+
+Affymetrix press release: Affymetrix Launches GeneChip(R) Human Exon
+Array - New Microarray Offers Exon-Level, Genome-Wide Expression
+Profiling on a Single Array, [Oct 3,
+2005](http://investor.affymetrix.com/phoenix.zhtml?c=116408&p=irol-newsArticle&ID=763269).
+
+Comments: ST == Sense Target.  
+
+
+## HuEx-1_0-st-v2
+
+Affymetrix offers a by them
+unsupported [CDF](http://www.affymetrix.com/Auth/support/downloads/library_files/HuEx-1_0-st-v2.cdf.zip)
+for the chip type HuEx-1_0-st-v2.
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("HuEx-1_0-st-v2")
+> print(cdf)
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HuEx-1_0-st-v2/ASCII
+Filename: HuEx-1_0-st-v2.cdf
+Filesize: 933.84MB
+File format: v3 (text; ASCII)
+Chip type: HuEx-1_0-st-v2
+Dimension: 2560x2560
+Number of cells: 6553600
+Number of units: 1432154
+Cells per unit: 4.58
+Number of QC units: 0RAM: 0.00MB
+```
+
+This is a CDF per exon: each unit has one group/probeset, which is the
+exon. There is no information about clustering exons/probesets into
+genes -- see the following subpages for options for CDFs with
+clusterings of exons into gene models. There are also a number of
+strange probesets corresponding to control probes which can contain VERY
+large numbers of probes per probeset and significantly slow down RMA
+fitting.  See Thread '[Ram option is aroma
+Options](http://groups.google.com/group/aroma-affymetrix/browse_thread/thread/ddf66c8f33b37544#)'
+(Nov 8, 2007), for examples. These probesets should be removed or one of
+the CDFs below which do not contain them should be used.
+
+Note I: The CDF downloaded from the Affymetrix website is in an ASCII
+(text) file format.  It is highly recommended to work with  binary CDFs
+instead since they are orders of magnitute faster to query and more
+memory efficient to work with.  Use convertCdf() in the affxparser
+package to convert an ASCII CDF into binary.
+
+Note II: Older CEL files for this chip type, may be reported to have
+chip type 'HuEx-1_0-st-v1'.  This chip is slightly different from the
+'HuEx-1_0-st-v2' chip.  According to Affymetrix support, the difference
+is only in the control probes; "There is only a minor difference between
+the v1 and the v2 library files and it has to do with the manufacturing
+controls on the array. There is no difference with the probes
+interrogating the exons between v1 and v2.", cf. Thread '[Discussion on
+affymetrix-defined-transcript-clusters](http://groups.google.com/group/aroma-affymetrix/browse_thread/thread/6b3e53d3036d2515)'
+(Nov 25-Dec 2, 2008).  We don't have details on the exact differences
+and we don't have access to the HuEx-1_0-st.v1.CDF (please fwd if you
+have it), but from Affymetrix' feedback it sounds like one could use the
+new HuEx-1_0-st-v2.CDF.  In aroma.affymetrix, one can override the
+default CDF by:
+
+```r
+cdf <- AffymetrixCdfFile$byChipType("HuEx-1_0-st-v2")
+csR <- AffymetrixCelSet$byName("MyDataSet", cdf=cdf)
+```
+
+## Resources
+
+By aroma-project.org:
+
+-   <%=chipTypeData('HuEx-1_0-st-v2', 'HuEx-1_0-st-v2,HB20080710.acs.gz')%>
+    - Aroma Cell Sequence (ACS) annotation file mapping cell indices to
+    25-mer sequences and target strandness.  Sources: Affymetrix
+    HuEx-1_0-st-v2.probe.tab file.  Created by: Henrik Bengtsson,
+    2008-07-10.
+-   <%=chipTypeData('HuEx-1_0-st-v2', 'HuEx-1_0-st-v2.cdf.gz')%> -
+    A binary version of the Affymetrix unsupported CDF.  Sources:
+    Affymetrix HuEx-1_0-st-v2.text.CDF.  Created by: Henrik Bengtsson,
+    2010-12-03.
+
+
+
+The following subpages contain **custom CDFs** that map the exon array
+probes to gene models:
+
+-   [Affymetrix-Defined transcript
+    clusters](<%=pathTo('/chipTypes/HuEx-1_0-st-v2/transcriptClustersCDFs')%>) are a
+    'gene model' of sorts defined by clustering of exons automatically
+    done by Affymetrix. The CDF contains both the transcript clusters as
+    well as the exon identifications of the probes in a nested fashion.
+-   [Ensembl Gene
+    Defintions](<%=pathTo('/chipTypes/HuEx-1_0-st-v2/Ensembl_Gene_Definitions')%>) gene
+    models based on the Ensembl annotation.
+-   [HsEx10stv2_Hs_REFSEQ](<%=pathTo('/chipTypes/HuEx-1_0-st-v2/HsEx10stv2_Hs_REFSEQ')%>) give
+    some notes regarding regarding custom CDFs from U Michigan that map
+    the exons to RefSeq transcript identifications.
+
+If you would like to contribute a custom-made CDF that would be great.
+Please give your file descriptive tags that indicate either the date of
+creation or the date of the annotation on which it is based (something
+like: HuEx-1_0-st-v2,MyFavAnnot,20070525,xx.cdf where xx are you or
+your institution's initials) and create a page describing how it was
+made. Please do not give it a name of a pre-existing CDF available here!
+Contact Elizabeth Purdom if you need assistance with contributing a CDF.
+
+
+
+By Affymetrix:
+
+-   [Support
+    Materials](http://www.affymetrix.com/browse/products.jsp?productId=131452&navMode=34000&navAction=jump&aId=productsNav#1_1 "http://www.affymetrix.com/support/technical/byproduct.affx?product=500k") (Library
+    files w/ CDFs, probe sequences etc.)

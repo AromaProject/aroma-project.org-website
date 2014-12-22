@@ -1,0 +1,158 @@
+# Chip type: GenomeWideSNP_5
+
+## Genome-Wide Human SNP Array 5.0
+
+Affymetrix' press release: *Affymetrix Releases Its Most Comprehensive
+Single Array for Genetic Studies*, [Feb 20,
+2007](http://www.corporate-ir.net/ireye/ir_site.zhtml?ticker=AFFX&script=410&layout=-6&item_id=964780).
+
+**Summary:**
+
+The Genome-Wide Human SNP Array 5.0 is a PM-only chip.  *SNPs:* It
+contains the exact same set of **500,568 SNPs** as was available on the
+Mapping250K_{Nsp|Sty} chip set.  They have the same rsID.  The
+difference is that this array and the 500K arrays use different probes
+to interrogate the SNPs.  The probes on this chip type were chosen from
+the ones on 500K arrays.  Allele A probes were selected and put down in
+the array as technical replicates, and same for allele B probes.  There
+are equal number of allele A and allele B probes, but they are may not
+be with the same "shift".  That is, the A and B probes were *not*
+selected in pairs.  The probes were selected according to their genotype
+performance by looking how well they separated the genotype groups.
+However, by "chance", approximately 350K of the SNPs turned how to have
+paired A and B probes.  The other 150K SNPs have unpaired A and B
+probes.  Since Affymetrix, in general, optimize the layout of probes
+from their sequences etc., the unpaired probes are spatially dislocated,
+whereas the paired probes are next to each other on the array.  There
+are also 2748 units named "AFFX-SNP_nnnnnn"; I don't what these are.
+*Copy-number non-polymorphic probes (CNPs):* In addition to the
+above 500K SNPs, there are also **340,742 CN units**.  Almost all of
+these are single-probe units. Their positions were chosen to "fill" in
+the gaps between the SNPs.  
+Source: Private communication with Affymetrix, Henrik Bengtsson,
+2007-04-22
+
+**Two CDFs:**
+
+Currently Affymetrix provides two different CDF files for this chip
+type, one named *GenomeWideSNP_5.cdf* that contains only the SNPs, and
+one named *GenomeWideSNP_5.Full.cdf* that contains the SNPs as well as
+all the non-polymorphic units.
+
+Furthermore, this is what Affymetrix writes in their 'Data Sheet:
+Affymetrix: Genome-Wide Human SNP Array 5.0' (2007): "Two alternate SNP
+List (CDF) files are available. These files identify which SNPs are
+available for downstream analysis. GenomeWideSNP_5.cdf is the default
+set of 440,794 SNPs that are accessible via the Genotyping Console
+(BRLMM-P algorithm).  GenomeWideSNP_5.Full.cdf is for advanced users
+who wish to look at all SNPs from the previous-generation Mapping 500K
+Array Set. This CDF file can only be accessed from the commandline tool,
+snp5-probeset-genotype, which is part of the Affymetrix Power Tools
+distribution. The full CDF file includes SNPs that may have lower
+per-SNP accuracy or call rates. It is expected that the performance of
+some of these SNPs will improve with different or future algorithms."
+/HB 2007-11-26
+
+**...and now also an "Alternative CDF":**
+
+"Affymetrix is providing alternative CDF files, for the Affymetrix
+genotyping array- Genome-Wide Human SNP Array 5.0. These CDF files
+provide uniform access to the Copy Number probe content by presenting
+"**one probe per probeset**" in both the full and default updated CDF
+files. This uniform access applies to both Affymetrix genotyping arrays
+with Copy Number content- Genome-Wide Human SNP Array 5.0 and
+Genome-Wide Human SNP Array 6.0." /HB 2007-12-02
+
+## GenomeWideSNP_5.Full.r2
+
+This is the CDF file that is recommended and support in
+aroma.affymetrix.  *Note, make sure to rename it such that you replace
+the dots with commas.*
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("GenomeWideSNP_5", tags="Full,r2")
+> cdf
+
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/GenomeWideSNP_5
+Filename: GenomeWideSNP_5,Full,r2.cdf
+Filesize: 249.46MB
+File format: v4 (binary; XDA)
+Chip type: GenomeWideSNP_5,Full,r2
+Dimension: 2166x2166
+Number of cells: 4691556
+Number of units: 920928
+Cells per unit: 5.09
+Number of QC units: 6
+RAM: 0.00MB
+```
+
+## BI_SNP
+
+The early access version of this chip type was labeled BI_SNP with the
+below CDF.  This means that some early CEL files might have this chip
+type in the header instead of newer GenomeWideSNP_5 label.
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("BI_SNP")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/BI_SNP
+Filename: BI_SNP.cdf
+Filesize: 237.08MB
+Chip type: BI_SNP
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 2166x2166
+Number of cells: 4691556
+Number of units: 844401
+Cells per unit: 5.56
+Number of QC units: 6
+```
+
+Q: *What SNPs are on the GenomeWide Human SNP v5.0 array?*
+
+A: The SNPs on this array, are *identical* to the ones in the 500K chip
+set, they are even in the same order (but using different probes and PMs
+only).  In fact, the ordering are even the same in the CDFs as this
+example illustrates:
+
+```r
+cdfNsp <- AffymetrixCdfFile$byChipType("Mapping250K_Nsp")
+cdfSty <- AffymetrixCdfFile$byChipType("Mapping250K_Sty")
+cdf50 <- AffymetrixCdfFile$byChipType("GenomeWideSNP_5",
+tags="Full,r2")
+un500K <- c(getUnitNames(cdfNsp), getUnitNames(cdfSty))
+snps500K <- grep("\^SNP_", un500K, value=TRUE)
+un50 <- getUnitNames(cdf50)
+snps50 <- grep("\^SNP_", un50, value=TRUE)
+print(identical(snps50, snps500K));   # Gives TRUE
+```
+
+## Resources
+
+By aroma-project.org:
+
+-   <%=chipTypeData('GenomeWideSNP_5', 'GenomeWideSNP_5,Full,r2,na26,HB20080822.ufl.gz')%> (<%=chipTypeData('GenomeWideSNP_5', 'GenomeWideSNP_5,r2,na26,HB20080822.ufl.gz')%>).  
+    Script:
+    <%=chipTypeData('GenomeWideSNP_5', 'scripts/GenomeWideSNP_5,UFL,na26,GWS6.R')%>.
+-   <%=chipTypeData('GenomeWideSNP_5', 'GenomeWideSNP_5,Full,r2,na26,HB20080822.ugp.gz')%>
+    (<%=chipTypeData('GenomeWideSNP_5', 'GenomeWideSNP_5,r2,na26,HB20080822.ugp.gz')%>).  
+    Script:
+    <%=chipTypeData('GenomeWideSNP_5', 'scripts/GenomeWideSNP_5,UGP,na26.R')%>.
+-   <%=chipTypeData('GenomeWideSNP_5', 'GenomeWideSNP_5,HB20080710.acs.gz')%>
+
+By Affymetrix:
+
+-   [Product
+    page](http://www.affymetrix.com/support/technical/byproduct.affx?product=genomewidesnp_5)
+-   [Datasheet](http://www.affymetrix.com/support/technical/datasheets/genomewide_snp5_datasheet.pdf)
+-   [Support
+    Materials](http://www.affymetrix.com/support/technical/byproduct.affx?product=genomewidesnp_5) (SNP
+    annotation files with SNP positions, dbSNP ID, fragment lengths etc.
+    Probe sequences.)
+
+By dChip.org:
+
+-   Annotation files: [Genome Information
+    file](http://www.hsph.harvard.edu/cli/complab/dchip/snp5_genome_info_hg18.rar)

@@ -1,0 +1,34 @@
+# Chip type: HT_MG-430_PM
+
+## GeneChip HT MG-430 PM Array Plate
+
+"The HT MG-430 PM Array Plate enables you to: (\*) Measure gene
+expression of more than 39,000 transcripts on a single array. (\*) Get
+accurate and reproducible data by using multiple independent
+measurements for each transcript" /Affymetrix
+
+## HT_MG-430_PM
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("HT_MG-430_PM")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HT_MG-430_PM
+Filename: HT_MG-430_PM.cdf
+Filesize: 14.19MB
+Chip type: HT_MG-430_PM
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 744x744
+Number of cells: 553536
+Number of units: 45141
+Cells per unit: 12.26
+Number of QC units: 4
+```
+
+
+## Resources
+
+**By Affymetrix**:
+
+-   Product page: <http://www.affymetrix.com/estore/browse/products.jsp?productId=131444&categoryId=35605>
