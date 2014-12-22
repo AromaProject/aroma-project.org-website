@@ -1,0 +1,29 @@
+# Chip type: HG-Focus
+
+Human Genome Focus Array
+
+## HG-Focus
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("HG-Focus")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HG-Focus
+Filename: HG-Focus.CDF
+Filesize: 4.06MB
+Chip type: HG-Focus
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 448x448
+Number of cells: 200704
+Number of units: 8793
+Cells per unit: 22.83
+Number of QC units: 10
+```
+
+
+## Resources
+
+By Affymetrix:
+
+* Product page: [Human Genome Focus Array](http://www.affymetrix.com/estore/support/technical/byproduct.affx?product=focus)

@@ -44,8 +44,6 @@ Number of QC units: 0
 
 ### HuGene-1_0-st-v1,Ensembl,exon
 
-
-
 ```r
 > cdf <- AffymetrixCdfFile$byChipType(chipType, tags="Ensembl,exon")
 > cdf
@@ -64,7 +62,6 @@ Number of QC units: 0
 ```
 
 
-
 ## Resources
 
 By aroma-project.org:
@@ -77,8 +74,6 @@ By aroma-project.org:
     ([Robinson & Speed, 2007](<%=pathTo('/publications/')%>)).  This file is identical
     to HuGene_Ensembl_EXON.cdf linked to in that paper.  Created by
     Mark Robinson in 2007.
-
-
 
 By Affymetrix:
 

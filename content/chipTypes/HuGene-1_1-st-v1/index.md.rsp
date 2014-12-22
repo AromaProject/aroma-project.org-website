@@ -17,7 +17,7 @@ Note, Affymetrix does not provide a CDF for this chip type. Instead we
 have created one from the <% bioc('pd.hugene.1.st.v1') %> Bioconductor
 annotation package, cf. the [How tos](<%=pathTo('/howtos/')%>) pages.
 
-```
+```r
 > cdf <- AffymetrixCdfFile$byChipType("HuGene-1_1-st-v1", tags="pd.hugene.1.st.v1,hg19,BioC2.10,HB20120615")
 > cdf
 AffymetrixCdfFile:

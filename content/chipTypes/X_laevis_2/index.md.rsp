@@ -1,0 +1,24 @@
+# Chip type: X_laevis_2
+
+## Xenopus laevis Genome 2.0
+
+```r
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/X_laevis_2
+Filename: X_laevis_2.CDF
+Filesize: 74.94MB
+Chip type: X_laevis_2
+RAM: 0.00MB
+File format: v3 (text; ASCII)
+Dimension: 984x984
+Number of cells: 968256
+Number of units: 32635
+Cells per unit: 29.67
+Number of QC units: 9
+```
+
+### Resources
+
+By Affymetrix:
+
+-   [Product  page](http://www.affymetrix.com/browse/products.jsp?productId=131525&navMode=34000&navAction=jump&aId=productsNav#1_1)

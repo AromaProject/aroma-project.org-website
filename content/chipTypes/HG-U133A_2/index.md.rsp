@@ -1,0 +1,32 @@
+# Chip type: HG-U133A_2
+
+## Human Genome U133A 2.0 Array
+
+Note that, regardless of their similarities in names, all the following
+chip types are physically different arrays: HG-U133A (712x712
+cells), HG-U133A_2 (732x732), HT_HG-U133A (744x744), HG-U133_Plus_2
+(1164x1164), HT_HG-U133_Plus_PM (744x744).
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("HG-U133A_2")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HG-U133A_2
+Filename: HG-U133A_2.cdf
+Filesize: 38.41MB
+Chip type: HG-U133A_2
+RAM: 0.00MB
+File format: v3 (text; ASCII)
+Dimension: 732x732
+Number of cells: 535824
+Number of units: 22277
+Cells per unit: 24.05
+Number of QC units: 9
+```
+
+
+## Resources
+
+By Affymetrix:
+
+* Product page: <http://www.affymetrix.com/support/technical/byproduct.affx?product=hgu133-20>

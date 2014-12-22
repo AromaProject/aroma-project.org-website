@@ -1,0 +1,46 @@
+# Chip type: HuGeneFL (a.k.a. Hu6800)
+
+## HuGeneFL (a.k.a. Hu6800)
+
+"The Affymetrix GeneChip HuGeneFL Array is a single array that enables
+the relative monitoring of mRNA transcripts ofapproximately 5,600
+full-length human genes. The full-length genes were selected from three
+databases: exemplars from UniGene Build 18 supplemented with additional
+genes from GeneBank and TIGR. This array was initially released
+byAffymetrix in November of 1998." [Affymetrix, GeneChip Made-to-Order
+Program, Part No. 701159  Rev 2, 2001]
+
+This chip type is also known as: Hu6800
+(<http://www.hsph.harvard.edu/cli/complab/dchip/info_file.htm>) and
+HG-U6800.
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("Hu6800")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/Hu6800
+Filename: Hu6800.cdf
+Filesize: 20.40MB
+Chip type: Hu6800
+RAM: 0.00MB
+File format: v3 (text; ASCII)
+Dimension: 536x536
+Number of cells: 287296
+Number of units: 7129
+Cells per unit: 40.30
+Number of QC units: 10
+```
+
+## Resources
+
+By Affymetrix:
+
+-   ???
+
+By AffyProbeMiner:
+
+-   [Custom CDFs](http://gauss.dbb.georgetown.edu/liblab/affyprobeminer/transcript.html) (under 'Affymetrix GCOS')
+
+By dChip:
+
+-   [Gene annotations](http://www.hsph.harvard.edu/cli/complab/dchip/info_file.htm)

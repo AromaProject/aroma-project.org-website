@@ -1,0 +1,42 @@
+# Chip type: CytoScan750K_Array
+
+## CytoScan 750K Array
+
+From Affymetrix' web site: "Available Outside US/Canada Only [...] The
+CytoScan 750K Array includes 200,000 gene-centric SNPs to enable
+confident breakpoint estimation, 5 Mb loss of heterozygosity (LOH)
+determination and detection of uniparental iso-disomy (UPD) and regions
+identical-by-descent."
+
+### CytoScan750K_Array
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("CytoScan750K_Array")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/CytoScan750K_Array
+Filename: CytoScan750K_Array.cdf
+Filesize: 161.10MB
+Chip type: CytoScan750K_Array
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 2166x2166
+Number of cells: 4691556
+Number of units: 750865
+Cells per unit: 6.25
+Number of QC units: 4
+```
+
+
+
+There are 200,691 SNPs (plus 151 control SNPs) and 550,000 CN units in
+this CDF.  Out of the 200,691 SNPs, 200,439 have three probe pairs, 131
+have four, 61 have two and the remaining various sizes. All CN units are
+single CN probes.
+
+
+### Resources
+
+By Affymetrix:
+
+* [Product page](http://www.affymetrix.com/browse/products.jsp?navMode=34000&productId=prod570043)

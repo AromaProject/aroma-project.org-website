@@ -1,0 +1,118 @@
+# Human Genome U95 Set
+
+## Human Genome U95 Set
+
+"This is a previous generation product [...].  This set of five GeneChip
+probe arrays contains almost 63,000 probe sets interrogating
+approximately 54,000 UniGene clusters derived from Build 95 of UniGene.
+Based on this UniGene build and associated annotations, the HG-U95Av2
+array represents approximately 10,000 full-length genes, while arrays
+B-E represent EST clusters."  (Affymetrix Product page as of 2011-05-27)
+
+### HG_U95A
+
+Note that the "A" chip was later replaced by the updated
+[HG_U95Av2](<%=pathTo('/chipTypes/HG_U95Av2')%>) chip type.
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("HG_U95A")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HG_U95A
+Filename: HG_U95A.cdf
+Filesize: 29.11MB
+Chip type: HG_U95A
+RAM: 0.00MB
+File format: v3 (text; ASCII)
+Dimension: 640x640
+Number of cells: 409600
+Number of units: 12626
+Cells per unit: 32.44
+Number of QC units: 13
+```
+
+
+
+### HG_U95B
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("HG_U95B")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HG_U95B
+Filename: HG_U95B.CDF
+Filesize: 29.16MB
+Chip type: HG_U95B
+RAM: 0.00MB
+File format: v3 (text; ASCII)
+Dimension: 640x640
+Number of cells: 409600
+Number of units: 12620
+Cells per unit: 32.46
+Number of QC units: 13
+```
+
+### HG_U95C
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("HG_U95C")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HG_U95C
+Filename: HG_U95C.CDF
+Filesize: 29.22MB
+Chip type: HG_U95C
+RAM: 0.00MB
+File format: v3 (text; ASCII)
+Dimension: 640x640
+Number of cells: 409600
+Number of units: 12646
+Cells per unit: 32.39
+Number of QC units: 13
+```
+
+### HG_U95D
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("HG_U95D")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HG_U95D
+Filename: HG_U95D.CDF
+Filesize: 29.20MB
+Chip type: HG_U95D
+RAM: 0.00MB
+File format: v3 (text; ASCII)
+Dimension: 640x640
+Number of cells: 409600
+Number of units: 12644
+Cells per unit: 32.39
+Number of QC units: 13
+```
+
+### HG_U95E
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("HG_U95E")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HG_U95E
+Filename: HG_U95E.CDF
+Filesize: 29.20MB
+Chip type: HG_U95E
+RAM: 0.00MB
+File format: v3 (text; ASCII)
+Dimension: 640x640
+Number of cells: 409600
+Number of units: 12639
+Cells per unit: 32.41
+Number of QC units: 13
+```
+
+
+
+## Resources
+
+By Affymetrix:
+
+* [Product page](http://www.affymetrix.com/estore/browse/products.jsp;jsessionid=2292CB3507B7386C16260BF68DF05199?navMode=34000&productId=131538&navAction=jump&aId=productsNav#1_1)

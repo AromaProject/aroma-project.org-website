@@ -1,0 +1,34 @@
+# Chip type: PrimeView
+
+## PrimeView Human Gene Expression Array
+
+"The GeneChip PrimeView Human Gene Expression Array cartridge enables
+expression profiling using probe sets with an emphasis on established,
+well annotated content. Sequences used in the design of the array were
+selected from the RefSeq version 36, UniGene database 219, and
+full-length human mRNAs from GenBank. [...] Measure gene expression of
+more than 36,000 transcripts and variants per sample." /Affymetrix
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("PrimeView")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/PrimeView
+Filename: PrimeView.cdf
+Filesize: 15.36MB
+Chip type: PrimeView
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 732x732
+Number of cells: 535824
+Number of units: 49395
+Cells per unit: 10.85
+```
+
+
+
+## Resources
+
+By Affymetrix.com:
+
+* Product Page: <http://www.affymetrix.com/browse/products.jsp?productId=prod530005>
