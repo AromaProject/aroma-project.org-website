@@ -1,0 +1,370 @@
+# Vignette: FIRMA - Human exon array analysis
+
+## Human exon array analysis
+
+Authors: Ken Simpson, Elizabeth Purdom, Mark Robinson, Henrik Bengtsson  
+Created: 2007-02-16  
+Last updated: 2014-12-21
+
+This document describes how perform FIRMA <% citep('PurdomE_etal_2008-FIRMA') %> on an HuEx-1_0-st-v2 exon microarray data set.
+
+<% please_cite(c(
+  'BengtssonH_etal_2008-aroma.affymetrix',
+  'PurdomE_etal_2008-FIRMA'
+)) %>
+
+
+## Setup
+
+### Raw data
+
+* Test set: BCGC_2006 (35x breast cancer samples on human exon arrays
+from LBL. Unfortunately this data is currently not publically
+available.)
+* Path: rawData/BCGC_2006/HuEx-1_0-st-v2/
+
+### Annotation data
+
+Here we will use a custom CDF that consists of only 'core' probesets.
+Get the following annotation files and place them in
+annotationData/chipTypes/HuEx-1_0-st-v2/.
+
+* HuEx-1_0-st-v2,coreR2,A20070914,EP.cdf - the CDF defining "core" units.
+
+This custom CDF (and also more current versions) can be downloaded from
+subpage 'Affymetrix-Defined transcript clusters' on
+Page [HuEx-1_0-st-v2](<%=pathTo('/chipTypes/HuEx-1_0-st-v2/')%>).
+
+<% alert_warn({ %>
+  Do <em>not</em> use the default CDF named HuEx-1_0-st-v2.cdf that is provided by Affymetrix.
+<% }) %>
+
+Important: Make sure you replicate the structure outlined in the
+[Setup](<%=pathTo('/setup')%>) pages - this will allow aroma.affymetrix to easily find
+your data sets and CDFs.
+
+
+#### About custom CDFs
+
+For the exon array analysis carried out here we need to be able to map
+transcript cluster IDs to exon IDs.  For this reason, we cannot use the
+default CDF provided by Affymetrix (do not use it), which only have
+information on exon IDs but *not on transcripts*.  Instead, we use
+custom CDFs that map transcript cluster IDs to exon IDs according to
+Affymetrix's definition of 'transcript clusters', cf. [ref needed].  The
+above core CDF is one such *custom CDF where each unit corresponds to a
+transcript cluster and each group within a unit corresponds to an
+exon/probeset*.  For details on this and other alternative custom CDFs
+of the same kind, see Page
+[HuEx-1_0-st-v2](<%=pathTo('/chipTypes/HuEx-1_0-st-v2')%>).  We might also use other
+gene models to group the exon.  For further alternatives, see
+Page [HuEx-1_0-st-v2](<%=pathTo('/chipTypes/HuEx-1_0-st-v2')%>) and its subpages.
+
+It can still be useful to have the default Affymetrix CDF as well,
+however you should NOT use it for certain steps of the analysis
+(particularly for the step fitting the probe model). If you make use of
+the default Affymetrix CDF, make sure that you convert Affymetrix's
+ASCII CDF to binary. Even if you only want probeset summaries, you don't
+want to use Affymetrix's default CDF because it contains some very
+strange and large probesets (> 10,000 probes) that slow down the
+processing ENORMOUSLY (although the summarization algorithm has been
+modified so that this is less of a problem than previously). There is
+not currently a 'cleaned-up' version of Affymetrix's default CDF that
+does all the probesets but without these problem probesets. There are
+also some possible omissions in Affymetrix's default CDF (see
+[discussion](http://groups.google.com/group/aroma-affymetrix/browse_thread/thread/86e48eff1e7bd457/c892034d3061d32f?lnk=gst&q=miRNA#c892034d3061d32f))
+and these omissions are carried through to the custom CDFs as well.
+
+It is highly recommended that you "tag" your results everytime you
+switch CDFs (including the first time you start your analysis if with a
+custom CDF). You can add a tag at each major step of the analysis.
+Otherwise you can run into problems if you later use a different CDF.
+See following
+[discussion](http://groups.google.com/group/aroma-affymetrix/browse_thread/thread/606ce66d425d2fae#)
+for explanation and examples of tagging.
+
+## Low-level analysis
+
+```r
+library(aroma.affymetrix)
+verbose <- Arguments$getVerbose(-8, timestamp=TRUE)
+```
+
+### Setting up annotation data
+
+In this vignette we will use a custom CDF.  In order to use that,
+instead of the default CDF automatically located, we setup the CDF
+explicitly as:
+
+```r
+chipType <- "HuEx-1_0-st-v2"
+cdf <- AffymetrixCdfFile$byChipType(chipType, tags="coreR2,A20070914,EP")
+print(cdf)
+```
+
+This gives:
+
+```
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HuEx-1_0-st-v2
+Filename: HuEx-1_0-st-v2,coreR2,A20070914,EP.cdf
+Filesize: 38.25MB
+File format: v4 (binary; XDA)
+Chip type: HuEx-1_0-st-v2,coreR2,A20070914,EP
+Dimension: 2560x2560
+Number of cells: 6553600
+Number of units: 18708
+Cells per unit: 350.31
+Number of QC units: 1
+RAM: 0.00MB
+```
+
+### Defining CEL set
+
+Next we setup the CEL set with the above custom CDF:
+
+```r
+cs <- AffymetrixCelSet$byName("BCGC_2006", cdf=cdf)
+print(cs)
+```
+
+This gives:
+
+```
+AffymetrixCelSet:
+Name: BCGC_2006
+Tags:
+Path: rawData/BCGC_2006/HuEx-1_0-st-v2
+Chip type: HuEx-1_0-st-v2,coreR2,A20070914,EP
+Number of arrays: 35
+Names: BR_BT20_14_v1_WT, BR_BT474_11_v1_WT, ...,
+BR_ZR75B_14_v1_WT
+Time period: 2005-08-23 21:02:51 -- 2005-09-15 04:51:47
+Total file size: 2199.03MB
+RAM: 0.04MB
+```
+
+Note how the custom CDF is used. Otherwise by default it will search for
+a CDF of the name HuEx-1_0-st-v2.cdf (and if it doesn't find it, will
+produce an error). This CDF name is reserved to the default CDF provided
+by Affymetrix.
+
+There can be different stages as which you choose to start using the
+custom CDF. If you want to start with using all of the probes for BG
+correction and normalization, you can initially have the Affymetrix CDF
+(by leaving out the option `cdf` above). Then to change the CDF of any
+AffymetrixCelSet (like the `cs` object above or the 'csN'
+post-normalization object below)
+
+```r
+setCdf(cs, cdf)
+```
+
+
+### Background Adjustment and Normalization
+
+In order to do RMA background correction, we setup a correction method
+and runs it by:
+
+```r
+bc <- RmaBackgroundCorrection(cs, tags="*,coreR2")
+csBC <- process(bc,verbose=verbose)
+```
+
+Note that this is the first step where we will create new files, so we
+have put in a tag that should follow through the rest of the analysis.
+
+We then setup a quantile normalization method:
+
+```r
+qn <- QuantileNormalization(csBC, typesToUpdate="pm")
+print(qn)
+```
+
+which gives:
+
+```
+QuantileNormalization:Data set: BCGC_2006  
+Input tags: RBC,coreR2  
+Output tags: QN  
+Number of arrays: 35 (2199.03MB)  
+Chip type: HuEx-1_0-st-v2,coreR2,A20070914,EP  
+Algorithm parameters: (subsetToUpdate: NULL, typesToUpdate: chr "pm",
+subsetToAvg: NULL, typesToAvg: chr "pm", .targetDistribution: NULL)  
+Output path: probeData/BCGC_2006,RBC,QN/HuEx-1_0-st-v2  
+Is done: FALSE
+```
+
+and we then run it by:
+
+```r
+csN <- process(qn, verbose=verbose)
+```
+
+This will take approx 30-60s per array.  Then `print(csN)` gives:
+
+```
+AffymetrixCelSet:
+Name: BCGC_2006
+Tags: RBC,coreR2,QN
+Path: probeData/BCGC_2006,RBC,coreR2,QN/HuEx-1_0-st-v2
+Chip type: HuEx-1_0-st-v2,coreR2,A20070914,EP
+Number of arrays: 35
+Names: BR_BT20_14_v1_WT, BR_BT474_11_v1_WT, ...,
+BR_ZR75B_14_v1_WT
+Time period: 2005-08-23 21:02:51 -- 2005-09-15 04:51:47
+Total file size: 2199.03MB
+RAM: 0.04MB
+```
+
+Note how the standard 'QN' tag is added after the composite 'BG'
+correction tag (which is a combination of the standard 'RBC' and our
+custom 'coreR2'). The path where the results are stored also have the
+custom tag, so if we redid the analysis with a different tag (e.g. for a
+different CDF) the results would be stored in a different path and thus
+kept distinct. This tag will follow through the subsequent analysis, as
+it did with the quantile normalization. This also means that if you go
+back and rerun your code you must remember to keep the tag -- otherwise
+the results will be stored in a different location and therefore all of
+the calculations will be redone!
+
+### Summarization
+
+If you have not already done so, how is the time to set your custom CDF
+(see instructions above). If at the beginning you imported the data with
+the custom CDF (like the code on this page), then you do not need to do
+anything -- all of the BG and normalization steps used only the probes
+defined on that CDF and each new product that was created continued to
+have this CDF. You can check with the command
+
+```r
+getCdf(csN)
+
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HuEx-1_0-st-v2
+Filename: HuEx-1_0-st-v2,coreR2,A20070914,EP.cdf
+Filesize: 38.25MB
+File format: v4 (binary; XDA)
+Chip type: HuEx-1_0-st-v2,coreR2,A20070914,EP
+Dimension: 2560x2560
+Number of cells: 6553600
+Number of units: 18708
+Cells per unit: 350.31
+Number of QC units: 1
+RAM: 0.00MB
+```
+
+There are two options, regardless of the kind of custom CDF you use. To
+fit a summary of the entire transcript (i.e. estimate the overall
+expression for the transcript), do:
+
+```r
+plmTr <- ExonRmaPlm(csN, mergeGroups=TRUE)
+print(plmTr)
+```
+
+Otherwise, to fit exon-by-exon, change the value of `mergeGroups` to `FALSE`
+in the `ExonRmaPlm()` call above.
+
+```r
+plmEx <- ExonRmaPlm(csN, mergeGroups=FALSE)
+print(plmEx)
+```
+
+To fit the PLM to all of the data, do:
+
+```r
+fit(plmTr, verbose=verbose)
+```
+
+or similarly for plmEx. This will roughly take a few minutes per array
+if you are using the core probesets only.
+
+
+#### Quality assessment of PLM fit
+
+To calculate the residuals from the PLM fit, do:
+
+```r
+rs <- calculateResidualSet(plmTr, verbose=verbose)
+```
+
+To browse spatial false-colored images of the residuals, do:
+
+```r
+ae <- ArrayExplorer(rs)
+setColorMaps(ae, c("log2,log2neg,rainbow", "log2,log2pos,rainbow"))
+process(ae, interleaved="auto", verbose=verbose)
+display(ae)
+```
+
+This will take 30-60 seconds per array. Note that you will only have
+proper residuals for the probes you used in your fit -- i.e. the ones in
+the custom CDF you chose. So these plots may be of lesser value.
+
+To examine NUSE and RLE plots, do
+
+```r
+qamTr <- QualityAssessmentModel(plmTr)
+plotNuse(qamTr)
+plotRle(qamTr)
+```
+
+Note that this can be done to fits based on the transcript level or exon
+level depending on which plm you chose and can give different
+interpretations.
+
+To extract the estimates (transcript or probeset) use either
+`extractMatrix()` or `extractDataFrame()` on the ChipEffectSet that
+corresponds to the PLM object:
+
+```r
+cesTr <- getChipEffectSet(plmTr)
+trFit <- extractDataFrame(cesTr, units=1:3, addNames=TRUE)
+```
+
+This will give a data.frame with three rows, each row corresponding to a
+unit/transcript. To get all units, choose `units=NULL`. addNames adds the
+unit and group names to the entries of the data frame, but will take
+longer. Note that if you had `mergeGroups=TRUE`, there is no 'group' or
+exon estimate, but `extractDataFrame()` will still return a group name.
+This will always be the first probeset in the transcript and should be
+ignored -- it has nothing to do with the estimate but is simply an
+artifact of how the data is stored.
+
+To get estimates of the probesets/exons you must choose
+`mergeGroups=FALSE` as described above when you define your PLM object,
+and then extract the estimates from it.
+
+```r
+cesEx <- getChipEffectSet(plmEx)
+exFit <- extractDataFrame(cesEx, units=1:3, addNames=TRUE)
+```
+
+This will return a data frame with 27 rows equal to the 4+15+8 exons
+that are in the first three units. Again, `units=NULL` gives all exons.
+Note that you can also `readUnits()` to get the output in the traditional
+list format (applied to either `cesEx` or `cesTr`, as appropriate). However,
+if you are then going to unlist it into a matrix form, use
+`extractMatrix()` or `extractDataFrame()` -- it will be much safer.
+
+<% alert_warn({ %>
+ Do <em>not</em> use `getData()`, `getIntensities()` or any other such commands to get transcript or exon summaries.
+<% }) %>
+
+## Alternative Splicing Analysis (FIRMA)
+
+The FIRMA analysis ONLY works from the PLM based on transcripts.
+
+```r
+firma <- FirmaModel(plmTr)
+fit(firma, verbose=verbose)
+fs <- getFirmaScores(firma)
+```
+
+You can extract the FIRMA scores in the same way as the transcript/exon
+estimates with `extractDataFrame()` applied to `fs`.
+
+
+## References
+<% biblist() %>
