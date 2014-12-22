@@ -1,0 +1,387 @@
+# Vignette: Creating binary data files containing copy number estimates
+
+Author: Henrik Bengtsson  
+Created on: 2009-03-23  
+Last updated: 2014-12-21
+
+## Introduction
+
+This document explains how to create binary data files containing
+copy-number signals for a particular sample ran on a given chip type.
+These files can the be used by the aroma.cn framework.  The data files
+we will generate can be though of as a single-column matrix, where each
+row corresponds to one unit (locus).  This data file does not contain
+annotation data such as name the units or their genomic locations.
+Instead, such information is held in unit names files and unit genome
+position (UGP) files.  We will start by giving examples on how to use
+unit names files and a UGP files.  Then we will explain how to create
+them and finally show how to create the data files.
+
+## Unit names files and UGP files
+
+A unit names file is a file that provides a map from a unit name to a
+unique unit index.  For Affymetrix chip types, the CDF file contains
+such a map.  However, for other platforms or in cases where there exist
+no CDF file, one can create a text-based file that provides this
+mapping.
+
+A UGP file is a file that provides a map from the unit index to the
+genomic location of a unit (locus).  The unit index is also implicit
+from the row index.  A UGP file is a binary file, but the content can be
+though of as a data frame with columns `chromosome` and `position`.
+
+## Examples
+
+### Example: Affymetrix GenomeWideSNP_6,Full
+
+Examples of a unit names file and a UGP file for the
+GenomeWideSNP_6,Full chip type of the Affymetrix platform are:
+
+* GenomeWideSNP_6,Full.cdf (see [FAQ](<%=pathTo('/faq')%>) 2007-05-24: Where can I
+    download CDF files? of aroma.affymetrix)
+* <%=chipTypeData('GenomeWideSNP_6', 'GenomeWideSNP_6,Full,na26,HB20080821.ugp.gz')%>
+
+These files has to be placed in the
+annotationData/chipTypes/GenomeWideSNP_6/ directory (exactly as
+written; case sensitive).  When placed there, they can be retrieved as:
+
+```r
+library("aroma.affymetrix")
+chipType <- "GenomeWideSNP_6,Full"
+unf <- AffymetrixCdfFile$byChipType(chipType)
+ugp <- getAromaUgpFile(unf)
+```
+
+To get the unit names of units 1001-1010, do:
+
+```r
+unitNames <- getUnitNames(unf, units=1001:1010)
+print(unitNames)
+
+## [1] "SNP_A-4214079" "SNP_A-2001454" "SNP_A-2001478" "SNP_A-2001480"
+## [5] "SNP_A-2001481" "SNP_A-2001483" "SNP_A-2001522" "SNP_A-4214089"
+## [9] "SNP_A-2001548" "SNP_A-2001589"
+```
+
+To get the unit indices of two units by their names, do:
+
+```r
+units <- indexOf(unf, names=c("SNP_A-2001483", "SNP_A-2001454"))
+print(units)
+
+## [1] 6 2
+```
+
+To get the genome location of these two units, do:
+
+```r
+print(ugp[units,])
+
+##   chromosome position
+## 1          1 34064558
+## 2          1 34056705
+```
+
+
+### Example: Agilent HG-CGH-244A chip type
+
+Examples of a unit names file and a UGP file for the HG-CGH-244A chip
+type of the Agilent platform are:
+
+* <%=chipTypeData('HG-CGH-244A', 'HG-CGH-244A,TCGA,HB20080512,unitNames.txt.gz')%>
+* <%=chipTypeData('HG-CGH-244A', 'HG-CGH-244A,TCGA,HB20080512.ugp.gz')%>
+
+These files has to be placed in the
+annotationData/chipTypes/HG-CGH-244A/ directory (exactly as written
+case sensitive).  When located there, they can be retrieved as:
+
+```r
+library("aroma.core")
+chipType <- "HG-CGH-244A"
+unf <- TextUnitNamesFile$byChipType(chipType)
+ugp <- getAromaUgpFile(unf)
+```
+
+To get the unit names of the first 10 units, do:
+
+```r
+unitNames <- getUnitNames(unf, units=1:10)
+print(unitNames)
+
+## [1] "A_14_P112718"   "A_16_P15000916" "A_16_P15001074" "A_16_P00000012"
+## [5] "A_16_P00000014" "A_16_P00000017" "A_16_P00000021" "A_16_P00000023"
+## [9] "A_16_P00000027" "A_16_P00000033"
+```
+
+To get the unit indices of two units by their names, do:
+
+```r
+units <- indexOf(unf, names=c("A_16_P00000017", "A_16_P15000916"))
+print(units)
+
+## [1] 6 2
+```
+
+To get the genome location of these two units, do:
+
+```r
+print(ugp[units,])
+
+##   chromosome position
+## 1          1   746956
+## 2          1   554287
+```
+
+The above *,unitNames.txt file is of a generic text file format
+containing a simple header and one unit name per row such that the unit
+index is implicit from the row index.  For example, the content of the
+above file is:
+
+```
+# platform: Agilent
+# chipType: HG-CGH-244A
+unitName
+A_14_P112718
+A_16_P15000916
+A_16_P15001074
+...
+A_16_P03808022
+```
+
+Note how the unit index is implicit from the row index, e.g. unit
+'A_16_P15000916' has index 2.
+
+## Creating a text-based unit names file
+
+In order to create an UGP file, it is easiest to allocate an empty one
+from an existing unit names file.  For this reason, we start by creating
+a text-based unit names file.
+
+Consider that we wish to create a unit names file for the above Agilent
+HG-CGH-244A chip type and that we already have the unit names in a
+character vector named `unitNames`, e.g.
+
+```r
+str(unitNames)
+
+## chr [1:235829] "A_14_P112718" "A_16_P15000916" "A_16_P15001074"
+```
+
+Then we can create a text-based unit names file as follows:
+
+```r
+# The chip type of interest
+platform <- "Agilent"
+chipType <- "HG-CGH-244A"
+
+# The path were to store the annotation data files (cannot be different)
+rootPath <- "annotationData"
+path <- file.path(rootPath, "chipTypes", chipType)
+print(path)
+## [1] "annotationData/chipTypes/HG-CGH-244A"
+
+# The filename of the *,unitNames.txt file (we add tags for our own record)
+tags <- "HB20090322"
+fullname <- paste(c(chipType, tags, "unitNames"), collapse=",")
+filename <- sprintf("%s.txt", fullname)
+print(filename)
+## [1] "HG-CGH-244A,HB20090322,unitNames.txt"
+
+# The complete pathname of the file
+pathname <- Arguments$getWritablePathname(filename, path=path)
+print(pathname)
+[1] "annotationData/chipTypes/HG-CGH-244A/HG-CGH-244A,HB20080512,unitNames.txt"
+
+# Generate the (unit index, unit name) map file
+cat(file=pathname, sprintf("# platform: %s\n", platform))
+cat(file=pathname, sprintf("# chipType: %s\n", chipType), append=TRUE)
+cat(file=pathname, "unitName\n", append=TRUE)
+cat(file=pathname, unitNames, sep="\n", append=TRUE)
+```
+
+This file can then be retrieved by:
+
+```r
+unf <- TextUnitNamesFile$byChipType(chipType, tags=tags)
+
+# Sanity check
+stopifnot(identical(getUnitNames(unf), unitNames))
+```
+
+## Creating a UGP file
+
+Given a unit names file, either a text-base one or an Affymetrix CDF
+file, one can allocate an empty UGP and populate it as follows:
+
+```r
+ugp <- AromaUgpFile$allocateFromUnitNamesFile(unf, tags=tags)
+print(ugp)
+
+## AromaUgpFile:
+## Name: HG-CGH-244A
+## Tags: HB20090322
+## Full name: HG-CGH-244A,HB20090322
+## Pathnam
+## annotationData/chipTypes/HG-CGH-244A/HG-CGH-244A,HB20090322.ugp
+## File size: 1.12 MB (1179325 bytes)
+## RAM: 0.00 MB
+## Number of data rows: 235829
+## File format: v1
+## Dimensions: 235829x2
+## Column classes: integer, integer
+## Number of bytes per column: 1, 4
+## Footer: \<createdOn\>20090323 22:20:
+## PDT\</createdOn\>\<platform\>Agilent\</platform\>
+## \<chipType\>HG-CGH-244A\</chipType\>
+## Chip type: HG-CGH-244A
+## Platform: Agilent
+```
+
+This UGP file is currently "empty", e.g.
+```r
+print(ugp[1:4,])
+
+##   chromosome position
+## 1         NA       NA
+## 2         NA       NA
+## 3         NA       NA
+## 4         NA       NA
+```
+
+We can then populate the UGP file as if it was a matrix, e.g.
+
+```r
+units <- c(1,4,7)
+ugp[units,1] <- 1
+ugp[units,2] <- c(554268, 736483, 757922)
+print(ugp[units,])
+
+##   chromosome position
+## 1          1   554268
+## 2          1   736483
+## 3          1   757922
+```
+
+Note that these updates are persistent, because they are written back to
+the UGP file.
+
+Make sure that you get assign loci on Chromosome X to have chromosome
+index 23.  For Chromosome Y and Chromosome M (mitochondrial DNA) you
+should use chromosome index 24 and 25, respectively.
+
+When done, you can see the distribution of loci per chromosome (and
+those not without known locations as `NA`s), by:
+
+```
+t <- table(ugp[,1], exclude=NULL)
+print(t)
+
+##     1     2     3     4     5     6     7     8     9    10
+## 19260 18534 15886 13353 13244 13265 13241 10960  9403 11035
+##    11    12    13    14    15    16    17    18    19    20
+## 11435 11167  7652  8196  8008  6794  7657  5774  5977  5331
+##    21    22    23    24  <NA>
+##  3362  4079 10938  1293     0
+```
+
+If you made a mistake with Chromsomes X and Y, you will probably see
+zeros for those chromosomes.
+
+For further details on UGP files and examples on how to populate them,
+see the How To page on '[Create a Unit Genome Position (UGP)
+file](<%=pathTo('/howtos/CreateUGP')%>)'.
+
+
+## Creating data files containing log2 CN ratios
+
+Given a unit-names file, we are ready to allocate empty data files to be
+populated with copy number data.  The path to these allocated files
+should follow the standards of the Aroma framework, i.e.
+\<rootPath\>/\<dataSet\>(,\<tag\>)*/\<chipType\>/.
+There are two options for \<rootPath\>, namely, rawCnData/ and totalAndFracBData/.  Use the first one when you have only total copy numbers (TCNs), and the second one when you have both TCN data as well as allele B fractions (BAFs).
+
+```r
+# The type of chip
+chipType <- "HG-CGH-244A"
+
+# Setup its unit names file
+unf <- TextUnitNamesFile$byChipType(chipType)
+
+# The name of the data set
+dataSet <- "MyDataSet,tagA,tagB"
+
+# The name of the sample
+sampleName <- "SampleA,tagA,tagB"
+
+# The root path
+rootPath <- c("rawCnData", "totalAndFracBData")[1]
+
+# The path to the data set
+path <- file.path(rootPath, dataSet, getChipType(unf, fullname=FALSE))
+
+# The filename of the data file
+filename <- sprintf("%s,log2ratio,total.asb", sampleName)
+
+# Allocate an empty data file
+df <- AromaUnitTotalCnBinaryFile$allocateFromUnitNamesFile(unf, filename=filename, path=path)
+
+print(df)
+
+## AromaUnitTotalCnBinaryFile:
+## Name: SampleA
+## Tags: tagA,tagB,log2ratio,total
+## Full name: SampleA,tagA,tagB,log2ratio,total
+## Pathnam
+## rawCnData/MyDataSet,tagA,tagB/HG-CGH-244A/SampleA,tagA,tagB,log2ratio,total.asb
+## File size: 921.38 kB (943493 bytes)
+## RAM: 0.00 MB
+## Number of data rows: 235829
+## File format: v1
+## Dimensions: 235829x1
+## Column classes: double
+## Number of bytes per column: 4
+## Footer: \<createdOn\>20090323 22:33:
+## PDT\</createdOn\>\<platform\>Agilent\</platform\>
+## \<chipType\>HG-CGH-244A\</chipType\>
+## Platform: Agilent
+## Chip type: HG-CGH-244A
+```
+
+Make sure it is filled with `NA`s (currently it defaults to all zeros):
+
+```r
+df[,1] <- NA
+```
+
+As with a UGP file, this data file can be treated as a matrix where
+updates are persistent, because they are written back to the file.  For
+instance, assume that the CN log-ratios for the 10 first units are held
+in the numeric vector `M` of length 10.  Then do:
+
+```r
+df[1:10,1] <- M
+```
+
+Another example is when one has a vector of log ratios `M` for units
+specified by unit names `unitNames`.  Then, assign these log-ratios to
+the correct rows (units) of the data files by:
+
+```r
+units <- indexOf(unf, unitNames)
+df[units,1] <- M
+```
+
+After having created all data files, the total CN data set can be setup
+using:
+
+```r
+dataSet <- "MyDataSet,tagA,tagB"
+chipType <- "HG-CGH-244A"
+
+ds <- AromaUnitTotalCnBinarySet$byName(dataSet, chipType=chipType)
+```
+
+## See also
+
+For more information see How to page on '[Create a Unit Genome Position
+(UGP) file](<%=pathTo('/howtos/createUGP')%>)'.
