@@ -18,7 +18,10 @@ reference <- function(search, ...) {
   ref
 } # reference()
 
-refs <- list(
+<%--------------------------------------------------------------------
+  REFERENCES BY US
+ --------------------------------------------------------------------%>
+refs_own <- list(
   reference("22576175", key="OrtizM_etal_2012-CalMaTe", keywords="CalMaTe; multi-array method"),
   reference("10.1007/978-3-642-16345-6_11", key="NeuvialP_etal_2011-chapter"),
   reference("21666266", key="OlshenA_etal_2011-PSCBS", keywords="PSCBS; parent-specific copy numbers; segmentation; tumor-normal samples; paired; non-paired; single-patient method"),
@@ -35,6 +38,21 @@ refs <- list(
   reference("16504173", key="BengtssonBengtsson_2004-morph", keywords="image analysis; background correction; single-array method"),
   reference("15541170", key="BengtssonH_etal_2004-multiscan", keywords="multiscan calibration; single-array method")
 )
+%>
 
+<%--------------------------------------------------------------------
+  REFERENCES BY OTHERS
+ --------------------------------------------------------------------%>
+<%
+refs_others <- list(
+  reference("15381628", key="HupeP_etal_2004-GLAD", keywords="GLAD; segmentation method")
+)
+%>
+
+<%--------------------------------------------------------------------
+  WRITE TO FILE
+ --------------------------------------------------------------------%>
+<%
+refs <- c(refs_own, refs_others)
 print(toBiblatex(refs))
 %>
