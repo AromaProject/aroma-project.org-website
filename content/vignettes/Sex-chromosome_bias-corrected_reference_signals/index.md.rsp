@@ -11,9 +11,9 @@ difference in sex chromosomes.
 In the below figure, the top and bottom panels show chromosome X copy-number
 estimates with and without bias correction.
 
-[![](<%=pathTo('assets/images/HapMap%2C250K%2CChrX%2Cnon-bias-corrected.png')%>)](<%=pathTo('assets/images/HapMap%2C250K%2CChrX%2Cnon-bias-corrected.png')%>)
+![](<%=pathTo('assets/images/HapMap%2C250K%2CChrX%2Cnon-bias-corrected.png')%>)
 
-[![](<%=pathTo('assets/images/HapMap%2C250K%2CChrX%2Cbias-corrected.png')%>)](<%=pathTo('assets/images/HapMap%2C250K%2CChrX%2Cbias-corrected.png')%>)
+![](<%=pathTo('assets/images/HapMap%2C250K%2CChrX%2Cbias-corrected.png')%>)
 
 The underlying model is described in Section '3.2.7 Reference signals'
 of <% citet('BengtssonH_etal_2009-CRMAv1') %>.
