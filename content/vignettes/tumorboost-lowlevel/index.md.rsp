@@ -12,7 +12,7 @@ normal (betaN) as numerical vectors for input, and returns the
 normalized allele B fractions for the tumor (betaTN) as another vector.
 Optionally, it also accepts genotype calls.  If not specified, an
 internal naive genotyping method is used.  For more details on this
-implementation, see help(normalizeTumorBoost).
+implementation, see `help(normalizeTumorBoost)`.
 For details on the TumorBoost method, see
 <% citet('BengtssonH_etal_2010-TumorBoost') %>.
 

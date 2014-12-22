@@ -85,7 +85,7 @@ for explanation and examples of tagging.
 ## Low-level analysis
 
 ```r
-library(aroma.affymetrix)
+library("aroma.affymetrix")
 verbose <- Arguments$getVerbose(-8, timestamp=TRUE)
 ```
 
