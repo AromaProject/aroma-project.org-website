@@ -19,6 +19,8 @@
   <title title="<%@string name="full_title"%>"><%@meta name="title"%></title>
   <link href="<%=pathTo('assets/css/bootstrap.min.css')%>" rel="stylesheet">
   <link href="<%=pathTo('assets/css/cbc-tweaks.css')%>" rel="stylesheet">
+  <link href="<%=pathTo('assets/css/r_highlight.css')%>" rel="stylesheet">
+  <script src="<%=pathTo('assets/js/r_highlight.js')%>"></script>
 </head>
 <body>
 <%----------------------------------------------------------------------------
@@ -73,6 +75,20 @@
       });
   });
 </script>
+<%-- Center images --%>
+<script type="text/javascript">
+  $(document).ready(function(){
+    var imgs = $('img'), i, img, parent;
+    for (i=0; i < imgs.length; i++) {
+      img = imgs[i];
+      // center an image if it is the only element of its parent
+      parent = img.parentElement;
+      if (parent.childElementCount === 1)
+        parent.style.textAlign = 'center';
+    }
+  });
+</script>
+
 <%-- <%@include file="link-annotation.html.rsp"%> --%>
 <%-- Include any extras that the page wish to add to the end --%>
 <%@ifdef name="footer_tail"%>
