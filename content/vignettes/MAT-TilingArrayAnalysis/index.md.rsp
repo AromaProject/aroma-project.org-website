@@ -1,0 +1,387 @@
+# Vignette: MAT - Tiling array analysis (Promoter 1.0R)
+
+Authors: Mark Robinson (pruning by Henrik Bengtsson)
+Created: 2009-01-14
+Last updated: 2011-11-27
+
+<% please_cite(c(
+  'BengtssonH_etal_2008-aroma.affymetrix'
+)) %>
+
+
+## Setup
+
+### Annotation data
+
+There are some considerations to be made for creating CDF files for
+tiling arrays, since probes are not originally organized into probesets
+as with expression arrays.  The full story of how to create a CDF file
+from the 'bpmap' files that Affymetrix makes available can be viewed at
+the [Creating CDF (and associated) files from BpMap files (tiling
+arrays)](<%=pathTo('/howtos/bpmapCluster2Cdf')%>) page.  For the Human Promoter 1.0R array, you can download a custom-created CDF file (and associated
+annotation) from chiptype page
+[Hs_PromPR_v02](<%=pathTo('/chipTypes/Hs_PromPR_v02')%>).
+
+For analysis of human promoter tiling arrays, be sure to put the CDF
+file and associated files in your:
+```
+  annotationData/chipTypes/Hs_PromPR_v02/
+```
+directory.
+
+Important: As always, make sure you replicate the structure outlined in
+Sections [Setting up annotation files](<%=pathTo('/setup')%>) and [Structure of data
+set directories](<%=pathTo('/setup')%>) - this will allow aroma.affymetrix to easily
+find your data sets and CDFs.
+
+
+### Raw data
+
+For illustration, we use a publicly available dataset of the Human
+Promoter 1.0R array.  The CEL files for this dataset as well as sample
+annotation information can be downloaded from
+ArrayExpress <% arrayexpress('E-MEXP-1481') %> data set.
+In brief, this experiment hybridizes DNA fragments pulled down using an antibody to methylated DNA, a so-called MeDIP-chip experiment.  The analysis presented here would be similar for ChIP-chip experiments.
+
+Following standard procedure of organizing files within
+aroma.affymetrix, the CEL files are put into the:
+```
+  rawData/novakMeDIP/Hs_PromPR_v02/
+```
+directory, making 'novakMeDIP' the experiment name.
+
+## Low-level analysis
+
+We first start by loading the package and setting the verbosity level:
+
+```r
+library("aroma.affymetrix")
+verbose <- Arguments$getVerbose(-8, timestamp=TRUE)
+```
+
+### Getting annotation data files
+
+If you have downloaded (or created) the CDF file correctly for your
+tiling array, you should see a result similar to this:
+
+```r
+chipType <- "Hs_PromPR_v02"
+cdf <- AffymetrixCdfFile$byChipType(chipType)
+print(cdf)
+```
+
+This gives:
+
+```
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/Hs_PromPR_v02
+Filename: Hs_PromPR_v02.cdf
+Filesize: 61.95MB
+Chip type: Hs_PromPR_v02
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 2166x2166
+Number of cells: 4691556
+Number of units: 23155
+Cells per unit: 202.62
+Number of QC units: 0
+```
+
+
+### Defining the CEL set
+
+Next we setup the CEL set with the above custom CDF, assuming the data
+has been deposited in the correct directories:
+
+```r
+cs <- AffymetrixCelSet$byName("novakMEDIP", cdf=cdf)
+print(cs)
+```
+
+This gives:
+
+```
+AffymetrixCelSet:
+Name: novakMEDIP
+Tags:
+Path: rawData/novakMEDIP/Hs_PromPR_v02
+Platform: Affymetrix
+Chip type: Hs_PromPR_v02
+Number of arrays: 25
+Names: 1139T-MeCIP, 120T-MeCIP, ..., HMEC-MeCIP
+Time period: 2006-12-19 12:22:42 -- 2007-10-19 13:42:56
+Total file size: 1121.82MB
+RAM: 0.02MB
+```
+
+### MAT (Model-based Analysis of Tiling Arrays) Normalization
+
+[MAT](http://liulab.dfci.harvard.edu/MAT/) is a commonly used method to
+process and summarize tiling array data.  An implementation of MAT has
+now been created within aroma.affymetrix.  MAT is actually two steps.
+First, a linear model for normalization is fitted, encompassing a
+probe's sequence content, position-specific aspects and 'copy number'
+(the number of times in the genome it hits).  The model is fit on a
+large number of probes (here, all PM probes) and residuals from this
+model are used in downstream calculations, such as smoothing.  The
+parameters in this model are estimated separately.  Although not
+presently available, there is scope to either include more terms in this
+normalization model or specify an alternative model.
+
+To setup the MAT normalization, you can call:
+
+```r
+mn <- MatNormalization(cs)
+```
+
+A call to `print(mn)` gives:
+
+```
+MatNormalization:
+Data set: novakMEDIP
+Input tags:
+User tags: *
+Asterisk ('*') tags: MN,lm
+Output tags: MN,lm
+Number of files: 25 (1121.82MB)
+Platform: Affymetrix
+Chip type: Hs_PromPR_v02
+Algorithm parameters: (unitsToFit: NULL, typesToFit: chr "pm",
+unitsToUpdate: NULL, typesToUpdate: chr "pm", shift: num 0, target:
+NULL, model: chr "lm", numChunks: int 15)
+Output path: probeData/novakMEDIP,MN,lm/Hs_PromPR_v02
+Is done: FALSE
+RAM: 0.00MB
+```
+
+To run the MAT normalization, applied separately to each sample, call:
+
+```r
+csN <- process(mn, verbose=verbose)
+```
+
+### Unique-ifying the CDF file
+
+Because some of the probes on the Affymetrix Human Promoter 1.0R tiling
+chip map to multiple genome locations, some individual probe data will
+get used multiple times.  Instead of tracking this information within
+aroma.affymetrix, it is easiest to create a "unique-ified" copy of the
+data before applying the second step of MAT.  This is simply a
+reorganization of the data.  To do this, you will need to call the
+following command (on MAT-normalized data):
+
+```r
+csU <- convertToUnique(csN, verbose=verbose)
+```
+
+The first time this is run, it does the copying.  After that, rerunning
+the same script will recognize that it has already been done and return
+the unique-ified AffymetrixCelSet object almost instantly.
+
+You may also like to get access to the 'unique' CDF:
+
+```r
+cdfU <- getUniqueCdf(cdf, verbose=verbose)
+```
+
+Then, `print(cdfU)` gives:
+
+```
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/Hs_PromPR_v02
+Filename: Hs_PromPR_v02,unique.CDF
+Filesize: 61.95MB
+Chip type: Hs_PromPR_v02,unique
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 2088x2088
+Number of cells: 4359744
+Number of units: 23155
+Cells per unit: 188.29
+Number of QC units: 0
+```
+
+Note that the number of units is identical to before (i.e. as within the
+CDF object defined above), but the number of probes has changed slightly
+(control probes are dropped and some probes query multiple locations).
+
+## Summarizing
+
+### MAT Smoothing
+
+MAT implements a trimmed mean smoothing step at every probe.  Basically,
+the probes that interrogate genomic regions nearby a given probe are
+used to summarize the intensity (here, operating on the residuals from
+the MAT normalization).  To calculate MAT scores, we need to know which
+samples are to be combined or are to be compared to each other.  A
+convenient way to do this is via a contrast matrix.  Note that this is
+not a contrast matrix in the classical sense, but basically a nice
+compact way to specify how samples are summarized.
+
+Say we wanted to calculate a MAT score for 2 different possibilites:
+
+1. a difference between 2 samples
+2. a difference between a group of 3 samples to a group of 2 samples.
+
+Using the sample names (which are derived from the original file names),
+we can use the limma package to make the contrast matrix easily.  For
+example, the example below calculates 2 MAT scores, one for the
+difference between samples "1139T-MeCIP" and "120T-MeCIP" and another
+comparing the pool of 3, say {"1139T-MeCIP", "120T-MeCIP",
+"2845T-MeCIP"} to a pool of 2: {"5343N-MeCIP",  "5358N_MeCIP"}.  To
+this, use the following commands:
+
+```r
+library("limma")
+levels <- make.names(getNames(csU))
+ con <- makeContrasts(
+         contrasts=c("X1139T.MeCIP-X120T.MeCIP",
+                     "(X1139T.MeCIP+X120T.MeCIP+X2845T.MeCIP)-(X5343N.MeCIP+X5358N_MeCIP)"),
+         levels=levels)
+colnames(con) <- c("ms1139T-120T","msG3-G2")
+```
+
+Take care to give meaningful 'colnames' of the matrix.  These are used
+as the names (and filenames on disk) for the samples of the output
+object.  Note that the Xs and dots are needed here to make syntactically
+correct R variables.  You may not need to do this for your experiments.
+We only needed to do this here since some of the original CEL file names
+started with a number or contained the '-' character.  Depending on how
+your CEL files are named you may also wish to use the
+`setFullNamesTranslator()` approach, as discussed on Page ['Empirical
+probe-signal densities and rank-based quantile
+normalization](<%=pathTo('/vignettes/probe-signal_densities_and_rank-based_quantile_normalization')%>)'.
+
+Just so that the slight change in names here is transparent, consider
+the command:
+
+```r
+cbind(names=getNames(csU), levels)
+```
+
+giving:
+
+```
+      names                      levels
+[1,] "1139T-MeCIP"              "X1139T.MeCIP"
+[2,] "120T-MeCIP"               "X120T.MeCIP"
+[3,] "231-MeCIP"                "X231.MeCIP"
+[4,] "2845T-MeCIP"              "X2845T.MeCIP"
+[5,] "4392T-MeCIP"              "X4392T.MeCIP"
+[6,] "5343N-MeCIP"              "X5343N.MeCIP"
+[7,] "5358N_MeCIP"              "X5358N_MeCIP"
+[8,] "5799T-MeCIP"              "X5799T.MeCIP"
+[9,] "5974T2_MeCIP"             "X5974T2_MeCIP"
+[10,] "6245T-MeCIP"              "X6245T.MeCIP"
+[11,] "6333N-MeCIP"              "X6333N.MeCIP"
+[12,] "6861T_MeCIP"              "X6861T_MeCIP"
+[13,] "7732N-MeCIP"              "X7732N.MeCIP"
+[14,] "7732T_MeCIP"              "X7732T_MeCIP"
+[15,] "7788T-MeCIP"              "X7788T.MeCIP"
+[16,] "8964N_MeCIP"              "X8964N_MeCIP"
+[17,] "9663TLN_MeCIP"            "X9663TLN_MeCIP"
+[18,] "Bt549-MeCIP"              "Bt549.MeCIP"
+[19,] "Exp3224-HMEpC_MeCIP_2_JM" "Exp3224.HMEpC_MeCIP_2_JM"
+[20,] "Exp3306_7768T_MeCIP"      "Exp3306_7768T_MeCIP"
+[21,] "Exp3310_6809T_MeCIP"      "Exp3310_6809T_MeCIP"
+[22,] "Exp3354_173T_MeCIP"       "Exp3354_173T_MeCIP"
+[23,] "Exp3356_6608T_MeCIP"      "Exp3356_6608T_MeCIP"
+[24,] "Exp3358_7491T_MeCIP"      "Exp3358_7491T_MeCIP"
+[25,] "HMEC-MeCIP"               "HMEC.MeCIP"
+```
+
+Printing the contrast matrix (`print(con)`) gives:
+
+```
+                          Contrasts
+Levels                     ms1139T-120T msG3-G2
+  X1139T.MeCIP                        1       1
+  X120T.MeCIP                        -1       1
+  X231.MeCIP                          0       0
+  X2845T.MeCIP                        0       1
+  X4392T.MeCIP                        0       0
+  X5343N.MeCIP                        0      -1
+  X5358N_MeCIP                        0       1
+  X5799T.MeCIP                        0       0
+  X5974T2_MeCIP                       0       0
+  X6245T.MeCIP                        0       0
+  X6333N.MeCIP                        0       0
+  X6861T_MeCIP                        0       0
+  X7732N.MeCIP                        0       0
+  X7732T_MeCIP                        0       0
+  X7788T.MeCIP                        0       0
+  X8964N_MeCIP                        0       0
+  X9663TLN_MeCIP                      0       0
+  Bt549.MeCIP                         0       0
+  Exp3224.HMEpC_MeCIP_2_JM            0       0
+  Exp3306_7768T_MeCIP                 0       0
+  Exp3310_6809T_MeCIP                 0       0
+  Exp3354_173T_MeCIP                  0       0
+  Exp3356_6608T_MeCIP                 0       0
+  Exp3358_7491T_MeCIP                 0       0
+  HMEC.MeCIP                          0       0
+```
+
+One thing to note: the actual numbers in the contrast matrix (`-1` or `1`
+here) are not used in any of the computations (which is why I mention
+above that these are not strictly contrast matrices).  Only the **sign**
+of the numbers is used.  That is, all the positive numbers are averaged
+and all the negative numbers are averaged, and then differences are
+taken to create the MAT scores.  This follows the original
+implementation.  Please read the MAT paper for more details.
+
+To create and run the smoothing, you can call the following commands:
+
+```r
+ms <- MatSmoothing(csU, design=con, probeWindow=1000)
+csMS <- process(ms, verbose=verbose)
+```
+
+### Outputting results (available soon)
+
+One thing users might want to do is output the smoothed results to a
+file that can loaded into Affymetrix's Integrated Genome Browser (IGB).
+You can do this by calling:
+
+```r
+writeSgr(csMS)
+```
+
+Note that the object created above, `csMS`, is an AffymetrixCelSet object
+and any other methods for such objects can be used to extract the data
+of interest, e.g. `extractMatrix()`,  `readUnits()`.
+
+
+## Appendix
+
+Here is a complete list of commands from above, in case you want to cut
+and paste them all at once:
+
+```r
+library("aroma.affymetrix")
+verbose <- Arguments$getVerbose(-8, timestamp=TRUE)
+
+
+chipType <- "Hs_PromPR_v02"
+
+cdf <- AffymetrixCdfFile$byChipType(chipType, verbose=verbose)
+
+cs <- AffymetrixCelSet$byName("novakMEDIP", cdf=cdf, verbose=verbose)
+
+mn <- MatNormalization(cs, numChunks=15)
+csN <- process(mn, verbose=verbose)
+
+csU <- convertToUnique(csN, verbose=verbose)
+cdfU <- getUniqueCdf(cdf, verbose=verbose)
+
+library("limma")
+levels <- make.names(getNames(csU))
+ con <- makeContrasts(
+         contrasts=c("X1139T.MeCIP-X120T.MeCIP",
+                     "(X1139T.MeCIP+X120T.MeCIP+X2845T.MeCIP)-(X5343N.MeCIP+X5358N_MeCIP)"),
+         levels=levels)
+colnames(con) <- c("ms1139T-120T","msG3-G2")
+
+ms <- MatSmoothing(csU, design=con, probeWindow=1000)
+csMS <- process(ms, verbose=verbose)
+```
