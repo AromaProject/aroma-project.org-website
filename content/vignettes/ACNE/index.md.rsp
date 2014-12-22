@@ -118,7 +118,7 @@ Number of enzymes: 2
 ```
 
 Then
-```
+```r
 acs <- AromaCellSequenceFile$byChipType(getChipType(cdf, fullname=FALSE))
 print(acs)
 ```
@@ -317,19 +317,13 @@ Parameters: (probeModel: chr "pm", mergeStrands: logi TRUE)
 chromosome <- 2
 units <- getUnitsOnChromosome(gi, chromosome=chromosome)
 str(units)
-```
 
-```
-int [1:153663] 26048 26049 26050 26052 26053 26054 26055 26056 26057 26058 ...
-```
+## int [1:153663] 26048 26049 26050 26052 26053 26054 26055 26056 26057 26058 ...
 
-```r
 pos <- getPositions(gi, units=units)
 str(pos)
-```
 
-```
-int [1:153663] 102496 141464 155674 160576 160616 166395 179818 179972 214086 214192 ...
+## int [1:153663] 102496 141464 155674 160576 160616 166395 179818 179972 214086 214192 ...
 ```
 
 #### Example: ASCNs for Sample #1

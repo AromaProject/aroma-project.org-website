@@ -6,9 +6,10 @@ Last updated on: 2010-01-07
 
 ![](<%=pathTo('assets/images/MSCN/raw%2BMSCN%2CTCGA-06-0208%2Cchr09%2Clog2CN%2Canim.gif')%>)  
   
-Figure: Before (top) and after (bottom) MSCN normalization looping over
+_Figure: Before (top) and after (bottom) MSCN normalization looping over
 estimates from four different centers. Note how the CN mean levels are
-the same across platforms after normalization.
+the same across platforms after normalization._
+
 
 ## Introduction
 
@@ -47,8 +48,9 @@ estimates](<%=pathTo('/vignettes/CreatingBinaryDataFilesContainingCopyNumberEsti
 
 ## Setup
 
-The MSCN method is implemented in the aroma.cn package. The aroma.cn
-package uses a similar directory setup as the aroma.affymetrix package.
+The MSCN method is implemented in the <% cran('aroma.cn') %> package.
+The aroma.cn package uses a similar directory setup as the
+<% cran('aroma.affymetrix') %> package.
 This that all data and results are retrieved and stored relative to the
 current directory.   All annotation data should be placed under the
 annotationData/ directory tree and all raw data should be placed under
@@ -58,9 +60,8 @@ There are several advantages of this setup, e.g. the same script will
 work out of the box everywhere, and it is easier to troubleshoot for you
 and others.  It is useful to know that you should not specify pathnames
 (absolute or relative) in any scripts.  If you find yourself specifying
-a pathname, then you are most likely not doing the correct thing.  For
-more information on this, see the documentation of the
-aroma-project.org.
+a pathname, then you are most likely not doing the correct thing.
+
 
 ### Annotation data
 
@@ -394,12 +395,13 @@ toPNG("TCGA-02-0104-01Avs10A", tags="rawCNs" width=1024, height=768, {
 
 ![](<%=pathTo('assets/images/MSCN/TCGA-02-0104-01Avs10A%2Craw%2Ctracks%2CChr03.png')%>)
 
-Figure: Raw (black) and 100kb-binned (red) log2 copy-number ratios on
-Chr3:0-60Mb in TCGA-02-0104-01Avs10A.
+_Figure: Raw (black) and 100kb-binned (red) log2 copy-number ratios on
+Chr3:0-60Mb in TCGA-02-0104-01Avs10A._
 
 
 To better see the differences between sources, we can plot only smoothed
-CNs
+CNs.
+
 ```r
 toPNG("TCGA-02-0104-01Avs10A", tags="smoothCNs", width=1024, height=320, {
   Mlim <- c(-1.5,1.5)
@@ -419,13 +421,13 @@ toPNG("TCGA-02-0104-01Avs10A", tags="smoothCNs", width=1024, height=320, {
 
 ![](<%=pathTo('assets/images/MSCN/TCGA-02-0104-01Avs10A%2Craw%2Csmooth%2Ctracks%2CChr03.png')%>)
 
-Figure: 100kb-binned log2 copy-number ratios on Chr3:0-60Mb in
+_Figure: 100kb-binned log2 copy-number ratios on Chr3:0-60Mb in
 TCGA-02-0104-01Avs10A according to each of the four sources (labs,
 platforms, and preprocessing methods).  It is clear that for this
 particular sample, the CN estimates from MSKCC and Harvard (both
 Agilent) have a greater range than those from Broad (Affymetrix) and
 Stanford (Illumina).  Regardless of differences in amplitude, all four
-data sets agree strongly on the CN profile
+data sets agree strongly on the CN profile._
 
 
 ### Normalizing for differences in copy number response functions
@@ -700,7 +702,7 @@ cnData/
 ```
 
 **Comment on the aroma.cn implementation:**  
-If one calls process() again, the package recognizes that the data has
+If one calls `process()` again, the package recognizes that the data has
 already been normalized and returned the normalized data sets
 momentarily.  This is also true, even if one restarts R.
 
@@ -744,17 +746,17 @@ toPNG("TCGA-02-0104-01Avs10A", tags="mscn,smoothCNs", width=1024, height=320, {
 
 ![](<%=pathTo('assets/images/MSCN/TCGA-02-0104-01Avs10A%2CMSCN%2Csmooth%2Ctracks%2CChr03.png')%>)
 
-Figure: The copy-number estimates agree across sources after applying
-normalizing the (full-resolution) MSCN method.
+_Figure: The copy-number estimates agree across sources after applying
+normalizing the (full-resolution) MSCN method._
 
 All intermediate and final results are saved to the file system.  For
 instance, the smoothed CNs used internally for estimating the
 relationships between sources are stored in the smoothCnData/ directory
 tree.  Although it is rarely the case that one wish to work with the
 smoothed data sets, these can be retrieved easily be retrieved from the
-'mscn' object.  We will here use the smoothed CN estimates to illustrate
+`mscn` object.  We will here use the smoothed CN estimates to illustrate
 the non-linear relationships between sources.  This code snippet also
-show how to access the data
+show how to access the data.
 
 ```r
 dsSList <- getSmoothedDataSets(mscn)
@@ -779,8 +781,8 @@ toPNG("TCGA-02-0104-01Avs10A", tags="smoothCNs,pairs", width=640, height=640, {
 
 ![](<%=pathTo('assets/images/MSCN/TCGA-02-0104-01Avs10A%2Craw%2Csmooth%2Cpairs.png')%>)
 
-Figure: Non-linear relationships of smoothed copy numbers before
-normalization.
+_Figure: Non-linear relationships of smoothed copy numbers before
+normalization._
 
 
 
@@ -821,8 +823,8 @@ toPNG("TCGA-02-0104-01Avs10A", tags="mscn,smoothCNs,pairs", width=640, height=64
 
 ![](<%=pathTo('assets/images/MSCN/TCGA-02-0104-01Avs10A%2CMSCN%2Csmooth%2Cpairs.png')%>)
 
-Figure: Linear relationships (on the same scale) of smoothed copy
-numbers after normalization.
+_Figure: Linear relationships (on the same scale) of smoothed copy
+numbers after normalization._
 
 
 

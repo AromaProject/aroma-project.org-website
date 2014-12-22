@@ -73,7 +73,7 @@ print(cdfs)
 
 gives
 
-```
+```r
 [[1]]
 AffymetrixCdfFile:
 Path: annotationData/chipTypes/Mapping250K_Nsp
@@ -145,7 +145,7 @@ print(sis)
 
 gives:
 
-```
+```r
 [[1]]
 UflSnpInformation:
 Name: Mapping250K_Nsp
@@ -331,7 +331,7 @@ chipType <- chipTypes[2]
 
 When done, `print(cesNList)` gives:
 
-```
+```r
 $Mapping250K_Nsp
 CnChipEffectSet:
 Name: AGRF_2007a

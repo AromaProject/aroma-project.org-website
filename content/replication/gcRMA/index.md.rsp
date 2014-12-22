@@ -147,9 +147,8 @@ The above script is part of redundancy test suite executed at every new
 release:
 
 ```r
-path <- system.file("testScripts/replication/chipTypes/HG-U133_Plus_2",
-package="aroma.affymetrix")
-filename <- "gcrma.R"
+path <- system.file("testScripts/replication/chipTypes/HG-U133_Plus_2", package="aroma.affymetrix")
+filename <- "12.doGCRMA_vs_gcrma.R"
 pathname <- file.path(path, filename)
 source(pathname)
 ```

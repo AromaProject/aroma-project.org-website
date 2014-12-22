@@ -9,17 +9,17 @@ used use cases.
 
 **Available blocks:**
 
--   [`doCRMAv1()` / `doASCRMAv1()`](<%=pathTo('/blocks/doCRMAv1')%>) - Total and/or
+-   [doCRMAv1() / doASCRMAv1()](<%=pathTo('/blocks/doCRMAv1')%>) - Total and/or
     allele-specific copy numbers using CRMA v1.  
     Chip types: Only Affymetrix 10K-500K SNP chip types.  
     Comment: We recommend to use CRMA v2 instead.
--   [`doCRMAv2()` / `doASCRMAv2()`](<%=pathTo('/blocks/doCRMAv2')%>) - Total and/or
+-   [doCRMAv2()` / doASCRMAv2()](<%=pathTo('/blocks/doCRMAv2')%>) - Total and/or
     allele-specific copy numbers using CRMA v2.  
     Chip types: Any Affymetrix SNP & CN chip types (10K-GWS6).
--   `doFIRMA()` - FIRMA preprocessing, probe summarization, and
+-   doFIRMA() - FIRMA preprocessing, probe summarization, and
     alternative splicing estimation on Affymetrix exon arrays.
--   `doGCRMA()` - gcRMA preprocessing and probe summarization on
+-   doGCRMA() - gcRMA preprocessing and probe summarization on
     Affymetrix gene expression arrays.
--   [`doRMA()`](<%=pathTo('/blocks/doRMA')%>)() - RMA preprocessing and probe summarization
+-   [doRMA()](<%=pathTo('/blocks/doRMA')%>) - RMA preprocessing and probe summarization
     on Affymetrix gene expression arrays.  
     Chip types: Any Affymetrix chip types.

@@ -390,15 +390,15 @@ The probe-level summaries are currently structured and stored as if they
 were chip effects in a multi-chip PLM, which is why we still call them
 "chip effects".  When preparing the target DNA, the DNA is digested and
 amplified in two parallel tracks using two different enzymes, namely
-*Nsp*I and *Sty*I.  This means that the units (SNPs and the CN probes)
+NspI and StyI.  This means that the units (SNPs and the CN probes)
 may be digested by either enzyme exclusively or both enzymes.  The
 result are one or two fragments of different lengths per unit.  When
 doing PCR, fragments of different lengths are amplified differently.
 Even more important, this systematic effect varies slightly from sample
 to sample.  We have created a specific multi-chip model that controls
 for systematic effects across samples as a function of fragment lengths
-and enzyme mixtures.  This model also controls for imbalances in *Nsp*I
-and *Sty*I mixes.  Details on the model will be published later.
+and enzyme mixtures.  This model also controls for imbalances in NspI
+and StyI mixes.  Details on the model will be published later.
 
 Note that this normalization method is a multi-chip method.  It estimate
 baseline (target) effects as the effects observed in a robust average

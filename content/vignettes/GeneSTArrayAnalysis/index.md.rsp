@@ -52,7 +52,7 @@ your data sets and CDFs.
 Most of what follows is very similar to the use case for Human Exon
 arrays.  In fact, this vignette was created by cutting and pasting the
 Human Exon array analysis page and modified.
-Thanks are due to Elizabeth and Ken for the original document.
+Thanks are due to Elizabeth Purdom and Ken Simpson for the original document.
 
 ```r
 library("aroma.affymetrix")

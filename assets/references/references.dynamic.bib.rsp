@@ -45,7 +45,7 @@ refs_own <- list(
  --------------------------------------------------------------------%>
 <%
 refs_others <- list(
-  reference("15381628", key="HupeP_etal_2004-GLAD", keywords="GLAD; segmentation method")
+##  reference("15381628", key="HupeP_etal_2004-GLAD", keywords="GLAD; segmentation method")
 )
 %>
 
