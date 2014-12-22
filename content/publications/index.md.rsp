@@ -3,12 +3,14 @@
 <%
 authors <- c('Bengtsson', 'Neuvial', 'Purdom', 'Robinson', 'Hansen', 'Bullard')
 pattern <- sprintf("(%s)", paste(authors, collapse="|"))
+
+count <- 1L
 %>
 
 <% for (kk in seq_along(references)) { %>
 <%
   ref <- references[[kk]]
-  if (!grepl(pattern, ref$author)) next
+  if (!any(grepl(pattern, ref$author))) next
   md <- format(ref, style="markdown")
   md <- sub("[1] ", "", md, fixed=TRUE)
   md <- gsub("..", ".", md, fixed=TRUE)
@@ -17,6 +19,7 @@ pattern <- sprintf("(%s)", paste(authors, collapse="|"))
     keywords <- trim(unlist(strsplit(keywords, split="[,;]")))
     md <- sprintf("%s  \nKeywords: %s", md, paste(keywords, collapse="; "))
   }
-  printf("[%d] %s\n\n", kk, md)
+  printf("[%d] %s\n\n", count, md)
+  count <- count + 1L
 %>
 <% } # for (kk ...) %>
