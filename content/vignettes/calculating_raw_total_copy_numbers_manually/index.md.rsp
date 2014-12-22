@@ -7,7 +7,7 @@ Last modified: 2014-12-21
 
 You can calculate raw copy numbers (CNs) from chip effect estimates by first "extracting" the chip effects and then taking the log2 ratios.  Basically, first decide for which units you wish to calculate the raw CNs, extract the theta estimates across samples for these units, and calculate the log2 ratios.
 
-Note, a more convenient way to extract raw copy numbers is by using extractRawCopyNumbers() of CopyNumberChromosomalModel.  See Vignettes '[CRMA v1: Total copy number analysis (10K, 100K, 500K)](<%=pathTo('/vignettes/CRMAv1')%>)' and '[CRMAv2: Estimation of total copy numbers using the CRMA v2 method (10K-GWS6)](<%=pathTo('/vignettes/CRMAv1')%>)' for examples.
+Note, a more convenient way to extract raw copy numbers is by using `extractRawCopyNumbers()` of CopyNumberChromosomalModel.  See Vignettes '[CRMA v1: Total copy number analysis (10K, 100K, 500K)](<%=pathTo('/vignettes/CRMAv1')%>)' and '[CRMAv2: Estimation of total copy numbers using the CRMA v2 method (10K-GWS6)](<%=pathTo('/vignettes/CRMAv1')%>)' for examples.
 
 <% please_cite(c(
   'BengtssonH_etal_2008-aroma.affymetrix',
