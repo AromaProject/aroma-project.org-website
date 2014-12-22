@@ -37,11 +37,30 @@ nocite <- function(key, ...) {
   NoCite(bib)
 }
 
-bibentry <- function(ref, key=NULL, keywords=FALSE, style="markdown") {
+bibentry <- function(ref, key=NULL, keywords=FALSE, crossref=TRUE, style="markdown") {
   oopts <- BibOptions(style=style)
   on.exit(BibOptions(oopts))
   md <- format(ref, style=style)
+
+  if (!crossref) {
+    if (style == "html") {
+      if (any(grepl("<cite>", md, fixed=TRUE))) {
+        md <- gsub(".*<cite>(|\n)*", "", md, fixed=FALSE)
+      }
+    }
+  }
+
+  if (style == "html") {
+    ## Drop stray </cite>?
+    if (!any(grepl("<cite>", md, fixed=TRUE))) {
+      md <- gsub("</cite>", "", md, fixed=TRUE)
+    }
+  }
+
+  ## Drop [1] at the beginning; we roll our own
   md <- sub("\\[1\\]( |\\n)", "", md)
+  mprint(md)
+  mcat('--------\n\n')
   md <- gsub("..", ".", md, fixed=TRUE)
   if (keywords) {
     keywords <- ref$keywords
@@ -56,6 +75,8 @@ bibentry <- function(ref, key=NULL, keywords=FALSE, style="markdown") {
 } # bibentry()
 
 please_cite <- function(keys, keywords=FALSE, ..., style="html") {
+  oopts <- BibOptions(hyperlink=FALSE, style=style)
+  on.exit(BibOptions(oopts))
   cat('<div class="alert alert-info" role="alert">\n')
   cat(' <p>\n')
   cat('  <span class="glyphicon glyphicon-thumbs-up" style="font-size: 1.2em;"></span>\n')
@@ -65,7 +86,7 @@ please_cite <- function(keys, keywords=FALSE, ..., style="html") {
   for (key in keys) {
     cat('  <li>\n')
     bib <- references[[key]]
-    bibentry(bib, keywords=keywords, ..., style=style)
+    bibentry(bib, keywords=keywords, crossref=FALSE, ..., style=style)
     cat('  </li>\n')
   }
   cat(' </ul>\n')

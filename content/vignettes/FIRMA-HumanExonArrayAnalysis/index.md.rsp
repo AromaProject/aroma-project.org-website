@@ -18,9 +18,8 @@ This document describes how to perform FIRMA <% citep('PurdomE_etal_2008-FIRMA')
 
 ### Raw data
 
-* Test set: BCGC_2006 (35x breast cancer samples on human exon arrays
-from LBL. Unfortunately this data is currently not publically
-available.)
+* Test set: BCGC_2006 (35x breast cancer samples on human exon arrays from  Lawrence Berkeley National Laboratory (LBNL). Unfortunately this data is currently not publically available.)
+
 * Path: rawData/BCGC_2006/HuEx-1_0-st-v2/
 
 ### Annotation data
@@ -366,3 +365,4 @@ estimates with `extractDataFrame()` applied to `fs`.
 
 ## References
 <% biblist() %>
+	y
