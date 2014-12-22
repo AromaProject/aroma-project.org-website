@@ -10,7 +10,7 @@ in <% citet('BengtssonH_etal_2009-CRMAv1') %>.  It was optimized to
 estimate high-quality total copy number (TCN) estimates from the 500K
 chip type.  Later the CRMA v2 method <% citep('BengtssonH_etal_2009-CRMAv2') %>
 was designed, which is what is now recommended.
-However, in case CRMAv1 is wanted, we provide the `doCRMAv1()`
+However, in case CRMA v1 is wanted, we provide the `doCRMAv1()`
 and `doASCRMAv1()` methods.
 
 ## Usage

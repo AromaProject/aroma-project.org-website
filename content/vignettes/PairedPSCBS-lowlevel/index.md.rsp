@@ -1,4 +1,4 @@
-# Vignette: Paired parent-specific copy-number segmentation (Paired PSCBS) (low-level API after AS-CRMAv2)
+# Vignette: Paired parent-specific copy-number segmentation (Paired PSCBS) (low-level API after AS-CRMA v2)
 
 Author: Henrik Bengtsson  
 Created on: 2011-11-11  
@@ -64,9 +64,9 @@ Total file size: 125.31MBRAM: 0.01MB
 
 ## Allele-specific copy-number estimates
 
-Here we will use an allele-specific version of CRMAv2 to estimate total
+Here we will use an allele-specific version of CRMA v2 to estimate total
 CNs (TCNs) and allele B fractions (BAFs) from the two CEL files.
- AS-CRMAv2 will take care of signal normalization etc:
+ AS-CRMA v2 will take care of signal normalization etc:
 
 ```r
 res <- doASCRMAv2(csR, verbose=verbose)

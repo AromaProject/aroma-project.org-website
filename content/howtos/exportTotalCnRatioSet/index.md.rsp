@@ -22,7 +22,7 @@ results, which was automatically stored on the file system, do:
 
 ```r
 dataSet <- "MyDataSet"
-tags <- "ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY";  # Tags added by CRMAv2
+tags <- "ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY";  # Tags added by CRMA v2
 chipType <- "GenomeWideSNP_6"
 ds <- AromaUnitTotalCnBinarySet$byName(dataSet, tags=tags, chipType=chipType)
 ```

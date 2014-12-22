@@ -663,7 +663,7 @@ apply downstream methods, see other aroma.affymetrix vignettes.
 
 ## See also
 
-*  [doCRMAv2()](<%=pathTo('/blocks/doCRMAv2/')%>) - a convenient wrapper that runs CRMA v2 in one call.
+*  [`doCRMAv2()`](<%=pathTo('/blocks/doCRMAv2/')%>) - a convenient wrapper that runs CRMA v2 in one call.
 
 
 ## References

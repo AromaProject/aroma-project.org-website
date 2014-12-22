@@ -55,7 +55,7 @@ verbose <- Arguments$getVerbose(-8, timestamp=TRUE)
 options(digits=4)
 ```
 
-## Preprocessing using CRMAv2
+## Preprocessing using CRMA v2
 Here we will use the CRMA v2 <% citep('BengtssonH_etal_2009-CRMAv2') %> method to estimate copy numbers.
 ```r
 dataSet <- "GSE20584"
@@ -79,7 +79,7 @@ Path (to the first file): totalAndFracBData/GSE20584,ACC,ra,-XY,BPN,-XY,AVG,FLN,
 Total file size: 14.35 MB
 RAM: 0.00MB
 ```
-Note, above we use the allele-specific version of CRMAv2 (`combineAlleles=FALSE`). Alternatively, one could do
+Note, above we use the allele-specific version of CRMA v2 (`combineAlleles=FALSE`). Alternatively, one could do
 
 ```r
 dsC <- doASCRMAv2(dataSet, cdf=cdf, verbose=verbose)

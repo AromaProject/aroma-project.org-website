@@ -74,8 +74,8 @@ Note, this is only the case if `plm="AvgCnPlm"`.
 estimated (for SNPs). The default is to estimate total CNs
 (`combineAlleles=TRUE`). Alternatively, use `doASCRMAv2()`, which is
 short for `doCRMAv2(..., combineAlleles=FALSE)`. The estimated total CNs
-will differ slightly when using the two alternatives and the CRMAv2
-method has been optimized for total CNs (as in CRMAv2 paper). However,
+will differ slightly when using the two alternatives and the CRMA v2
+method has been optimized for total CNs (as in CRMA v2 paper). However,
 if you plan to do ASCN analysis, we recommend to use
 `combineAlleles=FALSE` from the beginning, because the statistical
 performance is almost as good while you will save lots of time only

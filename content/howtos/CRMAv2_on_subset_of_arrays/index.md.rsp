@@ -3,7 +3,7 @@
 Author: Henrik Bengtsson  
 Created on: 2010-01-04
 
-This document explains how to do CRMAv2 <% citep('BengtssonH_etal_2009-CRMAv2') %> processing on a single array or
+This document explains how to do CRMA v2 <% citep('BengtssonH_etal_2009-CRMAv2') %> processing on a single array or
 on a subset of arrays in a data set.  To show how this can be done, we
 use the same data and steps as in Vignette '[CRMA v2: Estimation of
 total copy numbers using the CRMA v2 method
@@ -11,11 +11,11 @@ total copy numbers using the CRMA v2 method
 setup.
 
 <% alert_warn({ %>
-IMPORTANT: This approach will only work with methods such as CRMAv2
+IMPORTANT: This approach will only work with methods such as CRMA v2
 that are truly single-array methods.  If you try it on other methods,
 for instance CRMA (v1), it will process the arrays for you, but you will
 not get the same results if you process each array independently or as
-part of a larger data set.  Currently, it is only CRMAv2 that is a truly
+part of a larger data set.  Currently, it is only CRMA v2 that is a truly
 single-array method.
 <% }) %>
 
@@ -40,7 +40,7 @@ csR <- AffymetrixCelSet$byName("HapMap270,6.0,CEU,testSet", cdf=cdf)
 ## Total file size: 395.13MB
 ```
 
-Then, in order to do CRMAv2 on a subset of the arrays, all we have to do
+Then, in order to do CRMA v2 on a subset of the arrays, all we have to do
 is to extract a new data set consisting of the arrays of interest.  Say
 the arrays are number 2, 3, and 5.  To further illustrate that aroma
 correctly preserves both the subset and the order of the arrays
@@ -126,7 +126,7 @@ stopifnot(getNames(cesN) == getNames(csR))
 Furthermore, this is also true if some or all of the steps have already
 been processed for all or other arrays.  That is, if there are other
 arrays in the same data directories, they will *not* affect the analysis
-of this subset.  This is the key for doing CRMAv2 in batches.  Try for
+of this subset.  This is the key for doing CRMA v2 in batches.  Try for
 instance to repeat the above with `idxs <- c(1,3,4)`.  You can learn
 more about batch processing in separate 'How To'.
 

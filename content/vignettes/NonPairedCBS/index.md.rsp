@@ -12,7 +12,7 @@ files.
 
 We assume that locus-specific CN estimates have already been obtained
 via one of many CN preprocessing methods (e.g.
-[CRMAv2](<%=pathTo('/vignettes/CRMAv2')%>)) and that those estimates are available as
+[CRMA v2](<%=pathTo('/vignettes/CRMAv2')%>)) and that those estimates are available as
 a AromaUnitTotalCnBinarySet data set(*).  Note that
 a AromaUnitTotalCnBinarySet can hold CN data of any microarray
 technology, not only Affymetrix, which means that what follows can be
@@ -30,7 +30,7 @@ do:
 
 ```r
 dataSet <- "HapMap270,6.0,CEU,testSet"
-tags <- "ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY";  # Tags added by CRMAv2
+tags <- "ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY";  # Tags added by CRMA v2
 chipType <- "GenomeWideSNP_6"
 ds <- AromaUnitTotalCnBinarySet$byName(dataSet, tags=tags, chipType=chipType)
 ```

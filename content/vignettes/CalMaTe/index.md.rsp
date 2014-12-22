@@ -48,7 +48,7 @@ print(csR)
 ## RAM: 0.06MB
 
 
-# Allele-specific CRMAv2 with log-additive modelling
+# Allele-specific CRMA v2 with log-additive modelling
 dsList <- doASCRMAv2(csR, plm="RmaCnPlm", verbose=verbose)
 print(dsList)
 
@@ -358,25 +358,25 @@ for (rr in seq(along=regions)) {
 ```
 
 
-In Figures 2-4, paired tumor-normal BAFs for three (manually identified) copy number regions on chromosome 8 of sample GSM318736 are displayed for each of the following four combinations of preprocessing methods: ASCRMAv2 (top left),
-ASCRMAv2 + CalMaTe (top right), ASCRMAv2 + TumorBoost (bottom left),
-ASCRMAv2 + CalMaTe + TumorBoost (bottom right).
+In Figures 2-4, paired tumor-normal BAFs for three (manually identified) copy number regions on chromosome 8 of sample GSM318736 are displayed for each of the following four combinations of preprocessing methods: ASCRMA v2 (top left),
+ASCRMA v2 + CalMaTe (top right), ASCRMA v2 + TumorBoost (bottom left),
+ASCRMA v2 + CalMaTe + TumorBoost (bottom right).
 
 ![betaT vs betaN in a normal region](<%=pathTo('assets/images/GSM318736%2CbetaNvsBetaT%2CChr08%2C0-16.png')%>)
 
-_Figure 2: betaT vs betaN in a normal (1,1) region between 0 and 16 Mb on Chromosome 8.  Preprocessing methods used: ASCRMAv2 (top left), ASCRMAv2 + CalMaTe (top right), ASCRMAv2 + TumorBoost (bottom left), ASCRMAv2 + CalMaTe + TumorBoost (bottom right)._
+_Figure 2: betaT vs betaN in a normal (1,1) region between 0 and 16 Mb on Chromosome 8.  Preprocessing methods used: ASCRMA v2 (top left), ASCRMA v2 + CalMaTe (top right), ASCRMA v2 + TumorBoost (bottom left), ASCRMA v2 + CalMaTe + TumorBoost (bottom right)._
 
 
 ![betaT vs betaN in a region of homozygous deletion
 (0,1)](<%=pathTo('assets/images/GSM318736%2CbetaNvsBetaT%2CChr08%2C16.5-45.png')%>)
 
-_Figure 3: betaT vs betaN in a region of homozygous deletion (0,1) between 16 and 45 Mb on Chromosome 8.  Preprocessing methods used: ASCRMAv2 (top left), ASCRMAv2 + CalMaTe (top right), ASCRMAv2 + TumorBoost (bottom left), ASCRMAv2 + CalMaTe + TumorBoost (bottom right)._
+_Figure 3: betaT vs betaN in a region of homozygous deletion (0,1) between 16 and 45 Mb on Chromosome 8.  Preprocessing methods used: ASCRMA v2 (top left), ASCRMA v2 + CalMaTe (top right), ASCRMA v2 + TumorBoost (bottom left), ASCRMA v2 + CalMaTe + TumorBoost (bottom right)._
 
 
 ![betaT vs betaN in a region of gain
 (1,2)](<%=pathTo('assets/images/GSM318736%2CbetaNvsBetaT%2CChr08%2C45-150.png')%>)
 
-_Figure 4: betaT vs betaN in a region of gain (1,2) after 45 Mb on Chromosome 8.  Preprocessing methods used: ASCRMAv2 (top left), ASCRMAv2 + CalMaTe (top right), ASCRMAv2 + TumorBoost (bottom left), ASCRMAv2 + CalMaTe + TumorBoost (bottom right)._
+_Figure 4: betaT vs betaN in a region of gain (1,2) after 45 Mb on Chromosome 8.  Preprocessing methods used: ASCRMA v2 (top left), ASCRMA v2 + CalMaTe (top right), ASCRMA v2 + TumorBoost (bottom left), ASCRMA v2 + CalMaTe + TumorBoost (bottom right)._
 
 
 Note: when comparing signals from TumorBooste to CalMaTe, it is useful
