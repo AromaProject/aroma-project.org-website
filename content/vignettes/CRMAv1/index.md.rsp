@@ -1,0 +1,534 @@
+# Vignette: Total copy number analysis using CRMA v1 (10K, 100K, 500K)
+
+Author: Henrik Bengtsson  
+Created: 2007-02-14  
+Last updated: 2014-12-21
+
+<% alert_warn({ %>
+This document presents the original CRMA (v1) method.  It was later replaced by the CRMA v2 method <% citep('BengtssonH_etal_2009-CRMAv2') %>.
+CRMA v2 was designed for newer versions of chip types (e.g. GenomeWideSNP_6), which were not available when CRMA v1 was developed.  CRMA v1 was designed for older generation of chip types, e.g. Mapping10K_Xba142, Mapping50K_Hind240 and Mapping250K_Nsp.  Furthermore, CRMA v2 is a single-array method, whereas CRMA v1 is a multi-array method.
+<% }) %>
+
+
+## Setup
+
+### Raw data
+
+* Test set: ScottH_2007
+* Test samples: 1-288, 2-437, 3-575, 414-VA (250K Nsp & 250K Sty; part of the below reference set)
+* Reference set: AGRF_2007a
+* Reference samples: 51 Nsp and 27 Sty chips (including above 4 samples).
+* Location: rawData/AGRF_2007a/Mapping250K_Nsp/ and rawData/AGRF_2007a/Mapping250K_Sty/
+
+Comment: Both the above data sets are private and cannot unfortunately
+not be shared.
+
+
+### Annotation data
+
+Put the following annotation files
+under annotationData/chipTypes/Mapping250K_Nsp/ and
+annotationData/chipTypes/Mapping250K_Sty/ respectively
+
+* **Mapping250K_Nsp.cdf** and **Mapping250K_Sty.cdf**
+* **Mapping250K_Nsp,na24,HB20080214.ugp** and
+  **Mapping250K_Sty,na24,HB20080214.ugp**: The Unit Genome Position (UGP) file.
+* **Mapping250K_Nsp,na24,HB20080214.ufl** and
+  **Mapping250K_Sty,na24,HB20080214.ufl**: The Unit Fragment Length (UFL) file.
+
+You will find the UGP and UFL files on Page [Mapping250K_Nsp &
+Mapping250K_Sty](<%=pathTo('/chipTypes/Mapping250K_Nsp-and-Mapping250K_Sty')%>).
+There you will also more information about this chip type, and find
+links to the Affymetrix website where you can download the CDF.
+
+
+<% please_cite(c(
+  'BengtssonH_etal_2008-aroma.affymetrix',
+  'BengtssonH_etal_2009-CRMAv1'
+)) %>
+
+## Low-level analysis
+
+```r
+library("aroma.affymetrix")
+verbose <- Arguments$getVerbose(-8, timestamp=TRUE)
+
+name <- "AGRF_2007a"
+chipTypes <- c("Mapping250K_Nsp", "Mapping250K_Sty")
+```
+
+### Verifying annotation data files
+
+Affymetrix provides two different CDF files for the GenomeWideSNP_6
+chip type, namely the "default" and "full" CDF.  The full CDF contains
+what the default one does plus more.  We are always using the full CDF.
+We start by locating this CDF:
+
+```r
+cdfs <- lapply(chipTypes, FUN=function(chipType) {
+  AffymetrixCdfFile$byChipType(chipType)
+})
+print(cdfs)
+```
+
+gives
+
+```
+[[1]]
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/Mapping250K_Nsp
+Filename: Mapping250K_Nsp.cdf
+Filesize: 185.45MB
+File format: v4 (binary; XDA)
+Chip type: Mapping250K_Nsp
+Dimension: 2560x2560
+Number of cells: 6553600
+Number of units: 262338
+Cells per unit: 24.98
+Number of QC units: 6
+RAM: 0.00MB
+
+[[2]]
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/Mapping250K_Sty
+Filename: Mapping250K_Sty.cdf
+Filesize: 175.83MB
+File format: v4 (binary; XDA)
+Chip type: Mapping250K_Sty
+Dimension: 2560x2560
+Number of cells: 6553600
+Number of units: 238378
+Cells per unit: 27.49
+Number of QC units: 6
+RAM: 0.00MB
+```
+
+Before we continue, the following will assert that the UFL and the UGP
+annotation files can be found and that they are compatible with the give
+CDF.  These step are not really needed for analysis, because they are
+done in the background, but it is a good test to see that the setup is
+correct and catch any errors in setup already here.
+
+```r
+gis <- lapply(cdfs, FUN=getGenomeInformation)
+print(gis)
+```
+
+gives:
+
+```r
+[[1]]
+UgpGenomeInformation:
+Name: Mapping250K_Nsp
+Tags: na24,HB20080214
+Pathname:
+annotationData/chipTypes/Mapping250K_Nsp/Mapping250K_Nsp,na24,HB20080214.ugp
+File size: 1.25MB
+RAM: 0.00MB
+Chip type: Mapping250K_Nsp
+
+[[2]]
+UgpGenomeInformation:
+Name: Mapping250K_Sty
+Tags: na24,HB20080214
+Pathname:
+annotationData/chipTypes/Mapping250K_Sty/Mapping250K_Sty,na24,HB20080214.ugp
+File size: 1.14MB
+RAM: 0.00MB
+Chip type: Mapping250K_Sty
+```
+
+```r
+sis <- lapply(cdfs, FUN=getSnpInformation)
+print(sis)
+```
+
+gives:
+
+```
+[[1]]
+UflSnpInformation:
+Name: Mapping250K_Nsp
+Tags: na24,HB20080214
+Pathname:
+annotationData/chipTypes/Mapping250K_Nsp/Mapping250K_Nsp,na24,HB20080214.ufl
+File size: 512.84kB
+RAM: 0.00MB
+Chip type: Mapping250K_Nsp
+Number of enzymes: 1
+
+[[2]]
+UflSnpInformation:
+Name: Mapping250K_Sty
+Tags: na24,HB20080214
+Pathname:
+annotationData/chipTypes/Mapping250K_Sty/Mapping250K_Sty,na24,HB20080214.ufl
+File size: 466.04kB
+RAM: 0.00MB
+Chip type: Mapping250K_Sty
+Number of enzymes: 1
+```
+
+
+### Defining CEL set
+
+Allocate a list structure to hold normalized chip-effect estimates from
+both chip types:
+
+```r
+cesNList <- list()
+```
+
+Repeat, or run in parallel, all the steps below, including PCR fragment
+length normalization, for both chip types.
+
+```r
+chipType <- chipTypes[1]
+
+cs <- AffymetrixCelSet$byName(name, chipType=chipType)
+cs <- cs[!isDuplicated(cs)]
+print(cs)
+```
+
+Gives:
+
+```
+AffymetrixCelSet:
+Name: AGRF_2007a
+Tags:
+Path: rawData/AGRF_2007a/Mapping250K_Nsp
+Chip type: Mapping250K_Nsp
+Number of arrays: 51
+Names: 01, 02, ..., zAGRF_2006-10-04_130718
+Time period: 2006-05-16 18:22:24 -- 2007-01-26 09:23:15
+Total file size: 3194.01MB
+RAM: 0.06MB
+```
+
+### Normalizing
+
+Comment: In <% citet('BengtssonH_etal_2009-CRMAv1') %>,
+we show that it is better to do
+allelic-crosstalk calibration and use quantile normalization as an
+optional follow-up step.  However, since this example was prepared
+before those results we concluded, we here only show how to perform the
+quantile normalization.  Please see other vignette for the
+GenomeWideSNP\_6 chip type to see how to do allelic-crosstalk calibration.
+
+```r
+qn <- QuantileNormalization(cs)
+print(qn)
+```
+
+gives:
+
+```
+QuantileNormalization:
+Data set: AGRF_2007a
+Input tags:
+Output tags: QN
+Number of arrays: 51 (3194.01MB)
+Chip type: Mapping250K_Nsp
+Algorithm parameters: (subsetToUpdate: NULL, typesToUpdate: NULL,
+subsetToAvg: NULL, typesToAvg: NULL, .targetDistribution: NULL)
+Output path: probeData/AGRF_2007a,QN/Mapping250K_Nsp
+Is done: FALSE
+RAM: 0.00MB
+```
+
+To run the normalization, do:
+
+```r
+csN <- process(qn, verbose=verbose)
+```
+
+This will take approx 30-60s per array.  Then `print(csN)` gives:
+
+```
+AffymetrixCelSet:
+Name: AGRF_2007a
+Tags: QN
+Path: probeData/AGRF_2007a,QN/Mapping250K_Nsp
+Chip type: Mapping250K_Nsp
+Number of arrays: 51
+Names: 01, 02, ..., zAGRF_2006-10-04_130718
+Time period: 2006-05-16 18:22:24 -- 2007-01-26 09:23:15
+Total file size: 3194.01MB
+RAM: 0.06MB
+```
+
+### Summarization
+
+For total copy number analysis ignoring strand information, do:
+
+```r
+plm <- RmaCnPlm(csN, combineAlleles=TRUE, mergeStrands=TRUE)
+print(plm)
+```
+
+Gives:
+
+```
+RmaCnPlm:
+Data set: AGRF_2007a
+Chip type: Mapping250K_Nsp
+Input tags: QN
+Output tags: QN,RMA,A+BParameters: (probeModel: chr "pm"; flavor: chr
+"affyPLM"; mergeStrands: logi TRUE; combineAlleles: logi TRUE).
+Path: plmData/AGRF_2007a,QN,RMA,A+B/Mapping250K_Nsp
+RAM: 0.00MB
+```
+
+To fit the PLM to all of the data, do:
+
+```r
+fit(plm, verbose=verbose)
+```
+
+This will roughly take a few minutes per array.
+
+### PCR fragment length normalization
+
+To normalize estimated chip effects for systematic effects due to
+different lengths of PCR fragments for different SNPs, do:
+
+```r
+ces <- getChipEffectSet(plm)
+fln <- FragmentLengthNormalization(ces)
+print(fln)
+```
+
+gives:
+
+```
+FragmentLengthNormalization:
+Data set: AGRF_2007a
+Input tags: QN,RMA,A+B
+Output tags: QN,RMA,A+B,FLN
+Number of arrays: 51 (487.38MB)
+Chip type: Mapping250K_Nsp,monocell
+Algorithm parameters: (subsetToFit: NULL, .targetFunction: NULL)
+Output path: plmData/AGRF_2007a,QN,RMA,A+B,FLN/Mapping250K_Nsp
+Is done: FALSE
+RAM: 0.00MB
+```
+
+To normalize the chip effects, do:
+
+```r
+cesNList[[chipType]] <- process(fln, verbose=verbose)
+```
+
+This will take 10-20 seconds per array.
+
+### Repeat for other chip type
+
+Repeat all of the above for the second chip type, i.e.
+
+```r
+chipType <- chipTypes[2]
+```
+
+When done, `print(cesNList)` gives:
+
+```
+$Mapping250K_Nsp
+CnChipEffectSet:
+Name: AGRF_2007a
+Tags: QN,RMA,A+B,FLN
+Path: plmData/AGRF_2007a,QN,RMA,A+B,FLN/Mapping250K_Nsp
+Chip type: Mapping250K_Nsp,monocell
+Number of arrays: 51
+Names: 01, 02, ..., zAGRF_2006-10-04_130718
+Time period: 2007-02-14 23:56:58 -- 2007-02-14 23:57:05
+Total file size: 487.38MB
+RAM: 0.07MB
+Parameters: (probeModel: chr "pm", mergeStrands: logi TRUE,
+combineAlleles: logi TRUE)
+
+$Mapping250K_Sty
+CnChipEffectSet:
+Name: AGRF_2007a
+Tags: QN,RMA,A+B,FLN
+Path: plmData/AGRF_2007a,QN,RMA,A+B,FLN/Mapping250K_Sty
+Chip type: Mapping250K_Sty,monocell
+Number of arrays: 27
+Names: 01, 02, ..., HD01_006
+Time period: 2007-02-16 00:04:09 -- 2007-02-16 00:04:30
+Total file size: 234.86MB
+RAM: 0.04MB
+Parameters: (probeModel: chr "pm", mergeStrands: logi TRUE,
+combineAlleles: logi TRUE)
+```
+
+## Identification of copy-number regions (CNRs)
+
+The Gain and Loss Analysis of DNA (GLAD) model by
+<% citep('HupeP_etal_2004-GLAD') %> can be applied to
+_raw copy numbers_ (CNs).  For each location, the raw CN
+is calculated as the chip effect relative to the chip effect of a normal
+reference sample.  If no reference sample is available, a robust average
+across all samples can be used instead.
+
+To setup the GLAD model using the robust average of the samples as a
+reference set, do:
+
+```r
+glad <- GladModel(cesNList)
+```
+
+Samples that are hybridized to multiple chip types, are identified by
+their sample names, that is, sample tags are ignore.  For instance, CEL
+files Mapping250K_Nsp/1-288,2006-10-03.cel and
+Mapping250K_Sty/1-288,2006-10-16.cel are identified to be of the same
+sample and their raw CNs are merged before fitting GLAD.
+
+Moreover, the "chip type" of the fitted GLAD model now is a mix of two
+chip types.  The package labels the output data by a new virtual "chip
+type" as a minimal combined string of the input chip types sorted in
+lexicographic order, e.g. from Mapping250K_Sty and Mapping250K_Nsp the
+combined chip type becomes "Mapping250K_Nsp+Sty".  Note that there
+exist no CDF for this chip type, but it instead indicates what the two
+chip types are.
+
+Then `print(glad)` gives:
+
+```
+GladModel:
+Name: AGRF_2007a
+Tags: QN,RMA,A+B,FLN
+Chip type (virtual): Mapping250K_Nsp+Sty
+Path: gladData/AGRF_2007a,QN,RMA,A+B,FLN/Mapping250K_Nsp+Sty
+Number of chip types: 2
+Chip-effect set & reference file pairs:
+Pair #1:
+Chip-effect set:
+CnChipEffectSet:
+Name: AGRF_2007a
+Tags: QN,RMA,A+B,FLN
+Path: plmData/AGRF_2007a,QN,RMA,A+B,FLN/Mapping250K_Nsp
+Chip type: Mapping250K_Nsp,monocell
+Number of arrays: 51
+Names: 01, 02, ..., zAGRF_2006-10-04_130718
+Time period: 2007-02-14 23:56:58 -- 2007-02-14 23:57:05
+Total file size: 487.38MB
+RAM: 0.07MB
+Parameters: (probeModel: chr "pm", mergeStrands: logi TRUE,
+combineAlleles: logi TRUE)
+Reference file:
+<average across arrays>
+RAM: 0.00MB
+Pair #2:
+Chip-effect set:
+CnChipEffectSet:
+Name: AGRF_2007a
+Tags: QN,RMA,A+B,FLN
+Path: plmData/AGRF_2007a,QN,RMA,A+B,FLN/Mapping250K_Sty
+Chip type: Mapping250K_Sty,monocell
+Number of arrays: 27
+Names: 01, 02, ..., HD01_006
+Time period: 2007-02-16 00:04:09 -- 2007-02-16 00:04:30
+Total file size: 234.86MB
+RAM: 0.04MB
+Parameters: (probeModel: chr "pm", mergeStrands: logi TRUE,
+combineAlleles: logi TRUE)
+Reference file:
+<average across arrays>
+```
+
+### Extracting raw copy numbers
+
+_This subsection is optional and may be skipped._
+Given any CopyNumberChromosomalModel, including GladModel, it is possible to extract raw copy numbers (log-ratios as defined in <% citet('BengtssonH_etal_2009-CRMAv1') %>) as follows:
+
+```r
+rawCNs <- extractRawCopyNumbers(glad, array=1, chromosome=1)
+print(rawCNs)
+
+## RawCopyNumbers:
+## Number of loci: 10525
+## Loci fields: cn [10525xnumeric], x [10525xnumeric]
+## RAM: 0.61MB
+```
+
+This object holds (in memory) the raw CN estimates (`cn`) and their
+genomic locations (`x`) on the requested chromosome.  The easiest way to
+work with this data is to turn it into a data frame:
+
+```r
+rawCNs <- as.data.frame(rawCNs)
+str(rawCNs)
+
+## 'data.frame':   10525 obs. of  2 variables:
+## $ x : num  742429 767376 769185 775852 782343 ...
+## $ cn: num  -0.613 -0.715 -0.127 -0.349 -0.201 ...
+```
+
+Note that this can be done before/without fitting the copy-number
+model.  Moreover, the raw CNs are estimates the exact same way
+regardless of CN model (GladModel, CbsModel, ...).
+
+
+### Fitting copy-number model and displaying results
+
+Data is fitted to each sample and each chromosome separately.  For a
+single 250K array it will take roughly 30-40 minutes per array to fit
+GLAD to all 22+1 chromosomes.  If two 250K arrays are combined, as in
+this case, the *processing time is not double but approximately four
+times longer*, i.e. 2-2.5 hours per array.  In other words, fitting GLAD
+to Nsp and Sty combined may take days for a large data set.  (Footnote:
+In order to speed up the modelling, the GLAD package has to be
+optimized; there is nothing we can optimize in the aroma.affymetrix
+package.)  If some of the arrays are included only for the purpose of
+being reference samples, one do not have to fit GLAD to those, which
+will save processing time.  Moreover, since GLAD is fitted to each array
+and each chromosome independently, it is possible to fit GLAD in
+parallel on many different computers.
+
+Instead of using `fit(glad)` explicitly, we can utilize the
+ChromosomeExplorer class to fit the model and to generate browsable
+image files, and this to a selected subset of the arrays and/or the
+chromosomes.
+
+```r
+ce <- ChromosomeExplorer(glad)
+
+# Arrays to be modelled
+setArrays(ce, c("1-288", "2-437", "3-575", "414-VA"))
+
+# Use a different data set name for the output
+setAlias(ce, "ScottH_etal_2007")
+
+print(ce)
+```
+
+gives:
+
+```
+ChromosomeExplorer:
+Name: ScottH_etal_2007
+Tags: QN,RMA,A+B,FLN
+Number of arrays: 4
+Path:
+reports/ScottH_etal_2007/QN,RMA,A+B,FLN/Mapping250K_Nsp+Sty/glad
+RAM: 0.00MB
+```
+
+Note how the data set name, and hence the output path, was changed by
+setting a so called *alias*.
+
+To fit the GLAD model and create the reporter files, do:
+
+```r
+process(ce, verbose=verbose)
+```
+
+To do only a subset of the chromosomes, say chromosome 19, 22, and 23 (X), do:
+
+```r
+process(ce, chromosomes=c(19,22,23), verbose=verbose)
+```
+
+
+## References
+<% biblist() %>
