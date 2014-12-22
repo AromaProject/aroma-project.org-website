@@ -1,0 +1,22 @@
+# Benchmark: DNAcopy: Significant speedup from v1.18.0 to v1.19.2
+
+Author: Henrik Bengtsson  
+Created on: 2012-05-10 (adopted from private email on 2009-06-10)
+
+There was a significant speedup implemented in <% bioc('DNAcopy') %> v1.19.2 (June 2009).   For example, in a high-density data set, where Chr 1 has
+roughly 450K loci, processing Chr 1 alone using weighted CBS took ~20 mins before (DNAcopy v1.18.0) whereas it takes ~30s now (DNAcopy v1.19.2) - that is a 40 times speed up.
+
+I ran some simple benchmarking where I simulated the same CN
+profile with a density of J=10^3, 10^4, 10^5, 2\*10^5, 5\*10^5, 10^6 loci.
+I compared the previous algorithm in DNAcopy v1.18.0 (==v1.19.0) with
+the new in DNAcopy v1.19.2, and it appears that the DNAcopy update made
+the algorithm to go from something like O(J*log(J)) to near O(J).
+Moreover, the weighted version (where one use locus-specific weights)
+is now almost as fast as the non-weighted one.
+
+![](<%=pathTo('assets/images/DNAcopy/benchmark%2C20096010%2Csegment%2CDNAcopy_v1.18.0.png')%>)![](<%=pathTo('assets/images/DNAcopy/benchmark%2C20096010%2Csegment%2CDNAcopy_v1.19.2.png')%>)
+
+*Figure: Speed of CBS (with and without locus-specific weights) as a
+function of number of loci (J) using DNAcopy implementation v1.18.0
+(left) and v1.19.2 (right). Note the different scales on the vertical
+axes.*
