@@ -11,7 +11,7 @@ on as hared file system between users.
 <% alert_warn({ %>
 In order to utilize <em>sibling root directories</em> (easy sharing of
 read-only files among users on the same file system) it is necessary to
-do <code>setOption(aromaSettings, "devel/dropRootPathTags", TRUE)</code>.
+do 'setOption(aromaSettings, "devel/dropRootPathTags", TRUE)'.
 Future releases will make this the default.
 <% }) %>
 
