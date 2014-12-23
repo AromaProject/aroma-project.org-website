@@ -46,6 +46,8 @@ body {
   }
 }
 
+
+
 /*--------------------------------------------------------------*
  * Custom page CSS
  *--------------------------------------------------------------*/
@@ -61,13 +63,21 @@ body {
 
 h1 { margin-top: 0px; }
 
-.printonly {
-  display: none;
+
+/* Shrink images, iff they don't fit horizontally */
+img {
+  max-width: 100%;
+  height: auto;
 }
+
 
 /*--------------------------------------------------------------*
  * Custom print layout
  *--------------------------------------------------------------*/
+.printonly {
+  display: none;
+}
+
 @media print { 
   a, a:after { content: normal !important; }
 
