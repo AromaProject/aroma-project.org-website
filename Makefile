@@ -34,7 +34,7 @@ HTML_FILES := $(wildcard html/*.html html/*/*.html html/*/*/*.html)
 #=====================================================================
 # Global
 #=====================================================================
-all: build alpha
+all: build
 
 
 #=====================================================================
@@ -125,30 +125,22 @@ check_images: images.log
 	cat images.missing.log	
 
 check_links:
-	wget -R '*+url+*' --spider -o wget.log -e robots=off -w 1 -r -p http://alpha.aroma-project.org/index.html
+	wget -R '*+url+*' --spider -o wget.log -e robots=off -w 1 -r -p http://www.aroma-project.org/index.html
 	grep -B 2 '404' wget.log
 
 check_html:
 	$(R_SCRIPT) "R/w3c-html"
 
 check_css:
-	$(R_SCRIPT) -e "browseURL('http://jigsaw.w3.org/css-validator/validator?uri=http%3A%2F%2Falpha.aroma-project.org')"
+	$(R_SCRIPT) -e "browseURL('http://jigsaw.w3.org/css-validator/validator?uri=http%3A%2F%2Fwww.aroma-project.org')"
 
 
 
 #=====================================================================
 # Publish (=go live!)
 #=====================================================================
-# Requires a 'cbc.ucsf.edu' entry in ~/.ssh/config with:
-#
-#  Host cbc.ucsf.edu
-#    User <username on cbc.ucsf.edu>
-
-alpha:
-	rsync -avvz --exclude '*~' --exclude 'references/*' --perms --chmod=ugo+rx --progress html/ aroma-project.org:public_html/aroma-project.org-alpha
-
-#publish:
-#	rsync -avvz --exclude '*~' --exclude 'references/*' --perms --chmod=ugo+rx --progress html/ aroma-project.org:public_html/aroma-project.org-NOT-YET
+publish:
+	rsync -avvz --exclude '*~' --exclude 'references/*' --perms --chmod=ugo+rx --progress html/ aroma-project.org:public_html/aroma-project.org
 
 
 #=====================================================================
@@ -156,4 +148,3 @@ alpha:
 #=====================================================================
 clean:
 	$(RM) -rf html/
-
