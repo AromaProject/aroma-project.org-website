@@ -77,6 +77,7 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
       # Compile Markdown to HTML
       mcat("Markdown -> HTML...\n")
       body <- markdownToHTML(text=body, options="fragment_only", encoding="UTF-8")
+      body <- enc2utf8(body)
       mcat("Markdown -> HTML...done\n")
 
       # Compile RSP HTML with content
@@ -85,10 +86,21 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
       args$charset <- charset
       mcat("RSP arguments:\n")
       mstr(args)
-      html <- rfile("templates/index.html.rsp", args=args, workdir=pathD)
+
+      if (charset == "UTF-8") {
+        oopts <- options(encoding="UTF-8")
+        on.exit(options(oopts))
+      }
+
+      html <- rfile(file="templates/index.html.rsp", args=args, workdir=pathD)
+
+      if (charset == "UTF-8") {
+        options(oopts)
+      }
+
       mcat("HTML + template -> HTML...done\n")
 
-      mprint(html)
+#      mprint(html)
     }
   } # for (file ...)
 } # tohtml()

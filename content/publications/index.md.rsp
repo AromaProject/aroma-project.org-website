@@ -12,6 +12,7 @@ count <- 1L
   ref <- references[[kk]]
   if (!any(grepl(pattern, ref$author))) next
   md <- format(ref, style="markdown")
+  md0 <<- md
   md <- sub("[1] ", "", md, fixed=TRUE)
   md <- gsub("..", ".", md, fixed=TRUE)
   keywords <- ref$keywords
