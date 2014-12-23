@@ -171,9 +171,6 @@ str(cells)
 seqs <- df[["Probe Sequence"]]
 strands <- df[["Target Strandedness"]]
 
-# Not needed anymore
-rm(df, lens)
-
 # Allocate empty ACS file
 acs <- AromaCellSequenceFile$allocateFromCdf(cdf, tags="HB20091208")
 print(acs)

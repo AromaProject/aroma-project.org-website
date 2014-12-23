@@ -105,7 +105,7 @@ rootPath <- "totalAndFracBData"
 rootPath <- Arguments$getReadablePath(rootPath)
 dataSets <- c("TCGA,GBM,BeadStudio,XY", "TCGA,GBM,CRMAv2")
 
-dataSet <- dataSets[1]; ## Work with Illumina data
+dataSet <- dataSets[1] ## Work with Illumina data
 
 # Fullnames translator
 fnt <- function(names, ...) {
@@ -125,8 +125,9 @@ name TCGA-02-0001.
 ds <- AromaUnitFracBCnBinarySet$byName(dataSet, chipType="*", paths=rootPath)
 setFullNamesTranslator(ds, fnt)
 print(ds)
+
 # Identify all sample names by extracting all unique arrays name (ignoring tags)
-sampleNames <- sort(unique(getNames(ds)));# Work with the first sample only
+sampleNames <- sort(unique(getNames(ds))) # Work with the first sample only
 sampleName <- sampleNames[1]
 # Extract the two arrays with this name, which should be the tumor and the normal
 pair <- indexOf(ds, sampleName)
@@ -297,7 +298,6 @@ totalAndFracBData/
 
 ```r
 dsList <- list(normal=dsN, tumor=dsT, tumorN=dsTN, callsN=gsN)
-rm(dsN, dsT, dsTN, gsN)
 dsList <- lapply(dsList, FUN=function(ds) {
   idxs <- indexOf(ds, getNames(dsList$normal))
   ds[idxs]
