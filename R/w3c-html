@@ -19,7 +19,7 @@ if (!interactive()) {
 }
 
 idxs <- seq_along(uris)
-idxs <- seq(from=94, to=length(uris))
+#idxs <- seq(from=145, to=length(uris))
 
 count <- 0L
 for (kk in idxs) {
