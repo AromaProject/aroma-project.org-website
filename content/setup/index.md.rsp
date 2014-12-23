@@ -1,0 +1,26 @@
+# Setup
+
+All aroma.* packages are designed to have data files located in
+specific directories following a strict directory structure.
+
+Fundamental to Affymetrix data analysis is CEL and CDF files.  A CEL
+file is a so called *data file*, which contains the observed signals,
+whereas a chip-definition file (CDF) is a so called *annotation file*,
+which contains information about the layout of a specific chip type. In
+order to minimize the number of arguments specified by the user,
+aroma.affymetrix looks for annotation files in pre-defined directories
+as described next.
+
+-   [Location of annotation data files](<%=pathTo('/setup/annotationData/')%>), e.g.
+    CDF, ACS, UFL, ... [VOLUNTEERS: Remove/Create deprecated subpage for
+    dChip annotation files]
+-   [Location of raw data files](<%=pathTo('/setup/LocationOfRawDataFiles/')%>), e.g.
+    CEL files.
+-   [Quick Summary Of Required File
+    Structure](<%=pathTo('/setup/QuickSummaryOfRequiredFileStructure/')%>)
+
+## See also
+
+The [How tos](<%=pathTo('/howtos/')%>) section on how to use cross-platform supported
+links for setting up directory structures linking to data sitting
+elsewhere.

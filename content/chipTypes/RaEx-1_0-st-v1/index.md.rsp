@@ -1,0 +1,47 @@
+# Chip type: RaEx-1_0-st-v1
+
+## Rat Exon 1.0 ST Array
+
+Affymetrix press release: [First quarter of
+2006](http://investor.affymetrix.com/phoenix.zhtml?c=116408&p=irol-newsArticle_Print&ID=845557).
+
+## Resources
+
+### By aroma-project.org:
+
+As with Human Exon 1.0 ST array, we have created versions of CDFs based
+on Affymetrix's annotation 'level' as given in the NetAffx probesets csv
+file (see
+<http://www.affymetrix.com/analysis/downloads/current_exon/>).  Consult
+the Affymetrix documentation for how these levels of annotation were
+designed.
+
+#### NetAffx (R1) 18 Jul 2008 created by Mark Robinson (WEHI/Garvan)
+
+-   <%=chipTypeData('RaEx-1_0-st-v1', 'RaEx-1_0-st-v1.cdf.gz')%> Binary
+    version of the unsupported CDF file (shown above) from Affymetrix.
+    1,065,076 units each representing a probeset, no grouping.
+-   <%=chipTypeData('RaEx-1_0-st-v1', 'RaEx-1_0-st-v1,coreR1,A20080718,MR.cdf.gz')%> Core
+    probesets only.  8,608 units/transcript clusters, 91,995
+    groups/probesets.
+-   <%=chipTypeData('RaEx-1_0-st-v1', 'RaEx-1_0-st-v1,extendedR1,A20080718,MR.cdf.gz')%> Extended
+    + Core probesets: 19,970 units/transcript clusters, 226,586
+    groups/probesets.
+-   <%=chipTypeData('RaEx-1_0-st-v1', 'RaEx-1_0-st-v1,fullR1,A20080718,MR.cdf.gz')%> Full+Extended+Core
+    probesets: 203,975 units/transcript clusters.
+
+### By Affymetrix:
+
+-   [Product
+    page](http://www.affymetrix.com/products/arrays/specific/rat_exon.affxhttp://www.affymetrix.com/products/arrays/specific/rat_exon.affx)
+-   [Datasheet](http://www.affymetrix.com/support/technical/datasheets/exon_arraydesign_datasheet.pdf)
+-   [Support
+    Materials](http://www.affymetrix.com/support/technical/byproduct.affx?product=moexon-st)
+    (Library files w/ CDFs, probe sequences etc.)
+-   Public data sets: [Tissue / Mixture / Colon Cancer
+    datasets](http://www.affymetrix.com/support/technical/sample_data/exon_array_data.affx)
+
+### By dChip.org:
+
+-   dChip data files: [gene & genome information
+    files](http://www.hsph.harvard.edu/cli/complab/dchip/exon.htm)

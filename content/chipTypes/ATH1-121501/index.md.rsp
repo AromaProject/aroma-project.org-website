@@ -1,0 +1,52 @@
+# Chip type: ATH1-121501
+
+## Arabidopsis ATH1 Genome Array
+
+"The GeneChip Arabidopsis ATH1 Genome Array, designed in collaboration
+with TIGR, contains more than 22,500 probe sets representing
+approximately 24,000 genes. The array is based on information from the
+international Arabidopsis sequencing project that was formally completed
+in December, 2000. In parallel and subsequent to the genome's
+completion, TIGR reannotated the entire genome in a project funded by
+the National Science Foundation and the resulting data was used in the
+design of this array. Data from the TIGR database (ATH1-121501) is
+hosted in the NetAffx Analysis Center." ([Affymetrix Product
+Description](http://www.affymetrix.com/estore/browse/products.jsp?productId=131416#1_1))
+
+### ATH1-121501
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("ATH1-121501")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/ATH1-121501
+Filename: ATH1-121501.CDF
+File size: 38.57 MB (40443102 bytes)
+Chip type: ATH1-121501
+RAM: 0.00MB
+File format: v3 (text; ASCII)
+Dimension: 712x712
+Number of cells: 506944
+Number of units: 22810
+Cells per unit: 22.22
+Number of QC units: 10
+```
+
+Note I: The CDF downloaded from the Affymetrix website is in an ASCII
+(text) file format. It is highly recommended to work with binary CDFs
+instead since they are orders of magnitude faster to query and more
+memory efficient to work with. Use `convertCdf()` in the affxparser
+package to convert an ASCII CDF into binary.
+
+## Resources
+
+### By aroma-project.org
+
+-   <%=chipTypeData('ATH1-121501', 'ATH1-121501.cdf.gz')%>
+    - A binary version of the Affymetrix unsupported ASCII CDF (with the
+    same name). Created by: Henrik Bengtsson, 2013-10-04.
+
+### By Affymetrix
+
+-   Product page: [GeneChip Arabidopsis ATH1 Genome
+    Array](http://www.affymetrix.com/estore/browse/products.jsp?productId=131416#1_1)

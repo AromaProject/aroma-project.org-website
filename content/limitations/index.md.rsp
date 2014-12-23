@@ -1,0 +1,16 @@
+# Limitations
+
+## Limitations & Known issues
+
+This pages lists known limitations of the Aroma framework with
+suggestions on how to circumvent them.
+
+### All platforms
+
+-   As of June 2013, none.
+
+### Windows-specific limitations
+
+-   The maximum number of symbols in a Windows pathname is 255. See How
+    To '[Use filenames longer than 255 characters on
+    Windows](<%=pathTo('/howtos/UseLongFilenamesOnWindows')%>)' to avoid/solve this.

@@ -1,0 +1,51 @@
+# An open-source R framework for your microarray analysis
+
+![ChromosomeExplorer](<%=pathTo('assets/images_thumbs/ChromosomeExplorer_20070108.png')%>) ![ArrayExplorer](<%=pathTo('assets/images_thumbs/ArrayExplorer,residuals,Firefox.png')%>) ![FIRMA
+and alternative
+splicing](<%=pathTo('assets/images_thumbs/exon_array_example_plot.png')%>) ![Allelic
+crosstalk](<%=pathTo('assets/images_thumbs/NA06985_Hind_B5_3005533-allelicPairsAT.png')%>)
+
+Aroma.affymetrix is an R package for analyzing small to extremely large
+Affymetrix data sets.  It allows you to analyze any number of arrays of
+various chip types, e.g. 10,000s of expression arrays, SNP chips, exon
+arrays and so on.  Here are some of the features:
+
+-   Number of arrays: **unlimited**.
+-   System requirements: As low as **1GB RAM, any operating system**.
+-   Chip types: **all Affymetrix** [chip types](<%=pathTo('/chipTypes/')%>) with a CDF,
+    e.g. gene expression, exon, SNP & CN, tiling arrays.
+-   Immediate support for **custom CDFs**,
+    e.g. [BrainArray](http://brainarray.mbni.med.umich.edu/Brainarray/Database/CustomCDF/genomic_curated_CDF.asp), [GeneAnnot](http://www.xlab.unimo.it/GA_CDF/) and
+    [Wageningen
+    University-NuGO](http://nmg-r.bioinformatics.nl/NuGO_R.html).
+-   File formats: Works directly with **CEL and CDF files** (all
+    versions; text/ASCII, binary/XDA, binary/Calvin).
+-   Export to/Import from: Bioconductor, CNAG, CNAT & dChip.
+-   Pre-processing: Background correction, allelic cross-talk
+    calibration, quantile normalization, nucleotide-position
+    normalization etc.
+-   Probe-level modeling: RMA (log-additive), MBEI (multiplicative),
+    affine (multiplicative with or without offset), ACNE (non-negative
+    matrix factorization).
+-   Post-processing: PCR fragment-length and/or GC-content
+    normalization.
+-   Paired & non-paired copy-number analysis: All generations, including
+    10K, 100K, 500K, 5.0, 6.0, and CytoScanHD. Estimation of
+    full-resolution (raw) copy numbers using CRMA (10K-500K) and CRMAv2
+    (10K-CytoScanHD). Combine data from multiple chip types.
+    Segmentation methods such as CBS, GLAD and HaarSeg.
+-   Genotyping: CRLMM (100K & 500K).
+-   Alternative splicing: FIRMA.
+-   **Dynamic HTML reports**: [ArrayExplorer &
+    ChromosomeExplorer](<%=pathTo('/demos/')%>).
+-   **Persistent memory**: Final and intermediate results and estimates
+    are stored on the file system.
+-   **Robustness**: Analysis picks up where last interrupted.  Only
+    complete files are produced (even during power failures).
+-   Reproducibility: Near **perfect replication** of RMA, GCRMA and
+    SNPRMA (normalization & summarization) as implemented in the
+    affyPLM, affy, gcrma and oligo packages, as well as CRLMM
+    (genotyping) of oligo.
+-   **Portable scripts**: All data sets and data files are referred to
+    by their names - not by pathnames.
+-   Design goals: usability, quality & extendibility.

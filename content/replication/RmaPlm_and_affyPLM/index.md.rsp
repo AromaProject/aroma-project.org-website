@@ -1,0 +1,11 @@
+# Replication: RmaPlm() and affyPLM's log-additive summarization
+
+Author: Ken Simpson  
+Created: 2007-02-16
+
+## Residuals from fitting RmaPlm
+
+![](<%=pathTo('assets/images/resids_aroma_vs_affyPLM.png')%>)
+
+*Figure: Residuals {e_ik} from affyPLM v aroma.affymetrix.  (KS
+2007-02-16)*

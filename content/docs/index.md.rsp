@@ -1,0 +1,8 @@
+# Documentation
+
+-   [Chip types](<%=pathTo('/chipTypes/')%>)
+-   [Definitions](<%=pathTo('/definitions/')%>)
+-   [How data files and data sets are
+    located](<%=pathTo('/docs/HowDataFilesAndDataSetsAreLocated/')%>)
+-   [Settings](<%=pathTo('/settings/')%>)
+-   [Dos and Don'ts](<%=pathTo('/dosAndDonts/')%>)

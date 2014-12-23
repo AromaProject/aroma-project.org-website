@@ -1,0 +1,25 @@
+# Chip type: Rat Genome 230 2.0 Array
+
+## Rat230_2
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("Rat230_2")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/Rat230_2
+Filename: Rat230_2.cdf
+File size: 14.21 MB (14901654 bytes)
+Chip type: Rat230_2
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 834x834
+Number of cells: 695556
+Number of units: 31099
+Cells per unit: 22.37
+Number of QC units: 9
+```
+
+## Resources
+
+[Affymetrix product
+page](http://www.affymetrix.com/estore/catalog/131492/AFFY/Rat-Genome-230-2.0-Array)

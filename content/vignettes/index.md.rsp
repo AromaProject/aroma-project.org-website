@@ -1,0 +1,69 @@
+# Vignettes
+
+## DNA genotyping & copy number analysis
+
+Copy-number preprocessing:
+
+-   [CRMA (v2): Estimation of total copy numbers using the CRMA v2
+    method (10K-CytoScanHD)](<%=pathTo('/vignettes/CRMAv2')%>)
+-   [CRMA (v1): Total copy number analysis using CRMA v1 (10K, 100K,
+    500K)](<%=pathTo('/vignettes/CRMAv1')%>)
+-   [ACNE: Allele-specific copy numbers using non-negative matrix
+    factorization](<%=pathTo('/vignettes/ACNE')%>)
+-   [CalMaTe - A calibration method to improve allele-specific copy
+    number estimates from SNP microarrays](<%=pathTo('/vignettes/CalMaTe')%>)
+-   [TumorBoost - Normalization of allelic-specific copy numbers in
+    tumors with matched normals](<%=pathTo('/vignettes/tumorboost-highlevel/')%>)
+-   [TumorBoost - Normalization of allelic-specific copy numbers in
+    tumors with matched normals (low-level
+    API)](<%=pathTo('/vignettes/tumorboost-lowlevel/')%>)
+-   [CRMA (v2): Paired total copy number
+    analysis](<%=pathTo('/vignettes/pairedTotalCopyNumberAnalysis')%>)
+-   [CRMA (v1&v2): Sex-chromosome bias-corrected reference signals from
+    pooled
+    average](<%=pathTo('/vignettes/Sex-chromosome_bias-corrected_reference_signals')%>)
+-   [Calculating raw total copy numbers
+    manually](<%=pathTo('/vignettes/calculating_raw_total_copy_numbers_manually')%>)
+
+Copy-number segmentation:
+
+-   [Total copy-number segmentation (non-paired
+    CBS)](<%=pathTo('/vignettes/NonPairedCBS')%>)
+-   [Paired parent-specific copy-number segmentation (Paired PSCBS)
+    (low-level API after AS-CRMAv2)](<%=pathTo('/vignettes/PairedPSCBS-lowlevel')%>)
+
+Integrating copy numbers from multiple platforms:
+
+-   [MSCN: Multi-source copy-number normalization](<%=pathTo('/vignettes/MSCN')%>)
+-   [MSCN: Creating binary data files containing copy number
+    estimates](<%=pathTo('/vignettes/CreatingBinaryDataFilesContainingCopyNumberEstimates')%>)
+
+Genotyping:
+
+-   [CRLMM genotyping (100K and 500K)](<%=pathTo('/vignettes/CRLMM100K500K')%>)
+
+Deprecated (=do not use):
+
+-   [Total Copy Number Analysis (GWS5 &
+    GWS6)](<%=pathTo('/vignettes/total_copy_number_analysis')%>) [DEPRECATED]
+-   [CRMA (v1&v2): Paired total copy number
+    analysis](<%=pathTo('/vignettes/paired_total_copy_number_analysis')%>) (old
+    version) [DEPRECATED]
+
+## RNA expression analysis
+
+-   [RMA: Gene 1.0 ST array analysis](<%=pathTo('/vignettes/GeneSTArrayAnalysis')%>)
+-   [FIRMA: Human exon array
+    analysis](<%=pathTo('/vignettes/FIRMA-HumanExonArrayAnalysis')%>)
+-   [FIRMA: Using the GenomeGraphs package with
+    FIRMA](<%=pathTo('/vignettes/UsingGenomeGraphsWithFIRMA')%>)
+
+## Tiling array analysis
+
+-   [MAT: Tiling array analysis (Promoter
+    1.0R)](<%=pathTo('/vignettes/MAT-TilingArrayAnalysis')%>)
+
+## Miscellaneous
+
+-   [Empirical probe-signal densities and rank-based quantile
+    normalization](<%=pathTo('/vignettes/probe-signal_densities_and_rank-based_quantile_normalization')%>)

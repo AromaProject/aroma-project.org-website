@@ -1,0 +1,43 @@
+# Chip type: Mitochip_2
+
+## Human Mitochondrial Resequencing Array 2.0
+
+Affymetrix press release:
+
+New Affymetrix Microarray Sequences Complete Mitochondrial Genome in a
+Single 48 Hour Experiment; GeneChip Human Mitochondrial Resequencing
+Array 2.0 Enables Researchers to Identify Genetic Variations Associated
+with Diseases, Forensics, Population Studies or Stem Cells. [Dec 20,
+2005](http://investor.affymetrix.com/phoenix.zhtml?c=116408&p=irol-newsArticle_print&ID=797697&highlight=).
+
+
+
+### Mitochip_2
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("Mitochip_2")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/Mitochip_2
+Filename: Mitochip_2.cdf
+Filesize: 23.66MB
+File format: v3 (text; ASCII)
+Chip type: Mitochip_2
+Dimension: 658x610
+Number of cells: 401380
+Number of units: 2
+Cells per unit: 200690.00
+Number of QC units: 0
+RAM: 0.12MB
+```
+
+
+
+## Resources
+
+Affymetrix.com:
+
+-   Product page: [GeneChip Human Mitochondrial Resequencing Array
+    2.0](http://www.affymetrix.com/products/arrays/specific/mito_reseq_2.affx)
+-   [Support
+    Materials](http://www.affymetrix.com/support/technical/byproduct.affx?product=humitoreseq)

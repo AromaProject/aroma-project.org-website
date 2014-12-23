@@ -1,0 +1,22 @@
+# Chip type: Mouse430A_2
+
+## GeneChip Mouse Genome 430A 2.0 Array
+
+## Mouse430_2
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("Mouse430A_2")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/Mouse430A_2
+Filename: Mouse430A_2.CDF
+File size: 10.38 MB (10881347 bytes)
+Chip type: Mouse430A_2
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 732x732
+Number of cells: 535824
+Number of units: 22690
+Cells per unit: 23.61
+Number of QC units: 9
+```

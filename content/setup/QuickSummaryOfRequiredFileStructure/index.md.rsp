@@ -1,0 +1,91 @@
+# Setup: Quick Summary Of Required File Structure
+
+A typically directory structure of an aroma.* project looks like this:
+
+```
+<current working directory>
+  +- annotationData/
+  |  +- chipTypes/
+  |     +- <chipTypeA>/ <-- must match exactly the name of the CDF file (fullname minus tags)
+  |     |  +- CDF file(s) and other annotation (possibly subdirectories)
+  |     |
+  |     +- <chipTypeB>/ <-- must match exactly the name of the CDF file (fullname minus tags)
+  |        +- CDF file(s) and other annotation (possibly subdirectories)
+  |        ...
+  |
+  +- rawData/
+  |  +- <dataSet1>/
+  |  |  +- <chipTypeA>/ <-- must match exactly a chip type folder under annotationData/
+  |  |     +- CEL files
+  |  |
+  |  +- <dataSet2>/
+  |  |  +- <chipTypeB>/ <-- must match exactly a chip type folder under annotationData/
+  |  |     +- CEL files
+  |  |
+  |  +- <dataSet3>/
+  |  |  +- <chipTypeA>/ <-- must match exactly a chip type folder under annotationData/
+  |  |     +- CEL files
+  |  ...
+```
+
+
+
+You must follow this structure/format exactly include the case of
+letters.  For instance, 'GenomeWideSNP_6' is not the same as
+'genomewidesnp_6'.   Below, \<...\> indicates a name of folder or file
+that you must supply according to your project/computer/chip type etc.
+
+
+
+## Example
+
+Here is a complete directory structure with annotation data and two data
+sets.  For other chip types and further details, see
+the [Setup](<%=pathTo('/setup')%>) section.
+
+```
+C:/Documents and Settings/JoeD/My Documents/ProjectA/
+  +- annotationData/
+  |  +- chipTypes/
+  |     +- Mapping50K_Hind240/
+  |     |  +- Mapping50K_Hind240.cdf
+  |     |  +- Mapping50K_Hind240,monocell.cdf
+  |     |  +- Mapping50K_Hind_probe_tab
+  |     |  |
+  |     |  +- dChip/
+  |     |  |  +- 50k hind genome info AfAm june 05 hg17.xls
+  |     |  |  +- Mapping100K_Hind snp info.txt
+  |     |  |
+  |     |  +- NetAffx/
+  |     |     +- Mapping50K_Hind240_annot.csv
+  |     |
+  |     +- Mapping250K_Nsp/
+  |     |  +- Mapping250K_Nsp.cdf
+  |     |
+  |     +- Mapping250K_Sty/
+  |        +- Mapping250K_Sty.cdf
+  |
+  +- rawData/
+     +- SinclairA_etal_2006/
+     |   +- Mapping250K_Nsp/
+     |   |  +- 01,XX,2006-07-12.cel
+     |   |  +- 02,XY,2006-07-14.cel
+     |   |  +- ...
+     |   |  +- 10,XX.cel
+     |   |  +- C1.cel
+     |   |
+     |   +- Mapping250K_Sty/
+     |      +- 01,XX,2006-07-19,2nd.cel
+     |      +- 02,XY,2006-07-20.cel
+     |      +- ...
+     |      +- 10,XX.cel
+     |      +- C358,control.cel
+     |
+     +- Yu50K
+        +- Mapping50K_Hind240/
+           +- XYZ0001.cel
+           +- XYZ0002.cel
+           +- XYZ0003.cel
+           +- XYZ0004.cel
+           +- XYZ0005.cel
+```

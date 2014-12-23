@@ -1,0 +1,125 @@
+# Chip type: Hs_PromPR_v02
+
+## Human Promoter Tiling 1.0R Array
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("Hs_PromPR_v02")
+> print(cdf)
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/Hs_PromPR_v02
+Filename: Hs_PromPR_v02.cdf
+Filesize: 61.95MB
+Chip type: Hs_PromPR_v02
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 2166x2166
+Number of cells: 4691556
+Number of units: 23155
+Cells per unit: 202.62
+Number of QC units: 0
+
+> acm <- AromaCellMatchScoreFile$byChipType(getChipType(cdf))
+> print(acm)
+AromaCellMatchScoreFile:
+Name: Hs_PromPR_v02
+Tags:
+Pathname: annotationData/chipTypes/Hs_PromPR_v02/Hs_PromPR_v02.acm
+File size: 4.47MB
+RAM: 0.00MB
+Number of data rows: 4691556
+File format: v1
+Dimensions: 4691556x1
+Column classes: integer
+Number of bytes per column: 1
+Footer: <createdOn>20081204 16:55:16
+EST</createdOn><platform>Affymetrix</platform><chipType>Hs_PromPR_v02</chipType>
+Chip type: Hs_PromPR_v02
+Platform: Affymetrix
+
+> acs <- AromaCellSequenceFile$byChipType(getChipType(cdf))
+> print(acs)
+AromaCellSequenceFile:
+Name: Hs_PromPR_v02
+Tags:
+Pathname: annotationData/chipTypes/Hs_PromPR_v02/Hs_PromPR_v02.acs
+File size: 116.33MB
+RAM: 0.00MB
+Number of data rows: 4691556
+File format: v1
+Dimensions: 4691556x26
+Column classes: raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw,
+raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw,
+raw
+Number of bytes per column: 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+Footer: <createdOn>20081204 16:42:56
+EST</createdOn><platform>Affymetrix</platform><chipType>Hs_PromPR_v02</chipType>
+Chip type: Hs_PromPR_v02
+Platform: Affymetrix
+
+> cdfU <- getUniqueCdf(cdf)
+> acp <- AromaCellPositionFile$byChipType(getChipType(cdfU))
+> print(acp)
+AromaCellPositionFile:
+Name: Hs_PromPR_v02
+Tags: unique
+Pathname:
+annotationData/chipTypes/Hs_PromPR_v02/Hs_PromPR_v02,unique.acp
+File size: 20.79MB
+RAM: 0.00MB
+Number of data rows: 4359744
+File format: v1
+Dimensions: 4359744x2
+Column classes: integer, integer
+Number of bytes per column: 1, 4
+Footer: <createdOn>20081209 10:26:40
+EST</createdOn><platform>Affymetrix</platform><chipType>Hs_PromPR_v02</chipType>
+Chip type: Hs_PromPR_v02
+Platform: Affymetrix
+
+> acc <- AromaCellCpgFile$byChipType(getChipType(cdfU))
+> print(acc)
+AromaCellCpgFile:
+Name: Hs_PromPR_v02
+Tags: unique
+Full name: Hs_PromPR_v02,unique
+Pathname:
+annotationData/chipTypes/Hs_PromPR_v02/Hs_PromPR_v02,unique.acc
+File size: 16.63 MB (17439158 bytes)
+RAM: 0.00 MB
+Number of data rows: 4359744
+File format: v1
+Dimensions: 4359744x1
+Column classes: double
+Number of bytes per column: 4
+Footer: <createdOn>20081215 21:36:29
+EST</createdOn><platform>Affymetrix</platform><chipType>Hs_PromPR_v02</chipType>
+Chip type: Hs_PromPR_v02
+Platform: Affymetrix
+```
+
+## Resources
+
+By aroma-project.org:
+
+-   [Creating CDF (and associated) files from BpMap files (tiling
+    arrays)](<%=pathTo('/howtos/bpmapCluster2Cdf')%>) page
+-   If you are using this chip, you can download the
+    <%=chipTypeData('Hs_PromPR_v02', '')%>],
+    <%=chipTypeData('Hs_PromPR_v02', '')%>],
+    <%=chipTypeData('Hs_PromPR_v02', '')%>],
+    <%=chipTypeData('Hs_PromPR_v02', '')%>],
+    <%=chipTypeData('Hs_PromPR_v02', '')%>] files to your
+    annotationData/chipTypes/Hs_PromPR_v02/ directory
+
+By Affymetrix:
+
+-   [Overview](http://www.affymetrix.com/products_services/arrays/specific/human_promoter.affx#1_1)
+-   [Tools &
+    Data](http://www.affymetrix.com/products_services/arrays/specific/human_promoter.affx#1_4)
+
+By the authors of [MAT](http://liulab.dfci.harvard.edu/MAT/):
+
+-   [MAT Download Page](http://liulab.dfci.harvard.edu/MAT/Download.htm)
+-   [Human Promoter 1.0R BPMAP (with
+    matchscores)](http://liulab.dfci.harvard.edu/MAT/Lib/HumanPromoter_BPMAP_NCBIv36.zip)

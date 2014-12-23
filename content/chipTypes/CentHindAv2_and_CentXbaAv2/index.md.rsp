@@ -1,0 +1,49 @@
+# Chip types: CentHindAv2 & CentXbaAv2
+
+I have very little information on this chip type, but it "appears" to be
+the Early Access version of the 100K SNP chip [dChip.org].  I would
+appreciate any further comments/references about this chip type from
+anyone who knows.  /Henrik 2008-12-29
+
+
+
+## CentHindAv2
+
+```r
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/CentHindAv2
+Filename: CentHindAv2.CDF
+Filesize: 283.95MB
+Chip type: CentHindAv2
+RAM: 0.00MB
+File format: v3 (text; ASCII)
+Dimension: 1600x1600
+Number of cells: 2560000
+Number of units: 63433
+Cells per unit: 40.36
+Number of QC units: 9
+```
+
+## CentXbaAv2
+
+```r
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/CentXbaAv2
+Filename: CentXbaAv2.CDF
+Filesize: 283.71MB
+Chip type: CentXbaAv2
+RAM: 0.00MB
+File format: v3 (text; ASCII)
+Dimension: 1600x1600
+Number of cells: 2560000
+Number of units: 63434
+Cells per unit: 40.36
+Number of QC units: 9
+```
+
+## Resources
+
+By dChip.org:
+
+-   CDF, dChip [genome information
+    file](http://www.hsph.harvard.edu/cli/complab/dchip/snp.htm).

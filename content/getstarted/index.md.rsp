@@ -1,0 +1,9 @@
+# Get started
+
+
+
+-   [Install](<%=pathTo('/install')%>)
+-   [Setup](<%=pathTo('/setup')%>)
+-   [Vignettes](<%=pathTo('/vignettes')%>)
+-   [Blocks](<%=pathTo('/blocks/')%>)
+-   [How tos](<%=pathTo('/howtos')%>)

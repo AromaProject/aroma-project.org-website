@@ -1,0 +1,30 @@
+# About
+
+## Main author and maintainer
+
+**Henrik Bengtsson**, Dept of Epidemiology & Biostatistics, UCSF (prev.
+Dept of Statistics, UC Berkeley)
+
+## Co-authors and major contributors (in alphabetic order)
+
+**James Bullard**, Pacific Biosciences (prev. Dept of Biostatistics, UC
+Berkeley)  
+ - affxparser
+
+**Kasper Hansen**, John Hopkins (prev. Dept of Biostatistics, UC
+Berkeley)  
+ - affxparser
+
+**Pierre Neuvial**, Laboratoire Statistique et Génome, CNRS, France
+(prev. Dept of Statistics, UC Berkeley)  
+ - aroma.cn, aroma.cn.eval, CalMaTe, PSCBS, documentation
+
+**Elizabeth Purdom**, Dept of Statistics, UC Berkeley  
+ - aroma.affymetrix, documentation
+
+**Mark Robinson**, IMLS, University of Zurich, Switzerland (prev.
+Garvan, Sydney and WEHI, Melbourne)  
+ - aroma.core, aroma.affymetrix, documentation
+
+**Ken Simpson**, prev. WEHI, Melbourne  
+ - R.filesets, aroma.affymetrix, documentation

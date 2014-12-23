@@ -1,0 +1,43 @@
+# Chip type: DMET_Plus
+
+## DMET Plus Premier Pack
+
+Affymetrix' press release: *Affymetrix Announces New Cost-Effective
+Product for Standardizing Drug Metabolism Studies*, [Nov 11,
+2008](http://www.redorbit.com/news/health/1599279/affymetrix_announces_new_costeffective_product_for_standardizing_drug_metabolism_studies/).
+
+From the press release: "[...] The DMET (Drug Metabolism Enzymes and
+Transporters) Plus Panel features the most biologically relevant content
+identified by key opinion leaders from industry and academia in a
+cost-effective format. The DMET Plus Panel contains markers in all
+FDA-validated genes(1) and covers more than 90 percent of the current
+ADME Core markers as defined by the PharmaADME group. It offers 1,936
+high-value drug metabolism and transporter markers. [...]".
+
+## DMET_Plus
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("DMET_Plus")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/DMET_Plus/
+Filename: DMET_Plus.cdf
+Filesize: 11.01MB
+Chip type: DMET_Plus
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 1050x1050
+Number of cells: 1102500
+Number of units: 4985
+Cells per unit: 221.16
+Number of QC units: 4
+```
+
+## Resources
+
+By Affymetrix:
+
+-   Product page: [DMET Plus Premier
+    Pack](http://www.affymetrix.com/products_services/arrays/specific/dmet.affx#1_4)
+-   Public data sets:  
+    o ???

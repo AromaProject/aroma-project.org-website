@@ -1,0 +1,28 @@
+# Dos and Don'ts
+
+As a first time user of any scientific software, it might be hard to
+navigate all options and features available. It is not uncommon that one
+find out about these through a "trial-and-error" process, which is often
+alright. However, sometimes you might end up doing ad hoc workarounds
+that are not really in line with the intended philosophy of the aroma.*
+framework, and which may not be compatible with future version of the
+software.
+
+In this section we collect as list short notes on "things to avoid",
+which can help you setup up you analysis scripts.
+
+**Do:**
+
+-   Write your scripts so that they can run "as is" on a different file
+    system/operating system. If you can run it elsewhere this way, you
+    are following the "sustainability" philosophy of aroma - you can
+    expect that your script will work in the future as well.
+
+**Don't:**
+
+-   Don't use paths anywhere in your analysis for accessing data sets.
+    If you find yourself using a path, you are probably doing something
+    wrong.
+-   Don't use text/ASCII CDF files (even if you try, the default is to
+    give an error). They are orders of magnitude slower to work with.
+    Instead convert it to a binary CDF.

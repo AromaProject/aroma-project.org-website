@@ -1,0 +1,70 @@
+# Chip type: HG-U133_Plus_2
+
+## Human Genome U133 Plus 2.0 Array
+
+Affymetrix press release: *Affymetrix Announces Commercial Launch of
+Single Array for Human Genome Expression Analysis*,
+[2003-10-02](http://investor.affymetrix.com/phoenix.zhtml?c=116408&p=irol-newsArticle&ID=454699)
+
+" The HG-U133 Plus 2.0 Array [...] combines the content of the previous
+HG-U133 two-array set with nearly 10,000 new probe sets representing
+about 6,500 new genes, for a total of nearly 50,000 RNA transcripts and
+variants. This new information, verified against the latest version of
+the publicly available genome map, provides researchers the most
+comprehensive and up-to-date genome-wide gene expression analysis. The
+probe design strategy of the HG-U133 Plus 2.0 Array is identical to the
+previous HG- U133 Set, providing very strong data concordance between
+the two products." [press release]
+
+### HG-U133_Plus_2
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("HG-U133_Plus_2")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HG-U133_Plus_2
+Filename: HG-U133_Plus_2.cdf
+Filesize: 25.04MB
+Chip type: HG-U133_Plus_2
+Dimension: 1164x1164
+Number of cells: 1354896
+Number of units: 54675
+Cells per unit: 24.78
+Number of QC units: 9
+RAM: 0.00MB
+```
+
+
+
+## Resources
+
+By Affymetrix:
+
+-   Product page: [Human Genome U133 Plus 2.0
+    Array](http://www.affymetrix.com/products/arrays/specific/hgu133plus.affx)
+-   [Datasheet](http://www.affymetrix.com/support/technical/datasheets/human_datasheet.pdf)
+-   [Support
+    Materials](http://www.affymetrix.com/support/technical/byproduct.affx?product=hg-u133-plus)
+
+By dChip.org:
+
+-   Annotation files: [Genome information
+    file](http://www.hsph.harvard.edu/cli/complab/dchip/gene_info_file.htm),
+    [common probe set
+    file](http://www.hsph.harvard.edu/cli/complab/dchip/combine%20chip.htm)
+
+Custom CDFs for use within aroma.affymetrix:
+
+-   <%=chipTypeData('HG-U133_Plus_2', 'HG-U133_Plus_2.cdf.gz')%> Binary
+    version of the CDF file (shown above) from Affymetrix.  54,675
+    units.
+-   <%=chipTypeData('HG-U133_Plus_2', 'Hs133P_Hs_REFSEQ.cdf.gz')%> Binary
+    version of the text RefSeq-centric CDF file available from the
+    [Brainarray custom CDF version
+    10](http://brainarray.mbni.med.umich.edu/Brainarray/Database/CustomCDF/CDF_download_v10.asp)
+    collection. 25,102 units.
+-   <%=chipTypeData('HG-U133_Plus_2', 'Hs133P_Hs_ENSG.cdf.gz')%> Binary
+    version of the text Ensembl-Gene-centric CDF file available from the
+    [Brainarray custom CDF version
+    10](http://brainarray.mbni.med.umich.edu/Brainarray/Database/CustomCDF/CDF_download_v10.asp)
+    collection. 17,271 units.

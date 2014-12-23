@@ -1,0 +1,36 @@
+# Setup: Location of raw data files
+
+CEL files
+
+Raw data is special in the sense that it should be considered *read
+only*, that is, we do not plan to update the raw data files after being
+obtained.  The package looks for raw data sets in directory rawData/ in
+the current working directory.
+
+**Example:**
+
+Here is an example of a CEL data set "SinclairA_etal_2006" (no tags)
+for the 500K chip set:
+
+```
+rawData/SinclairA_etal_2006/
+
+  Mapping250K_Nsp/
+    01,XX,2006-07-12.cel
+    02,XY,2006-07-14.cel
+    ...
+    10,XX.cel
+    C1.cel 02,XY,2006-07-12.cel
+
+  Mapping250K_Sty/
+    01,XX,2006-07-19,2nd.cel
+    02,XY,2006-07-20.cel
+    ...
+    10,XX.cel
+    C358,control.cel
+```
+
+Note that the above two array sets have samples "01", "02", ..., "10" in
+common, whereas sample "C1" was only hybridized to the Nsp chip and
+sample "C348" was only hybridized to the Sty chip.  Regardless of chip
+type, the data has samples "01", ..., "10", "C1", and "C358".

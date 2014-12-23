@@ -1,0 +1,6 @@
+# Data sets
+
+## Public data sets
+
+-   [Affymetrix microarray data sets](<%=pathTo('/datasets/Affymetrix')%>)
+-   [Illumina microarray data sets](<%=pathTo('/datasets/Illumina')%>)

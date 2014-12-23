@@ -1,0 +1,36 @@
+# Chip type: CytoScanHD_Array
+
+## CytoScanHD_Array
+
+From Affymetrix' web site: "The CytoScan HD Solution provides the
+broadest coverage, highest performance, and most "genotype-able" single
+nucleotide polymorphisms (SNPs) for detecting human chromosomal
+aberrations associated with genes related to constitutional and cancer
+cytogenetics, OMIM, and RefSeq. This single array includes more than 2.6
+million copy number markers of which 750,000 are "genotype-able" SNPs
+and 1.9 million are non-polymorphic probes."  (Released approx July
+2011).
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("CytoScanHD_Array")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/CytoScanHD_Array
+Filename: CytoScanHD_Array.cdf
+Filesize: 612.27MB
+Chip type: CytoScanHD_Array
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 2572x2680
+Number of cells: 6892960
+Number of units: 2822125
+Cells per unit: 2.44
+Number of QC units: 4
+```
+
+
+
+Affymetrix:
+
+-   [Product
+    page](http://www.affymetrix.com/browse/products.jsp?productId=prod520004&categoryId=35907&productName=CytoScan%22-HD-Array-Kit-and-Reagent-Kit-Bundle#1_1)

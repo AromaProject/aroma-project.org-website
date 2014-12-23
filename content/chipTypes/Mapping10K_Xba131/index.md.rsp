@@ -1,0 +1,47 @@
+# Chip type: Mapping10K_Xba131
+
+## Mapping10K_Xba131
+
+Note the difference between Mapping10K_Xba131 (aka 'Mapping 10K Array')
+and Mapping10K_Xba142 (aka 'Mapping 10K Array 2.0').
+
+The Mapping10K_Xba131 chip interrogates 11,564 SNPs.
+
+## Mapping10K_Xba131
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("Mapping10K_Xba131")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/Mapping10K_Xba131
+Filename: Mapping10K_Xba131.cdf
+Filesize: 10.79MB
+Chip type: Mapping10K_Xba131
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 712x712
+Number of cells: 506944
+Number of units: 11564
+Cells per unit: 43.84
+Number of QC units: 9
+```
+
+## Resources
+
+By aroma-project.org:
+
+-   <%=chipTypeData('Mapping10K_Xba131', 'Mapping10K_Xba131,na26,HB20080916.ufl.gz')%>  
+    Script:
+    <%=chipTypeData('Mapping10K_Xba131', 'scripts/Mapping10K_Xba131,UFL,na26.R')%>  
+-   <%=chipTypeData('Mapping10K_Xba131', 'Mapping10K_Xba131,na26,HB20080916.ugp.gz')%>  
+    Script:
+    <%=chipTypeData('Mapping10K_Xba131', 'scripts/Mapping10K_Xba131,UGP,na26.R')%>  
+-   <%=chipTypeData('Mapping10K_Xba131', 'Mapping10K_Xba131,HB20080915.acs.gz')%>
+
+By Affymetrix:
+
+-   Product page
+-   [Support
+    materials](http://www.affymetrix.com/support/technical/byproduct.affx?product=10k) (SNP
+    annotation files with SNP positions, dbSNP ID, fragment lengths etc.
+    Probe sequences.)

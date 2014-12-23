@@ -1,0 +1,23 @@
+# Demos
+
+## Interactive reports
+
+
+
+### Spatial images
+
+-   [ArrayExplorer](<%=pathTo('/demos/reports/GSE8605/raw/ArrayExplorer.html')%>) -
+    spatial images of raw probe (sqrt) intensities using a
+    black-to-yellow color map.
+-   [ArrayExplorer](<%=pathTo('/demos/reports/GSE8605/RMA/ArrayExplorer.html')%>) - spatial
+    images of (log2) RMA residuals using a rainbow color map.  Negative
+    and positive residuals are displayed separately.
+
+### Total copy-number tracks
+
+-   [ChromosomeExplorer](<%=pathTo('/demos/reports/GSE8605/ACC,-XY,BPN,-XY,AVG,FLN,-XY,paired/ChromosomeExplorer.html')%>) -
+    Total (log2) copy-number ratios along the genome chromosome by
+    chromosome.
+-   [ChromosomeExplorer](<%=pathTo('/demos/reports/Affymetrix_2011-CytoScanHD/ACC,ra,-XY,BPN,-XY,AVG,FLN,-XY/ChromosomeExplorer.html')%>) -
+    Total (log2) copy-number ratios along the genome chromosome by
+    chromosome.

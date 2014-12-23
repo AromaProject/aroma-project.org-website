@@ -1,0 +1,45 @@
+# Chip type: HT_HG-U133_Plus_PM
+
+## HT HG-U133+ PM Array Plate
+
+Affymetrix press release: ??? (2008?)
+
+Affymetrix product page: "Measure gene expression of more than 47,000
+transcripts and variants, including more than 33,000 well-characterized
+genes and UniGene clusters per sample." [...] "Two design changes were
+introduced with the GeneChip HT HG-U133+ PM Array Plate: (1) Only
+perfect match (PM) probes from the cartridge design were retained while
+mismatch (MM) probes were removed. (2) Empirical data was used to select
+the best-performing probes resulting in reducing the number of PM
+probes; (i) 42,461 probe sets were reduced from 11 to nine probes (ii)
+Six probe sets were reduced from 11 to 10."
+
+## HT_HG-U133_Plus_PM
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("HT_HG-U133_Plus_PM")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HT_HG-U133_Plus_PM
+Filename: HT_HG-U133_Plus_PM.CDF
+Filesize: 16.05MB
+Chip type: HT_HG-U133_Plus_PM
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 744x744
+Number of cells: 553536
+Number of units: 54715
+Cells per unit: 10.12
+Number of QC units: 4
+```
+
+## Resources
+
+By Affymetrix:
+
+-   Product page: [HT HG-U133+ PM
+    Array](http://www.affymetrix.com/products_services/arrays/specific/ht_hgu133_pm_ap.affx#1_4)
+    (for the CDF file, which is already in binary format, look for the
+    "Library Files" section at this link)
+-   See also the "Sample Data" section, where you will find a link to a
+    ZIP file of a tissue panel dataset including 94 samples.

@@ -1,0 +1,30 @@
+# Chip type: Test3
+
+The Test3 chip type is distributed together with and used by the
+Affymetrix Fusion SDK library for testing.
+
+## Test3
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("Test3")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/Test3
+Filename: Test3.CDF
+Filesize: 0.24MB
+File format: v4 (binary; XDA)
+Chip type: Test3
+Dimension: 126x126
+Number of cells: 15876
+Number of units: 345
+Cells per unit: 46.02
+Number of QC units: 13RAM: 0.00MB
+```
+
+# Resources
+
+Affymetrix.com:
+
+-   Fusion Software Developers Kit (SDK).  Contains several test CDF,
+    CEL, CHP, EXP, and PSI files for various chip types.  URL:
+    <http://www.affymetrix.com/support/developer/fusion/>

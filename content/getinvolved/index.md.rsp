@@ -1,0 +1,32 @@
+# Get involved
+
+The aroma project is a collaborative project where software developed is
+release as open source and all documentation is freely available.  As
+the project and its number of users grows the project needs help to keep
+up.  You can help out in many ways:
+
+-   Answer questions on the forum - if you think you have an answer,
+    please reply.
+-   Create new documentation such as Vignettes and How tos - if you're
+    sitting on useful tutorials/scripts, please consider sharing them
+    here.
+-   Improve existing documentation - if you find typos, grammar errors,
+    code errors or outdated information, please report/contribute
+    updates via the mailing list.
+-   Contribute with annotation data - if you have went through the
+    efforts of to build annotation data files, please consider sharing
+    them.  We can host the data files.
+-   Contribute with add ons - if you develop new models/methods on top
+    of the aroma framework you are welcome to share them here.  More
+    users means feedback and higher quality in the long run.
+-   Anything else you can think of.
+
+Specific needs:
+
+-   Update the HTML and Javascript of ArrayExplorer and
+    ChromosomeExplorer to work again (they only work with Firefox
+    3.0-3.1).  Solved in aroma.affymetrix v2.5.0 with great help from
+    Keith Ching and Laurent Malvert.
+
+Just drop a message to the mailing list/forum, if you are willing to
+help out.  Thanks!

@@ -1,0 +1,41 @@
+# Reproducible research
+
+Being able to reproduce scientific results is extremely important.  We
+make great efforts having the analysis methods in the aroma suite
+produce the exact same results over generations of updates.  For
+instance, for each release we run a large set of redundancy tests to
+assert the correctness of results and that methods are backward
+compatible.
+
+## Extensive testing
+
+Before each new release, we run a large number of system and redundancy
+tests on real data to validate that the new code is backward compatible
+and does not break existing functionality.  The tests cover a large
+number of chip types and statistical methods.  The complete set of tests
+is available in the following directory:
+
+```r
+  path <- system.file("testScripts", package="aroma.affymetrix")
+```
+
+
+
+## Reproducibility of existing implementations
+
+In addition to this, most of the standard methods reproduce the results
+of the original methods/implementations, e.g. RMA.  Here is a list of
+documents showing how well we can reproduce existing methods:
+
+-   [RMA (background, normalization & summarization)](<%=pathTo('/replication/RMA')%>)
+-   [gcRMA (background, normalization &
+    summarization)](<%=pathTo('/replication/gcRMA')%>)
+-   [RmaPlm() and affyPLM's log-additive
+    summarization](<%=pathTo('/replication/RmaPlm_and_affyPLM')%>)
+-   [Reproducing SNPRMA in the oligo package](<%=pathTo('/replication/SNPRMA')%>)
+-   [CRLMM genotyping (100K and 500K)](<%=pathTo('/vignettes/CRLMM100K500K')%>)
+
+## Miscellaneous
+
+-   [FIRMA when using RLM and median
+    polish](<%=pathTo('/replication/FIRMA_using_RLM_and_median_polish')%>)

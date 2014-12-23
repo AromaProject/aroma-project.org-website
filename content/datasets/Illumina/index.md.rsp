@@ -1,0 +1,30 @@
+# Resource: Illumina microarray data sets
+
+## Data sets from NCBI's Gene Expression Omnibus (GEO)
+
+**GEO: Data Set Portal**
+
+-   Search: **Illumina data sets**  
+    URL: <http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gds&term=illumina>
+
+**GSE11976: Segmentation-based detection of allelic imbalance and LOH in
+cancer cells using whole genome SNP arrays**  
+Chip type(s): HumanCNV370v1  
+Description: The proposed segmentation strategy detects allelic
+imbalance originating from DNA copy number gain, loss or copy neutral
+events. Here we use Illumina 317K, 370K and 550K and Affymetrix 250K
+whole-genome single-nucleotide polymorphism arrays hybridized with tumor
+samples (breast, colon, leukemia, and urothelial) to evaluate the
+segmentation strategy against several other reported methods. The data
+sets include a simulated dilution series, an experimental dilution
+series of a breast cancer cell line as well as paired tumor-normal
+samples. This GEO series include the 12 sample experimental dilution
+series of the HCC1395 breast cancer cell line (CRL-2324: www.atcc.org)
+and 4 paired urothelial tumor-normal samples, all hybridized on Illumina
+HumanCNV 370k BeadChips.  
+Reference(s): Staaf J, Lindgren D, Vallon-Christersson J, Isaksson A et
+al. Segmentation-based detection of allelic imbalance and
+loss-of-heterozygosity in cancer cells using whole genome SNP arrays.
+Genome Biol 2008;9(9):R136.  
+URL: <http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE11976>  
+URL2: <http://baseplugins.thep.lu.se/wiki/se.lu.onk.BAFsegmentation>
