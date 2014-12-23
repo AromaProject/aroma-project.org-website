@@ -108,7 +108,7 @@ when you try to use an ASCII CDF and throw an error telling you not to
 do so.  An ASCII CDF can easily be converted to the binary/XDA file
 format using `convertCdf()` that is available in the <% bioc('affxparser') %> package.
 
-See also [FAQ](<%=pathTo('/faq/')%>).
+See also [FAQ](<%=pathTo('/FAQ/')%>).
 
 
 
@@ -173,4 +173,4 @@ saved in the same directory as the main CDF and it is possible to reuse
 an existing monocell CDF elsewhere by copying it from one system
 to another.
 
-See also [FAQ](<%=pathTo('/faq/')%>).
+See also [FAQ](<%=pathTo('/FAQ/')%>).

@@ -48,7 +48,7 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
 
       pathTo <- function(pathname) {
         url <- sprintf("%s/%s", pathToRoot, pathname)
-        if (!grepl("[.](html|pdf|png|gif|css|js|ico)$", pathname, ignore.case=TRUE)) {
+        if (!grepl("[.](html|pdf|png|gif|css|js|ico|ppt|pptx)$", pathname, ignore.case=TRUE)) {
           url <- sprintf("%s/index.html", url)
         }
         url <- gsub("[/]+", "/", url)

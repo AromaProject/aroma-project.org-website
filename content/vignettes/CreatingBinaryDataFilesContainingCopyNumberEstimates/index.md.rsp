@@ -37,8 +37,7 @@ though of as a data frame with columns `chromosome` and `position`.
 Examples of a unit names file and a UGP file for the
 GenomeWideSNP_6,Full chip type of the Affymetrix platform are:
 
-* GenomeWideSNP_6,Full.cdf (see [FAQ](<%=pathTo('/faq')%>) 2007-05-24: Where can I
-    download CDF files? of aroma.affymetrix)
+* GenomeWideSNP_6,Full.cdf (see [FAQ](<%=pathTo('/FAQ/')%>) 2007-05-24: Where can I download CDF files? of aroma.affymetrix)
 * <%=chipTypeData('GenomeWideSNP_6', 'GenomeWideSNP_6,Full,na26,HB20080821.ugp.gz')%>
 
 These files has to be placed in the
