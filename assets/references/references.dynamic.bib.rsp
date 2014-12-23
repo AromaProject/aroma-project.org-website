@@ -28,7 +28,7 @@ refs_own <- list(
   reference("20529889", key="OrtizM_etal_2012-ACNE", keywords="ACNE; multi-array method"),
   reference("20462408", key="BengtssonH_etal_2010-TumorBoost", keywords="TumorBoost; paired tumor-normal samples; single-patient method"),
   reference("19535535", key="BengtssonH_etal_2009-CRMAv2", keywords="CRMA v2; single-array method"),
-  reference("19463149", key="Robinson_etal_2009-FIRMAGene", keywords="FIRMAgene; multi-array method"),
+  reference("19463149", key="Robinson_etal_2009-FIRMAGene", keywords="FIRMAGene; multi-array method"),
   reference("19193730", key="BengtssonH_etal_2009-MSCN", keywords="MSCN; multi-source copy-number normalization; single-patient method"),
   reference("18204055", key="BengtssonH_etal_2009-CRMAv1", keywords="CRMA v1; multi-array method"),
   reference("18573797", key="PurdomE_etal_2008-FIRMA", keywords="FIRMA; gene expressions; exon-specific expressions; multi-array method"),

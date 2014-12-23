@@ -288,7 +288,7 @@ print(csR)
 ## RAM: 0.01MB
 ```
 
-## Verifying ChrX and ChrY ploidies
+## Verifying ploidy of ChrX and ChrY
 
 Given that there exists a SAF file as above and that the fullname
 translators correctly translates the default fullnames of the CEL files

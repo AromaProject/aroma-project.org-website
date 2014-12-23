@@ -61,5 +61,5 @@ Update or rewrite the ChromosomeExplorer such that:
     etc?  Will any of these work without a web server (over the file://
     protocol)?
 -   What can we borrow from projects such as the <% cran('lme4') %> and the
-    <% cran('ggplots2') %> web applications, cf.
+    <% cran('ggplot2') %> web applications, cf.
     [http://www.stat.ucla.edu/\~jeroen](http://www.stat.ucla.edu/~jeroen/)/

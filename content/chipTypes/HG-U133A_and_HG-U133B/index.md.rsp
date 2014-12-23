@@ -1,0 +1,59 @@
+# Chip types: HG-U133A & HG-U133B
+
+## The HG-U133 chip set
+
+Affymetrix' press release: *Affymetrix Launches First Commercial Human DNA Array to Use Draft Of Human Genome*, [Jan 21, 2001](http://investor.affymetrix.com/phoenix.zhtml?c=116408&p=irol-newsArticle_Print&ID=248283).
+
+
+### HG-U133A
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("HG-U133A")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HG-U133A
+Filename: HG-U133A.cdf
+Filesize: 38.43MB
+Chip type: HG-U133A
+Dimension: 712x712
+Number of cells: 506944
+Number of units: 22283
+Cells per unit: 22.75
+Number of QC units: 10
+RAM: 0.00MB
+```
+
+### HG-U133B
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("HG-U133B")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HG-U133B
+Filename: HG-U133B.cdf
+Filesize: 38.46MB
+Chip type: HG-U133B
+Dimension: 712x712
+Number of cells: 506944
+Number of units: 22645
+Cells per unit: 22.39
+Number of QC units: 10RAM: 0.00MB
+```
+
+
+## Resources
+
+By Aroma:
+
+-   <%=chipTypeData('HG-U133A', '')%> -
+    Aroma Cell Sequence (ACS) annotation file mapping cell indices to
+    25-mer sequences and target strandedness.  Sources: Affymetrix
+    probe_tab file.  Created by: Henrik Bengtsson, 2014-06-02.
+
+By Affymetrix:
+
+-   Product page/Support Materials (e.g. CDF): [Human Genome U133 Set](http://www.affymetrix.com/catalog/131536/AFFY/Human-Genome-U133-Set#1_3)
+
+By dChip.org:
+
+-   dChip data files: [genome information file](http://www.hsph.harvard.edu/cli/complab/dchip/gene_info_file.htm)

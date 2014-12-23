@@ -32,7 +32,7 @@ difference is what annotation files are used.
 We will go through how to setup the data set, calibrate it for allelic
 crosstalk, then summarize the probe data in order to obtain so called
 chip effects, which we then normalize for PCR fragment-length effects as
-well as for inbalances in <em>Nsp</em>I and <em>Sty</em>I mixes.
+well as for imbalances in <em>Nsp</em>I and <em>Sty</em>I mixes.
 The normalize chip
 effects are then passed to the Circular Binary Segmentation (CBS)
 methods, which identifies aberrant regions in the genome.  The results

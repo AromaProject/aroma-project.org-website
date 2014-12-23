@@ -16,8 +16,7 @@ CHIP TYPES/DATA FILES:
 * Number of arrays: unlimited.  
  * Chip types: all Affymetrix chip types with a CDF, e.g. SNP, exon,
 and gene expression.  
- * Immediate support for custom CDFs, e.g. BrainArray and
-AffyProbeMiner.  
+ * Immediate support for custom CDFs, e.g. Brainarray and AffyProbeMiner.  
 * File formats: Works directly with CEL and CDF files (all versions;
 text/ASCII, binary/XDA, binary/Calvin).
 
