@@ -148,3 +148,19 @@ alert_help <- function(expr, ..., envir=parent.frame(), style="html") {
   eval(expr, envir=envir)
   cat('</div>\n')
 } # alert_help()
+
+
+alert_info <- function(expr, ..., icon="info-sign", css=NULL, envir=parent.frame(), style="html") {
+  oopts <- BibOptions(style=style)
+  on.exit(BibOptions(oopts))
+  if (!is.null(css)) {
+    printf('<div class="alert alert-info" role="alert" style="%s">\n', css)
+  } else {
+    cat('<div class="alert alert-info" role="alert">\n')
+  }
+  if (is.character(icon)) {
+    printf('  <span class="glyphicon glyphicon-%s" style="font-size: 1.2em;"></span>\n', icon)
+  }
+  eval(expr, envir=envir)
+  cat('</div>\n')
+} # alert_help()

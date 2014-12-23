@@ -1,3 +1,16 @@
+<%------------------------------------------------------------%>
+<% alert_info({ %>
+News and recent updates:
+<ul>
+ <li>Dec 23, 2014: New design of website (same content)</li>
+ <li>Jun  8, 2014: PSCBS 0.43.0 released.</li>
+ <li>Mar  9, 2014: aroma.affymetrix 2.12.0 released.</li>
+ <li>Oct 17, 2013: aroma.cn 1.5.0 released.</li>
+</ul>
+<% }, icon=FALSE, css="margin: 0; padding: 1ex; font-size: small; font-style: italic;") %>
+<br>
+<%------------------------------------------------------------%>
+
 # An open-source R framework for your microarray analysis
 
 ![ChromosomeExplorer](<%=pathTo('assets/images_thumbs/ChromosomeExplorer_20070108.png')%>)
@@ -5,10 +18,12 @@
 ![FIRMA and alternative splicing](<%=pathTo('assets/images_thumbs/exon_array_example_plot.png')%>)
 ![Allelic crosstalk](<%=pathTo('assets/images_thumbs/NA06985_Hind_B5_3005533-allelicPairsAT.png')%>)
 
-Aroma.affymetrix is an R package for analyzing small to extremely large
-Affymetrix data sets.  It allows you to analyze any number of arrays of
-various chip types, e.g. 10,000s of expression arrays, SNP chips, exon
-arrays and so on.  Here are some of the features:
+The aroma.affymetrix package is an R package for analyzing small to
+extremely large Affymetrix data sets.  It allows you to analyze any number
+of arrays of various chip types, e.g. 10,000s of expression arrays, SNP chips,
+exon arrays and so on.
+
+Here are some of the features of aroma.affymetrix:
 
 -   Number of arrays: **unlimited**.
 -   System requirements: As low as **1GB RAM, any operating system**.
