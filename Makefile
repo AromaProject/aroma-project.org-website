@@ -58,15 +58,21 @@ build_both: build_content_tmp
 #=====================================================================
 # Build site
 #=====================================================================
-build_references: assets/references/references.bib
+assets/references/references.bib:
+	$(R_SCRIPT) "R/build_references.R"
+
+assets/ico/favicon.png:
+	$(CD) assets/ico/; \
+	$(R_SCRIPT) "favicon.R"
+
+references: assets/references/references.bib
+
+favicon: assets/ico/favicon.png
 
 build_content:
 	$(R_SCRIPT) "R/build15.R" --input=content
 
-assets/references/references.bib:
-	$(R_SCRIPT) "R/build_references.R"
-
-build: assets/references/references.bib build_content
+build: favicon references build_content
 
 
 #=====================================================================

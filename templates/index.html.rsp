@@ -16,7 +16,7 @@
   <meta name="keywords" content="<%@meta name="keywords"%>">
   <meta name="author" content="<%@meta name="author"%>">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="shortcut icon" href="<%=pathTo('assets/ico/favicon.ico')%>">
+  <link rel="shortcut icon" type="image/png" href="<%=pathTo('assets/ico/favicon.png')%>">
   <title title="<%@string name="full_title"%>"><%@meta name="title"%></title>
   <link href="<%=pathTo('assets/css/bootstrap.min.css')%>" rel="stylesheet">
   <link href="<%=pathTo('assets/css/cbc-tweaks.css')%>" rel="stylesheet">
