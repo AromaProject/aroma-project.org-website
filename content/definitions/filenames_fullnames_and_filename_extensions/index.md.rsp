@@ -8,7 +8,7 @@ filename consists of a fullname, a period, and the filename extension:
 <fullname>.<extension>
 ```
 
-where <extension> can contain anything but a period.  Formally, the
+where `<extension>` can contain anything but a period.  Formally, the
 regular expression for the period and the `<extension>` is:
 
 ```
