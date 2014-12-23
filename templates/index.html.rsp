@@ -99,10 +99,17 @@
   $(document).ready(function(){
     var oldpage = $('#oldpage');
     if (oldpage.length > 0) {
-      var url = $(location).attr('href');
-      url = url.replace('alpha.', 'v1.');
+      var extras = '';
+      var uri = $(location).attr('href');
+
+      var url = uri.replace('alpha.', 'v1.');
       url = url.replace('www.', 'v1.');
-      oldpage.html('(<a href="'+url+'">old page</a>)');
+      extras = extras + '<a href="'+url+'">old page</a>';
+
+      url = 'http://validator.w3.org/check?uri=' + uri + ';st=1;outline=1;verbose=1;group=1'
+      extras = extras + ', <a href="'+url+'">validate HTML</a>';
+
+      oldpage.html('(Devel tools: ' + extras + ')');
     }
   });
 </script>

@@ -21,14 +21,38 @@ get_cite <- function(key, ...) {
   references[[key]]
 }
 
+cite_patch <- function(x) {
+  stopifnot(length(x) == 1L)
+
+  ## PATCH: & in URLs should be encoded as &amp;
+
+  # Markdown or HTML anchors (or neither)?
+  if (grepl('\\]\\([a-z]+://', x)) {
+    pattern <- '.*\\]\\([a-z]+://[^?]*[?]([^)]+)\\).*'
+  } else if (grepl('href=["\'][a-z]+://', x)) {
+    pattern <- '.*href=["\'][a-z]+://[^?]*[?]([^"\']+)[^"\'].*'
+  } else {
+    # Nothing todo?
+    return(x)
+  }
+  if (grepl(pattern, x, ignore.case=TRUE)) {
+    url <- gsub(pattern, "\\1", x, ignore.case=TRUE)
+    url2 <- gsub("&amp;", "<<<AMP>>>", url, fixed=TRUE)
+    url2 <- gsub("&", "&amp;", url2, fixed=TRUE)
+    url2 <- gsub("<<<AMP>>>", "&amp;", url2, fixed=TRUE)
+    x <- gsub(url, url2, x, fixed=TRUE)
+  }
+  x
+}
+
 citep <- function(key, ...) {
   bib <- get_cite(key)
-  cat(Citep(bib))
+  cat(cite_patch(Citep(bib)))
 }
 
 citet <- function(key, ...) {
   bib <- get_cite(key)
-  cat(Citet(bib))
+  cat(cite_patch(Citet(bib)))
 }
 
 nocite <- function(key, ...) {
@@ -44,13 +68,13 @@ bibentry <- function(ref, key=NULL, keywords=FALSE, crossref=TRUE, style="markdo
   if (!crossref) {
     if (style == "html") {
       if (any(grepl("<cite>", md, fixed=TRUE))) {
-        md <- gsub(".*<cite>(|\n)*", "", md, fixed=FALSE)
+        md <- gsub("<p>.*<cite>(|\n)*", "<p>", md, fixed=FALSE)
       }
     }
   }
 
   if (style == "html") {
-    ## Drop stray </cite>?
+    ## Drop stray </cite>? (from above?)
     if (!any(grepl("<cite>", md, fixed=TRUE))) {
       md <- gsub("</cite>", "", md, fixed=TRUE)
     }
@@ -70,6 +94,9 @@ bibentry <- function(ref, key=NULL, keywords=FALSE, crossref=TRUE, style="markdo
   }
   md <- sprintf("%s\n\n", md)
   if (!is.null(key)) md <- sprintf("[%s] %s", kk, md)
+
+  md <- cite_patch(md)
+
   cat(md)
 } # bibentry()
 
