@@ -211,8 +211,6 @@ cs <- csR
 par(mar=c(4,4,1,1)+0.1)
 plotDensity(cs, lwd=2, ylim=c(0,0.40))
 stext(side=3, pos=0, getFullName(cs))
-# filename <- sprintf("%s,plotDensity.png", getFullName(cs))
-# dev.print(png, file=filename, width=640, height=400)
 ```
 
 ![](<%=pathTo('assets/images/CRMAv2%2CHapMap%2CGWS6%2Cdensity%2Craw.png')%>)
@@ -276,8 +274,6 @@ cs <- csC
 par(mar=c(4,4,1,1)+0.1)
 plotDensity(cs, lwd=2, ylim=c(0,0.40))
 stext(side=3, pos=0, getFullName(cs))
-# filename <- sprintf("%s,plotDensity.png", getFullName(cs))
-# dev.print(png, file=filename, width=640, height=400)
 ```
 
 ![](<%=pathTo('assets/images/CRMAv2%2CHapMap%2CGWS6%2Cdensity%2CACC.png')%>)
@@ -289,8 +285,6 @@ after crosstalk calibration.*
 array <- 1
 xlim <- c(-500,15000)
 plotAllelePairs(acc, array=array, pairs=1:6, what="input", xlim=xlim/3)
-filename <- sprintf("%s,plotAllelePairs.png", getFullName(csR))
-dev.print(png, file=filename, width=800, height=580)
 ```
 
 ![](<%=pathTo('assets/images/CRMAv2%2CHapMap%2CGWS6%2CNA06985%2Ccrosstalk%2Craw.png')%>)
@@ -302,8 +296,6 @@ Data shown is before calibration.*
 
 ```r
 plotAllelePairs(acc, array=array, pairs=1:6, what="output", xlim=xlim)
-filename <- sprintf("%s,plotAllelePairs.png", getFullName(csC))
-dev.print(png, file=filename, width=800, height=580)
 ```
 
 ![](<%=pathTo('assets/images/CRMAv2%2CHapMap%2CGWS6%2CNA06985%2Ccrosstalk%2CACC.png')%>)* *
@@ -366,8 +358,6 @@ cs <- csN
 par(mar=c(4,4,1,1)+0.1)
 plotDensity(cs, lwd=2, ylim=c(0,0.40))
 stext(side=3, pos=0, getFullName(cs))
-# filename <- sprintf("%s,plotDensity.png", getFullName(cs))
-# dev.print(png, file=filename, width=640, height=400)
 ```
 
 
@@ -382,11 +372,9 @@ array <- 1
 xlim <- c(-500,15000)
 acc2 <- AllelicCrosstalkCalibration(csN)
 plotAllelePairs(acc2, array=array, pairs=1:6, what="input", xlim=1.5*xlim)
-filename <- sprintf("%s,plotAllelePairs.png", getFullName(csN))
-dev.print(png, file=filename, width=800, height=580)
 ```
 
-*![](<%=pathTo('assets/images/CRMAv2%2CHapMap%2CGWS6%2CNA06985%2Ccrosstalk%2CACC%2CBPN.png')%>)*
+![](<%=pathTo('assets/images/CRMAv2%2CHapMap%2CGWS6%2CNA06985%2Ccrosstalk%2CACC%2CBPN.png')%>)
 
 Figure: Allele probe pair intensities (PMA,PMB) of array NA06985 for the
 six nucleotide pairs (A,C), (A,G), (A,T), (C,G), (C,T), and (G,T).  Data
@@ -621,9 +609,10 @@ a small region on chromosome 2 in sample NA06991.
 
 
 
-```
+```r
 # Identification of units in Chr 2:81-86MB and their positions
-cdf <- getCdf(cesN) gi <- getGenomeInformation(cdf)
+cdf <- getCdf(cesN)
+gi <- getGenomeInformation(cdf)
 units <- getUnitsOnChromosome(gi, chromosome=2, region=c(81,86)*1e6)
 pos <- getPositions(gi, units=units)
 
@@ -642,8 +631,6 @@ C <- 2*theta/thetaR
 plot(pos/1e6, C, pch=".", cex=3, ylim=c(0,4))
 stext(side=3, pos=0, getName(ce))
 stext(side=3, pos=1, "Chr2")
-filename <- sprintf("%s,Chr02,81-86Mb.png", getName(ce))
-dev.print(png, file=filename, width=640, height=320)
 ```
 
 ![](<%=pathTo('assets/images/CRMAv2%2CHapMap%2CGWS6%2CNA06985%2CChr2%2C81-86Mb%2CTCN.png')%>)
