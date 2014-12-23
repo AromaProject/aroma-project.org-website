@@ -34,20 +34,17 @@ HTML_FILES := $(wildcard html/*.html html/*/*.html html/*/*/*.html)
 #=====================================================================
 # Global
 #=====================================================================
-all: scrape build alpha
+all: build alpha
 
 
 #=====================================================================
-# Pages
+# Scrape, old build etc.
 #=====================================================================
 scrape:
 	$(R_SCRIPT) "R/scrape-old.R"
 
 build_scrape:
 	$(R_SCRIPT) "R/build15.R" --input=scrape
-
-build_content:
-	$(R_SCRIPT) "R/build15.R" --input=content
 
 build_content_tmp:
 	$(MKDIR) content,tmp/
@@ -57,7 +54,19 @@ build_content_tmp:
 build_both: build_content_tmp
 	$(R_SCRIPT) "R/build15.R" --input=content,tmp
 
-build: build_content
+
+#=====================================================================
+# Build site
+#=====================================================================
+build_references: assets/references/references.bib
+
+build_content:
+	$(R_SCRIPT) "R/build15.R" --input=content
+
+assets/references/references.bib:
+	$(R_SCRIPT) "R/build_references.R"
+
+build: assets/references/references.bib build_content
 
 
 #=====================================================================
