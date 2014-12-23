@@ -54,8 +54,10 @@ build_content_tmp:
 	rsync -avvz scraped/5.rsp/ content,tmp/
 	rsync -avvz --checksum content/ content,tmp/
 
-build: build_content_tmp
+build_both: build_content_tmp
 	$(R_SCRIPT) "R/build15.R" --input=content,tmp
+
+build: build_content
 
 
 spell:
