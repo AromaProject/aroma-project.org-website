@@ -133,9 +133,8 @@ define the name is the same for both files.  This is illustrated by the
 following code that give details for the first array in each set:
 
 ```r
-print(getFile(csRawList[["Mapping250K_Nsp"]], 1))
+print(csRawList[["Mapping250K_Nsp"]][[1]])
 ```
-
 ```
 AffymetrixCelFile:
 Name: **CCL-256.1D**
@@ -150,7 +149,7 @@ Timestamp: 2006-01-16 09:48:51
 ```
 
 ```r
-print(getFile(csRawList[["Mapping250K_Sty"]], 1))
+print(csRawList[["Mapping250K_Sty"]][[1]])
 ```
 ```
 AffymetrixCelFile:

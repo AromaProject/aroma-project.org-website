@@ -222,8 +222,8 @@ print(dsCNList)
 extractSignals <- function(dsList, sampleName, reference=c("none", "median"), refIdxs=NULL, ..., verbose=FALSE) {
     reference <- match.arg(reference)
       idx <- indexOf(dsList$total, sampleName)
-      dfT <- getFile(dsList$total, idx)
-      dfB <- getFile(dsList$fracB, idx)
+      dfT <- dsList$total[[idx]]
+      dfB <- dsList$fracB[[idx]]
       tcn <- extractRawCopyNumbers(dfT, logBase=NULL, ..., verbose=verbose)
       baf <- extractRawAlleleBFractions(dfB, ..., verbose=verbose)
       if (reference == "median") {

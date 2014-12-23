@@ -259,7 +259,7 @@ RAM: 0.00MB
 ```
 
 ```r
-dummy <- lapply(dsList, FUN=function(ds) print(getFile(ds,1)))
+dummy <- lapply(dsList, FUN=function(ds) print(ds[[1]]))
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Normalize allele B fractions for tumors given matched normals
@@ -341,7 +341,7 @@ pos <- getPositions(ugp, units=units)
 
 # Extract Allele B fractions
 kk <- 1
-dfList <- lapply(dsList, FUN=getFile, kk)
+dfList <- lapply(dsList, FUN=`[[`, kk)
 beta <- lapply(dfList, FUN=function(df) df[units,1,drop=TRUE])
 beta <- as.data.frame(beta)
 beta <- as.matrix(beta)

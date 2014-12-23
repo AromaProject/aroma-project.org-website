@@ -69,7 +69,7 @@ rootPath <- "totalAndFracBData"
 rootPath <- Arguments$getReadablePath(rootPath)
 
 dataSets <- c("TCGA,GBM,BeadStudio,XY", "TCGA,GBM,CRMAv2")
-dataSet <- dataSets[1]; ## Work with Illumina data
+dataSet <- dataSets[1]  ## Work with Illumina data
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Load the raw (tumor,normal) data set
@@ -123,13 +123,11 @@ outPath <- file.path("callData", fullname, chipType)
 
 units <- NULL
 if (is.null(units)) {
-  df <- getFile(dsN, 1)
+  df <- dsN[[1]]
   units <- seq(length=nbrOfUnits(df))
-  rm(df)
 }
 
 adjust <- 1.5
-type <- NULL; rm(type); # To please R CMD check
 
 # Identify units on ChrX and ChrY
 ugp <- getAromaUgpFile(dsN)
@@ -138,8 +136,8 @@ is23 <- is.element(units, units23)
 units24 <- getUnitsOnChromosome(ugp, 24)
 is24 <- is.element(units, units24)
 
-kk <- 1;
-dfN <- getFile(dsN, kk)
+kk <- 1
+dfN <- dsN[[kk]]
 
 tags <- getTags(dfN)
 tags <- setdiff(tags, "fracB")
@@ -215,10 +213,8 @@ gfN <- AromaUnitGenotypeCallFile$allocate(pathnameT, platform=getPlatform(dfN), 
 footer <- readFooter(gfN)
 footer$method <- "NaiveGenotypeCaller"
 writeFooter(gfN, footer)
-rm(footer)
 
 updateGenotypes(gfN, units=units, calls=calls)
-rm(calls)
 
 res <- file.rename(pathnameT, pathname)
 if (!isFile(pathname)) {
@@ -227,7 +223,6 @@ if (!isFile(pathname)) {
 if (isFile(pathnameT)) {
   throw("Failed to rename temporary file: ", pathnameT, " -> ", pathname)
 }
-rm(pathnameT)
 
 gfN <- AromaUnitGenotypeCallFile(pathname)
 
@@ -246,10 +241,8 @@ csfN <- AromaUnitSignalBinaryFile$allocate(pathnameT, platform=getPlatform(dfN),
 footer <- readFooter(csfN)
 footer$method <- "NaiveGenotypeConfidenceScoreEstimator"
 writeFooter(csfN, footer)
-rm(footer)
 
 csfN[units, 1] <- cs
-rm(cs)
 
 res <- file.rename(pathnameT, pathname)
 if (!isFile(pathname)) {
@@ -258,7 +251,6 @@ if (!isFile(pathname)) {
 if (isFile(pathnameT)) {
   throw("Failed to rename temporary file: ", pathnameT, " -> ", pathname)
 }
-rm(pathnameT)
 
 cfN <- AromaUnitSignalBinaryFile(pathname)
 print(cfN)
