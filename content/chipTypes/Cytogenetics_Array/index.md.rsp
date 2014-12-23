@@ -43,23 +43,17 @@ pairs.  2,377,527 of the CN units are single CN probes (as in GWS5 and
 GWS6).  In addition to this, there are 1,775 CN units with two probes,
 5,618 with 3 probes, 1,496 with 7 probes, and 8,504 with 8 probes.
 
+
+### Resources
+
 By aroma-project.org:
 
-#### 2009-05-19:
+* <%=chipTypeData('Cytogenetics_Array', 'Cytogenetics_Array,na28,HB20090519.ugp.gz')%>  Unit Genome Position (UGP) annotation file. Human Genome build v36. Sources: Affymetrix NetAffx CSV files Cytogenetics_Array.na28.annot.csv (141Mb) and
+  Cytogenetics_Array.cn.na28.annot.csv (852Mb). Created by: Henrik Bengtsson, 2009-05-19.
+* To the best of my understanding, the assay does not use restriction enzymes.  Hence, no fragment-length annotation files.
+* This chip types has probe sequences of variable lengths in the range of 38 to 50-mers.  The aroma.affymetrix package does not support variable length probe sequences at this stage.
 
--   <%=chipTypeData('Cytogenetics_Array', 'Cytogenetics_Array,na28,HB20090519.ugp.gz')%>
-    - Unit Genome Position (UGP) annotation file. Human Genome build
-    v36. Sources: Affymetrix NetAffx CSV files
-    Cytogenetics_Array.na28.annot.csv (141Mb) and
-    Cytogenetics_Array.cn.na28.annot.csv (852Mb). Created by: Henrik
-    Bengtsson, 2009-05-19.
--   To the best of my understanding, the assay does not use restriction
-    enzymes.  Hence, no fragment-length annotation files.
--   This chip types has probe sequences of variable lengths in the range
-    of 38 to 50-mers.  The aroma.affymetrix package does not support
-    variable length probe sequences at this stage.
 
 Affymetrix:
 
--   [Product
-    page](http://www.affymetrix.com/products_services/arrays/specific/cytogenetics_solution.affx)
+* [Product page](http://www.affymetrix.com/products_services/arrays/specific/cytogenetics_solution.affx)
