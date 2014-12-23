@@ -1,0 +1,65 @@
+# Chip types: HT_HG-U133A & HT_HG-U133B
+
+## HT Human Genome U133 Array Plate Set
+
+Early access versions of the HT_HG-U133A chip type were labelled U133AAofAv2(\*) and HT_HT-U133A_EA.
+
+Footnote: (\*) The evidence for this comes from comparing spatial images
+of a CEL file with U133AAofAv2
+[[PNG](<%=pathTo('assets/images/5202764005789146112904.A02,U133AAofAv2,intensities,sqrt,gray,crop400x150.png')%>)]
+in the header with one with HT_HT-U133A
+[[PNG](<%=pathTo('assets/images/GSM591440,HT_HG-U133A,intensities,sqrt,gray,crop400x150.png')%>)].
+ Both have the same spatial patterns, i.e. blocks of checkered blocks
+and control probes, "landing lights", and positive controls spelling out
+'GeneChip' and 'HG-U133 AofAv2'.
+
+### HT_HG-U133A
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("HT_HG-U133A")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HT_HG-U133A
+Filename: HT_HG-U133A.cdf
+Filesize: 38.72MB
+Chip type: HT_HG-U133A
+RAM: 0.00MB
+File format: v3 (text; ASCII)
+Dimension: 744x744
+Number of cells: 553536
+Number of units: 22277
+Cells per unit: 24.85
+Number of QC units: 7
+```
+
+
+
+
+
+### HT_HG-U133B
+
+
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("HT_HG-U133B")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HT_HG-U133B
+Filename: HT_HG-U133B.cdf
+Filesize: 38.45MB
+Chip type: HT_HG-U133B
+RAM: 0.00MB
+Dimension: 744x744
+Number of cells: 553536
+Number of units: 22665
+Cells per unit: 24.42
+Number of QC units: 4
+```
+
+
+
+## Resources
+
+By Affymetrix:
+
+-   Product page: <http://www.affymetrix.com/support/technical/byproduct.affx?product=ht_hg-u133_set>

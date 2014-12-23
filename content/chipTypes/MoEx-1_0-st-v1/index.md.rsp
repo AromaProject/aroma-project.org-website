@@ -35,7 +35,7 @@ more appropriate for your analysis.
 
 * <%=chipTypeData('MoEx-1_0-st-v1', 'MoEx-1_0-st-v1,HB20100926.acs.gz')%> -
 Aroma Cell Sequence (ACS) annotation file mapping cell indices to 25-mer
-sequences and target strandness.  Sources: Affymetrix probe_tab file.
+sequences and target strandedness.  Sources: Affymetrix probe_tab file.
  The latter provides only 4,779,314 (72.9%) out of 6,553,600 sequences;
 please help us find the sequences for the remaining probes.  Created by:
 Henrik Bengtsson, 2010-09-26.

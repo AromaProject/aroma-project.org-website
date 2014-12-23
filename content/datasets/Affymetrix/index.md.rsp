@@ -215,7 +215,7 @@ URL: <http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE5258>
 Disorder.**  
 Chip type(s): Mapping250K_Nsp, Mapping250K_Sty  
 Description: Mapping250K_{Nsp|Sty} CEL files for DNA derived from blood
-or lymphopblasts. In total, 426 unrelated probands were analyzed along
+or lymphoblasts. In total, 426 unrelated probands were analyzed along
 with 232 parents (116 trios). ...  
 Reference(s): Marshall et al. *Structural Variation of Chromosomes in
 Autism Spectrum Disorder*, Am J Hum Genet, Feb 2008.  
@@ -328,7 +328,7 @@ URL: <http://www.sanger.ac.uk/genetics/CGP/Archive/>
 
 Broad Institute et al.: Broad-Novartis Cancer Cell Line Encyclopedia
 (CCLE)  
- Chip type(s): GenomeWideSNP_6, HG-U133_Plus_2, Oncomap mutation
+ Chip type(s): GenomeWideSNP_6, HG-U133_Plus_2, OncoMap mutation
 data, Hybrib capture sequencing  
  Description: "The Cancer Cell Line Encyclopedia (CCLE) project is a
 collaboration between the Broad Institute, and the Novartis Institutes
@@ -376,7 +376,7 @@ tumor/normal sample pairs for Weir et al. (2007).
 adenocarcinoma. Nature, December 2007, 450, 893-898.  
  URL: <http://www.broad.mit.edu/cancer/pub/tsp/>
 
-Broad Institute et al.: ConnectivityMap (02)  
+Broad Institute et al.: Connectivity Map (02)  
  Chip type(s): HG-U133A  
  Description: 6100 Affymetrix HG-U133A CEL files.  
  Reference: (1) Lamb et al., The Connectivity Map: using gene-expression

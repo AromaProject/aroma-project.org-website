@@ -106,7 +106,7 @@ Authors: Multiple - LMP, NCI, NIH, Georgetown University.
 of complete coding sequences composed of a) RefSeq records with
 accessions starting with "NM_" (*e.g.* NM_012345), b) validated
 complete coding sequences in GenBank, and 2) regroup probes in
-AffyMetrix chips into probe sets, where the probes in a probe set map to
+Affymetrix chips into probe sets, where the probes in a probe set map to
 a consistent set of complete coding sequences [at the] gene-level
 [and/or] the transcript-level".  
  Chip types: Several, but not all.  
@@ -178,14 +178,13 @@ Epidemiology Society), Sept. 2008, St. Louis, US.
 
 ## CNAG
 
-Authors: Seishi Ogawa Group, University of TokyoWhat: Copy-number
-analysis  
- Chip types: 100K, 500K.  
- Operating system: Windows  
- URL: <http://www.genome.umin.jp/>  
- References: *CancerRes*; 65(14), 6071-79 (2005).  
- See also: H. Bengtsson, [HB's Guide to CNAG
-v2](http://docs.google.com/Doc?docid=dddzqd53_17r2zdbq), 2007.
+Authors: Seishi Ogawa Group, University of Tokyo  
+What: Copy-number analysis  
+Chip types: 100K, 500K.  
+Operating system: Windows  
+URL: <http://www.genome.umin.jp/>  
+References: *CancerRes*; 65(14), 6071-79 (2005).  
+See also: H. Bengtsson, [HB's Guide to CNAG v2](http://docs.google.com/Doc?docid=dddzqd53_17r2zdbq), 2007.
 
 ## dChip (dChipSNP)
 
@@ -280,7 +279,7 @@ References: Komura et al., Genome-wide detection of human copy number
 variations using high density DNA oligonucleotide arrays, Genome
 Research 16, 1575-1584 (2006)
 
-## GenoCN (GenoCNA/GenoCNV)
+## genoCN (genoCNA/genoCNV)
 
 Authors: Sun et al.  
  What: Simultaneously dissect copy number states and genotypes using the
@@ -390,7 +389,7 @@ URL: <http://liulab.dfci.harvard.edu/Software/MBR/MBR.htm.html>
 
 Authors: Christopher Yau  
 Operating system: MATLAB, Linux only  
-Licences: For collaborators only  
+Licenses: For collaborators only  
 URL: <https://sites.google.com/site/oncosnp/>  
 References: ?
 
@@ -489,7 +488,7 @@ URL: <http://sablab.net/PuMaQC/>
 
 Authors: Wang et al.  
  What: Copy-number variant (CNV) analysis.  
- Chip types: Illumina, but QuantSNP v1.1 supports Affymetrix as well.  
+ Chip types: Illumina, but QuantiSNP v1.1 supports Affymetrix as well.  
  Operating system: Linux (32-bit & 64-bit), ...???  
  URL: <http://www.well.ox.ac.uk/QuantiSNP/>.  
 Forum: <http://groups.google.co.uk/group/quantisnp>  

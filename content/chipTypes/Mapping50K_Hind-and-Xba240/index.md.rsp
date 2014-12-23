@@ -43,7 +43,7 @@ Number of QC units: 9
 One array uses the [HindIII](http://en.wikipedia.org/wiki/HindIII) restriction enzyme and the other XbaI.  Both are palindromic (in the DNA sense).
 
 ```
- Enzyme  | Recognizition | Cut                |
+ Enzyme  | Recognition   | Cut                |
          | sequence      |                    |
 -----------------------------------------------
  HindIII | 5'AAGCTT      | 5'---A  AGCTT---3' |

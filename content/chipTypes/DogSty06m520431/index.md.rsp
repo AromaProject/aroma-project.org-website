@@ -75,7 +75,7 @@ By aroma-project.org:
     downloaded 2008-07-21).
 -   <%=chipTypeData('DogSty06m520431', 'DogSty06m520431,HB20100920.acs.gz')%> -
     Aroma Cell Sequence (ACS) annotation file mapping cell indices to
-    25-mer sequences and target strandness.  Sources: Affymetrix
+    25-mer sequences and target strandedness.  Sources: Affymetrix
     probe_tab file (private communication).  Created by: Henrik
     Bengtsson, 2010-09-20.
 

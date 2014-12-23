@@ -1,0 +1,9 @@
+# Resources
+
+-   [Publications](<%=pathTo('/publications')%>)
+-   [Presentations](<%=pathTo('/presentations')%>)
+-   [Lab sessions](<%=pathTo('/labsessions')%>) [VOLUNTEERS: Links to Google Docs that
+    should be migrated here].
+-   [Add ons](<%=pathTo('/addons')%>)
+-   [Data sets](<%=pathTo('/datasets')%>)
+-   [Further resources](<%=pathTo('/resources/external')%>)

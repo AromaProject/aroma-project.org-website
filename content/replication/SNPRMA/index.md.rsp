@@ -10,7 +10,7 @@ One advantage of processing
 data in <% cran('aroma.affymetrix') %> is that any number of arrays can be processed
 in bounded memory (approx 1GB of RAM) on any platform.  Moreover, since
 the estimates are stored in persistent memory (on file), rerunning the
-same analysis another day/in another R session will be instantanious.
+same analysis another day/in another R session will be instantaneous.
 
 We show that it is possible to reproduce the estimates whether one
 normalize toward oligo's predefined HapMap reference (target quantiles)

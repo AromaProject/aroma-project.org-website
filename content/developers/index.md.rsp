@@ -45,7 +45,7 @@ example code  (e.g. `@examples "../incl/foo.R"`), shortcuts for linking
 to common Rd pages (e.g. `@matrix`), and much more.  This makes it
 easier to maintain the documentation, especially in projects where the
 API is constantly being updated.  Rdoc comments are recognized by their
-begin and end symbols `#/**` and `#*/` (cf. javadoc for Java).  An R
+begin and end symbols `#/**` and `#*/` (cf. Javadoc for Java).  An R
 file may contain zero, one, or more Rdoc comments.  Here is a brief
 example:
 

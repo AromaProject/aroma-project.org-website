@@ -1,0 +1,37 @@
+# Further resources
+
+## Forums
+
+Below is a list of forums (mailing lists and/or online forums) where you
+can ask your questions that are not specific to the aroma framework.
+
+### Bioconductor: bioc and bioc-devel
+
+URL: <http://www.bioconductor.org/>
+
+### Affymetrix: Affymetrix Scientific Community Forums
+
+URL:[ https://www.affymetrix.com/community/forums/index.jspa](https://www.affymetrix.com/community/forums/index.jspa)
+
+### dChip: Microarray Data Analysis Forums - Microarray data analysis using dChip and ComBat
+
+URL: <http://groups.google.com/group/dchip-software>  
+URL2: <http://dchip.forum5.com/>
+
+### Scientists for Reproducible Research
+
+URL: <https://groups.google.com/group/reproducible-research>
+
+
+
+## Other software tools
+
+-   [Tools for processing Affymetrix data](<%=pathTo('/external/ToolsForAffymetrix')%>)
+
+
+
+## File formats
+
+-   [Affymetrix Data
+    Files](http://www.affymetrix.com/support/developer/powertools/changelog/gcos-agcc/index.html),
+    Affymetrix Developers Network.

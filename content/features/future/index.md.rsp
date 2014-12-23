@@ -55,9 +55,9 @@ would like to implement:
 -   The probe-level modeling (PLM)/summarization of Affymetrix arrays
     was designed to work out-of-the-box with virtually any chip
     type/CDF.  The price we pay for this is that lots of data is wrapped
-    up and unwrapped multiple times into long nested hetereogenous list
+    up and unwrapped multiple times into long nested heterogeneous list
     structures, which is time consuming in R.  As a first significant
-    improvement, one can identify homogenous subsets of these list
+    improvement, one can identify homogeneous subsets of these list
     structures that have CDF elements of the same shapes and dimensions.
      This would speed up the wrapping/unwrapping of data.  It would
     require to rewrite some of the "fit function" for PLMs.  

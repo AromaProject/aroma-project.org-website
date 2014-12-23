@@ -18,7 +18,7 @@ used use cases.
     Chip types: Any Affymetrix SNP & CN chip types (10K-GWS6).
 -   doFIRMA() - FIRMA preprocessing, probe summarization, and
     alternative splicing estimation on Affymetrix exon arrays.
--   doGCRMA() - gcRMA preprocessing and probe summarization on
+-   doGCRMA() - GCRMA preprocessing and probe summarization on
     Affymetrix gene expression arrays.
 -   [doRMA()](<%=pathTo('/blocks/doRMA')%>) - RMA preprocessing and probe summarization
     on Affymetrix gene expression arrays.  

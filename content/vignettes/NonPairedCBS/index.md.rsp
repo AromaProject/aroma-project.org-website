@@ -153,4 +153,4 @@ The content of the segmentation table is specific to the segmentation
 method used.  Note also that it is only some "segmentation" method that
 also call the CN state of the segments, e.g. GLAD (GladModel).  The CBS
 method used here does not do that.  Calling CN states is a hard problem,
-especially when there are heterogenity in the cell population.
+especially when there are heterogeneity in the cell population.

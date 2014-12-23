@@ -65,7 +65,8 @@ spell:
 	  echo file=$$file; \
           $(ASPELL) --personal=./.aspell.en_US.pws --mode=html list < $$file >> spell-words.txt; \
 	done
-	cat spell-words.txt | sort -u
+	cat spell-words.txt | sort -u > spell-words.sorted.txt
+	cat spell-words.sorted.txt
 
 check_links:
 	wget --spider -o wget.log -e robots=off -w 1 -r -p http://alpha.aroma-project.org/index.html

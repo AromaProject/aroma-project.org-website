@@ -96,7 +96,7 @@ order to identify the probe (cell) indices for this transcript we do:
 ```r
 # Get the unit index
 unitName <- "3400034"
-unit <- indexOf(cdf, names=unitNams)
+unit <- indexOf(cdf, names=unitName)
 
 # Get the (unit, group, cell) index map
 ugcM <- getUnitGroupCellMap(cdf, units=unit, retNames=TRUE)
@@ -109,7 +109,7 @@ str(cells)
 ```
 
 Now we can read the log2 normalized probe signals as well as the log2
-FIRMA residules into matrices:
+FIRMA residuals into matrices:
 
 ```r
 # Probe signals

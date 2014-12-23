@@ -1,13 +1,10 @@
 # Replication: Reproducing CBS using MPCBS with K=1 platforms
 
-Wed, 2010-03-03 01:15 — hb
-
-Author: Henrik Bengtsson
-
+Wed, 2010-03-03 01:15 — hb  
+Author: Henrik Bengtsson  
 Created on: 2010-03-03
 
-**Update 2010-03-20: The problem reported here has been solved in mpcbs
-v1.1.1.**
+**Update 2010-03-20: The problem reported here has been solved in mpcbs v1.1.1.**
 
 
 
@@ -15,54 +12,56 @@ v1.1.1.**
 
 I have identified a problem with the current implementation of MPCBS
 that causes it to miss some obvious segments.  I am simulating data and
-compare with the results of CBS (DNAcopy::segment()), GLAD
-(GLAD::glad()), and HaarSeg (HaarSeg::haarSeg()).  Since the error terms
+compare with the results of CBS (`DNAcopy::segment()`), GLAD
+(`GLAD::glad()`), and HaarSeg (`HaarSeg::haarSeg()`).  Since the error terms
 are drawn randomly (without a fixed seed), the issue with MPCBS does not
-occur everytime.  Indeed, it only occurs every 10-20 times.  However,
+occur every time.  Indeed, it only occurs every 10-20 times.  However,
 with 24 chromosomes and hundreds of samples, this becomes a real issue.
 
 ![](<%=pathTo('assets/images/MPCBS/mpcbs%2Cbug.png')%>)
 
-Figure: Simulated log2 CNs (gray) segmented by CBS (red), GLAD (blue),
+_Figure: Simulated log2 CNs (gray) segmented by CBS (red), GLAD (blue),
 HaarSeg (orange) and MPCBS (purple).  500kb smoothed CNs (black) are
 also shown.  The true CN segmentation is the same across runs, but the
 noise is randomly drawn.  For this particular run, MPCBS failed to
-identify the last change point.  There are J=1000 data points.
+identify the last change point.  There are J=1000 data points._
 
 ## Setup
 
 In R v2.10.0 or newer, do:
 
-source("http://aroma-project.org/hbLite.R");
+```r
+source("http://aroma-project.org/hbLite.R")
 
-\# Install aroma.affymetrix and friends  
-hbInstall("aroma.affymetrix");
+# Install aroma.affymetrix and friends
+hbInstall("aroma.affymetrix")
 
-\# Install developers aroma.core v1.5.1 (*)  
-installPackages("http://www.braju.com/R/repos/aroma.core_1.5.1.tar.gz");
+# Install developers aroma.core v1.5.1 (*) 
+installPackages("http://www.braju.com/R/repos/aroma.core_1.5.1.tar.gz")
 
-\# Install mpcbs v1.1.0 (*)  
-installPackages("http://www.braju.com/R/repos/mpcbs_1.1.0.tar.gz");
+# Install mpcbs v1.1.0 (*)
+installPackages("http://www.braju.com/R/repos/mpcbs_1.1.0.tar.gz")
 
-\# Install DNAcopy  
-biocLite("DNAcopy");
+# Install DNAcopy
+biocLite("DNAcopy")
+```
 
 Footnote:  
-(*) Windows users: To install on Windows, replace *.tar.gz with
-*.zip.  
-(*) OSX users: To install on OSX, add argument type="source",
-e.g. installPackages("http://www.braju.com/R/repos/aroma.core_1.5.1.tar.gz",
-type="source");
+(\*) Windows users: To install on Windows, replace \*.tar.gz with \*.zip.  
+(\*) OS X users: To install on OS X, add argument `type="source"`, e.g. `installPackages("http://www.braju.com/R/repos/aroma.core_1.5.1.tar.gz",
+type="source")`
+
 
 ## Notes
 
-In aroma.core I provide segmentByCBS(), segmentByGLAD(),
-segmentByHaarSeg() and segmentByMPCBS() that are standardized wrappers
+In <% cran('aroma.core') > I provide `segmentByCBS()`, `segmentByGLAD()`,
+`segmentByHaarSeg()` and `segmentByMPCBS()` that are standardized wrappers
 calling the corresponding segmentation method.  This means that the
 results will be identical to what you would get if you called the
 individual packages directly.  No parameter settings are changed.  Note
 that if the underlying segmentation package/function is updated, this
-will directly reflect the results of the segmentByNnn() methods.
+will directly reflect the results of the `segmentByNnn()` methods.
+
 
 ## Script
 
@@ -73,16 +72,20 @@ methods can be downloaded/seen here:
 
 You can even run this directly from R as:
 
-library("aroma.core");  
-source("http://r-forge.r-project.org/plugins/scmsvn/viewcvs.php/*checkout*/pkg/aroma.core/incl/RawGenomicSignals.SEG.Rex?rev=1922&root=aroma-dots");
+```r
+library("aroma.core")
+source("http://r-forge.r-project.org/plugins/scmsvn/viewcvs.php/*checkout*/pkg/aroma.core/incl/RawGenomicSignals.SEG.Rex?rev=1922&root=aroma-dots")
+```
 
 and you should get a plot similar to the above.
 
 The simulated data that generates the above data and plot can be loaded
 as:
 
-library("aroma.core");  
-load(url("http://www.aroma-project.org/xfer/MPCBS/mpcbs,bug.RData"));
+```
+library("aroma.core")
+load(url("http://www.aroma-project.org/xfer/MPCBS/mpcbs,bug.RData"))
+```
 
 ## Session information
 

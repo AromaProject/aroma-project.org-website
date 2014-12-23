@@ -1,0 +1,97 @@
+# Chip type: GenomeWideSNP_6
+
+## Genome-Wide Human SNP Array 6.0
+
+Affymetrix' press release: *Affymetrix Sets New Standard in Genotyping
+With Genome-Wide Human SNP Array 6.0*, [May 21,
+2007](http://www.corporate-ir.net/ireye/ir_site.zhtml?ticker=AFFX&script=410&layout=-6&item_id=1004567).
+
+From the press release: "The Affymetrix SNP Array 6.0 contains more than
+900,000 single nucleotide polymorphisms (SNPs) and more than 946,000
+non-polymorphic probes for the detection of copy number variation.
+[...]".
+
+The design of the 6.0 is better than 5.0.  For instance, for SNPs the
+allele A and allele B probes where not necessarily aligned in target
+sequence on the 5.0 chip, but is (again) on the 6.0 chip.
+
+The Affymetrix SNP 6.0 Array interrogates 934,946 SNPs and 946,371 CNPs
+totalling 1,878,317 loci.
+
+Enzymes Nsp and Sty are used in parallel in the assay and the amplified
+targets are mixed together at the very end.  For this reason, some of
+the probes on the array are targeting sequences that may sit on
+fragments cut by either enzymes or both.  According to Jim Veitch
+(Affymetrix, 2007-10-22): the SNP probes occur in a Nsp, Sty or Nsp+Sty
+fragment, but the CN probes occur only Nsp and Nsp+Sty fragments (not
+Sty-alone fragments).
+
+The Broad Institute has a Research News article '[A unique collaboration
+between Cambridge and Silicon
+Valley](http://www.broad.mit.edu/news/1059)' (Sept 7, 2008), which gives
+some background on how the GenomeWideSNP_5 and GenomeWideSNP_6 chip
+types were developed as part of a collaboration between Affymetrix and
+the Broad Institute.
+
+Early versions of this chip type are GenomeWideEx_6 and
+GenomeWideEx_6_v2.
+
+## GenomeWideSNP_6.Full
+
+This is the CDF file that is recommended and supported by
+aroma.affymetrix.  *Note, make sure to rename it such that you replace
+the dot with a comma.*
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("GenomeWideSNP_6", tags="Full")
+> print(cdf)
+
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/GenomeWideSNP_6
+Filename: GenomeWideSNP_6,Full.CDF
+Filesize: 470.44MB
+Chip type: GenomeWideSNP_6,Full
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 2572x2680
+Number of cells: 6892960
+Number of units: 1881415
+Cells per unit: 3.66
+Number of QC units: 4
+
+> print(getChecksum(cdf))
+[1] "3fbe0f6e7c8a346105238a3f3d10d4ec"
+```
+
+## Resources
+
+By aroma-project.org:
+
+-   <%=chipTypeData('GenomeWideSNP_6', 'GenomeWideSNP_6,Full,na33,hg19,dbSNP137,HB20140118.ufl.gz')%> (<%=chipTypeData('GenomeWideSNP_6', 'GenomeWideSNP_6,na33,hg19,dbSNP137,HB20140118.ufl.gz')%>)
+    - Unit Fragment-Length (UFL) annotation file mapping to the units in
+    the GenomeWideSNP_6.Full.CDF (GenomeWideSNP_6.CDF). Human Genome
+    build v37 (hg19). Sources: Affymetrix NetAffx CSV files
+    GenomeWideSNP_6.cn.na33.annot.csv (868MB) and
+    GenomeWideSNP_6.na33.annot.csv (1.38GB).  Created by: Henrik
+    Bengtsson, 2014-01-18.
+-   <%=chipTypeData('GenomeWideSNP_6', 'GenomeWideSNP_6,Full,na33,hg19,dbSNP137,HB20140118.ugp.gz')%> (<%=chipTypeData('GenomeWideSNP_6', 'GenomeWideSNP_6,na33,hg19,dbSNP137,HB20140118.ugp.gz')%>)
+    - Unit Genome Position (UGP) annotation file mapping to the units in
+    the GenomeWideSNP_6.Full.CDF (GenomeWideSNP_6.CDF). Human Genome
+    build v37 (hg19). Sources: Affymetrix NetAffx CSV files
+    GenomeWideSNP_6.cn.na33.annot.csv (868MB) and
+    GenomeWideSNP_6.na33.annot.csv (1.38GB). Created by: Henrik
+    Bengtsson, 2014-01-18.
+-   <%=chipTypeData('GenomeWideSNP_6', 'GenomeWideSNP_6,HB20080710.acs.gz')%> -
+    Aroma Cell Sequence (ACS) annotation file mapping cell indices to
+    25-mer sequences and target strandedness.  Sources: Affymetrix
+    probe_tab file.  Created by: Henrik Bengtsson, 2008-07-10.
+
+By Affymetrix.com:
+
+-   Product
+    page: <http://www.affymetrix.com/support/technical/byproduct.affx?product=genomewidesnp_6>
+-   [Datasheet](http://www.affymetrix.com/support/technical/datasheets/genomewide_snp5_datasheet.pdf "http://www.affymetrix.com/support/technical/datasheets/500k datasheet.pdf")
+-   Support Material: [Genome-Wide Human SNP Array 6.0 - Support
+    Materials](http://www.affymetrix.com/support/technical/byproduct.affx?product=genomewidesnp_6) (SNP
+    annotation files with SNP positions, dbSNP ID, fragment lengths etc.
+    Probe sequences.)

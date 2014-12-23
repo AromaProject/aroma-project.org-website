@@ -22,9 +22,9 @@ and because we know the sequence of the human genome we can figure out
 at what locations these cuts occur.  The result is that we end up a DNA
 cocktail consisting of a set of DNA fragments of different lengths that
 is unique to each unique enzyme.  After the enzymatic digestion,
-fragments of certain lenghts are selected using PCR techniques (so that
+fragments of certain lengths are selected using PCR techniques (so that
 they can hybridize to the oligomers on the array), e.g. fragments with
-lenghts in 400-1100 base pairs are kept and all others are dropped.  The
+lengths in 400-1100 base pairs are kept and all others are dropped.  The
 size range is specific for each assay.   Afterward this filtered enzyme
 cocktail is hybridized to the array.
 

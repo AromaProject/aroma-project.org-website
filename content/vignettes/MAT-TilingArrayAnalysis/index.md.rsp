@@ -218,7 +218,7 @@ convenient way to do this is via a contrast matrix.  Note that this is
 not a contrast matrix in the classical sense, but basically a nice
 compact way to specify how samples are summarized.
 
-Say we wanted to calculate a MAT score for 2 different possibilites:
+Say we wanted to calculate a MAT score for 2 different possibilities:
 
 1. a difference between 2 samples
 2. a difference between a group of 3 samples to a group of 2 samples.

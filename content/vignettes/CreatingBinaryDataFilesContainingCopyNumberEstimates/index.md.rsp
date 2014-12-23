@@ -221,8 +221,7 @@ print(ugp)
 ## Name: HG-CGH-244A
 ## Tags: HB20090322
 ## Full name: HG-CGH-244A,HB20090322
-## Pathnam
-## annotationData/chipTypes/HG-CGH-244A/HG-CGH-244A,HB20090322.ugp
+## Pathname: annotationData/chipTypes/HG-CGH-244A/HG-CGH-244A,HB20090322.ugp
 ## File size: 1.12 MB (1179325 bytes)
 ## RAM: 0.00 MB
 ## Number of data rows: 235829
@@ -284,7 +283,7 @@ print(t)
 ##  3362  4079 10938  1293     0
 ```
 
-If you made a mistake with Chromsomes X and Y, you will probably see
+If you made a mistake with Chromosomes X and Y, you will probably see
 zeros for those chromosomes.
 
 For further details on UGP files and examples on how to populate them,
@@ -331,8 +330,7 @@ print(df)
 ## Name: SampleA
 ## Tags: tagA,tagB,log2ratio,total
 ## Full name: SampleA,tagA,tagB,log2ratio,total
-## Pathnam
-## rawCnData/MyDataSet,tagA,tagB/HG-CGH-244A/SampleA,tagA,tagB,log2ratio,total.asb
+## Pathname: rawCnData/MyDataSet,tagA,tagB/HG-CGH-244A/SampleA,tagA,tagB,log2ratio,total.asb
 ## File size: 921.38 kB (943493 bytes)
 ## RAM: 0.00 MB
 ## Number of data rows: 235829

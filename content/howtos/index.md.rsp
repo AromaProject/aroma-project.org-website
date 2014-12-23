@@ -1,0 +1,134 @@
+# How tos
+
+## Packages
+
+-   [Install / update aroma.* packages](<%=pathTo('/install/')%>)
+
+
+
+## Directories and files
+
+-   [Access CEL files in a non-standard directory using
+    links](<%=pathTo('/howtos/how-access-cel-files-non-standard-directory')%>)
+-   [Use fullname translators to rename data
+    files](<%=pathTo('/howtos/setFullNamesTranslator')%>)
+-   Use fullname translators to rename data sets [VOLUNTEERS NEEDED]
+
+
+
+## Setting up data sets
+
+-   Setting up an AffymetrixCelSet
+-   Setting up a ChipEffectSet
+-   Setting up a SnpChipEffectSet or a CnChipEffectSet
+-   [Setting up an AromaUnitTotalCnBinarySet or an
+    AromaUnitFracBCnBinarySet](<%=pathTo('/howtos/SetupOfAromaUnitNnnCnBinarySet')%>)
+
+
+
+## Subsettings
+
+-   Extracting a sub dataset from a data set
+-   Extracting a single data file from a data set
+-   Indexing data files by their names
+-   Indexing data files by a regular expression matching their names
+
+
+
+## Calculations
+
+-   Calculate the average signals of any number of samples
+-   [Calculate total copy number ratios from from total
+    (non-polymorphic) signals](<%=pathTo('/howtos/exportTotalCnRatioSet')%>)
+
+
+
+## Export signals
+
+-   [Export total copy numbers and allele B fractions as aroma binary
+    data files](<%=pathTo('/howtos/exportTotalAndFracB')%>) [DOC IN PROGRESS]
+-   [Write total copy numbers and allele B fractions as tab-delimited
+    text files](<%=pathTo('/howtos/writeDataFrame')%>) [DOC IN PROGRESS]
+
+
+
+## Extract data as basic R objects
+
+-   [Extract probeset summaries (chip effects) as a data
+    frame](<%=pathTo('/howtos/extractDataFrame')%>)
+-   [Extract probeset summaries (chip effects) as a multi-dimensional
+    array](<%=pathTo('/howtos/extractTheta')%>)
+
+
+
+## Extract data as objects recognized by Bioconductor packages
+
+Both probe-level data and probe-summary data can be exported by aroma.*
+packages for further analysis in Bioconductor.  Note that most of *these
+methods will export data as in-memory object*, because that is how most
+of Bioconductor is designed.  For large probe-level data set this often
+means that it is not possible not export the complete data set.  For
+probe-summarized data, an order of magnitude larger data sets can be
+exported, but for really large data sets working with in-memory object
+will also become a problem.
+
+-   [Extract probe signals as an 'affy' AffyBatch
+    object](<%=pathTo('/howtos/extractAffyBatch')%>)
+-   [Extract probeset summaries (chip effects) as a 'Biobase'
+    ExpressionSet object](<%=pathTo('/howtos/extractExpressionSet')%>)
+-   [Extract probeset summaries (chip effects) as an 'oligo' SnpQSet or
+    SnpCnvQSet object](<%=pathTo('/howtos/extractSnpQSet')%>)
+-   [Use aroma.* data within Bioconductor](<%=pathTo('/howtos/using_aroma_in_bioc')%>)
+
+## Interaction with Bioconductor packages
+
+-   [Use Bioconductor data in aroma.*](<%=pathTo('/howtos/using_bioc_in_aroma')%>)
+
+
+
+## Miscellaneous
+
+-   [Migrate and reproduce an analysis
+    elsewhere](<%=pathTo('/howtos/MigrateAndReproduceAnAnalysisElsewhere')%>)
+-   [Migrating all or parts of a project to another file
+    system](<%=pathTo('/howtos/migrate_to_other_system')%>) [VOLUNTEERS NEEDED]
+-   [Run CRMA v2 on a subset of arrays in a data
+    set](<%=pathTo('/howtos/CRMAv2_on_subset_of_arrays')%>)
+-   Distributed CRMA v2 processing across multiple machines [VOLUNTEERS
+    NEEDED]
+-   [Improve processing time](<%=pathTo('/howtos/ImproveProcessingTime')%>)
+-   [Delete intermediate data files while keeping final
+    ones](<%=pathTo('/howtos/DeleteIntermediateDataFilesWhileKeepingFinalOnes')%>)
+-   [Process CEL files with mixed chip type
+    aliases](<%=pathTo('/howtos/ProcessCELFilesWithDifferentChipTypeAliases')%>)
+
+
+
+## Building custom-made annotation data
+
+### CDF (Chip Definition File)
+
+-   [Create a CDF file from scratch (or from CLF and PGF
+    files)](<%=pathTo('/howtos/create_CDF_from_scratch')%>)
+-   [Create a CDF (and associated) files from a BpMap file (tiling
+    arrays)](<%=pathTo('/howtos/bpmapCluster2Cdf')%>)
+-   [Create a CDF file from Bioconductor Platform Design (PD) Info
+    package](<%=pathTo('/howtos/createCdfFromBioconductorPlatformDesignInfo')%>)
+-   [Create a CDF file from Bioconductor CDF
+    package](<%=pathTo('/howtos/createCdfFromBioconductorCdfPackage')%>)
+
+### Aroma-specific annotation files
+
+-   [Create a Unit Genome Position (UGP) files](<%=pathTo('/howtos/CreateUGP')%>)
+-   [Create a Unit Fragment Length (UFL)
+    files](<%=pathTo('/howtos/CreateAUnitFragmentLengthFile')%>)
+-   [Create an Aroma Cell Sequence (ACS) file](<%=pathTo('/howtos/CreateAcsFile')%>)
+-   [Write annotation data as a tab-delimited text
+    file](<%=pathTo('/howtos/annotationData-writeDataFrame')%>)
+
+
+
+## MS Windows specific solutions
+
+-   [Use filenames longer than 255 characters on
+    Windows](<%=pathTo('/howtos/UseLongFilenamesOnWindows')%>)

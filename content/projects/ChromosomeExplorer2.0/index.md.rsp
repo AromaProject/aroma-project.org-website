@@ -1,0 +1,65 @@
+# Projects: ChromosomeExplorer 2.0
+
+![ChromosomeExplorer](<%=pathTo('assets/images_thumbs/ChromosomeExplorer_20070108.png')%>)
+
+Author: Henrik Bengtsson  
+Created on: 2010-03-29
+
+A ChromosomeExplorer report allows you to browse and navigate genomic
+data across samples, chromosomes and regions.  It is viewed via a web
+browser, either online or locally, and is written in HTML, CSS,
+Javascript and displays PNG images.  For examples, see [Demos](<%=pathTo('/demos/')%>).
+
+## Proposed project
+
+Update or rewrite the ChromosomeExplorer such that:
+
+-   It can display layers of images, e.g. one layer showing cytobands
+    and one showing CBS segmentation tracks on top of a layer showing
+    the full resolution data.  Other layers may be smoothed data,
+    alternative segmentation methods, highlights of regions of interest
+    and so.
+-   It works with "tiled" images, as for instance Google Maps does.
+     This will allow greater zoom levels, because browsers cannot
+    display too large images.  It will also speed up online viewing as
+    less data needs to be transferred.
+-   In addition to Firefox, it should also works with Google Chrome and
+    Internet Explorer and other common web browsers.
+
+## Requirements
+
+-   It must be super-simple to install even for beginners.
+-   As today, the ChromosomeExplorer must use standard HTML, CSS and
+    Javascript code.
+-   As today, the ChromosomeExplorer must work on all OSes that R
+    supports, especially Linux, OS X, and Windows.
+-   As today, the ChromosomeExplorer report must be functional also via
+    the file:// protocol, that is, viewable on a local file system
+    without utilizing a web server.  If not all features, at least the
+    basic features should be supported.  If there is a cross-platform
+    and light-weight web server that is easy to install in R, that may
+    also be used.
+-   As today, it should be possible to make the ChromosomeExplorer
+    report available online via simply copy the report directory to a
+    web server.
+-   As today, all code must be released as open source under a license
+    making it freely available to at least the academic community.
+
+## Things that may be useful
+
+
+
+-   The new light-weight web server that is built-in in R from R
+    v2.10.0.  Can we hook on to this one?
+-   The Tcl-based web server available in R.rsp ["The Tcl server was
+    written by Steve Uhlers, and later adopted for R by Philippe
+    Grosjean and Tom Short (Rpad package)"].
+-   As of today, part of the HTML and Javascript are generated using RSP
+    (R.rsp package), which is very similar to what the brew package is
+    doing.
+-   How far can we use Javascript packages such as jQuery, Prototype
+    etc?  Will any of these work without a web server (over the file://
+    protocol)?
+-   What can we borrow from projects such as the <% cran('lme4') %> and the
+    <% cran('ggplots2') %> web applications, cf.
+    [http://www.stat.ucla.edu/\~jeroen](http://www.stat.ucla.edu/~jeroen/)/

@@ -1,0 +1,87 @@
+# Chip types
+
+## Affymetrix chip types
+
+### DNA Copy Number and Genotyping arrays/array plates
+
+-   [ax13339](<%=pathTo('/chipTypes/ax13339')%>)
+-   [Axiom_GW_Hu_SNP](<%=pathTo('/chipTypes/Axiom_GW_Hu_SNP')%>) [not supported by
+    aroma]
+-   [CentHindAv2 & CentXbaAv2](<%=pathTo('/chipTypes/CentHindAv2_and_CentXbaAv2')%>)
+-   [Citrus_SNP](<%=pathTo('/chipTypes/Citrus_SNP')%>)
+-   [Cytogenetics_Array](<%=pathTo('/chipTypes/Cytogenetics_Array')%>)
+-   [CytoScan750K_Array](<%=pathTo('/chipTypes/CytoScan750K_Array')%>)
+-   [CytoscanHD_Array](<%=pathTo('/chipTypes/CytoScanHD_Array')%>)
+-   [DogSty06m520431](<%=pathTo('/chipTypes/DogSty06m520431')%>)
+-   [DMET_Plus](<%=pathTo('/chipTypes/DMET_Plus')%>)
+-   [GenomeWideSNP_5](<%=pathTo('/chipTypes/GenomeWideSNP_5')%>)
+-   [GenomeWideSNP_6](<%=pathTo('/chipTypes/GenomeWideSNP_6')%>)
+-   [Mapping10K_Xba131](<%=pathTo('/chipTypes/Mapping10K_Xba131')%>)
+-   [Mapping10K_Xba142](<%=pathTo('/chipTypes/Mapping10K_Xba142')%>)
+-   [Mapping50K_Hind240 &
+    Mapping50K_Xba240](<%=pathTo('/chipTypes/Mapping50K_Hind-and-Xba240')%>)
+-   [Mapping250K_Nsp &
+    Mapping250K_Sty](<%=pathTo('/chipTypes/Mapping250K_Nsp-and-Mapping250K_Sty')%>)
+-   [MOUSEDIVm520650](<%=pathTo('/chipTypes/MOUSEDIVm520650')%>)
+
+### DNA Resequencing arrays
+
+-   [Mitochip_2](<%=pathTo('/chipTypes/Mitochip_2')%>)
+-   [MitoP-1r520451](<%=pathTo('/chipTypes/MitoP-1r520451')%>)
+-   [MitoP-2r520651](<%=pathTo('/chipTypes/MitoP-2r520651')%>)
+
+### RNA Exon and Gene-level arrays/array plates
+
+-   [ATH1-121501](<%=pathTo('/chipTypes/ATH1-121501')%>)
+-   [Canine_2](<%=pathTo('/chipTypes/Canine_2')%>)
+-   [Citrus](<%=pathTo('/chipTypes/Citrus')%>)
+-   [DroGene-1_0-st-v1](<%=pathTo('/chipTypes/DroGene-1_0-st-v1')%>)
+-   hGlue2_0
+-   [HG-Focus](<%=pathTo('/chipTypes/HG-Focus')%>)
+-   [HG_U95A, HG_U95B, HG_U95C, HG_U95D, HG_U95E](<%=pathTo('/chipTypes/HG_U95ABCDE')%>)
+-   [HG_U95Av2](<%=pathTo('/chipTypes/HG_U95Av2')%>)
+-   HG-U219
+-   [HG-U133_Plus_2](<%=pathTo('/chipTypes/HG-U133_Plus_2')%>)
+-   [HG-U133A & HG-U133B](<%=pathTo('/chipTypes/HG-U133A_and_HG-U133B')%>)
+-   [HG-U133A_2](<%=pathTo('/chipTypes/HG-U133A_2')%>)
+-   HTA-2_0
+-   [HT_HG-U133A
+    & HT_HG-U133B](<%=pathTo('/chipTypes/HT_HG-U133A_and_HT_HG-U133B')%>)
+-   [HT_HG-U133_Plus_PM](<%=pathTo('/chipTypes/HT_HG-U133_Plus_PM')%>)
+-   [HT_MG-430_PM](<%=pathTo('/chipTypes/HT_MG-430_PM')%>)
+-   Hu6500 [REQUEST: More information on this chip type is needed]
+-   Hum6000 [REQUEST: More information on this chip type is needed]
+-   [HuEx-1_0-st-v2](<%=pathTo('/chipTypes/HuEx-1_0-st-v2')%>) (and HuEx-1_0-st-v1)
+-   [HuGene-1_0-st-v1](<%=pathTo('/chipTypes/HuGene-1_0-st-v1')%>)
+-   [HuGene-1_1-st-v1](<%=pathTo('/chipTypes/HuGene-1_1-st-v1')%>)
+-   HuGene-2_0-st-v1
+-   [HuGeneFL](<%=pathTo('/chipTypes/HuGeneFL')%>) (a.k.a. Hu6800)
+-   [MoEx-1_0-st-v1](<%=pathTo('/chipTypes/MoEx-1_0-st-v1')%>)
+-   [MoGene-1_0-st-v1](<%=pathTo('/chipTypes/MoGene-1_0-st-v1')%>)
+-   [MoGene-1_1-st-v1](<%=pathTo('/chipTypes/MoGene-1_1-st-v1')%>)
+-   MoGene-2_0-st-v1
+-   [Mouse430_2](<%=pathTo('/chipTypes/Mouse430_2')%>)
+-   [Mouse430A_2](<%=pathTo('/chipTypes/Mouse430_2')%>)
+-   [PrimeView](<%=pathTo('/chipTypes/PrimeView')%>)
+-   [RaEx-1_0-st-v1](<%=pathTo('/chipTypes/RaEx-1_0-st-v1')%>)
+-   [RaGene-1_0-st-v1](<%=pathTo('/chipTypes/RaGene-1_0-st-v1')%>)
+-   [Rat230_2](<%=pathTo('/chipTypes/Rat230_2')%>)
+-   [X_laevis_2](<%=pathTo('/chipTypes/X_laevis_2')%>)
+
+### microRNA Expression arrays
+
+-   [miRNA-1_0](<%=pathTo('/chipTypes/miRNA-1_0')%>)
+-   [miRNA-2_0](<%=pathTo('/chipTypes/miRNA-2_0')%>)
+-   miRNA-3_0
+-   miRNA-4_0
+
+### Tiling arrays
+
+-   [Hs_PromPR_v02](<%=pathTo('/chipTypes/Hs_PromPR_v02')%>)
+-   [Mm_PromPR_v02](<%=pathTo('/chipTypes/Mm_PromPR_v02')%>)
+-   [Dm_tiling2_MR_v01](<%=pathTo('/chipTypes/Dm_tiling2_MR_v01')%>)
+-   Sc03b_MF_v04 (S. cerevisiae)
+
+### Miscellaneous
+
+-   [Test3](<%=pathTo('/chipTypes/Test3')%>)

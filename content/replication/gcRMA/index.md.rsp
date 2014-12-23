@@ -1,4 +1,4 @@
-# Replication: gcRMA (background, normalization & summarization)
+# Replication: GCRMA (background, normalization & summarization)
 
 Author: Mark Robinson and Henrik Bengtsson  
 Created: 2009-05-17  
@@ -6,7 +6,7 @@ Last modified: 2010-02-05
 
 ## Description
 
-This test verifies that <% cran('aroma.affymetrix') %> can reproduce the gcRMA <% citep('WuZ_etal_2004-GCRMA') %> chip-effect estimates as estimated by the <% bioc('gcrma') %> package.
+This test verifies that <% cran('aroma.affymetrix') %> can reproduce the GCRMA <% citep('WuZ_etal_2004-GCRMA') %> chip-effect estimates as estimated by the <% bioc('gcrma') %> package.
 
 ## Data set
 
@@ -28,13 +28,13 @@ chip type [HG-U133_Plus_2](<%=pathTo('/chipTypes/HG-U133_Plus_2')%>).
 
 ## Script
 
-### gcRMA estimates by aroma.affymetrix
+### GCRMA estimates by aroma.affymetrix
 
 ```r
 library("aroma.affymetrix")
 cs <- AffymetrixCelSet$byName("Affymetrix-HeartBrain", chipType="HG-U133_Plus_2")
 
-# gcRMA background correction
+# GCRMA background correction
 bc <- GcRmaBackgroundCorrection(cs)
 csB <- process(bc)
 
@@ -53,7 +53,7 @@ rownames(theta) <- getUnitNames(cdf)
 theta <- log2(theta)
 ```
 
-### gcRMA estimate by gcrma
+### GCRMA estimate by gcrma
 
 ```r
 library("gcrma");  # gcrma()

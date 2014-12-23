@@ -51,5 +51,5 @@ pkg <- new("AffyGenePDInfoPkgSeed",
 makePdInfoPackage(pkg, destDir=".")
 ```
 
-Don't forget to install the PD package aferward, i.e.
+Don't forget to install the PD package afterward, i.e.
 `install.packages("pd.hugene.1.0.st.v1.tar.gz", repos=NULL)`.

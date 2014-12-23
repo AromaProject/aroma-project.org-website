@@ -178,7 +178,7 @@ directory under rawData/ is considered to be empty and hence ignored),
 and the average file will be located under the main root
 directory, although the data set itself is located under a sibling root
 directory.  If it is believed that this average file is useful to
-others, then, given the correct file privilegies, one could move the
+others, then, given the correct file privileges, one could move the
 average file to the data set directory that contains the raw data.  This
 way the same averaging will never have to be calculated again by any
 user who links to this data set directory.
@@ -195,9 +195,9 @@ updating an existing data set/data file that is already located in a
 sibling root directory.  This means that it is possible for a user to
 setup, for instance, an UGP file located under sibling root directory
 annotationData,shared/ and then update it via methods specific to this
-class of annotation files.  Protection against such misuage can be
+class of annotation files.  Protection against such misusage can be
 obtained by making sure that the user, and hence the aroma framework,
-has no write privilegies to sibling root directories.
+has no write privileges to sibling root directories.
 
 Footnote \#3: The aroma framework creates files *atomically* by first
 writing to a temporary file, which is then renamed.  Writing files

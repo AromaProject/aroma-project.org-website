@@ -1,0 +1,47 @@
+# Install
+
+## The aroma.affymetrix package
+
+To install or update aroma.affymetrix and all required and recommended
+packages, start R and do:
+
+```r
+source('http://callr.org/install#aroma.affymetrix')
+```
+
+That's it. (You can install any CRAN and Bioconductor package using this
+approach)
+
+## News/Change logs
+
+-   aroma.affymetrix
+    [NEWS](http://cran.r-project.org/web/packages/aroma.affymetrix/NEWS)
+-   aroma.cn
+    [NEWS](http://cran.r-project.org/web/packages/aroma.cn/NEWS)
+-   aroma.core
+    [NEWS](http://cran.r-project.org/web/packages/aroma.core/NEWS)
+-   aroma.light
+    [NEWS](http://bioconductor.org/packages/release/bioc/news/aroma.light/NEWS)
+-   R.filesets
+    [NEWS](http://cran.r-project.org/web/packages/R.filesets/NEWS)
+-   PSCBS [NEWS](http://cran.r-project.org/web/packages/PSCBS/NEWS)
+-   affxparser
+    [NEWS](http://bioconductor.org/packages/release/bioc/news/affxparser/NEWS)
+-   aroma - Are you looking for the original aroma package that
+    processes spotted microarrays? Then please see its
+    [installation](<%=pathTo('/packages/aroma/')%>) instructions.
+
+## Requirements
+
+-   Software: [R](http://www.r-project.org/)
+-   Operating system: Linux, OS X, Windows, ... (any that runs R)
+-   Memory: Minimum 500MB of RAM. Recommended \>1Gb.
+-   Disk space: Roughly 3-5 times the total size of your raw data files.
+
+## License
+
+Unless stated otherwise, the aroma.* and R.* packages are distributed
+under the [LGPL v2.1](http://www.gnu.org/licenses/lgpl-2.1.html)
+license, and the documentation on this site is published under the [GFPL
+v1.3](http://www.gnu.org/copyleft/fdl.html) license. Copyright holder is
+Henrik Bengtsson and/or the original author of the artifact.

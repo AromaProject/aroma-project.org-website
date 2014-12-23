@@ -136,7 +136,7 @@ compatibility is not guaranteed.
 The SAF file format is a text-based file format that is specific to
 aroma.affymetrix.  A SAF file contains one or more records, where each
 record specify additional attributes for a unique sample, e.g. the
-gender or equivalently the ploid of ChrX and ChrY.  Here is what the SAF
+gender or equivalently the ploidy of ChrX and ChrY.  Here is what the SAF
 record for HapMap sample NA06991 looks like:
 ```
 name: NA06991  
@@ -189,7 +189,7 @@ Important: It is never the 'gender' attribute that is used to infer the
 ploidy on ChrX and ChrY.  The reason for this is that genders "male" and
 "female" does not uniquely specify the number of X and Y chromosomes,
 e.g. a female may have XXX or XXY and so on.  This is a good reason for
-not talking about "gender" when refering to sex-chromosome ploidy.
+not talking about "gender" when referring to sex-chromosome ploidy.
 
 
 ### Brief about the 'tags' attribute
@@ -205,7 +205,7 @@ attribute of a SAF record can be used to add tags that are not specified
 by the filename itself and override (but never remove) existing ones.
 In other words, if the filename would be 'NA06991,XXXY.CEL', the 'tags'
 attribute (='XX') in the SAF record would override the 'XXXY' of the
-filename, and the inferred ploidies would be n23=2 and n24=0.
+filename, and the inferred ploidy would be n23=2 and n24=0.
 
 To be more explicit, one may specify the 'tags' attribute as 'tags:
 n23=2, n24=0' instead of 'tags: XX'.  This format also allows us to
@@ -372,7 +372,7 @@ ceRef <- calculateBaseline(cesN, chromosomes=1:23, ploidy=2,
 print(ceRef)
 ```
 
-## Segmentation using the above copy-netural reference
+## Segmentation using the above copy-neutral reference
 
 ```r
 cbs <- CbsModel(cesN, ceRef)

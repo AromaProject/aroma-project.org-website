@@ -1,0 +1,56 @@
+# Troubleshooting: Setup of directory structures
+
+Author: Henrik Bengtsson  
+Created on: 2010-08-05
+
+Last updated on: 2011-02-04
+
+## annotationData/
+
+To assert that you have the correct directory structure for
+your annotation data, run the below script.  If there is an error in
+your structure, then the error message will tell you so and where it is
+incorrect.
+
+```
+library("R.utils")
+
+# For all aroma setups
+pathAC <- Arguments$getReadablePath("annotationData/chipTypes/", mustExist=TRUE)
+
+# Specific to your chip type
+chipType <- "HuEx-1_0-st-v2,Ensembl,exon"
+chipTypeS <- gsub(",.*", "", chipType)
+path <- Arguments$getReadablePath(chipTypeS, path=pathAC, mustExist=TRUE)
+
+# Check that the annotation files are there
+print(list.files(path=path));
+```
+
+
+
+## rawData/
+
+To assert that you have the correct directory structure for your raw
+data, run the below script.  If there is an error in your structure,
+then the error message will tell you so and where it is incorrect.
+
+```
+library("R.utils")
+
+```r
+# For all aroma setups
+pathR <- Arguments$getReadablePath("rawData/", mustExist=TRUE)
+
+# Specific to your data set and chip type
+dataSet <- "Affymetrix-HeartBrain"
+pathD <- Arguments$getReadablePath(dataSet, path=pathR, mustExist=TRUE)
+
+chipType <- "HuEx-1_0-st-v2,Ensembl,exon"
+chipTypeS <- gsub(",.*", "", chipType)
+pathDC <- Arguments$getReadablePath(chipTypeS, path=pathD, mustExist=TRUE)
+```
+
+# Check that the data files are there
+print(list.files(path=pathDC))
+```

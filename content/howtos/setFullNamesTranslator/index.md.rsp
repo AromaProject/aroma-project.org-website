@@ -6,7 +6,7 @@ that it is the first part NA07000 that is the sample name and the rest
 are tags?  I do not want to rename my CEL files.
 
 A: You can use custom translator functions to parse and translate the
-default fullnames into fullnames of your choise.  For example, assume
+default fullnames into fullnames of your choice.  For example, assume
 you have the following data set:
 
 ```r

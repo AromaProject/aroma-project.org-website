@@ -11,9 +11,9 @@ series of steps (not all of which are in Perl).
 
 An example of steps for Ensembl CDF for the exon array:
 
-1.  Download the Ensembl Annotation with BiomaRt and use it to map the
-    Affymetrix **probesets** (exons) to the gene boundaries in Ensembl
-    using
+1.  Download the Ensembl Annotation with <% bioc('biomaRt') %> and use it
+    to map the Affymetrix **probesets** (exons) to the gene boundaries in
+	Ensembl using
     [annotateProbesets.R](<%=pathTo('/share/scripts/third-party/archive/20090212/annotateProbesets.R')%>)
 2.  Make single file of all probes and their mapping with
     [convertProbesetCSV_differentInput.pl](<%=pathTo('/share/scripts/third-party/archive/20090212/convertProbesetCSV_differentInput.pl')%>)
@@ -21,7 +21,8 @@ An example of steps for Ensembl CDF for the exon array:
 3.  Create CDF with
     [flat2Cdf.R](<%=pathTo('/share/scripts/third-party/archive/20090624/flat2Cdf.R')%>)
 
-To filter, see example below
+To filter, see example below.
+
 
 ## Make CDF (Main File)
 
@@ -201,7 +202,7 @@ assigned to genes based on the inputted `exonBoundariesFile`.)
 7.  `overlapCutoff > 1` means there is absolutely no merging of genes, even
     if 100% equivalent (note: error is returned if `overlapType` returns
     \> 1)
-8.  The merged gene has a name that is the concatination of the names of
+8.  The merged gene has a name that is the concatenation of the names of
     the genes in the set: "Gene1.Gene2.Gene3" etc.
 
 Example Usage:

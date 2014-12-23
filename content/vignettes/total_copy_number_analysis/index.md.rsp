@@ -220,7 +220,7 @@ First of all, it is important to understand that the above code *does
 not* calibrate the data set, but instead it sets up the method for doing
 so.  We will do that in the next step.  But first note how tags
 'ACC,ra,-XY' are appended to the data set name.  The 'ACC' tag indicates
-Allelic-Crosstalk Calibration, the 'ra' tags indicates that afterwards
+Allelic-Crosstalk Calibration, the 'ra' tags indicates that afterward
 all values are rescaled together ("rescale all"), and the tag '-XY'
 indicates that units on ChrX & ChrY are excluded from the *model fit*
 (estimate of the calibration parameters).  This is the default behavior
@@ -262,7 +262,7 @@ For the SNP & CN chip types all probes are technical replicates, why it
 makes little sense to model probe affinities (because all probes within
 a probeset should have identical affinities).  Without probe affinities,
 the model basically becomes a single-array model.  Thus, probe-level
-summarization for these newer chip types is effectly done for each array
+summarization for these newer chip types is effectively done for each array
 independently (although the implementation processing the data
 in multi-chip fashion).  For total copy number analysis ignoring strand
 information, probe signals for SNPs are averaged across replicates and

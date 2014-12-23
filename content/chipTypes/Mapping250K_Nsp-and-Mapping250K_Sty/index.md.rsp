@@ -1,0 +1,67 @@
+# Chip types: Mapping250K_Nsp & Mapping250K_Sty
+
+Affymetrix press release: *New Affymetrix Microarray Set Genotypes More
+Than 500,000 SNPs in a Single Experiment; GeneChip Human Mapping 500K
+Array Set Enables Researchers to Perform Highly Detailed Whole-Genome
+Association Studies for the First Time*, [Sept 28,
+2005](http://findarticles.com/p/articles/mi_m0EIN/is_2005_Sept_28/ai_n15636144).
+
+The so called 500K SNP chip set, which consists of two chip types
+*Mapping250K_Nsp* and *Mapping250K_Sty, interrogates 500,568
+(=262264+238304) SNPs*.  The SNPs were select based their technical
+performance, not based on linkage disequilibrium (LD).
+
+## Mapping250K_Nsp
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("Mapping250K_Nsp")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/Mapping250K_Nsp
+Filename: Mapping250K_Nsp.cdf
+Filesize: 185.45MB
+Chip type: Mapping250K_Nsp
+Dimension: 2560x2560
+Number of cells: 6553600
+Number of units: 262338
+Cells per unit: 24.98Number of QC units: 6
+```
+
+## Mapping250K_Sty
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("Mapping250K_Sty")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/Mapping250K_Sty
+Filename: Mapping250K_Sty.cdf
+Filesize: 175.83MB
+Chip type: Mapping250K_Sty
+Dimension: 2560x2560
+Number of cells: 6553600
+Number of units: 238378
+Cells per unit: 27.49
+Number of QC units: 6
+```
+
+
+
+## Resources
+
+By aroma-project.org:
+
+-   UFL: <%=chipTypeData('Mapping250K_Nsp', 'Mapping250K_Nsp,na31,HB20101007.ufl.gz')%> & <%=chipTypeData('Mapping250K_Sty', 'Mapping250K_Sty,na31,HB20101007.ufl.gz')%>  
+    Scripts: <%=chipTypeData('Mapping250K_Nsp', 'scripts/Mapping250K_Nsp,UFL,na26.R')%>, <%=chipTypeData('Mapping250K_Sty', 'scripts/Mapping250K_Sty,UFL,na26.R')%>.
+-   UGP: <%=chipTypeData('Mapping250K_Nsp', 'Mapping250K_Nsp,na31,HB20101007.ugp.gz')%> & <%=chipTypeData('Mapping250K_Sty', 'Mapping250K_Sty,na31,HB20101007.ugp.gz')%>  
+    Scripts: <%=chipTypeData('Mapping250K_Nsp', 'scripts/Mapping250K_Nsp,UGP,na26.R')%>, <%=chipTypeData('Mapping250K_Sty', 'scripts/Mapping250K_Sty,UGP,na26.R')%>.
+-   ACS: <%=chipTypeData('Mapping250K_Nsp', 'Mapping250K_Nsp,HB20080710.acs.gz')%> & <%=chipTypeData('Mapping250K_Sty', 'Mapping250K_Sty,HB20080710.acs.gz')%>
+
+Affymetrix.com:
+
+-   Product page: GeneChip Human Mapping 500K Array Set
+-   [Datasheet](http://www.affymetrix.com/support/technical/datasheets/500k_datasheet.pdf)
+-   [Support Materials](http://www.affymetrix.com/support/technical/byproduct.affx?product=500k) (SNP annotation files with SNP positions, dbSNP ID, fragment lengths etc. Probe sequences.)
+
+dChip.org:
+
+-   dChip data files: [genome information file](http://www.hsph.harvard.edu/cli/complab/dchip/snp.htm#genome_info)

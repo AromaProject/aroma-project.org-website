@@ -293,7 +293,7 @@ dimnames(calls) <- NULL
 ```r
 count <- 0
 for (cc in 1:ncol(calls)) {
-  idxs <- whichVector(calls[,cc] != calls0[,cc])
+  idxs <- which(calls[,cc] != calls0[,cc])
   count <- count + length(idxs)
   printf("%s: ", getNames(callSet)[cc])
   if (length(idxs) > 0) {
@@ -321,7 +321,7 @@ homozygote.
 printf("Averages number of discrepancies per array: %.1f\n", count/ncol(calls))
 ```
 
-Averages number of discrepances per array: 2.7
+Averages number of discrepancies per array: 2.7
 
 ```r
 errorRate <- count/length(calls)

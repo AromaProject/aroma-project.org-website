@@ -1,0 +1,60 @@
+# Chip type: MOUSEDIVm520650
+
+## Affymetrix Mouse Diversity Genotyping Array
+
+"The Affymetrix Mouse Diversity Genotyping Array enables researchers to
+accurately characterize a broad range of mouse strains and their crosses
+and uncover genetic changes in mouse models of disease.  With more than
+120 times the number of SNPs of competing products, and an average of
+4.3 kilobases (kb) between SNPs, the Mouse Diversity Genotyping Array
+has greater density and distribution than any other publicly available
+mouse SNP array."
+
+### MOUSEDIVm520650
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("MOUSEDIVm520650")
+> cdf
+
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/MOUSEDIVm520650
+Filename: MOUSEDIVm520650.CDF
+Filesize: 637.40MB
+Chip type: MOUSEDIVm520650
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 2572x2680
+Number of cells: 6892960
+Number of units: 2458697
+Cells per unit: 2.80
+Number of QC units: 4
+```
+
+
+## Resources
+
+By aroma-project.org:
+
+-   <%=chipTypeData('MOUSEDIVm520650', 'MOUSEDIVm520650,na30,mm9,HB20100603.ufl.gz')%>
+    - Unit Fragment-Length (UFL) annotation file mapping to the units in
+    the MOUSEDIVm520650.CDF. Mouse (Mus musculus) Genome build mm9.
+    Sources: Affymetrix NetAffx CSV files
+    MOUSEDIVm520650.cn.na30.annot.csv (795MB) and
+    MOUSEDIVm520650.na30.annot.csv (358MB).  Created by: Henrik
+    Bengtsson, 2010-06-03.
+-   <%=chipTypeData('MOUSEDIVm520650', 'MOUSEDIVm520650,na30,mm9,HB20100603.ugp.gz')%>
+    - Unit Genome Position (UGP) annotation file mapping to the units in
+    the MOUSEDIVm520650.CDF. Mouse (Mus musculus) Genome build mm9.
+    Sources: Affymetrix NetAffx CSV files
+    MOUSEDIVm520650.cn.na30.annot.csv (795MB) and
+    MOUSEDIVm520650.na30.annot.csv (358MB).  Created by: Henrik
+    Bengtsson, 2010-06-03.
+-   <%=chipTypeData('MOUSEDIVm520650', 'MOUSEDIVm520650,HB20100530.acs.gz')%> -
+    Aroma Cell Sequence (ACS) annotation file mapping cell indices to
+    25-mer sequences and target strandedness.  Sources: Two Affymetrix
+    probe_tab files.  Created by: Henrik Bengtsson, 2010-05-30.
+
+By Affymetrix.com:
+
+-   Product page: <http://www.affymetrix.com/browse/products.jsp?navMode=34000&productId=prod100002>
+-   Data set: Affymetrix example data set (see Product Page).

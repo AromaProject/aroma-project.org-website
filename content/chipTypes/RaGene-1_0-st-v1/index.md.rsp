@@ -6,7 +6,7 @@
 
 *Note, the CDF downloaded from the Affymetrix website is in an ASCII
 (text) file format.  It is highly recommended to work with binary CDFs
-instead since they are orders of magnitute faster to query and more
+instead since they are orders of magnitude faster to query and more
 memory efficient to work with.  Use `convertCdf()` in the
 <% bioc('affxparser') %> package to convert an ASCII CDF into binary.*
 

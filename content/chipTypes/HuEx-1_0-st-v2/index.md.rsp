@@ -45,8 +45,8 @@ the CDFs below which do not contain them should be used.
 
 Note I: The CDF downloaded from the Affymetrix website is in an ASCII
 (text) file format.  It is highly recommended to work with  binary CDFs
-instead since they are orders of magnitute faster to query and more
-memory efficient to work with.  Use convertCdf() in the affxparser
+instead since they are orders of magnitude faster to query and more
+memory efficient to work with.  Use `convertCdf()` in the affxparser
 package to convert an ASCII CDF into binary.
 
 Note II: Older CEL files for this chip type, may be reported to have
@@ -74,7 +74,7 @@ By aroma-project.org:
 
 -   <%=chipTypeData('HuEx-1_0-st-v2', 'HuEx-1_0-st-v2,HB20080710.acs.gz')%>
     - Aroma Cell Sequence (ACS) annotation file mapping cell indices to
-    25-mer sequences and target strandness.  Sources: Affymetrix
+    25-mer sequences and target strandedness.  Sources: Affymetrix
     HuEx-1_0-st-v2.probe.tab file.  Created by: Henrik Bengtsson,
     2008-07-10.
 -   <%=chipTypeData('HuEx-1_0-st-v2', 'HuEx-1_0-st-v2.cdf.gz')%> -

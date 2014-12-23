@@ -147,7 +147,7 @@ print(si)
 ## RAM: 0.00MB  
 ## Chip type: Mapping50K_Hind240
 
-si <- DChipGenomeInformation$fromChipType("Mapping50K_Hind240")
+si <- DChipGenomeInformation$byChipType("Mapping50K_Hind240")
 print(si)
 
 ## DChipGenomeInformation:

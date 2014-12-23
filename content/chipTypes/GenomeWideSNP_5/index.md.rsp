@@ -46,7 +46,7 @@ available for downstream analysis. GenomeWideSNP_5.cdf is the default
 set of 440,794 SNPs that are accessible via the Genotyping Console
 (BRLMM-P algorithm).  GenomeWideSNP_5.Full.cdf is for advanced users
 who wish to look at all SNPs from the previous-generation Mapping 500K
-Array Set. This CDF file can only be accessed from the commandline tool,
+Array Set. This CDF file can only be accessed from the command-line tool,
 snp5-probeset-genotype, which is part of the Affymetrix Power Tools
 distribution. The full CDF file includes SNPs that may have lower
 per-SNP accuracy or call rates. It is expected that the performance of

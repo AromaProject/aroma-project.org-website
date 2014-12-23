@@ -1,0 +1,65 @@
+# Chip type: Cytogenetics_Array
+
+## Cytogenetics_Array (Whole-Genome 2.7M Array; CYTO2)
+
+From the Affymetrix press release 'New Cytogenetics Products Offer Best
+Overall Approach for Detection of Chromosome Aberrations' ([March 25,
+2009](http://www.businesswire.com/portal/site/google/?ndmViewId=news_view&newsId=20090325005265&newsLang=en)):
+"The [two] Affymetrix Cytogenetics (i) Whole-Genome 2.7M Array and (ii)
+Cytogenetics Focused Array include copy number (CN) and single
+nucleotide polymorphism (SNP) content to identify loss of heterozygosity
+(LOH), uniparental disomy (UPD), and regions identical-by-descent. [...]
+The (i) Whole-Genome 2.7M Array [...] provides 2.7 million markers,
+including 400,000 SNPs, to offer superior resolution and enable
+detection of even the smallest structural changes and regions of
+autozygosity. The (ii) Focused Array includes more than 330,000 markers
+to enable efficient detection of aberrations within focused regions of
+known cytogenetic importance. At the same time, it maintains a backbone
+of markers at 16 kb spacing to provide whole-genome coverage."
+
+### Cytogenetics_Array
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("Cytogenetics_Array")
+> print(cdf)
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/Cytogenetics_Array
+Filename: Cytogenetics_Array.CDF
+Filesize: 538.32MB
+Chip type: Cytogenetics_Array
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 2015x2015
+Number of cells: 4060225
+Number of units: 2795708
+Cells per unit: 1.45
+Number of QC units: 4
+```
+
+There are 400,103 SNPs and 2,394,920 CN units in this CDF.  267,197 SNPs
+have only one probe pair, 104,264 SNPs have two probe pairs and 10,786
+have three.  There are also a small number of SNPs with more probe
+pairs.  2,377,527 of the CN units are single CN probes (as in GWS5 and
+GWS6).  In addition to this, there are 1,775 CN units with two probes,
+5,618 with 3 probes, 1,496 with 7 probes, and 8,504 with 8 probes.
+
+By aroma-project.org:
+
+#### 2009-05-19:
+
+-   <%=chipTypeData('Cytogenetics_Array', 'Cytogenetics_Array,na28,HB20090519.ugp.gz')%>
+    - Unit Genome Position (UGP) annotation file. Human Genome build
+    v36. Sources: Affymetrix NetAffx CSV files
+    Cytogenetics_Array.na28.annot.csv (141Mb) and
+    Cytogenetics_Array.cn.na28.annot.csv (852Mb). Created by: Henrik
+    Bengtsson, 2009-05-19.
+-   To the best of my understanding, the assay does not use restriction
+    enzymes.  Hence, no fragment-length annotation files.
+-   This chip types has probe sequences of variable lengths in the range
+    of 38 to 50-mers.  The aroma.affymetrix package does not support
+    variable length probe sequences at this stage.
+
+Affymetrix:
+
+-   [Product
+    page](http://www.affymetrix.com/products_services/arrays/specific/cytogenetics_solution.affx)

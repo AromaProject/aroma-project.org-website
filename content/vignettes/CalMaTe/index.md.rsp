@@ -379,7 +379,7 @@ _Figure 3: betaT vs betaN in a region of homozygous deletion (0,1) between 16 an
 _Figure 4: betaT vs betaN in a region of gain (1,2) after 45 Mb on Chromosome 8.  Preprocessing methods used: ASCRMA v2 (top left), ASCRMA v2 + CalMaTe (top right), ASCRMA v2 + TumorBoost (bottom left), ASCRMA v2 + CalMaTe + TumorBoost (bottom right)._
 
 
-Note: when comparing signals from TumorBooste to CalMaTe, it is useful
+Note: when comparing signals from TumorBoost to CalMaTe, it is useful
 to keep in mind that **TumorBoost does not normalize the normal
 sample**, whereas CalMaTe calibrates all samples regardless of their
 types.  This means that only the y axes are comparable across the 4
