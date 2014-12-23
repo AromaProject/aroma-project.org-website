@@ -11,7 +11,7 @@ URL: <http://www.bioconductor.org/>
 
 ### Affymetrix: Affymetrix Scientific Community Forums
 
-URL:[ https://www.affymetrix.com/community/forums/index.jspa](https://www.affymetrix.com/community/forums/index.jspa)
+URL: <https://www.affymetrix.com/community/forums/index.jspa>
 
 ### dChip: Microarray Data Analysis Forums - Microarray data analysis using dChip and ComBat
 
@@ -26,12 +26,10 @@ URL: <https://groups.google.com/group/reproducible-research>
 
 ## Other software tools
 
--   [Tools for processing Affymetrix data](<%=pathTo('/external/ToolsForAffymetrix')%>)
+- [Tools for processing Affymetrix data](<%=pathTo('/external/ToolsForAffymetrix')%>)
 
 
 
 ## File formats
 
--   [Affymetrix Data
-    Files](http://www.affymetrix.com/support/developer/powertools/changelog/gcos-agcc/index.html),
-    Affymetrix Developers Network.
+- [Affymetrix Data Files](http://www.affymetrix.com/support/developer/powertools/changelog/gcos-agcc/index.html), Affymetrix Developers Network.
