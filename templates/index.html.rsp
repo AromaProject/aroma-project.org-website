@@ -95,24 +95,6 @@
 <%@ifdef name="footer_tail"%>
   <%@string name="footer_tail"%><%@string footer_tail=""%>
 <%@endif%>
-<script>
-  $(document).ready(function(){
-    var oldpage = $('#oldpage');
-    if (oldpage.length > 0) {
-      var extras = '';
-      var uri = $(location).attr('href');
-
-      var url = uri.replace('alpha.', 'v1.');
-      url = url.replace('www.', 'v1.');
-      extras = extras + '<a href="'+url+'">old page</a>';
-
-      url = 'http://validator.w3.org/check?uri=' + uri + ';st=1;outline=1;verbose=1;group=1'
-      extras = extras + ', <a href="'+url+'">validate HTML</a>';
-
-      oldpage.html('(Devel tools: ' + extras + ')');
-    }
-  });
-</script>
 <%@include file="google-analytics.html.rsp"%>
 </body>
 </html>
