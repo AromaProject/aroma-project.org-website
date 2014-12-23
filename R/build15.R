@@ -84,6 +84,8 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
       mcat("HTML + template -> HTML...\n")
       args$body <- body
       args$charset <- charset
+      args$editURL <- file.path("https://github.com/AromaProject/aroma.project.org-website/tree/master/content", file, fsep="/")
+      args$url.path <- sprintf("%s/", gsub("html/", "", pathD))
       mcat("RSP arguments:\n")
       mstr(args)
 
