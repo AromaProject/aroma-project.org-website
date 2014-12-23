@@ -1,10 +1,11 @@
 <%@include file="config.rsp"%>
 <%@ifeq page=""%>
-<%@string short_title="${site_acronym}"%>
-<%@string full_title="${site_name}"%>
+  <%@string short_title="${site_acronym}"%>
+  <%@string short_title="${site_name}"%>
+  <%@string full_title="${site_name}"%>
 <%@else%>
-<%@string short_title="${site_acronym}: ${page}"%>
-<%@string full_title="${site_name} (${site_acronym}): ${page}"%>
+  <%@string short_title="${site_acronym}: ${page}"%>
+  <%@string full_title="${site_name} (${site_acronym}): ${page}"%>
 <%@endif%>
 <%@meta title="${short_title}"%>
 <!DOCTYPE html>
