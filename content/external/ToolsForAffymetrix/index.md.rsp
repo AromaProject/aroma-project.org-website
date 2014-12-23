@@ -1,0 +1,706 @@
+# Tools for processing Affymetrix data
+
+## ABSOLUTE & HAPSEG
+
+Authors: Scott Carter et al. (Broad Institute)  
+What: "When DNA is extracted from an admixed population of cancer and
+normal cells, the information on absolute copy number per cancer cell is
+lost in the mixing.  The purpose of ABSOLUTE is to re-extract these data
+from the mixed DNA population.  This process begins by generation of
+segmented copy number data, which is input to the ABSOLUTE algorithm
+together with pre-computed models of recurrent cancer karyotypes and,
+optionally, allelic fraction values for somatic point mutations.  The
+output of ABSOLUTE then provides re-extracted information on the
+absolute cellular copy number of local DNA segments and, for point
+mutations, the number of mutated alleles."  
+Chip types: Affymetrix Mapping250K_Sty and GenowideSNP_6.  
+Operating system: R (access requires formal request)  
+URL: <http://www.broadinstitute.org/cancer/cga/ABSOLUTE>
+
+## Affymetrix APT (Affymetrix Power Tools) software package
+
+Authors: Affymetrix  
+ What: A set of cross-Operating system command line programs that
+implement algorithms for analyzing and working with Affymetrix GeneChip
+arrays.  
+ Chip types: Multiple chip types, not only SNP arrays.  
+ Operating system: Linux, Mac OS X, Windows, Sun OS, ...  
+ URL1:
+<https://www.affymetrix.com/support/technical/product_updates/brlmm_algorithm.affx>  
+ URL2:
+<http://www.affymetrix.com/support/developer/powertools/changelog/>  
+ See also: Affymetrix  
+ BRLMM Analysis Tool (BAT) 2.0, which is a GUI for Windows.
+
+## Affymetrix Chromosome Analysis Suite (ChAS)
+
+Authors: Affymetrix  
+What: "Our entirely new Affymetrix Chromosome Analysis Suite (ChAS)
+software, designed specifically for cytogenetic researchers, gives you
+the exact functions you need within an easy-to-use graphical interface.
+[...]"  
+Chip types: SNP and CN arrays.  
+Operating system: Windows (only?)  
+URL: <http://www.affymetrix.com/estore/browse/level_seven_software_products_only.jsp?categoryIdClicked=&productId=131408>
+
+## Affymetrix CNAT v4.0
+
+What: Copy-number analysis  
+ Chip types: 10K, 100K, 500K.  
+ Operating system: Windows, Unix  
+ URL:
+<http://www.affymetrix.com/support/developer/tools/devnettools.affx> ("copy
+number pipeline", command line)  
+URL:
+<http://www.affymetrix.com/products/software/specific/cnat.affx> (Windows
+GUI)  
+ References: *Copy Number and Loss of Heterozygosity Estimation
+Algorithms for the GeneChip Human Mapping Array Sets*, Whitepaper,
+Affymetrix, 2006.  
+ See also: H. Bengtsson, [HB's Guide to CNAT
+v4.0](http://docs.google.com/Doc?id=dddzqd53_14txntqs), 2007.
+
+## Affymetrix GTC (Affymetrix Genotyping Console Software)
+
+Authors: Affymetrix  
+ What: Genotyping analysis software package designed to streamline
+quality control, genotyping analysis, and copy-number analysis & LOH.
+No CN-analysis for GWS5.  At least CN/LOH is hardwired to the default
+CDFs, that is, the "full" CDFs wont do/make any difference (private
+communication with Affymetrix, 2007-12-18).  
+ Chip types: Mapping50K_{Hind|Xba}240, Mapping250K_{Nsp|Sty},
+GenomeWideSNP_5, GenomeWideSNP_6.  
+ Operating system: Windows  
+ URL:
+<http://www.affymetrix.com/products_services/software/specific/genotyping_console_software.affx>
+
+## Affymetrix IGB (Integrated Genome Browser)
+
+Authors: Affymetrix  
+ What: An open-source click'n'run Java genome browser.  
+ Operating system: Java  
+ URL:
+<http://www.affymetrix.com/support/developer/tools/download_igb.affx>  
+ URL: <http://genoviz.sourceforge.net/>
+
+## ArrayInitiative
+
+What: "A tool that simplifies creating custom Affymetrix CDFs"  
+Operating system: Any (Python)  
+URL: <http://wellerlab.uncc.edu/ArrayInitiative/>
+
+## ASCAT (Allele-Specific Copy number Analysis of Tumors) & ASPCF
+
+Authors: P. van Loo, S. Nordgard et al.  
+What: "Software for segmentation and allele-specific copy number
+estimation for SNP array data."  
+Chip types: SNP & CN microarrays.  
+Operating system: MATLAB and R.  The bivariate segmentation method ASPCF
+is implemented in MATLAB and the ASCN estimation method ASCAT in R.  
+URL: <http://heim.ifi.uio.no/bioinf/Projects/ASCAT/>
+
+## AffyProbeMiner
+
+Authors: Multiple - LMP, NCI, NIH, Georgetown University.  
+ What: Generates *Custom CDFs*.  A service to "1) generate a collection
+of complete coding sequences composed of a) RefSeq records with
+accessions starting with "NM_" (*e.g.* NM_012345), b) validated
+complete coding sequences in GenBank, and 2) regroup probes in
+AffyMetrix chips into probe sets, where the probes in a probe set map to
+a consistent set of complete coding sequences [at the] gene-level
+[and/or] the transcript-level".  
+ Chip types: Several, but not all.  
+ Operating system: Cross operating system (online)  
+ URL: <http://gauss.dbb.georgetown.edu/liblab/affyprobeminer/>
+
+## ArrayInitiative
+
+Authors: C. Overall et al., University of North Carolina at Charlotte.  
+What: "A Generic Tool for Creating Custom Affymetrix CDFs".  
+Operating system: Python.  
+URL: <http://wellerlab.uncc.edu/ArrayInitiative/>
+
+## Bioconductor packages
+
+Description: "Available Bioconductor Software for Processing
+Oligonucleotide Arrays"  
+ URL: <http://bioconductor.org/docs/workflows/oligoarrays/>
+
+## Birdsuite
+
+Description: "The Birdsuite is a fully open-source set of tools to
+detect and report SNP genotypes, common Copy-Number Variants (CNVs), and
+rare/*de novo* CNVs in samples processed with the Affymetrix Operating
+system. While most of the components of the suite can be run
+individually (for instance, to simply do SNP genotyping), the Birdsuite
+is especially intended for integrated analysis of SNPs and CNVs."  
+ Authors: Joshua Korn et al. (Broad Institute, MIT, ...)  
+ Chip types: GenomeWideSNP_5 and GenomeWideSNP_6.  
+ Operating system: Linux  
+ URL: <http://www.broad.mit.edu/mpg/birdsuite/>
+
+## CGB (The Cancer Genome Browser)
+
+Description: "The Cancer Genome Browser is a tool that allows the
+visualization and analysis of high throughput data generated by large
+initiatives, such as the The Cancer Genome Atlas project."  
+ Authors:  
+ Operating system: cross platform (MATLAB)  
+ URL: <http://code.google.com/p/cancergenome/>  
+ References:
+
+## CisGenome
+
+Description: "An integrated tool for tiling array, ChIP-seq, genome and
+cis-regulatory element analysis."  
+Authors:  
+Operating system: Windows, OSX and Linux.  
+URL: <http://www.biostat.jhsph.edu/~hji/cisgenome/>
+
+## CMDS (Correlation Matrix Diagonal Segmentation)
+
+Authors: Zhang et al.  
+ What: A Fast Genome-wide Approach for Identifying Recurrent DNA Copy
+Number Alterationsacross Cancer Patients.  
+ Operating system: R (scripts; mail authors)  
+ URL: <https://dsgweb.wustl.edu/qunyuan/software/cmds/>  
+References: Zhang, Q.; Ding, L.; Larson, D. E.; Koboldt, D. C.;
+McLellan, M. D.; Chen, K.; Shi, X.; Kraja, A.; Mardis, E. R.; Wilson, R.
+K.; Boreki, I. B. & Province, M. A. CMDS: a population-based method for
+identifying recurrent DNA copy number aberrations in cancer from
+high-resolution data. Bioinformatics, 2009.  
+Poster: Qunyuan Zhang, Li Ding, Aldi Kraja, Ingrid Boreki, Michael A.
+Province, *Correlation Matrix Diagonal Segmentation (CMDS) - A Fast
+Genome-wide Approach for Identifying Recurrent DNA Copy Number
+Alterations across Cancer Patients*, IGES (International Genetic
+Epidemiology Society), Sept. 2008, St. Louis, US.
+[[ppt](https://dsgweb.wustl.edu/qunyuan/presentations/IGES2008_CMDS_poster.ppt)]
+
+## CNAG
+
+Authors: Seishi Ogawa Group, University of TokyoWhat: Copy-number
+analysis  
+ Chip types: 100K, 500K.  
+ Operating system: Windows  
+ URL: <http://www.genome.umin.jp/>  
+ References: *CancerRes*; 65(14), 6071-79 (2005).  
+ See also: H. Bengtsson, [HB's Guide to CNAG
+v2](http://docs.google.com/Doc?docid=dddzqd53_17r2zdbq), 2007.
+
+## dChip (dChipSNP)
+
+Authors: Cheng Li Group, DFCI and HSPH  
+ What: Expression analysis, copy-number analysis, ...  
+ Chip types: Several.  For SNP & CN analysis: 10K, 100K, 500K, 5.0,
+6.0.  
+ Operating system: Windows  
+ URL: <http://www.dchip.org/>  
+References: (1) C. Li and W. Wong Model-based analysis of
+oligonucleotide arrays: Expression index computation and outlier
+detection, Proc. Natl. Acad. Sci, 2001, Vol. 98, 31-36.  (2) M. Lin et
+al. dChipSNP: significance curve and clustering of SNP-array-based
+loss-of-heterozygosity data, Bioinformatics, 2004, 20, 1233-40.  (3) C.
+Li et al., Major copy proportion analysis of tumor samples using SNP
+arrays. BMC Bioinformatics, 2008, 9:204.  
+See also: H. Bengtsson, [HB's Guide to
+dChip](http://docs.google.com/Doc?id=dddzqd53_28gzfkkg), 2005-2007.  
+Note: The dChipSNP (not dChip) executable is obsolete, cf. dChip thread
+'[How to cite dChip
+etc?](http://groups.google.com/group/dchip-software/browse_thread/thread/ebc6bcf2c8212cce#)',
+Feb 16, 2010.
+
+## EXALT (EXpression signature AnaLysis Tool)
+
+Description: "...a resource for examining gene expression signatures in
+public domains. A gene expression signature in a microarray data set is
+defined by EXALT as a list of significant genes with their group
+comparison codes and corresponding statistical scores. In essence, a
+signature represents a statistically validated fingerprint associated
+with a biological observation made from a gene expression experiment.
+EXALT has extracted signatures of differential genes within each
+experiment and built a large formatted collection of microarray
+results from NCBI GEO and published cancer studies. Thus, investigators
+can focus on discovery by searching, browsing, and querying on
+pre-computed gene expression signatures."  
+References: J. Wu et al. Web-based interrogation of gene expression
+signatures using EXALT. BMC Bioinformatics, 2009  
+URL: <http://seq.mc.vanderbilt.edu/exalt/>
+
+## Expander
+
+Authors: Ron Shamir's Computational Genomics Laboratory, School of
+Computer Science, Tel Aviv University  
+Operating system: Java  
+What: "EXPANDER (EXpression Analyzer and DisplayER) is a java-based tool
+for analysis of gene expression data. It is capable of (1) clustering
+(2) visualizing (3) biclustering and (4) performing downstream analysis
+of clusters and biclusters such as functional enrichment and promoter
+analysis. In particular, it can analyze groups of genes for enrichment
+of transcription factor binding sites in their promoters."  
+URL: <http://acgt.cs.tau.ac.il/expander/>
+
+## FARMS
+
+Description: "Factor Analysis for Robust Microarray Summarization
+(FARMS) is a model-based technique for summarizing high-density
+oligonucleotide array data at probe level for Affymetrix GeneChips."  
+ Chip types: ?  
+ Platform: R (Windows, Linux, ...?)  
+ URL: <http://www.bioinf.jku.at/software/farms/farms.html>  
+ References: Sepp Hochreiter, Djork-Arne Clevert & Klaus Obermayer, [A
+new summarization method for affymetrix probe level
+data](http://bioinformatics.oxfordjournals.org/cgi/content/short/22/8/943),
+Bioinformatics 2006 22(8):943-949; [doi:10.1093/bioinformatics/btl033].
+
+## GADA (Genome Alteration Detection Analysis)
+
+Authors: Pique-Regi et al.  
+ What: "GADA is a fast and accurate method for detecting copy number
+alterations (CNA) from array data. [...]"  
+ Chip types: Generic segmentation method applicable to all raw CNs.  
+ Operating system: ?  
+ URL: <http://groups.google.com/group/gadaproject>  
+ References: (1) Pique-Regi R and Gonzalez JR: "R-Gada: a package for
+fast and parallel detection of copy number on multiple samples and
+visualization",  Bioinformatics , Submitted Dec 2008, (2) Pique-Regi R,
+Monso-Varona J,Ortega A, Seeger RC, Triche TJ, Asgharzadeh S: "Sparse
+representation and Bayesian detection of the genome copy number
+alterations from microarray data", Bioinformatics , Feb 2008 [pmid:
+[18203770](http://www.ncbi.nlm.nih.gov/pubmed/18203770?dopt=Abstract)]
+
+## GEMCA
+
+Authors: The Copy Number Variation Project, University of Tokyo  
+ What: Detects copy number variants (CNVs).  
+ Chip types: 500K  
+ Operating system: Windows  
+ URL:
+[www.genome.rcast.u-tokyo.ac.jp/CNV/gemca_details.html](http://www.genome.rcast.u-tokyo.ac.jp/CNV/gemca_details.html)  
+References: Komura et al., Genome-wide detection of human copy number
+variations using high density DNA oligonucleotide arrays, Genome
+Research 16, 1575-1584 (2006)
+
+## GenoCN (GenoCNA/GenoCNV)
+
+Authors: Sun et al.  
+ What: Simultaneously dissect copy number states and genotypes using the
+data from high density SNP arrays.  
+ Chip types: 500K  
+ Operating system: R  
+ URL: <http://www.bios.unc.edu/~wsun/software.htm>  
+References: ??Sun et al., Integrated study of copy number states and
+genotype calls using high-density SNP arrays. Nucleic Acids Res, 2009,
+37, 5365-5377.
+
+## GISTIC (Genomic Identification of Significant Targets in Cancer)
+
+Authors: Beroukhim et al.  
+ What: Finding common CN regions in tumors.Chip types: 100K.  Possibly
+others as well.  
+ Operating system: Linux 64-bit (binary only).  
+ URL: <http://www.broad.mit.edu/cancer/pub/GISTIC/>  
+Manuals: [GISTIC for
+GenePattern](ftp://ftp.broadinstitute.org/pub/genepattern/modules_public_server_doc/GISTIC.pdf)  
+References: Beroukhim et al. 2007, [Assessing the significance of
+chromosomal aberrations in cancer: Methodology and application to
+glioma](http://www.broad.mit.edu/cgi-bin/cancer/publications/pub_paper.cgi?mode=view&paper_id=162&p=t),
+PNAS, December 2007.
+
+## GTS (Genome Topography Scan)
+
+Authors: Cameron Brennan  
+ What:  
+ Operating system: R (package also contains iCNA)  
+ URL: [http://cbio.mskcc.org/brennan/](http://cbio.mskcc.org/brennan)  
+ Reference: Wiedemeyer R, Brennan C, Heffernan TP, Xiao Y, Mahoney J, et
+al. Feedback circuit among INK4 tumor suppressors constrains human
+glioblastoma development. Cancer Cell, 2008, 13: 355–364.
+
+## iCNA (intragenic CNA)
+
+Authors: Cameron Brennan  
+ What: Identifying statistically significant intragenic CNA boundaries.  
+ Operating system: R (in package GTS; see above)  
+ URL: <http://cbio.mskcc.org/brennan/>  
+ Reference:
+
+## IdeogramBrowser
+
+Author: Muller A et al.  
+ What: "A Java tool for visualization of genomic aberrations using
+Affymetrix SNP arrays."  
+ Chip types: 10K, 100K, 500K, GWS5(?), GWS6(?), ...  
+ Operating system: Java (cross OS)  
+ URL: <http://www.informatik.uni-ulm.de/ni/staff/HKestler/ideo/>  
+ References: Muller A et al., Visualization of genomic aberrations using
+Affymetrix SNP arrays, Bioinformatics, 2007, 15;23(4):496-7 [pmid:
+[17138589](http://www.ncbi.nlm.nih.gov/pubmed/17138589?dopt=Abstract)]
+
+## IGV (Integrative Genomics Viewer)
+
+Authors: ... (Broad Institute)  
+ What: "The Integrative Genomics Viewer (IGV) is a high-performance
+visualization tool for interactive exploration of large, integrated
+datasets.".  Can be linked to the TCGA data servers.  
+ Operating system: Java (cross OS)  
+ URL: <http://www.broad.mit.edu/igv/>  
+ Documentation:
+[http://www.broad.mit.edu/igv/doc/faq.html](http://www.broad.mit.edu/igv/),
+<http://www.broad.mit.edu/igv/doc/fileformats.html>  
+ References: ?
+
+## MADS+
+
+Authors: Shen et al.  
+What: "Discovery of differential splicing events from Affymetrix exon
+junction array data."  
+Requirements: R, RPy2, Python  
+References: Shen et al., MADS+: discovery of differential splicing
+events from Affymetrix exon junction array data, Bioinformatics, 2009.  
+URL: <http://www.medicine.uiowa.edu/Labs/Xing/MADSplus/>
+
+## MAT (Model-based Analysis of Tiling arrays)
+
+Authors: Johnson et al.  
+ What: "We propose a novel analysis algorithm MAT to reliably detect
+regions enriched by transcription factor Chromatin ImmunoPrecipitation
+(ChIP) on Affymetrix tiling arrays (chip)."  
+ Operating system: Linux, source code  
+ URL: <http://liulab.dfci.harvard.edu/MAT/>  
+ References: (i) Johnson WE, Li W, Meyer CA, Gottardo R, Carroll JS,
+Brown M and Liu XS: Model-based analysis of tiling-arrays for ChIP-chip.
+Proc. Natl. Acad. Sci. USA 103 (2006) 12457-12462. (ii) Li W, Carroll
+JS, Brown M and Liu XS: xMAN: extreme MApping of OligoNucleotides.
+Accepted, BIOCOMP'07, BMC Genomics.
+
+## Microarray Blob Remover (MBR)
+
+Authors: S. Liu et al.  
+What: "We introduce a new software tool, the Microarray Blob Remover
+(MBR), which allows rapid visualization, detection, and removal of blob
+defects of a variety of sizes and shapes from different types of
+microarrays using their .CEL files. Removal of the affected probes in
+the blob-defects using MBR was shown to significantly improve
+sensitivity and FDR compared to leaving the affected probes in the
+analysis."  
+Operating system: cross platform (Java)  
+URL: <http://liulab.dfci.harvard.edu/Software/MBR/MBR.htm.html>
+
+## OncoSNP
+
+Authors: Christopher Yau  
+Operating system: MATLAB, Linux only  
+Licences: For collaborators only  
+URL: <https://sites.google.com/site/oncosnp/>  
+References: ?
+
+## PennCNV
+
+Authors: Wang et al.  
+ What: Copy-number variant (CNV) analysis.  
+ Chip types: Illumina, but also possible with Affymetrix GWS5 & GWS6.  
+ Operating system: Linux, OSX, Windows. Languages: C and Perl.  
+ URL: <http://www.openbioinformatics.org/penncnv/>  
+ References: Wang K, Li M, Hadley D, Liu R, Glessner J, Grant S,
+Hakonarson H, Bucan M. PennCNV: an integrated hidden Markov model
+designed for high-resolution copy number variation detection in
+whole-genome SNP genotyping data. Genome Research 17:1665-1674, 2007.
+
+## PerfectMatch
+
+What: Position-Dependent-Nearest-Neigbor (PDNN) Model by the original
+authors - "A PC program for Affymetrix microarray data analysis using
+PDNN model".  
+ Operating system: Windows.  
+ URL:
+[http://odin.mdacc.tmc.edu/\~zhangli/PerfectMatch/](http://odin.mdacc.tmc.edu/%7Ezhangli/PerfectMatch/)  
+ References: Zhang L, Miles, MF, and Aldape KD. A model of molecular
+interactions on short oligonucleotide microarrays. Nature
+Biotechnology, 2003, 21, 818-821.
+
+## PhyloTrac
+
+What: "PhyloTrac is an application for the visualization and analysis of
+PhyloChip microarrays. The PhyloChip is a popular 16S rRNA gene
+microarray for microbial surveys, and has been successfully used to
+study the microbial diversity of several interesting environments."  
+Operating system: Mac OS X, Linux, and Windows.  
+URL: <http://www.phylotrac.org/>  
+Authors: J. Ravel et al.  
+References:
+
+## PICNIC (Predicting Integral Copy Numbers In Cancer)
+
+Authors: Greenman, C.D et al.  
+ What: "[...] includes improved normalisation of the data together with
+determination of underlying copy number for each segment by genome wide
+analysis of allele ratio and signal strength data. The data is
+subsequently rescaled and plotted onto its predicted underlying integer
+value and segmentation applied (it should be noted that rescaling the
+raw data to the underlying absolute copy number can affect the spread of
+the data points)."  
+ Chip types: GenomeWideSNP_6  
+ Operating system: MATLAB  
+ URL: <http://www.sanger.ac.uk/genetics/CGP/Software/PICNIC/>  
+ URL 2:
+<http://www.sanger.ac.uk/genetics/CGP/CopyNumberMapping/Affy_SNP6.shtml>  
+ References: Greenman, C.D et al. (submitted)
+
+## PLASQ, PLASQ10K, PLASQ500K
+
+Authors: Laframboise T et al., Department of Medical
+Oncology,Dana-Farber Cancer Institute.  
+ What: Genotyping, copy-number analysis.  
+ Chip types: 10K, 100K, 500K.  
+ Operating system: R  
+URL: <http://mendel.cwru.edu/laframboiselab/software.php>  
+ References: Laframboise T, Harrington D, Weir BA. PLASQ: a generalized
+linear model-based procedure to determine allelic dosage in cancer cells
+from SNP array data. Biostatistics. April 2007, 8(2):323-36.
+
+
+
+## ProbeMapper
+
+Authors: JD Allen et al., Quantitative Biomedical Research Initiative,
+Southwestern Medical Center.  
+What: "This software allows users to find associations between Entrez
+Gene IDs and microarray probe IDs for eight major gene expression
+platforms."  
+Operating system: Online service as well as R package  
+URL: <http://qbrc.swmed.edu/software/probemapper-live/>  
+URL: <http://cran.r-project.org/web/packages/probemapper/>
+
+
+
+## PuMaQC (Public Microarray Data Quality Control)
+
+Authors: JP. Corte-Real and PV. Nazarov  
+What: "A robust, easy to use, all-in-one pipeline for public microarray
+data handling based on 3 sequential steps: i) search for raw Affymetrix
+data in GEO; ii) import and preprocessing of CEL files; iii) QC/QA with
+identification and removal of low quality arrays."  
+Operating system: Any that runs Affymetrix Power Tools and R.  
+URL: <http://sablab.net/PuMaQC/>
+
+
+
+## QuantiSNP
+
+Authors: Wang et al.  
+ What: Copy-number variant (CNV) analysis.  
+ Chip types: Illumina, but QuantSNP v1.1 supports Affymetrix as well.  
+ Operating system: Linux (32-bit & 64-bit), ...???  
+ URL: <http://www.well.ox.ac.uk/QuantiSNP/>.  
+Forum: <http://groups.google.co.uk/group/quantisnp>  
+ References: Colella S. et al. QuantiSNP: an Objective Bayes
+Hidden-Markov Model to detect and accurately map copy number variation
+using SNP genotyping data. Nucleic Acids Res, 2007, 35, 2013-2025.
+
+## RAE
+
+What: For paired tumor-normal log2 CN ratios...  
+ Chip types: Affymetrix, Illumina, ... (any total CN platform for which
+one can run CBS)  
+ Operating system: R (a set of R and shell scripts; not packaged)  
+ URL: <http://cbio.mskcc.org/downloads/rae/>  
+ Reference: Taylor BS, Barretina J, Socci ND, DeCarolis P, Ladanyi M,
+Meyerson M, Singer S, Sander C. Functional copy-number alterations in
+cancer. PLoS ONE. 2008 Sep 11;3(9):e3179.
+
+## rMAT
+
+What: "rMAT is an open-source R package based on the popular MAT
+software for the normalization, detection and quantification of
+ChIP-enriched regions. rMAT has been written from scratch in C and R and
+provides an efficient implementation of the functionality of MAT as well
+novel statistical normalization techniques not available in the original
+MAT. [...]  
+Operation systems: R  
+URL: <http://wiki.rglab.org/index.php?title=Public:RMAT>  
+References: (1) A. Droit, C. Cheung, and R. Gottardo (2010). rMAT – an
+R/Bioconductor package for analyzing ChIP-chip
+experiments,Bioinformatics, 26:678-679. (2) W. E. Johnson, Li, W.,
+Meyer, C. A., Gottardo, R., Carroll, J. S., Brown, M., and Liu, X. S.
+(2006). Model-based analysis of tiling-arrays for
+ChIP-chip. PNAS 103:12457-12462.
+
+## SEURAT
+
+Authors: Gribov A et al.  
+What: SEURAT is a software tool which provides interactive visualization
+capability for the integrated analysis of high-dimensional gene
+expression data. Gene expression data can be analyzed together with
+associated clinical data, array CGH (comparative genomic hybridization),
+SNP array (single nucleotide polymorphism) data and available gene
+annotations in an integrated manner. The different data types are
+organized by a comprehensive data manager.  
+URL: <http://seurat.r-forge.r-project.org/>  
+References: Gribov A et al. SEURAT: visual analytics for the integrated
+analysis of microarray data. BMC Med Genomics, , 2010.  
+Operating system: R+Java
+
+## SNPMaP
+
+Authors: Davis et al.  
+ What: "The SNPMaP package for R provides a framework for the analysis
+of SNPMaP (SNP microarrays and pooling) genome-wide association data
+using the tools available in the increasingly popular Open Source
+statistical computing environment."  
+ Chip types: Mapping250K_{Nsp|Sty}, GenomeWideSNP_5,
+GenomeWideSNP_6.  
+ Operating system: R  
+ URL: <http://sgdp.iop.kcl.ac.uk/snpmap/>  
+ References: Davis, O.S.P., Plomin, R., & Schalkwyk, L.C. (submitted for
+publication). The SNPMaP package for R: A framework for genome-wide
+association using DNA pooling on microarrays, 2008.
+
+## SOMATICs
+
+Authors: Davis et al.  
+What: ...   
+Chip types: Illumina.  
+Operating system: R  
+URL: http://www.lerner.ccf.org/gmi/igac/SOMsuppScriptR080412.txt (a
+script)  
+References: Assié, G.; LaFramboise, T.; Platzer, P.; Bertherat, J.;
+Stratakis, C. A. & Eng, C. SNP arrays in heterogeneous tissue: highly
+accurate collection of both germline and somatic genetic information
+from unpaired single tumor samples. Am J Hum Genet, 2008.
+
+
+
+## Tumor Aberration Prediction Suite (TAPS)
+
+Authors: M. Rasmussen et al.  
+Operating system: R  
+URL: <http://array.medsci.uu.se/taps/>
+
+
+
+## TuMult
+
+What: "TuMult was developed for the analysis of several tumors from the
+same patient. Using the chromosome breakpoints these tumors have in
+common, TuMult reconstructs the tumor lineage and the sequence of
+chromosome aberrations occurring during tumorigenesis. TuMult may be
+applied to any kind of copy number data."  
+Chip types: Affymetrix, Illumina  
+Operating system: R  
+URL:
+<http://bioserv.rpbs.univ-paris-diderot.fr/~letouze/TuMult/ALGORITHM.html>  
+References: Letouzé, E.; Allory, Y.; Bollet, M. A.; Radvanyi, F. &
+Guyon, F. Analysis of the copy number profiles of several tumor samples
+from the same patient reveals the successive steps in tumorigenesis.
+Genome Biol, 2010.
+
+## VanillaICE
+
+Author: Robert Scharpf et al.  
+What: "Hidden Markov model for identifying chromosomal alterations in
+high-throughput SNP arrays."  
+Chip types: Affymetrix, ...  
+URL: <http://www.bioconductor.org/packages/release/bioc/html/VanillaICE.html>
+
+## X:MAP
+
+Description: Exon array analysis.  
+Chip types: Human, Mouse, and Rat Exon 1.0 ST.  
+Operating system: Has an R interface.  
+References: [1] Yates T, Okoniewski MJ, and Miller CJ. X:Map: annotation and visualization of genome structure for Affymetrix exon array analysis,  Nucleic Acids Research, 2007. [2] Okoniewski MJ, Yates T, Dibben S, and Miller CJ, An annotation infrastructure for the analysis and interpretation of Affymetrix exon array data, Genome Biology 2007.  
+URL: <http://xmap.picr.man.ac.uk/>
+
+
+# Related software
+
+Affymetrix Fusion Software Developers Kit (SDK)  
+ Author: Affymetrix Inc.  
+ What: A file parser library written C++ and Java that can read most of
+[Affymetrix Data File
+Formats](http://www.affymetrix.com/support/developer/powertools/changelog/gcos-agcc/index.html),
+e.g. CDF, CEL, CHP, and BPMAP.  
+ URL: <http://www.affymetrix.com/support/developer/fusion/>
+
+## Affymetrix CEL File Conversion Tool
+
+Author: Affymetrix Inc.  
+ What: The cell intensity file (CEL) File Conversion Tool converts all
+Affymetrix CEL files in a specified directory from version 3 format
+(ASCII - MAS 5 compatible format) to and from version 4 format (binary -
+GCOS compatible format).  
+
+URL: <http://www.affymetrix.com/support/developer/tools/devnettools.affx>
+
+## Affymetrix CDF File Conversion Tool
+
+Author: Affymetrix Inc.  
+ What: The chip definition file (CDF) File Conversion Tool will convert
+all Affymetrix CDF files (GCOS library files) in a specified directory
+from its current ASCII format to a new binary format that will be used
+in future versions of the GCOS software. DO NOT use this tool to convert
+library files managed by the GCOS 1.1 or below software as that software
+does not understand the new binary format.  
+ URL:
+<http://www.affymetrix.com/support/developer/tools/devnettools.affx>
+
+## AssociationViewer
+
+What: "A Java application used in whole genome analysis to display SNPs
+in a genomic context. Supplementary data is downloaded from various
+public data sources on the fly and saved locally in a cache. Custom data
+can be added as supplementary tracks. "  
+ Operating system: Java (cross Operating system)  
+ Author: Armand Valsesia and Olivier Martin  
+ URL: <http://sourceforge.net/projects/associationview/>
+
+## CELUtil
+
+Author: D. Paladini et al., 2005.  
+ URL: <http://www.bioinformatics.org/celutil/>  
+ Genome Environment Browser (GEB)  
+ Operating system: Java (cross Operating system)Reference: Huntley D et
+al., Genome Environment Browser (GEB): a dynamic browser for visualising
+high-throughput experimental data in the context of genome features, BMC
+Bioinformatics, Nov 2008, 9:501, doi:10.1186/1471-2105-9-501.URL:
+<http://web.bioinformatics.ic.ac.uk/geb/>
+
+## GoldSurfer2
+
+Authors:  
+ What: "A comprehensive tool for the analysis and visualization of whole
+genome association studies"  
+ Chip types: Non-specific, i.e. imports genotyping data in some standard
+file formats.  
+ Operating system: Java (cross Operating system)  
+ URL:
+[http://www.well.ox.ac.uk/\~fredrikp/gs2.html](http://www.well.ox.ac.uk/%7Efredrikp/gs2.html)  
+ References: Pettersson, F., Jonsson, O. and Cardon, L.R., GOLDsurfer:
+three dimensional display of linkage disequilibrium. Bioinformatics.
+2004;20(17):3241-3.
+
+## Ultrasome
+
+Authors: Bjorn Nilsson et al. (Broad etc).What: "Ultrasome is an
+efficient methodology for detecting and delineating gains and losses of
+chromosomal material in DNA copy-number data."  
+ References: Bjorn Nilsson; Mikael Johansson; Fatima Al-Shahrour; Anne
+E. Carpenter; and Benjamin L. Ebert. "Ultrasome: efficient aberration
+caller for copy number studies of ultra-high resolution". Bioinformatics
+(2009); doi: 10.1093/bioinformatics/btp091  
+ URL <http://www.broad.mit.edu/ultrasome/>
+
+## MS-DOS subst
+
+What: The [Windows/MS-DOS] console
+'[subst](http://en.wikipedia.org/wiki/Subst)' utility makes a drive
+letter to any Windows directory, e.g. subst Y: 'C:/Documents and
+Settings/JohnDoe/Documents/My
+Research/Projects/aroma.affymetrix/ProjectA/'.  This provides a
+workaround when a pathname becomes too long for Windows.  The maximum
+number of symbols in a pathname is 256, including file separators '/' or
+'\\', but excluding the drive letter, and initial file separator (e.g.
+"C:/"), and the string terminator ('\\0'), cf. [MSDN - Naming a File or
+Directory](http://msdn.microsoft.com/en-us/library/aa365247.aspx).  In R
+v2.8.x, the limit is one symbol less, i.e. 255.  
+ Operating system: Windows  
+ URL: <http://en.wikipedia.org/wiki/Subst>

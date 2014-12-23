@@ -1,0 +1,106 @@
+# Developers' Corner
+
+## Developers' Corner
+
+Author: Henrik Bengtsson  
+ Created on: 2010-06-01
+
+*CONTRIBUTIONS NEEDED: This page is under development.  Please consider
+contributing to it.*
+
+In order to do sustainable and reproducible statistical research we must
+provide high-quality reliable models, methods, algorithms and
+implementations.  To achieve this we have to take software engineering
+seriously starting already from the first sketch to the released tool.
+ Thinking long term (2-3 years and beyond) and realizing that you and
+your fellows have to support and maintain what you promise/deliver is
+key to success.   Coding conventions, lots of system and redundancy
+testing, version control, and heaps of real CPU hours (=users) are
+resources that will help you in the long run.
+
+So, if you're a developer that plan to contribute to the Aroma project,
+please consider the below documents.
+
+## The aroma coding style
+
+-   Henrik Bengtsson, [The Aroma R Coding Conventions (Aroma
+    RCC)](<%=pathTo('/developers/AromaRCC')%>), Dept of Statistics, University of
+    California, Berkeley, 2009.
+-   Henrik Bengtsson, [R Coding Conventions (RCC) - a draft, Version
+    0.9](<%=pathTo('/developers/RCC')%>), Dept of Statistics, University of California,
+    Berkeley, January 2002-2009.
+
+## Rdoc - An extended Rd language embedded in R comments
+
+Rdoc comments are regular R source code comments that contains a special
+markup for compiling the comments into Rd help files.  The idea is that
+it should be possible to keep the documentation of the API together with
+the source code in the same file.  This makes it easier to keep the
+documentation up to date with source code.  With a special Rdoc compile,
+regular R files containing Rdoc comments are compiled into Rd files.
+
+The Rdoc comments support automatic generation of Rd `\usage{}`
+statements (e.g. `@synopsis`), importing of external files such as
+example code  (e.g. `@examples "../incl/foo.R"`), shortcuts for linking
+to common Rd pages (e.g. `@matrix`), and much more.  This makes it
+easier to maintain the documentation, especially in projects where the
+API is constantly being updated.  Rdoc comments are recognized by their
+begin and end symbols `#/**` and `#*/` (cf. javadoc for Java).  An R
+file may contain zero, one, or more Rdoc comments.  Here is a brief
+example:
+
+```r
+#########################################################/**
+# @RdocFunction foo
+#
+# @title "The foo method"
+#
+# \description{@get "title" is a very fooish utility.}
+#
+# @synopsis
+#
+# \arguments{
+#   \item{x}{An Kx3 @integer @matrix.}
+#   \item{verbose}{If @TRUE, verbose statements are show.}
+# }
+#
+# \value{A @list structure.}
+#
+# @examples "../incl/foo.R"
+#
+# \seealso{
+#   @see "base::ls".
+# }
+#*/##########################################################
+foo <- function(x, verbose) {
+  # code here
+}
+```
+
+There is currently no documentation of all features of the Rdoc compiler
+and the Rdoc language.  The best source of information is to look at how
+it is used in the source code of <% cran('R.methodsS3') %>,
+<% cran('R.oo') %>, <% cran('R.utils') %> and more.
+
+The Rdoc compiles is available in the R.oo package.  In order to compile
+the Rdoc comments for a particular package, *the package has to be
+installed.*  For example, consider that the package is called 'foo'.
+ Then, in R, do:
+
+1.  Change the working directory to the where the R files are, e.g.
+    `setwd("foo/R/")`
+2.  Load the package, i.e. `library("foo")`
+3.  Load the R.oo package, i.e. `library("R.oo")`
+4.  Run the Rdoc compiler on all R files by calling
+    `Rdoc$compile(verbose=TRUE)`.
+
+The latter command will identify all Rdoc comments in all R files and
+compile then to Rd files that are stored in ../man/ (relative to the
+working directory).  After all R files has been processed, all Rd files
+in ../man/ will be validated (using same tools that R CMD check uses).
+ Individual R files can be compile by specifying their pathnames,
+e.g. `Rdoc$compile("foo.R", verbose=TRUE)`.  The generated Rd files will
+contain a header of Rd comments that explicitly says that the file was
+automatically generated from which R file and that it the Rd file should
+not be edited. After compiling the Rdoc comment, rebuild/reinstall the
+package as usual.

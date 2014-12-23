@@ -1,0 +1,116 @@
+# Frequently Asked Questions
+
+*FAQ. 2010-06-29: Why do so few methods have a help() page?*
+
+A: The main source of documentation for the aroma framework, is the
+<http://www.aroma-project.org/> website.  What is documented there, is
+well maintained, tested and supported.  The `help()` pages available that
+comes with the different aroma.* packages are mainly for developers and
+much less to for end users.  Several methods and classes do not even
+have such help pages.  The main reason is lack of resources to write but
+also maintain such documentation.  Please consider
+[contributing](<%=pathTo('/getinvolved/')%>) to the online as well as help-page
+documentation.
+
+*FAQ. 2008-03-26: Why do you not want to answer questions sent to your
+private email address?*
+
+A: Please post all questions related to aroma.affymetrix to the
+
+aroma-affymetrix at googlegroups dot com
+
+ mailing list.  This way there is a chance that others also can help out
+with your problem/question, which means that you hopefully get a reply
+quicker.  All questions and answers are archived and searchable online.
+Because of this, we can then refer to already answered questions by
+replying with a link.  Moreover, this way the chances for finding
+answers online increase.  So, please understand this when I ask you to
+repost your question to the mailing list.  It will not only save me but
+everyone a lot of time.
+
+
+
+*FAQ. 2007-07-13: Hmm... why does R crash (core dump)?*
+
+A: This is most likely due to a corrupt CDF or CEL file that the
+affxparser package is trying to read, e.g. zero-size or incomplete
+files.  The solution is to turn on as much verbose output as possible so
+that the corrupt file can be located and removed.  Unfortunately we
+cannot control for this at the moment, because it is due to the
+underlying Fusion SDK native library that affxparser is using, not R or
+aroma.affymetrix.  Hopefully it will be more robust in the future.
+However, we have added some sanity checks to avoid the most obvious
+corrupt files.
+
+
+
+*FAQ. 2007-07-09: How do I convert an ASCII CDF into a binary CDF?*
+
+A: Working with binary CDFs is *much faster* and much more memory
+efficient.  You can convert an ASCII CDF into a binary CDF using the
+`convertCdf()` function in affxparser.
+
+
+
+*FAQ. 2007-05-24: Where can I download CDF files*
+
+A: The CDF file for a given chip type is available in so called "Library
+Files" at the corresponding "Support Materials" page on the Affymetrix
+website.  You may find links to those Affymetrix pages via the [Chip
+types](<%=pathTo('/chipTypes/')%>) pages.
+
+
+
+*FAQ. 2007-03-07: Where is the file cache located?*
+
+A: The call `getCacheRootPath()` will tell you where the root directory of
+the file cache is located on your system.  All of the cache files
+created by the package is under subdirectory aroma.affymetrix/.  You can
+use `setCacheRootPath()` to change the root directory.
+
+
+
+*FAQ. 2007-02-14: The NnnExplorer does not seem to work?*
+
+A: The NnnExplorer:s, such as ChromosomeExplorer and ArrayExplorer, are
+developed for modern web browser.  If it does not work on your browser,
+make sure to update and if that does not help, please let us know.
+~~A: The NnnExplorer:s, such as ChromosomeExplorer and ArrayExplorer, are
+developed for the Mozilla Firefox 2.0 v3.0 web browsers.  This means
+that they are likely to work under Firefox v1.5-2.0 too, but most likely
+not under Microsoft Internet Explorer or other web browsers (but should
+not be too hard to port, i.e. contributions appreciated).
+ChromosomeExplorer and ArrayExplorer has been updated to work with most
+modern web browsers.~~
+
+
+
+*FAQ. 2007-02-13: Why is aroma.affymetrix slow?*
+
+A: The package is *not* slow ;) Seriously, it is designed to deal with
+any-sized data sets by keeping data on file rather than in memory.  In
+other words, we do pay a price from I/O of data.  For most algorithms
+this means that data is read twice instead of once, but that extra
+overhead is not large.  *However, you will experience that it takes a
+long time when you process a new chip type for the first time*.  This is
+because the package needs to create a customized CDF file ("monocell
+CDF"), which takes time.  As soon as this is created, you should not
+expect to see any longer delays.  Moreover, to improve on speed, the
+package caches (to file or in memory) results from calls that are
+computational expensive and are likely to be done again, either in the
+same session or in a future session.  You will see that this caching
+further speeds things up.  Also, make sure to use the verbose arguments
+to see what is going on when the package appears to "get stuck".
+*Update 2008-11-04*:  See also the '[Improving processing
+time](<%=pathTo('/howtos/ImproveProcessingTime')%>)' how to page.
+
+
+
+*FAQ. 2007-02-09: What is a monocell CDF?*
+
+A: A monocell CDF is a CDF that has been extracted automatically from
+the "main" CDF and it can be identified by its name *,monocell.cdf.
+It only contains one cell per unit group.  Monocell CDFs are used to
+store chip-effect estimates of two-way PLMs.   A monocell CDF is created
+automatically if missing.  This may take everything from a few minutes
+to an hour.  However, is only done once per chip type.
