@@ -345,7 +345,7 @@ if you are then going to unlist it into a matrix form, use
 `extractMatrix()` or `extractDataFrame()` -- it will be much safer.
 
 <% alert_warn({ %>
- Do <em>not</em> use `getData()`, `getIntensities()` or any other such commands to get transcript or exon summaries.
+ Do <em>not</em> use getData(), getIntensities() or any other such commands to get transcript or exon summaries.
 <% }) %>
 
 
