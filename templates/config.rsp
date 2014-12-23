@@ -1,4 +1,4 @@
-<%@string site_domain="alpha.aroma-project.org"%>
+<%@string site_domain="www.aroma-project.org"%>
 <%@string site_name="The Aroma Project"%>
 <%@string site_acronym="Aroma"%>
 <%@string site_motto="Yeah!"%>

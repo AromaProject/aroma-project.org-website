@@ -10,7 +10,7 @@ dir_html <- function(path="html", pattern="[.]html$", recursive=TRUE, full.names
 
 htmls <- dir_html()
 htmls <- gsub("html/", "", htmls, fixed=TRUE)
-uris <- sprintf("http://alpha.aroma-project.org/%s", htmls)
+uris <- sprintf("http://www.aroma-project.org/%s", htmls)
 
 if (!interactive()) {
   if (length(uris) > 20L) {
