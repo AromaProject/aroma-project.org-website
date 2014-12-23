@@ -209,7 +209,7 @@ filename, and the inferred ploidies would be n23=2 and n24=0.
 
 To be more explicit, one may specify the 'tags' attribute as 'tags:
 n23=2, n24=0' instead of 'tags: XX'.  This format also allows us to
-specify the ploidy of other chromsomes.  For instance:
+specify the ploidy of other chromosomes.  For instance:
 ```
 tags: XY, n21=3
 ```
@@ -222,7 +222,7 @@ the sex chromosomes.
 SAF records for multiple samples can be place in one or many *.saf
 files.  If put in the same file, then each record is considered to start
 with the 'name:' line and end at the last non-empty line before the next
-SAF record (the next occurance of  'name:').
+SAF record (the next occurrence of 'name:').
 
 Currently the name of the SAF is not important as long as it has
 extension *.saf; all SAF files are scanned for matching samples.

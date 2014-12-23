@@ -103,7 +103,7 @@ dsN <- dsC[idxN]
 ```
 
 This can be adapted to cases where several tumor/normal pairs are
-avaiable.
+available.
 
 ### Setting up paired CBS model
 

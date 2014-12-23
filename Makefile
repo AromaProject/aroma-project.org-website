@@ -68,14 +68,14 @@ spell:
 	cat spell-words.txt | sort -u
 
 check_links:
-	wget --spider -o wget.log -e robots=off -w 1 -r -p http://cbc.ucsf.edu/index.html
+	wget --spider -o wget.log -e robots=off -w 1 -r -p http://alpha.aroma-project.org/index.html
 	grep -B 2 '404' wget.log
 
 check_html:
 	$(R_SCRIPT) "R/w3c-html"
 
 check_css:
-	$(R_SCRIPT) -e "browseURL('http://jigsaw.w3.org/css-validator/validator?uri=http%3A%2F%2Fcbc.ucsf.edu')"
+	$(R_SCRIPT) -e "browseURL('http://jigsaw.w3.org/css-validator/validator?uri=http%3A%2F%2Falpha.aroma-project.org')"
 
 
 

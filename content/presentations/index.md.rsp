@@ -41,7 +41,7 @@ Slides (46): [pdf](http://neuvial.ensae.net/data/talks/neuvial,2010,CSB,TumorBoo
 2009-10-01: Pierre Neuvial, *TumorBoost: Normalization of allele-specific tumor copy numbers in paired tumor/normal, designs for genotyping microarrays*, Statistics and Genomics Seminar, UC Berkeley, CA, USA.  
 Slides (36): [pdf](<%=pathTo('/share/presentations/neuvial_20091001_statGen.pdf')%>) [2.1Mb].
 
-2009-10-13: Henrik Bengsson, *Improved copy number analysis*, Department of Epidemiology & Biostatistics, University of California, San Francisco (UCSF), CA.  
+2009-10-13: Henrik Bengtsson, *Improved copy number analysis*, Department of Epidemiology & Biostatistics, University of California, San Francisco (UCSF), CA.  
 Slides (46): [pdf](<%=pathTo('/share/presentations/BengtssonH_20091013-Improved_copy_number_analysis.pdf')%>) [4.6Mb].
 
 2009-03-16: Henrik Bengtsson, *A Single-Array Preprocessing Method for Estimating Full-Resolution Raw Copy Numbers from all Affymetrix Genotyping Arrays*, Comprehending Copy Number Variation (Tools, Applications and Results), Cambridge Health Institute, March 16, 2009, San Diego, CA.  

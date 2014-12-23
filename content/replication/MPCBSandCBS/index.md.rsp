@@ -1,0 +1,116 @@
+# Replication: Reproducing CBS using MPCBS with K=1 platforms
+
+Wed, 2010-03-03 01:15 — hb
+
+Author: Henrik Bengtsson
+
+Created on: 2010-03-03
+
+**Update 2010-03-20: The problem reported here has been solved in mpcbs
+v1.1.1.**
+
+
+
+## Failed MPCBS segmentation
+
+I have identified a problem with the current implementation of MPCBS
+that causes it to miss some obvious segments.  I am simulating data and
+compare with the results of CBS (DNAcopy::segment()), GLAD
+(GLAD::glad()), and HaarSeg (HaarSeg::haarSeg()).  Since the error terms
+are drawn randomly (without a fixed seed), the issue with MPCBS does not
+occur everytime.  Indeed, it only occurs every 10-20 times.  However,
+with 24 chromosomes and hundreds of samples, this becomes a real issue.
+
+![](<%=pathTo('assets/images/MPCBS/mpcbs%2Cbug.png')%>)
+
+Figure: Simulated log2 CNs (gray) segmented by CBS (red), GLAD (blue),
+HaarSeg (orange) and MPCBS (purple).  500kb smoothed CNs (black) are
+also shown.  The true CN segmentation is the same across runs, but the
+noise is randomly drawn.  For this particular run, MPCBS failed to
+identify the last change point.  There are J=1000 data points.
+
+## Setup
+
+In R v2.10.0 or newer, do:
+
+source("http://aroma-project.org/hbLite.R");
+
+\# Install aroma.affymetrix and friends  
+hbInstall("aroma.affymetrix");
+
+\# Install developers aroma.core v1.5.1 (*)  
+installPackages("http://www.braju.com/R/repos/aroma.core_1.5.1.tar.gz");
+
+\# Install mpcbs v1.1.0 (*)  
+installPackages("http://www.braju.com/R/repos/mpcbs_1.1.0.tar.gz");
+
+\# Install DNAcopy  
+biocLite("DNAcopy");
+
+Footnote:  
+(*) Windows users: To install on Windows, replace *.tar.gz with
+*.zip.  
+(*) OSX users: To install on OSX, add argument type="source",
+e.g. installPackages("http://www.braju.com/R/repos/aroma.core_1.5.1.tar.gz",
+type="source");
+
+## Notes
+
+In aroma.core I provide segmentByCBS(), segmentByGLAD(),
+segmentByHaarSeg() and segmentByMPCBS() that are standardized wrappers
+calling the corresponding segmentation method.  This means that the
+results will be identical to what you would get if you called the
+individual packages directly.  No parameter settings are changed.  Note
+that if the underlying segmentation package/function is updated, this
+will directly reflect the results of the segmentByNnn() methods.
+
+## Script
+
+The R script that simulates CNs and runs the different segmentation
+methods can be downloaded/seen here:
+
+<http://r-forge.r-project.org/plugins/scmsvn/viewcvs.php/*checkout*/pkg/aroma.core/incl/RawGenomicSignals.SEG.Rex?rev=1922&root=aroma-dots>
+
+You can even run this directly from R as:
+
+library("aroma.core");  
+source("http://r-forge.r-project.org/plugins/scmsvn/viewcvs.php/*checkout*/pkg/aroma.core/incl/RawGenomicSignals.SEG.Rex?rev=1922&root=aroma-dots");
+
+and you should get a plot similar to the above.
+
+The simulated data that generates the above data and plot can be loaded
+as:
+
+library("aroma.core");  
+load(url("http://www.aroma-project.org/xfer/MPCBS/mpcbs,bug.RData"));
+
+## Session information
+
+```r
+> sessionInfo()
+R version 2.10.1 Patched (2010-01-12 r50990)
+i386-pc-mingw32
+
+locale:
+[1] LC_COLLATE=English_United States.1252
+[2] LC_CTYPE=English_United States.1252
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C
+[5] LC_TIME=English_United States.1252
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base
+
+other attached packages:
+[1] mpcbs_1.1.0        fields_6.01        spam_0.20-2
+HaarSeg_0.0.2
+[5] GLAD_2.4.0         DNAcopy_1.20.0     aroma.core_1.5.1
+aroma.light_1.15.1
+[9] matrixStats_0.1.9  R.rsp_0.3.6        R.filesets_0.8.0
+digest_0.4.2
+[13] R.cache_0.2.0      R.utils_1.3.4      R.oo_1.6.7
+R.methodsS3_1.1.0
+
+loaded via a namespace (and not attached):
+[1] tools_2.10.1
+```

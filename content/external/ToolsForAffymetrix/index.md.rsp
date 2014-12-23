@@ -154,7 +154,7 @@ initiatives, such as the The Cancer Genome Atlas project."
 Description: "An integrated tool for tiling array, ChIP-seq, genome and
 cis-regulatory element analysis."  
 Authors:  
-Operating system: Windows, OSX and Linux.  
+Operating system: Windows, OS X and Linux.  
 URL: <http://www.biostat.jhsph.edu/~hji/cisgenome/>
 
 ## CMDS (Correlation Matrix Diagonal Segmentation)
@@ -399,7 +399,7 @@ References: ?
 Authors: Wang et al.  
  What: Copy-number variant (CNV) analysis.  
  Chip types: Illumina, but also possible with Affymetrix GWS5 & GWS6.  
- Operating system: Linux, OSX, Windows. Languages: C and Perl.  
+ Operating system: Linux, OS X, Windows. Languages: C and Perl.  
  URL: <http://www.openbioinformatics.org/penncnv/>  
  References: Wang K, Li M, Hadley D, Liu R, Glessner J, Grant S,
 Hakonarson H, Bucan M. PennCNV: an integrated hidden Markov model
@@ -408,7 +408,7 @@ whole-genome SNP genotyping data. Genome Research 17:1665-1674, 2007.
 
 ## PerfectMatch
 
-What: Position-Dependent-Nearest-Neigbor (PDNN) Model by the original
+What: Position-Dependent-Nearest-Neighbor (PDNN) Model by the original
 authors - "A PC program for Affymetrix microarray data analysis using
 PDNN model".  
  Operating system: Windows.  
@@ -448,13 +448,13 @@ the data points)."
 
 ## PLASQ, PLASQ10K, PLASQ500K
 
-Authors: Laframboise T et al., Department of Medical
+Authors: LaFramboise T et al., Department of Medical
 Oncology,Dana-Farber Cancer Institute.  
  What: Genotyping, copy-number analysis.  
  Chip types: 10K, 100K, 500K.  
  Operating system: R  
 URL: <http://mendel.cwru.edu/laframboiselab/software.php>  
- References: Laframboise T, Harrington D, Weir BA. PLASQ: a generalized
+ References: LaFramboise T, Harrington D, Weir BA. PLASQ: a generalized
 linear model-based procedure to determine allelic dosage in cancer cells
 from SNP array data. Biostatistics. April 2007, 8(2):323-36.
 

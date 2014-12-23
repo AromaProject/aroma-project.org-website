@@ -94,7 +94,7 @@ flat2Cdf(file="hjay.r1.flat", chipType="hjay", tag="r1,TC")
 ## Convert Affymetrix annotation to Flat file (Perl)
 
 Affymetrix generally has one file that gives the probe to probeset
-idenfication. Then there might be a separate file that relates probesets
+identification. Then there might be a separate file that relates probesets
 to genes. This information must be combined to get a single flat file
 for `flat2Cdf()`. The Perl script
 [convertProbesetCSV_differentInput.pl](<%=pathTo('/share/scripts/third-party/archive/20090212/convertProbesetCSV_differentInput.pl')%>) converts
@@ -186,7 +186,7 @@ assigned to genes based on the inputted `exonBoundariesFile`.)
 2.  When there is overlap (defined as probesets assigned to multiple
     genes, and not based on the external exon boundaries), there is an
     initial scan that creates groups of genes that overlap (if A
-    overlaps B and B overlaps C, but C doesn't overlap A, A,B,C are
+    overlaps B and B overlaps C, but C does not overlap A, then A,B,C are
     still all included in an overlapping group).
 3.  For each group, the % that are common to all of the genes in the
     group is calculated based on the function given by `overlapType`.

@@ -116,7 +116,7 @@ fnt <- function(names, ...) {
 
 ## Load the raw (tumor,normal) data set
 
-Here we will assume that matchng tumors and normals share the same name
+Here we will assume that matching tumors and normals share the same name
 but have different tags, e.g. TCGA-02-0001,01C,01D-0184-06 (tumor)
 and TCGA-02-0001,10A,01D-0184-06 (normal) with the common
 name TCGA-02-0001.
@@ -196,7 +196,7 @@ RAM: 0.00MB
 
 ## Apply TumorBoost normalization
 
-Recall that we in this vignette assume that matchng tumors and normals
+Recall that we in this vignette assume that matching tumors and normals
 share the same name but have different tags,
 e.g. TCGA-02-0001,01C,01D-0184-06 (tumor)
 and TCGA-02-0001,10A,01D-0184-06 (normal) with the common
@@ -206,7 +206,7 @@ normal set).
 
 If your tumors and normals do not share the same names this way, you
 have to make sure the sets are ordered correctly after this step in
-order for the rest of the anlysis to be correct.
+order for the rest of the analysis to be correct.
 
 ```r
 # Create a list of matched data sets

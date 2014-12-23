@@ -171,7 +171,7 @@ URL: <http://www.ebi.ac.uk/arrayexpress/#ae-browse/q=E-TABM-185>
 **ArrayExpress: Data set E-MEXP-1481**  
 Chip type: Hs_PromPR_v02  
 Title: Methylation profiling of human normal and cancer tissues to
-identify long range epegenetic aberations.  
+identify long range epigenetic aberrations.  
 Description: "...25 hybridizations, using 25 samples of species [Homo
 sapiens], using 25 arrays of Affymetrix GeneChip Human Promoter 1.0R
 Array [Hs_PromPR_v02], producing 25 raw data files..."  
@@ -435,7 +435,7 @@ ACTuDB: a database for the integrated analysis of array-CGH and clinical
 data for tumors  
 Author(s): The Curie Institute - Bioinformatics Unit  
 URL: <http://bioinfo-out.curie.fr/actudb/> (see the 'Content' section)  
-Description: Contains a compiled list of publically available
+Description: Contains a compiled list of publicly available
 copy-number data sets.  Some of the data sets also have coupled
 expression data.
 <% geo('GPL6801') %> or <% geo('GPL8226') %>

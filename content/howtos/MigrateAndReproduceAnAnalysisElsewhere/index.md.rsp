@@ -17,7 +17,7 @@ transfer the analysis to you collaborators:
 2.  Identify and copy/zip the content of the annotation chip type
     directory/directories, e.g.
     annotationData/chipTypes/Mapping250K_Nsp/ and
-    annotationData/chipTypes/Mapping250K_Sty/.  If there are auxillary
+    annotationData/chipTypes/Mapping250K_Sty/.  If there are auxiliary
     annotation files, you may want to copy only the ones used in the
     analysis.
 3.  Identify and copy/zip all R scripts.
@@ -33,5 +33,5 @@ something wrong).
 It is good practice to always do the above and validate the reproducible
 of any analysis completed, before passing it on to collaborators or
 submitting to a journal.  When doing this one often find minor
-discrepances such as not using the annotation files that one believe one
+discrepancies such as not using the annotation files that one believe one
 uses and so on.  It is also a good way to archive the analysis done.

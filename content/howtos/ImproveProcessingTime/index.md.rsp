@@ -50,7 +50,7 @@ default (`ram=1.0`), and vice versa for small values.  For more details,
 see '[Settings](<%=pathTo('/settings/')%>)'. Since there in each chunk is some overhead
 from reading and especially writing data and results, using larger
 chunks will speed up the processing to some extend.  There is a
-system-specific upper limit where the payoff is no longer noticible.
+system-specific upper limit where the payoff is no longer noticeable.
 
 User success stories:
 

@@ -63,7 +63,7 @@ chip with extra tag "B5_3005533", which do not know what it means.
 
 In order for the computer to know what part of the the filename is
 refering to the sample name and what is extra information we define the
-termsname and tag, where name is typically either a sample name or a
+terms "name" and "tag", where name is typically either a sample name or a
 data set name.  Then constraint filenames to have the following format:
 
 ```
@@ -93,7 +93,7 @@ unambiguously.
 
 ## Directory names
 
-Analogusly to a filename, a directory name consists of a name followed
+Analogously to a filename, a directory name consists of a name followed
 by optional tags:
 
 ```

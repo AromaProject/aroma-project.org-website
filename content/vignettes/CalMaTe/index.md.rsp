@@ -48,7 +48,7 @@ print(csR)
 ## RAM: 0.06MB
 
 
-# Allele-specific CRMA v2 with log-additive modelling
+# Allele-specific CRMA v2 with log-additive modeling
 dsList <- doASCRMAv2(csR, plm="RmaCnPlm", verbose=verbose)
 print(dsList)
 

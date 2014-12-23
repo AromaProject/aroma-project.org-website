@@ -1,0 +1,41 @@
+############################################################################
+# Usage:
+#  source('R/w3c-html')
+############################################################################
+
+dir_html <- function(path="html", pattern="[.]html$", recursive=TRUE, full.names=TRUE) {
+  dir(path=path, pattern=pattern, recursive=recursive, full.names=full.names)
+}
+
+htmls <- dir_html()
+htmls <- gsub("html/", "", htmls, fixed=TRUE)
+uris <- sprintf("http://alpha.aroma-project.org/%s", htmls)
+uris <- sapply(uris, FUN=URLencode, reserved=TRUE)
+urls <- paste0("http://validator.w3.org/check?uri=", uris, ";st=1;outline=1;verbose=1;group=1")
+
+if (!interactive()) {
+  if (length(url) > 20L) {
+    stop("To many URL to check: ", length(url))
+  }
+}
+
+count <- 0L
+for (url in urls) {
+  browseURL(url)
+  count <- count + 1L
+  if (count >= 10L) {
+    if (interactive()) {
+      readline("Make sure to close some browser tabs before continuing. Hit ENTER...")
+      count <- 0L
+    } else {
+      stop("To many URL to check: ", count)
+    }
+  }
+}
+
+
+############################################################################
+# HISTORY:
+# 2014-11-22
+# o Created.
+############################################################################

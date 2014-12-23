@@ -1,0 +1,64 @@
+# Features
+
+-   [Screenshots](<%=pathTo('/screenshots')%>)
+-   [Demos](<%=pathTo('/demos')%>)
+-   [Reproducible research](<%=pathTo('/replication')%>)
+-   [Limitations](<%=pathTo('/limitations/')%>)
+-   [Future directions](<%=pathTo('/features/future/')%>)
+
+
+
+**MOVE THE BELOW TO SUBPAGE(S):**
+
+
+
+CHIP TYPES/DATA FILES:  
+* Number of arrays: unlimited.  
+ * Chip types: all Affymetrix chip types with a CDF, e.g. SNP, exon,
+and gene expression.  
+ * Immediate support for custom CDFs, e.g. BrainArray and
+AffyProbeMiner.  
+* File formats: Works directly with CEL and CDF files (all versions;
+text/ASCII, binary/XDA, binary/Calvin).
+
+LOW-LEVEL ANALYSIS:  
+* Pre-processing: Background correction, allelic cross-talk
+calibration, quantile normalization etc.  
+* Probe-level modeling: RMA (log-additive), MBEI (multiplicative),
+affine (multiplicative with or without offset).  
+* Post-processing: PCR fragment-length normalization.
+
+IMPORT/EXPORT:  
+* Export to/Import from: Bioconductor, CNAG, CNAT & dChip.
+
+REPORTS:  
+* Dynamic HTML reports: ArrayExplorer (HapMap demo), ChromosomeExplorer
+(HapMap demo, Tumor/Normal demo).  Requires Firefox.
+
+DOCUMENTATION/HELP:  
+* Documentation: Online documentation is collected under Pages.  
+* Vignettes: Online example code is collected in Section Vignettes.
+
+DESIGN/IMPLEMENTATION:  
+* Bounded-memory algorithms.  
+ * Low memory requirements: Minimum 500MB RAM (recommended \>1GB RAM)  
+* Persistent data and result storage: Final and intermediate results
+and estimates are stored on file.  
+ * Robustness: Analysis picks up where last interrupted.  
+ * Portable scripts: All data files are referred to by relative
+pathnames.  
+* Cross platform: Work with any operating system.  
+* Design goals: usability, quality & extendibility.
+
+
+
+COPY-NUMBER ANALYSIS:  
+* Paired & non-paired copy-number analysis: All generations, i.e. 10K,
+100K, 500K, 5.0 & 6.0. CBS & GLAD * segmentation methods.  Combine data
+from multiple chip types.
+
+EXON ARRAY ANALYSIS:  
+* Alternative splicing: FIRMA.
+
+EXPRESSION AND MORE:  
+* Most Affymetrix chip types are supported.

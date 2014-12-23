@@ -1,4 +1,4 @@
-# Custom CDF: HuEx-1_0-st-v2 from BrainArray ENSE and ENSG
+# Custom CDF: HuEx-1_0-st-v2 from Brainarray ENSE and ENSG
 
 Author: Steve Pederson & Henrik Bengtsson  
 Last updated: 2012-01-29
@@ -33,7 +33,7 @@ Notes:
 
 -   This CDF was created by taking the common probes between v14.1 of
     the Gene (ENSG) and Exon (ENSE) annotations from
-    [BrainArray](http://brainarray.mbni.med.umich.edu/brainarray/default.asp)
+    [Brainarray](http://brainarray.mbni.med.umich.edu/brainarray/default.asp)
     (U Michigan).
 -   Probes were placed into 289,999 groups based on common exon
     mappings.

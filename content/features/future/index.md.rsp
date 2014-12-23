@@ -1,0 +1,87 @@
+# Future directions
+
+## Generalization to other technologies than Affymetrix
+
+Created on: 2010-05-03  
+ Last updated: 2010-10-24
+
+Providing support for other microarray technologies such as Illumina and
+Agilent becomes a more frequently requested feature in the aroma
+framework.  This is something we have been working on for a long time
+and more seriously starting in 2009.  In order to achieve this we need a
+technology independent way of storing data.  We have designed and
+implemented new simple binary file formats for this.  What is missing is
+a complete suite of methods for importing external data into these file
+formats.
+
+We already have part of the framework in place and today we can, for
+instance:
+
+-   Export Affymetrix SNP & CN data to technology independent so called
+    aroma binary data sets.
+-   Manually allocate empty aroma binary data sets and populate them
+    "manually" with data read from external data sources, cf.
+    [Vignette Creating binary data files containing copy number
+    estimates](<%=pathTo('/vignettes/CreatingBinaryDataFilesContainingCopyNumberEstimates')%>).
+-   Setup of AromaUnitTotalCnBinarySet:s,
+    cf. [/howtos/SetupOfAromaUnitNnnCnBinarySet](<%=pathTo('/howtos/SetupOfAromaUnitNnnCnBinarySet')%>)
+-   Use these with existing segmentation method such as CbsModel and
+    ChromosomeExplorer,
+    cf. [/vignettes/pairedTotalCopyNumberAnalysis](<%=pathTo('/vignettes/pairedTotalCopyNumberAnalysis')%>) (note
+    that after the doCRMAv2 step the data is a
+    AromaUnitTotalCnBinarySet)
+
+What we like to add:
+
+-   Documentation, documentation and documentation.
+-   Setup specific import methods for Illumina, Agilent etc. data
+    file(s).  This requires careful mapping of annotation data as well.
+
+## Performance improvements
+
+Created on: 2010-11-22  
+Last updated: 2010-11-22
+
+We always prioritize availability, generality, correctness,
+reproducibility, traceability and stability of the user as well as the
+developer API over speed performance.  We believe that performance can
+always be improved after a method has been implemented in the first
+place and proved correct.  Sometimes the performance improvements
+requires changes in the API.  Here are a some performance improvement we
+would like to implement:
+
+
+
+-   The probe-level modeling (PLM)/summarization of Affymetrix arrays
+    was designed to work out-of-the-box with virtually any chip
+    type/CDF.  The price we pay for this is that lots of data is wrapped
+    up and unwrapped multiple times into long nested hetereogenous list
+    structures, which is time consuming in R.  As a first significant
+    improvement, one can identify homogenous subsets of these list
+    structures that have CDF elements of the same shapes and dimensions.
+     This would speed up the wrapping/unwrapping of data.  It would
+    require to rewrite some of the "fit function" for PLMs.  
+    This idea has previously been discussed on the mailing list, cf.
+    [ADD URLS].
+
+
+
+
+
+## Distributed processing
+
+Created on: 2010-05-03  
+ Last updated: 2010-05-04
+
+Being able to processes the same data set on multiple machines would
+shorten the latency in any analysis pipeline.  In order to safely
+distribute the processing to multiple machines sharing data over the
+local file system, one needs a synchronization mechanism that prevents
+inconsistency due to different machines overwrite already generated
+results.
+
+What we like to add:
+
+-   Synchronization mechanism that works on all operation systems and
+    that communicates over a local file system without having to setup a
+    master server.

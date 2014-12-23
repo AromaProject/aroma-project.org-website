@@ -27,7 +27,7 @@ who are using this package.
 <strong>NOTE</strong>:
 The development of this package has stopped. It is only kept to
 a minimum such that it still installs.  For two-color microarrary
-analysis, I recommend to use the <a ref="http://www.bioconductor.org/packages/release/bioc/html/limma.html">limma</a> package available on Bioconductor.
+analysis, I recommend to use the <a href="http://www.bioconductor.org/packages/release/bioc/html/limma.html">limma</a> package available on Bioconductor.
 <% }) %>
 
 

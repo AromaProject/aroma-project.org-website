@@ -318,7 +318,7 @@ implementation calls a SNP heterozygote whereas the other calls a
 homozygote.
 
 ```r
-printf("Averages number of discrepances per array: %.1f\n", count/ncol(calls))
+printf("Averages number of discrepancies per array: %.1f\n", count/ncol(calls))
 ```
 
 Averages number of discrepances per array: 2.7

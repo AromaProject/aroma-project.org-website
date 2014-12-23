@@ -89,7 +89,7 @@ informative error message.
 Annotation data files are identified by their type, their chip types and
 optionally by additional tags.  The type is implicit from the class or
 method used, whereas the name and the tags are commonly arguments
-specified by the user, although in some cases also thoseare inferred
+specified by the user, although in some cases also those are inferred
 indirectly.
 
 EXAMPLE:

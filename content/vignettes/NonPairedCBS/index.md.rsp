@@ -60,7 +60,7 @@ RAM: 0.00MB
 ## Segmenting
 
 Here we will use the Circular Binary Segmentation (CBS) method for
-partioning the CN signals in data set `ds` into segments of equal
+partitioning the CN signals in data set `ds` into segments of equal
 underlying CN levels.  To *setup* a CBS model for our data set, we do:
 ```r
 sm <- CbsModel(ds)

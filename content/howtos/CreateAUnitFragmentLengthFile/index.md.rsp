@@ -25,13 +25,13 @@ is unique to each unique enzyme.  After the enzymatic digestion,
 fragments of certain lenghts are selected using PCR techniques (so that
 they can hybridize to the oligomers on the array), e.g. fragments with
 lenghts in 400-1100 base pairs are kept and all others are dropped.  The
-size range is specific for each assay.   Afterwards this filtered enzyme
+size range is specific for each assay.   Afterward this filtered enzyme
 cocktail is hybridized to the array.
 
 If we look at a particular DNA fragment that is hybridized to the array,
 we will find that it "carries" zero, one, or more loci of interest.  For
 instance, it may be long enough to have two SNPs and one CN locus
-inbetween.  The other way around, for a particular locus (SNP or CN
+in-between.  The other way around, for a particular locus (SNP or CN
 locus) of interest it may be that it is or is not on a filtered DNA
 fragment that ends up being hybridized to the array.   The set of SNPs
 and CN loci that pass the PCR filtering and hybridize to the array are

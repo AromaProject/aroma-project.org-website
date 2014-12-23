@@ -92,9 +92,7 @@ probes to gene models:
     'gene model' of sorts defined by clustering of exons automatically
     done by Affymetrix. The CDF contains both the transcript clusters as
     well as the exon identifications of the probes in a nested fashion.
--   [Ensembl Gene
-    Defintions](<%=pathTo('/chipTypes/HuEx-1_0-st-v2/Ensembl_Gene_Definitions')%>) gene
-    models based on the Ensembl annotation.
+-   [Ensembl Gene Definitions](<%=pathTo('/chipTypes/HuEx-1_0-st-v2/Ensembl_Gene_Definitions')%>) gene models based on the Ensembl annotation.
 -   [HsEx10stv2_Hs_REFSEQ](<%=pathTo('/chipTypes/HuEx-1_0-st-v2/HsEx10stv2_Hs_REFSEQ')%>) give
     some notes regarding regarding custom CDFs from U Michigan that map
     the exons to RefSeq transcript identifications.

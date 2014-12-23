@@ -1,0 +1,33 @@
+# Benchmarks: ACNE: The complexity of the ACNE estimator is linear in the number of samples and probes
+
+Author: Angel Rubio  
+Created on: 2010-05-06
+
+ACNE is applied to each SNP separately.  Thus, it never required more
+memory that the total amount of signals for one SNP across all samples.
+ A high-level implementation of ACNE is also available for the
+aroma.affymetrix framework, which provides an automatic way of
+processing SNPs in chunks such that the memory usage is
+bounded/constant.  Thus, ACNE can be done in aroma.affymetrix using only
+1-1.5GB of RAM, regardless of the number of arrays processed.  It is
+only the available disk space that limits the analysis.
+
+The complexity is each of the steps in algorithm is linear with K
+(number of probes) or I (number of samples). We have run a simulation
+for a single SNP with I=10, 20, 50, 100, 200, 500, 1000, 2000, 5000
+samples and a linear model fits perfectly the computing time (a standard
+Laptop with 2GB RAM). The y axis shows the total time per SNP. This
+simulation was performed for a 250K chip (K=20 probes per SNP). Total
+time in the summarization step can be obtained multiplying this time by
+the number of SNPs (in this case, about 80,000 seconds\~=1 day for
+I=5,000 arrays).
+
+ACNE is linear in K and I. The most complex process (computing the
+pseudinverse of H) is proportional to the number of samples.
+
+![](<%=pathTo('assets/images/ACNE/ACNE,benchmark,time-vs-samples.png')%>)
+
+Figure: The processing time of ACNE is proportional to the of the number
+of samples (I). The ACNE estimator was ran multiple times on simulated
+data sets with different number of samples. The presented data is the
+average times for many such runs.

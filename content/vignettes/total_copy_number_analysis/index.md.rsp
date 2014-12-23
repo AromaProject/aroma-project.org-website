@@ -224,7 +224,7 @@ Allelic-Crosstalk Calibration, the 'ra' tags indicates that afterwards
 all values are rescaled together ("rescale all"), and the tag '-XY'
 indicates that units on ChrX & ChrY are excluded from the *model fit*
 (estimate of the calibration parameters).  This is the default behavior
-and is done in order to avoid XX and XY samples being artifically shrunk
+and is done in order to avoid XX and XY samples being artificially shrunk
 toward each other.  However, note that *all units are still calibrated.*
 
 To calibrate the probe signals, do:
@@ -333,7 +333,7 @@ BB.  Thus, 25% of your probe allele signals for SNPs may be non-positive
 if the crosstalk calibration is "perfect".  For total copy number
 analysis we can add the allele A and allele B signals such that we
 partly avoid this problem.  However, there will still be some
-signals thare are zero or negative although they are summed.  When
+signals there are zero or negative although they are summed.  When
 fitting the log additive model, these values will become `NaN` when taking
 the logarithm, which is why you will see warnings on:
 

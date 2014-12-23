@@ -585,7 +585,7 @@ fitUgp:Classes 'AromaUgpFile', 'AromaUnitTabularBinaryFile',
 format: "2009-02-12 19:49:50"; targetDimension: int 1
 ```
 
-Note that the MSCN method idenfied four common array names (actually
+Note that the MSCN method identified four common array names (actually
 sample names), namely TCGA-02-0026-01Bvs10A, TCGA-02-0104-01Avs10A,
 TCGA-06-0129-01Avs10A, and TCGA-06-0178-01Avs10B.  This is what we
 expected.   These are the samples for which the full-resolution CN

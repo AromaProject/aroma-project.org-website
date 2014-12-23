@@ -63,7 +63,7 @@ This file can be downloaded from Affymetrix, via links available on the
 chip-type page [HuEx-1_0-st-v2](<%=pathTo('/chipTypes/HuEx-1_0-st-v2')%>).
 
 This annotation file contains a *lot* of information with respect to
-Ensembl/Genbank/... identifiers and so on that is not directly relevant
+Ensembl/GenBank/... identifiers and so on that is not directly relevant
 to what want to do.   Here we are interested in only small subset of
 these columns; 'probesetId', 'seqname', 'strand', 'transcriptClusterId', 'start'
 and 'stop'.  To read those into a data frame, we do:

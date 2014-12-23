@@ -1,0 +1,8 @@
+# Benchmarks
+
+## Benchmarks
+
+-   [ACNE: The complexity of the ACNE estimator is linear in the number
+    of samples.](<%=pathTo('/features/benchmarks/ACNE-Complexity')%>)
+-   [DNAcopy: Significant speedup from v1.18.0 to
+    v1.19.2](<%=pathTo('/benchmarks/DNAcopy_v1.19.2-speedup')%>)

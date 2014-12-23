@@ -147,7 +147,7 @@ fit <- segmentByPairedPSCBS(df, verbose=verbose)
 
 Note that this may take several minutes (per tumor-normal pair).
 
-To access the table of identified sements, use the `getSegments()` method,
+To access the table of identified segments, use the `getSegments()` method,
 which returns a data.frame (so it can easily be written to file):
 
 ```r

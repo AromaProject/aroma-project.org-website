@@ -477,7 +477,7 @@ GLAD to all 22+1 chromosomes.  If two 250K arrays are combined, as in
 this case, the *processing time is not double but approximately four
 times longer*, i.e. 2-2.5 hours per array.  In other words, fitting GLAD
 to Nsp and Sty combined may take days for a large data set.  (Footnote:
-In order to speed up the modelling, the GLAD package has to be
+In order to speed up the modeling, the GLAD package has to be
 optimized; there is nothing we can optimize in the aroma.affymetrix
 package.)  If some of the arrays are included only for the purpose of
 being reference samples, one do not have to fit GLAD to those, which
@@ -493,7 +493,7 @@ chromosomes.
 ```r
 ce <- ChromosomeExplorer(glad)
 
-# Arrays to be modelled
+# Arrays to be modeled
 setArrays(ce, c("1-288", "2-437", "3-575", "414-VA"))
 
 # Use a different data set name for the output
