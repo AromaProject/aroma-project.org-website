@@ -30,7 +30,7 @@ Copy-number segmentation:
 -   [Total copy-number segmentation (non-paired
     CBS)](<%=pathTo('/vignettes/NonPairedCBS')%>)
 -   [Paired parent-specific copy-number segmentation (Paired PSCBS)
-    (low-level API after AS-CRMAv2)](<%=pathTo('/vignettes/PairedPSCBS-lowlevel')%>)
+    (low-level API after ASCRMAv2)](<%=pathTo('/vignettes/PairedPSCBS-lowlevel')%>)
 
 Integrating copy numbers from multiple platforms:
 

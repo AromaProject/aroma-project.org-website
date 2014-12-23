@@ -1,2 +1,11 @@
 *~
-
+.Rhistory
+content,tmp/
+html/
+scraped/
+archive/
+assets/references/references.bib
+assets/references/references.dynamic.bib
+src/
+spell-words*.txt
+wget.log

@@ -12,12 +12,8 @@ arrays and so on.  Here are some of the features:
 
 -   Number of arrays: **unlimited**.
 -   System requirements: As low as **1GB RAM, any operating system**.
--   Chip types: **all Affymetrix** [chip types](<%=pathTo('/chipTypes/')%>) with a CDF,
-    e.g. gene expression, exon, SNP & CN, tiling arrays.
--   Immediate support for **custom CDFs**,
-    e.g. [BrainArray](http://brainarray.mbni.med.umich.edu/Brainarray/Database/CustomCDF/genomic_curated_CDF.asp), [GeneAnnot](http://www.xlab.unimo.it/GA_CDF/) and
-    [Wageningen
-    University-NuGO](http://nmg-r.bioinformatics.nl/NuGO_R.html).
+-   Chip types: **all Affymetrix** [chip types](<%=pathTo('/chipTypes/')%>) with a CDF, e.g. gene expression, exon, SNP & CN, tiling arrays.
+-   Immediate support for **custom CDFs**, e.g. [Brainarray](http://brainarray.mbni.med.umich.edu/Brainarray/Database/CustomCDF/genomic_curated_CDF.asp), [GeneAnnot](http://www.xlab.unimo.it/GA_CDF/) and [Wageningen University-NuGO](http://nmg-r.bioinformatics.nl/NuGO_R.html).
 -   File formats: Works directly with **CEL and CDF files** (all
     versions; text/ASCII, binary/XDA, binary/Calvin).
 -   Export to/Import from: Bioconductor, CNAG, CNAT & dChip.
@@ -36,8 +32,7 @@ arrays and so on.  Here are some of the features:
     Segmentation methods such as CBS, GLAD and HaarSeg.
 -   Genotyping: CRLMM (100K & 500K).
 -   Alternative splicing: FIRMA.
--   **Dynamic HTML reports**: [ArrayExplorer &
-    ChromosomeExplorer](<%=pathTo('/demos/')%>).
+-   **Dynamic HTML reports**: [ArrayExplorer & ChromosomeExplorer](<%=pathTo('/demos/')%>).
 -   **Persistent memory**: Final and intermediate results and estimates
     are stored on the file system.
 -   **Robustness**: Analysis picks up where last interrupted.  Only

@@ -7,7 +7,7 @@ Last updated: 2014-12-21
 ![](<%=pathTo('assets/images/ACNE/OrtizEstevezM_etal_2010-ACNE,Figure4.png')%>)
 
 Figure: Allele-specific copy numbers (C<sub>A</sub>,C<sub>B</sub>) using ACNE (left),
-AS-dChip (center) and AS-CRMA v2 (right) in a normal region where we know
+AS-dChip (center) and ASCRMA v2 (right) in a normal region where we know
 there should be three clouds located around (2,0), (1,1) and (0,2).
  Data is from an Mapping250K_Nsp data set.
 

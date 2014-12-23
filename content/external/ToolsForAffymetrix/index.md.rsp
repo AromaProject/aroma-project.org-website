@@ -249,7 +249,7 @@ oligonucleotide array data at probe level for Affymetrix GeneChips."
  References: Sepp Hochreiter, Djork-Arne Clevert & Klaus Obermayer, [A
 new summarization method for affymetrix probe level
 data](http://bioinformatics.oxfordjournals.org/cgi/content/short/22/8/943),
-Bioinformatics 2006 22(8):943-949; [doi:10.1093/bioinformatics/btl033].
+Bioinformatics 2006 22(8):943-949; [DOI:10.1093/bioinformatics/btl033].
 
 ## GADA (Genome Alteration Detection Analysis)
 
@@ -658,7 +658,7 @@ Author: D. Paladini et al., 2005.
  Operating system: Java (cross Operating system)Reference: Huntley D et
 al., Genome Environment Browser (GEB): a dynamic browser for visualising
 high-throughput experimental data in the context of genome features, BMC
-Bioinformatics, Nov 2008, 9:501, doi:10.1186/1471-2105-9-501.URL:
+Bioinformatics, Nov 2008, 9:501, DOI:10.1186/1471-2105-9-501.URL:
 <http://web.bioinformatics.ic.ac.uk/geb/>
 
 ## GoldSurfer2
@@ -683,7 +683,7 @@ chromosomal material in DNA copy-number data."
  References: Bjorn Nilsson; Mikael Johansson; Fatima Al-Shahrour; Anne
 E. Carpenter; and Benjamin L. Ebert. "Ultrasome: efficient aberration
 caller for copy number studies of ultra-high resolution". Bioinformatics
-(2009); doi: 10.1093/bioinformatics/btp091  
+(2009); DOI: 10.1093/bioinformatics/btp091  
  URL <http://www.broad.mit.edu/ultrasome/>
 
 ## MS-DOS subst

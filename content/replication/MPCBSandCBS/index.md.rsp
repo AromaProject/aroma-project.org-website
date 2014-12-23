@@ -105,14 +105,10 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base
 
 other attached packages:
-[1] mpcbs_1.1.0        fields_6.01        spam_0.20-2
-HaarSeg_0.0.2
-[5] GLAD_2.4.0         DNAcopy_1.20.0     aroma.core_1.5.1
-aroma.light_1.15.1
-[9] matrixStats_0.1.9  R.rsp_0.3.6        R.filesets_0.8.0
-digest_0.4.2
-[13] R.cache_0.2.0      R.utils_1.3.4      R.oo_1.6.7
-R.methodsS3_1.1.0
+[1] mpcbs_1.1.0        fields_6.01     spam_0.20-2       HaarSeg_0.0.2
+[5] GLAD_2.4.0         DNAcopy_1.20.0  aroma.core_1.5.1  aroma.light_1.15.1
+[9] matrixStats_0.1.9  R.rsp_0.3.6     R.filesets_0.8.0  digest_0.4.2
+[13] R.cache_0.2.0     R.utils_1.3.4   R.oo_1.6.7        R.methodsS3_1.1.0
 
 loaded via a namespace (and not attached):
 [1] tools_2.10.1

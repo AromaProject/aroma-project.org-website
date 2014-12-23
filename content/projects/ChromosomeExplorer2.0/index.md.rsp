@@ -55,7 +55,7 @@ Update or rewrite the ChromosomeExplorer such that:
     written by Steve Uhlers, and later adopted for R by Philippe
     Grosjean and Tom Short (Rpad package)"].
 -   As of today, part of the HTML and Javascript are generated using RSP
-    (R.rsp package), which is very similar to what the brew package is
+    (<% cran('R.rsp') %> package), which is very similar to what the brew package is
     doing.
 -   How far can we use Javascript packages such as jQuery, Prototype
     etc?  Will any of these work without a web server (over the file://
