@@ -10,20 +10,21 @@ different CDFs for the same chip type.
 
 Aroma.affymetrix searches for CDF files in the annotationData/ directory
 of the current working directory.  Place the CDF for chip type
-<chipType> in a directory of format:
-
-  annotationData/chipTypes/\<chip type\>/
-
-All other CDF files with filename format \<chip type\>,\<tags\>.cdf
+`<chipType>` in a directory of format:
+```
+  annotationData/chipTypes/<chip type>/
+```
+All other CDF files with filename format `<chip type>,<tags>.cdf`
 should also go into this directory.  For instance, so called *monocell
-CDFs* named \<chip type\>,monocell.cdf, should be placed in this
+CDFs* named `<chip type>,monocell.cdf`, should be placed in this
 directory (Footnote: Monocell CDF files are created automatically if
 missing and will/should by default be written to the correct
 directory.).  For example,
 
-  annotationData/chipTypes/Mapping50K_Hind240/Mapping50K_Hind240.cdf   
-
+```
+annotationData/chipTypes/Mapping50K_Hind240/Mapping50K_Hind240.cdf
 annotationData/chipTypes/Mapping50K_Hind240/Mapping50K_Hind240,monocell.cdf
+```
 
 Moreover, the name of a CDF file *should always* be identical to the
 name of the chip type followed by filename extension "cdf" (or "CDF"),
@@ -61,17 +62,22 @@ files containing data exported from the NetAffx data base. There is no
 well-defined filename convention of these.  Place them under the
 corresponding chip type directory, i.e.
 
-  annotationData/chipTypes/\<chipType\>/
+```
+annotationData/chipTypes/<chipType>/
+```
 
 For further separation of files, they, like any other annotation file,
 may be place un in subdirectories of the above, e.g.
 
-  annotationData/chipTypes/\<chipType\>/NetAffx/
+```
+  annotationData/chipTypes/<chipType>/NetAffx/
+```
 
 For example:
 
+```
 annotationData/chipTypes/Mapping50K_Hind240/NetAffx/Mapping50K_Hind240_annot.csv
-
+```
 
 ### Example
 
@@ -120,7 +126,9 @@ information* files.  These are available for several chip types from
 <http://www.dchip.org/>.  Make sure to put these under the corresponding
 directory
 
-  annotationData/chipTypes/\<chip type\>/
+```
+  annotationData/chipTypes/<chip type>/
+```
 
 The dChip files do *not* have to be renamed.  In order to organize
 annotation files further, it is possible to put the files in
