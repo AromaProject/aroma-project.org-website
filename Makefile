@@ -69,7 +69,7 @@ spell:
 	cat spell-words.sorted.txt
 
 check_links:
-	wget --spider -o wget.log -e robots=off -w 1 -r -p http://alpha.aroma-project.org/index.html
+	wget -R '*+url+*' --spider -o wget.log -e robots=off -w 1 -r -p http://alpha.aroma-project.org/index.html
 	grep -B 2 '404' wget.log
 
 check_html:
