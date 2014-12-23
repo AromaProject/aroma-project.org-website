@@ -14,7 +14,8 @@ the algorithm to go from something like O(J*log(J)) to near O(J).
 Moreover, the weighted version (where one use locus-specific weights)
 is now almost as fast as the non-weighted one.
 
-![](<%=pathTo('assets/images/DNAcopy/benchmark%2C20096010%2Csegment%2CDNAcopy_v1.18.0.png')%>)![](<%=pathTo('assets/images/DNAcopy/benchmark%2C20096010%2Csegment%2CDNAcopy_v1.19.2.png')%>)
+![](<%=pathTo('assets/images/DNAcopy/benchmark%2C20096010%2Csegment%2CDNAcopy_v1.18.0.png')%>)
+![](<%=pathTo('assets/images/DNAcopy/benchmark%2C20096010%2Csegment%2CDNAcopy_v1.19.2.png')%>)
 
 *Figure: Speed of CBS (with and without locus-specific weights) as a
 function of number of loci (J) using DNAcopy implementation v1.18.0

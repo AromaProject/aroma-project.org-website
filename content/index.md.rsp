@@ -1,9 +1,9 @@
 # An open-source R framework for your microarray analysis
 
-![ChromosomeExplorer](<%=pathTo('assets/images_thumbs/ChromosomeExplorer_20070108.png')%>) ![ArrayExplorer](<%=pathTo('assets/images_thumbs/ArrayExplorer,residuals,Firefox.png')%>) ![FIRMA
-and alternative
-splicing](<%=pathTo('assets/images_thumbs/exon_array_example_plot.png')%>) ![Allelic
-crosstalk](<%=pathTo('assets/images_thumbs/NA06985_Hind_B5_3005533-allelicPairsAT.png')%>)
+![ChromosomeExplorer](<%=pathTo('assets/images_thumbs/ChromosomeExplorer_20070108.png')%>)
+![ArrayExplorer](<%=pathTo('assets/images_thumbs/ArrayExplorer,residuals,Firefox.png')%>)
+![FIRMA and alternative splicing](<%=pathTo('assets/images_thumbs/exon_array_example_plot.png')%>)
+![Allelic crosstalk](<%=pathTo('assets/images_thumbs/NA06985_Hind_B5_3005533-allelicPairsAT.png')%>)
 
 Aroma.affymetrix is an R package for analyzing small to extremely large
 Affymetrix data sets.  It allows you to analyze any number of arrays of

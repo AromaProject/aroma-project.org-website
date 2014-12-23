@@ -60,6 +60,36 @@ build_both: build_content_tmp
 build: build_content
 
 
+#=====================================================================
+# Lists
+#=====================================================================
+images: images.log
+
+images.log:
+	grep -i -E "[.](png|gif|jpg)" html/*.html > images1.log
+	grep -i -E "[.](png|gif|jpg)" html/*/*.html >> images1.log
+	grep -i -E "[.](png|gif|jpg)" html/*/*/*.html >> images1.log
+	sed -E "s/\.(png|gif|jpg).*/.\1/g;" images1.log > images2.log
+	sed -E "s/.*(src|href)=['\"]//g;" images2.log > images3.log
+	sed -E "s/.*assets\//assets\//g;" images3.log > images4.log
+	sed "s/%2B/+/g;" images4.log > images5.log
+	sed "s/%2C/,/g;" images5.log > images6.log
+	sed "s/%28/(/g;" images6.log > images7.log
+	sed "s/%29/)/g;" images7.log > images8.log
+	sort -u images8.log > images.log
+	$(RM) images?.log
+	cat images.log
+
+copy_images: images.log
+	for file in `cat images.log | grep assets/`; do \
+	  $(MKDIR) images/`dirname $$file`; \
+	  $(CP) $$file images/`dirname $$file`; \
+	done
+
+
+#=====================================================================
+# Checks
+#=====================================================================
 spell:
 	@echo $(HTML_FILES)
 	$(RM) spell-words.txt
@@ -69,6 +99,15 @@ spell:
 	done
 	cat spell-words.txt | sort -u > spell-words.sorted.txt
 	cat spell-words.sorted.txt
+
+check_images: images.log
+	echo "Missing image file(s):" > images.missing.log
+	for file in `cat images.log`; do \
+	  if ! test -f $$file; then \
+	    echo $$file >> images.missing.log; \
+	  fi \
+	done
+	cat images.missing.log	
 
 check_links:
 	wget -R '*+url+*' --spider -o wget.log -e robots=off -w 1 -r -p http://alpha.aroma-project.org/index.html

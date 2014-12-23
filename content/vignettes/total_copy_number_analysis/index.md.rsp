@@ -11,7 +11,7 @@ that method, which we recommend, please see Vignette:
 '<a href="<%=pathTo('/vignettes/CRMAv2')%>">Estimation of total copy numbers using the CRMA v2 method (10K-GWS6)</a>'.
 <% }) %>
 
-![](<%=pathTo('assets/images/NA06994%2Cchr22%2Cx0032.png%2C19-25Mb.png')%>)
+![](<%=pathTo('assets/images/NA06994%2Cchr22%2Cx0032,19-25Mb.png')%>)
 
 *Figure: A region on Chr22 in HapMap sample NA06994 showing two
 deletions each with different copy number means.*
