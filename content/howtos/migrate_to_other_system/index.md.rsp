@@ -27,9 +27,7 @@ HB 2009-11-13
 
 **\<STUB\>**
 
-First of all, make sure to read the '[Migrate and reproduce an analysis
-elsewhere'](<%=pathTo('/howtos/MigrateAndReproduceAnAnalysisElsewhere')%>) how to page
-- it explains what the minimal amount data required for migrating a
-project.[  ](../101)
+First of all, make sure to read the '[Migrate and reproduce an analysis elsewhere'](<%=pathTo('/howtos/MigrateAndReproduceAnAnalysisElsewhere/')%>) how to page
+- it explains what the minimal amount data required for migrating a project.
 
 **\</STUB\>**

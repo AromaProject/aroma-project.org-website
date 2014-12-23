@@ -380,5 +380,4 @@ ds <- AromaUnitTotalCnBinarySet$byName(dataSet, chipType=chipType)
 
 ## See also
 
-For more information see How to page on '[Create a Unit Genome Position
-(UGP) file](<%=pathTo('/howtos/createUGP')%>)'.
+For more information see How to page on '[Create a Unit Genome Position (UGP) file](<%=pathTo('/howtos/CreateUGP/')%>)'.
