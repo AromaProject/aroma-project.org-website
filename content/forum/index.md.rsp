@@ -1,0 +1,51 @@
+# Forum
+
+## The aroma.* mailing list
+
+For questions or comments related to any of the aroma.* packages,
+please use the Google Group mailing list (**aroma-affymetrix [at]
+googlegroups.com**):
+
+<https://groups.google.com/forum/#!forum/aroma-affymetrix>
+
+You need to be a member to be able to post a message. *(Cannot access
+Google Groups? Drop
+adm[...](http://www.google.com/recaptcha/mailhide/d?k=1ee_iKppC5Ny_CxhhyOKkZg==&c=UNfK7e_5xZ1KPC6wEuwrYguUZNdlKOjzpjbk8_Kpl8I= "Reveal this e-mail address")@aroma-project.org
+a message and we'll add you to the mailing list manually.)*
+
+### Subscribe/Unsubscribe
+
+In order to post a message, you need to be a member of the mailing list.
+To signup, go to the above page and follow the instructions. It'll only
+take a few seconds. If you still have problems, drop
+adm[...](http://www.google.com/recaptcha/mailhide/d?k=1ee_iKppC5Ny_CxhhyOKkZg==&c=UNfK7e_5xZ1KPC6wEuwrYguUZNdlKOjzpjbk8_Kpl8I= "Reveal this e-mail address")@aroma-project.org
+a message and explain the problem.
+
+To unsubscribe, go to the above page and click on the 'My Settings' and
+follow the instructions.
+
+### Forum etiquettes
+
+Please, in order to be able to help out and save time for everyone:
+
+-   Please use the mailing list - do *not* send questions to the
+    authors' private email addresses, cf. [FAQ](<%=pathTo('/FAQ/')%>).
+-   This is an open-source software which you can use immediately
+    without having to register. As a courtesy, please give your real
+    name and affiliation when posting messages. Anonymous posts are of
+    very low interest to us.
+-   Always provide the output `sessionInfo()` and `traceback()` in your
+    messages.
+
+### Mailing list archive
+
+-   [Google Groups
+    archive](https://groups.google.com/forum/#!forum/aroma-affymetrix)
+    (archive goes back to 2007-02-01 when mailing list was started)
+-   [The Mail Archive
+    archive](http://www.mail-archive.com/aroma-affymetrix@googlegroups.com/maillist.html)
+    (archive goes back to 2008-08-25)
+-   [Nabble.com archive](http://aroma-affymetrix.967894.n3.nabble.com/)
+    (archive goes back to 2010-09-26)
+
+  

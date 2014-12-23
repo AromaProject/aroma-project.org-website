@@ -1,0 +1,40 @@
+# Ensembl Gene Definitions
+
+Author: Mark Robinson, Elizabeth Purdom (pruned by Henrik Bengtsson)  
+Created on: 2007-12-03  
+Last updated: 2011-11-03
+
+This CDF has been created manually base on Ensembl gene definitions in
+four steps:
+
+1. Using [BioMart](http://www.biomart.org/), download a table of the Ensembl gene build which gives the genome coordinates of the exons.
+2. Do some filtering and manipulation so that probes do not map to
+   multiple genes (From the annotation available, some genes are
+   perfect subsets of other genes, in terms of the probesets used, some
+   genes overlap, etc. -- some judgement calls have been made).
+3. Create a 2-column table giving the gene identifier and the probeset
+   identifier.
+4. Use `createExonByTranscriptCdf()` of <% cran('aroma.affymetrix') %> to
+   create the CDF file.
+
+```
+#An example biomart query table  
+#Ensembl Gene ID  Chromosome  Biotype Ensembl Exon ID         Exon Start (bp) Exon End (bp)   Strand
+#ENSG00000146556  1           protein_coding  ENSE00001367146            4274         4365        -1
+#ENSG00000146556  1           protein_coding  ENSE00001383334            4863         4901        -1
+#ENSG00000146556  1           protein_coding  ENSE00001388009            5659         5764        -1
+#ENSG00000146556  1           protein_coding  ENSE00001364065            7096         7227        -1
+```
+Note that any other type of gene build exercise could be done in place
+of Ensembl (Ensembl was just easy to get access to the appropriate
+information).  If you have your own build, you only need to build the
+file from #3 above and then create the CDF file.
+
+If you have any questions or wish to do this for other chips, ask Mark
+Robinson.
+
+The CDF for the Human Exon array using Ensembl genes (U-units) and
+Affymetrix probesets (G-groups) can be downloaded from:
+
+* [HuEx-1_0-st-v2,U-Ensembl47,G-Affy.cdf](http://bioinf.wehi.edu.au/folders/mrobinson/exon/human_cdfs/HuEx-1_0-st-v2,U-Ensembl47,G-Affy.cdf) (created Nov 21, 2007)
+* [HuEx-1_0-st-v2,U-Ensembl49,G-Affy.cdf](http://bioinf.wehi.edu.au/folders/mrobinson/exon/human_cdfs/HuEx-1_0-st-v2,U-Ensembl49,G-Affy.cdf) (created Apr 1, 2008)

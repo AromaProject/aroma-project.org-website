@@ -47,9 +47,7 @@ rawData/
 
 ### Sample annotation data
 
-Download the
-[HapMap270.saf](<%=pathTo('/data/annotationData/samples/HapMap270.saf "HapMap270.saf"')%>)
-sample annotation file (SAF) and place it in:
+Download the [HapMap270.saf](<%=pathTo('/data/annotationData/samples/HapMap270.saf')%>) sample annotation file (SAF) and place it in:
 
 ```
 annotationData/

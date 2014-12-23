@@ -1,0 +1,75 @@
+# Caching of computational expensive tasks (memoization)
+
+<% alert_warn({ %>
+This is copy on an outdated Google Groups Page.
+It is kept here because some webpages links to it.
+<% }) %>
+
+
+## Memoization - automatic caching of computational expensive tasks
+
+There are several computations in aroma.affymetrix that generate
+identical output and are repeated between method calls or even
+analysis sessions.  In order to speed up such repeated calculations,
+the package caches results using a techique referred to as
+[memoization](http://en.wikipedia.org/wiki/Memoization).  You will
+typically notice that the first time you analyze a new type of chip,
+some computations takes a long time, but the second time it is much
+faster.
+ 
+For instance, in some cases the index of the _first cell_ (but not the
+others) in each CDF unit is queried.  In order to retrieve these
+indices, first all indices for all units are read and then the first
+index is extracted from each unit.  Since there are several 100,000s
+of units, this is a time consuming process.  In order to not have to
+repeat this process each time this kind of data is needed, the package
+caches the result to the file system the first time, and then reloads
+the cached results in future calls.  This mechanism is referred to as
+_on-file caching_.
+ 
+In cases where the computational expensive results are small enough,
+the package sometimes cache the results in memory for quick lookup.
+This is mainly used to speed up interactive usage, that is, method
+calls by the user at the prompt.  This mechanism is referred to as
+_in-memory caching_. 
+ 
+It is only redundant data that is cached, that is, cached (on-file or
+in-memory) results may be deleted at anytime without harm.
+
+## File caching
+Results cached to file are stored by default in the so call _cache
+root path_:
+```
+~/.Rcache/
+```
+You can find the current path by calling `getCacheRootPath()`. The
+location of the `.Rcache/` directory can be modified by using
+`setCacheRootPath()`. For example:
+```
+setCacheRootPath("/tmp/.Rcache/")
+```
+See `help("Startup")` how to add this to the `.Rprofile` file in order
+for this to be applied to all R sessions started.  Alternatively, one
+can set the path using system environment variable `R_CACHE_PATH`.
+The former overrides the latter.
+ 
+Cache files are named `<32-chars hexadecimal>.Rcache` where the
+hexadecimal part is a unique (MD5) identifier,
+e.g. `5c01b589b209fe250a04cda2d297555c.Rcache`.  Since the filename
+itself does not reveal what kind of data is cached, the cache
+directory structure is setup such that it should be possible to
+identify at least what type of results are contained in the cached
+files. First of all, all data cached by the package is stored under:
+```
+<cache root path>/aroma.affymetrix/
+```
+Then, for instance, data specific to a certain chip type is cached to:
+```
+<cache root path>/aroma.affymetrix/<chip type>/
+```
+and data specific to a certain data set is cached to:
+```
+<cache root path>/aroma.affymetrix/<data set name>,<data set tags>/
+```
+With this structure it is easy to clean out the cached data for a
+certain project when done.

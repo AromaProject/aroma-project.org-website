@@ -1,0 +1,61 @@
+# HsEx10stv2_Hs_REFSEQ
+
+Author: Mark Robinson  
+Created on: 2008-07-28
+
+Human Exon Array -- "Brainarray" annotation
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("HsEx10stv2_Hs_REFSEQ")
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HsEx10stv2_Hs_REFSEQ
+Filename: HsEx10stv2_Hs_REFSEQ.cdf
+Filesize: 32.16MB
+File format: v4 (binary; XDA)
+Chip type: HsEx10stv2_Hs_REFSEQ
+Dimension: 2560x2560
+Number of cells: 6553600
+Number of units: 56283
+Cells per unit: 116.44
+Number of QC units: 0
+RAM: 0.00MB
+
+> getUnitNames(cdf)[20789]
+[1] "4136241_at"
+> getUnitNames(cdf)[20790]
+[1] "NM_000014_at"
+```
+
+Notes:
+
+-   The group from Michigan known as "Brainarray"
+    (http://brainarray.mbni.med.umich.edu/) have created a number of
+    "Custom CDF" files for a range of Affymetrix platforms.
+-   Above is an example of the REFSEQ probe organization for the Human
+    Exon platform.  Many other platforms are available for many
+    organisms.
+-   Note that with the 56,283 units for this chip, the first 20,789 are
+    not RefSeqs.  I think they are genomic background probes, but I'm
+    not sure.
+-   To download one of these for your favourite chip, click on the
+    "Download Custom CDF Files" link from
+    http://brainarray.mbni.med.umich.edu/Brainarray/Database/CustomCDF/genomic_curated_CDF.asp
+-   The file you will want is the \<chip_organism_mapping\>.cdf which is
+    contained in the zip file under the column "CDF&Seq&Map&Desc".  It
+    is an ASCII cdf file, so be sure to use `convertCdf()` to convert it
+    to binary before using it for processing data.
+
+<% alert_warn({ %>
+<strong>CAUTION</strong>:
+If you have overlapping transcripts (which RefSeq
+almost surely will have), then be VERY careful if you are using the
+stored probe affinities.  Because with overlapping transcripts, you
+have probes that belong to multiple probesets and they will have
+possibly different estimate probe effects in the different
+probesets, when these get written to the 'probeAffinities.cel' file,
+the indices will clash and only one probe effect will be stored.
+The chip effects (i.e. gene-level expression summaries) are
+unaffected by this, so if you do not need to manually access the
+probe affinities, there is no worry.
+<% }) %>

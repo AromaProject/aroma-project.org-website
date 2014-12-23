@@ -1,0 +1,90 @@
+# HuEx-1_0-st-v2: Affymetrix transcript clusters definitions
+
+Author: Elizabeth Purdom, Mark Robinson, Ken Simpson  
+Created on: 2007-12-03  
+Last updated: 2012-08-30
+
+Affymetrix provides clusterings of the exon probesets that are meant to
+roughly correspond to genes (see Affymetrix documentation). An advantage
+of these groupings of the exons is that each exon and probe is uniquely
+mapped to only one transcript cluster. For exon array analysis, we would
+like a special CDF which maps transcript cluster IDs to exon
+IDs.Affymetrix does not provide a CDF for these mappings, but Ken
+Simpson created such CDFs based on the design-time annotation. However,
+Affymetrix updates these definitions quarterly, so these definitions no
+longer correspond to the definitions that users of Affymetrix's software
+would get. Elizabeth Purdom has created updated CDFs based on Affymetrix
+annotation and will plan to keep these update.
+
+Note that Affymetrix classifies each probeset (exon) as to its
+reliability, based on which annotation supports it. The classifications
+are "core","extended","full", "free", and "ambiguous" with "core" being
+the most reliable. To do analysis constrained to only these definitions,
+use the corresponding CDF. Note that if you are going to switch back and
+forth, you should probably define a tag in your call so that your
+results are not copied over.  See Page '[Fullnames, names and tags of directories and files](<%=pathTo('/definitions/namesAndTags/')%>)' and thread '[tag](http://groups.google.com/group/aroma-affymetrix/browse_thread/thread/5717296b0d573588/ad3da39388164587#ad3da39388164587)' (Dec 5, 2007). Because there will be future revisions, the string 'Rx' is added to the end to indicate the revision and allow a shorter way of identify the CDF than the date, for example in tagging.
+
+
+
+## NetAffx Nov. 12, 2007 (R3)
+
+Author: Elizabeth Purdom, UC Berkeley.  
+Created on: 2007-11-12
+
+-   [HuEx-1_0-st-v2,coreR3,A20071112,EP.CDF](http://aroma-project.org/data/annotationData/chipTypes/HuEx-1_0-st-v2/HuEx-1_0-st-v2,coreR3,A20071112,EP.cdf.gz) - Core probesets: 18,708 units/transcript clusters, 284,258 groups/probesets, and 1,082,385 probes.
+-   [HuEx-1_0-st-v2,extendedR3,A20071112,EP.CDF](http://aroma-project.org/data/annotationData/chipTypes/HuEx-1_0-st-v2/HuEx-1_0-st-v2,extendedR3,A20071112,EP.cdf.gz) - Extended + Core probesets: 147,476 units/transcript clusters, 804,085 groups/probesets, and 3,095,094 probes.
+-   [HuEx-1_0-st-v2,fullR3,A20071112,EP.CDF](http://aroma-project.org/data/annotationData/chipTypes/HuEx-1_0-st-v2/HuEx-1_0-st-v2,fullR3,A20071112,EP.cdf.gz) -
+    Full + Extended + Core probesets: 297,051 units/transcript clusters and 1,381,294 groups/probesets.
+-   [HuEx-1_0-st-v2,mainR3,A20071112,EP.CDF](http://aroma-project.org/data/annotationData/chipTypes/HuEx-1_0-st-v2/HuEx-1_0-st-v2,mainR3,A20071112,EP.cdf.gz) -
+    All 'main' design probesets (so includes 'free' and 'ambiguous' probesets): 312,355 units/transcript clusters and 1,400,703 groups/probesets.
+-   [HuEx-1_0-st-v2,controlR2,A20071112,EP.CDF](http://aroma-project.org/data/annotationData/chipTypes/HuEx-1_0-st-v2/HuEx-1_0-st-v2,controlR3,A20071112,EP.cdf.gz) - All 'control' probesets: 121 units and 24,809 groups. This consists of all control probes and what ever 'transcript cluster' groupings Affymetrix designated. This file may be updated to be more informative as I explore its contents more.
+
+## NetAffx Sept. 14, 2007 (R2)
+
+Author: Elizabeth Purdom, UC Berkeley.  
+Created on: 2007-09-14
+
+"I used the file 'HuEx-1_0-st-v2.na23.hg18.probeset.csv' to map the
+probesets defined in Affymetrix's default CDF into transcript
+clusters.  Note that I did not use definitions at the probe level, so if
+probes are mapped to different probesets in the updated annotation, I
+would have missed this (I do not think this is the case). One probeset
+in the current annotation is not contained in Affymetrix's default CDF,
+otherwise all probesets in the annotation file matched a probeset in the
+Affymetrix default CDF; I have not investigated this one probeset yet, though
+I think that it was also the case for Ken's conversion based on notes I
+received from him." /Elizabeth Purdom (2007-12-03).
+
+-   [HuEx-1_0-st-v2,coreR2,A20070914,EP.CDF](http://bcgc.lbl.gov/cdfFiles/HuEx-1_0-st-v2,A20070914,EP/HuEx-1_0-st-v2,coreR2,A20070914,EP.cdf) [38MB] Core probesets: 18,708 units/transcript clusters, 284,258 groups/probesets, and 1,082,385 probes.
+-   [HuEx-1_0-st-v2,extendedR2,A20070914,EP.CDF](http://bcgc.lbl.gov/cdfFiles/HuEx-1_0-st-v2,A20070914,EP/HuEx-1_0-st-v2,extendedR2,A20070914,EP.cdf) [116MB] Extended + Core probesets: 147,476 units/transcript clusters, 804,085 groups/probesets, and 3,095,094 probes.
+-   [HuEx-1_0-st-v2,fullR2,A20070914,EP.CDF](http://bcgc.lbl.gov/cdfFiles/HuEx-1_0-st-v2,A20070914,EP/HuEx-1_0-st-v2,fullR2,A20070914,EP.cdf) [200MB] Full + Extended + Core probesets: 297,051 units/transcript clusters and 1,381,294 groups/probesets.
+-   [HuEx-1_0-st-v2,mainR2,A20070914,EP.CDF](http://bcgc.lbl.gov/cdfFiles/HuEx-1_0-st-v2,A20070914,EP/HuEx-1_0-st-v2,mainR2,A20070914,EP.cdf) [200MB]  All 'main' design probesets (so includes 'free' and 'ambiguous' probesets): 312,355 units/transcript clusters and 1,400,703 groups/probesets.
+-   [HuEx-1_0-st-v2,controlR2,A20070914,EP.CDF](http://bcgc.lbl.gov/cdfFiles/HuEx-1_0-st-v2,A20070914,EP/HuEx-1_0-st-v2,controlR2,A20070914,EP.cdf) [2MB] All 'control' probesets: 121 units and 24,809 groups. This consists of all control probes and what ever 'transcript cluster' groupings Affymetrix designated. This file may be updated to be more informative as I explore its contents more.
+
+Download all: [HuEx-1_0-st-v2,R2,A20070914,EP.zip](http://bcgc.lbl.gov/cdfFiles/HuEx-1_0-st-v2,A20070914,EP/HuEx-1_0-st-v2,R2,A20070914,EP.zip)
+
+Note: Above files are hosted by Berkeley Cancer Genome Center.
+
+
+## Design-time annotation
+
+Author: Ken Simpson, WEHI.  
+Created on: 2007-??-??
+
+"I used the file 'HuEx-1_0-st-v2.r2.dt1.hg18.core.mps', downloaded from
+the Affymetrix web site, to create a list of transcript-exon mappings.  This
+was used to pull out the cell indices corresponding to each transcript,
+and new CDFs." /Ken Simpson, 2007-02-21.
+
+"Note that these annotations have some problems. In particular, there
+are a set of probes that are each mapped to multiple probesets. This is
+not the case for the NetAffx files above so far. The source for this
+problem has not been discovered. See thread '[My problem with the residuals --
+solved??](http://groups.google.com/group/aroma-affymetrix/browse_thread/thread/3111b959174ffe9c#)' (October 18, 2007) for the hazards this will create. If there is a desire for CDFs corresponding to the design-time annotation rather than
+the updated annotation above, please contact me and I might see if I can
+correct this problem." /Elizabeth Purdom (2007-12-03).
+
+-   [HuEx-1_0-st-v2,core.CDF](http://bioinf.wehi.edu.au/folders/ken/exon/HuEx-1_0-st-v2,core.cdf) [32MB] Contains 22,011 transcripts as the units/transcript
+    clusters, and 224,741 exons/probesets as the groups within each transcript.
+-   [HuEx-1_0-st-v2,extended.CDF](http://bioinf.wehi.edu.au/folders/ken/exon/HuEx-1_0-st-v2,extended.cdf) [86MB] core+extended probesets.
+-   [HuEx-1_0-st-v2,full.CDF](http://bioinf.wehi.edu.au/folders/ken/exon/HuEx-1_0-st-v2,full.cdf) [143MB] core+extended+full probesets.
