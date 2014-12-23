@@ -8,7 +8,7 @@ Last updated: 2011-03-08
 
 ![](<%=pathTo('assets/images/TumorBoost/BeadStudio%2CXY%2CTCGA-02-0001%2CtumorN%2CChr02%2CfracB.png')%>)
 
-Figure: Allele B fractions before and after TumorBoost normalization.
+_Figure: Allele B fractions before and after TumorBoost normalization._
 
 ## Introduction
 
@@ -440,10 +440,10 @@ The images generated above are reproduced in Figure 1.
 
 ![](<%=pathTo('assets/images/TumorBoost/BeadStudio%2CXY%2CTCGA-02-0001%2CtumorN%2CChr02%2CfracB.png')%>)
 
-Figure 1. Total copy numbers (top panel), Allele B fractions in the
+_Figure 1. Total copy numbers (top panel), Allele B fractions in the
 normal (second panel), in the tumor (third panel), and in the normalized
 tumor (bottom panel).  Data are from the Illumina HumanHap550 platform,
-preprocessed with BeadStudio (method "XY", not "BAF").
+preprocessed with BeadStudio (method "XY", not "BAF")._
 
 
 ## References

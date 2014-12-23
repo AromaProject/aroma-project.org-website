@@ -215,8 +215,8 @@ stext(side=3, pos=0, getFullName(cs))
 
 ![](<%=pathTo('assets/images/CRMAv2%2CHapMap%2CGWS6%2Cdensity%2Craw.png')%>)
 
-Figure: The empirical densities for each of the arrays in the data set
-before any calibration.
+_Figure: The empirical densities for each of the arrays in the data set
+before any calibration._
 
 
 ## Step 1 - Calibration for crosstalk between allele probe pairs
@@ -278,8 +278,8 @@ stext(side=3, pos=0, getFullName(cs))
 
 ![](<%=pathTo('assets/images/CRMAv2%2CHapMap%2CGWS6%2Cdensity%2CACC.png')%>)
 
-*Figure: The empirical densities for each of the arrays in the data set
-after crosstalk calibration.*
+_Figure: The empirical densities for each of the arrays in the data set
+after crosstalk calibration._
 
 ```r
 array <- 1
@@ -289,9 +289,9 @@ plotAllelePairs(acc, array=array, pairs=1:6, what="input", xlim=xlim/3)
 
 ![](<%=pathTo('assets/images/CRMAv2%2CHapMap%2CGWS6%2CNA06985%2Ccrosstalk%2Craw.png')%>)
 
-*Figure: Allele probe pair intensities (PMA,PMB) of array NA06985 for
+_Figure: Allele probe pair intensities (PMA,PMB) of array NA06985 for
 the six nucleotide pairs (A,C), (A,G), (A,T), (C,G), (C,T), and (G,T).
-Data shown is before calibration.*
+Data shown is before calibration._
 
 
 ```r
@@ -300,9 +300,9 @@ plotAllelePairs(acc, array=array, pairs=1:6, what="output", xlim=xlim)
 
 ![](<%=pathTo('assets/images/CRMAv2%2CHapMap%2CGWS6%2CNA06985%2Ccrosstalk%2CACC.png')%>)* *
 
-*Figure: Allele probe pair intensities (PMA,PMB) of array NA06985 for
+_Figure: Allele probe pair intensities (PMA,PMB) of array NA06985 for
 the six nucleotide pairs (A,C), (A,G), (A,T), (C,G), (C,T), and (G,T).
-Data shown is after calibration.*
+Data shown is after calibration._
 
 
 ## Step 2 - Normalization for nucleotide-position probe sequence effects
@@ -363,8 +363,8 @@ stext(side=3, pos=0, getFullName(cs))
 
 ![](<%=pathTo('assets/images/CRMAv2%2CHapMap%2CGWS6%2Cdensity%2CACC%2CBPN.png')%>)
 
-*Figure: The empirical densities for each of the arrays in the data set
-after crosstalk calibration and nucleotide-position normalization.*
+_Figure: The empirical densities for each of the arrays in the data set
+after crosstalk calibration and nucleotide-position normalization._
 
 
 ```r
@@ -376,13 +376,13 @@ plotAllelePairs(acc2, array=array, pairs=1:6, what="input", xlim=1.5*xlim)
 
 ![](<%=pathTo('assets/images/CRMAv2%2CHapMap%2CGWS6%2CNA06985%2Ccrosstalk%2CACC%2CBPN.png')%>)
 
-Figure: Allele probe pair intensities (PMA,PMB) of array NA06985 for the
+_Figure: Allele probe pair intensities (PMA,PMB) of array NA06985 for the
 six nucleotide pairs (A,C), (A,G), (A,T), (C,G), (C,T), and (G,T).  Data
 shown is after crosstalk calibration and nucleotide-position
 normalization.  Note how the heterozygote arms are along the diagonals,
 that is, there is a balance in the allele A and allele B signal for
 heterozygotes.  This is (on purpose) not corrected for in the allelic
-crosstalk calibration.
+crosstalk calibration._
 
 
 ## Step 3 - Probe summarization
@@ -635,8 +635,8 @@ stext(side=3, pos=1, "Chr2")
 
 ![](<%=pathTo('assets/images/CRMAv2%2CHapMap%2CGWS6%2CNA06985%2CChr2%2C81-86Mb%2CTCN.png')%>)
 
-*Figure: Copy number estimates in a 5.0Mb region on Chr2 for sample
-NA06985.  There is a* *clear deletion at 83.1-83.7Mb.*
+_Figure: Copy number estimates in a 5.0Mb region on Chr2 for sample
+NA06985.  There is a clear deletion at 83.1-83.7Mb._
 
 ## Conclusions
 

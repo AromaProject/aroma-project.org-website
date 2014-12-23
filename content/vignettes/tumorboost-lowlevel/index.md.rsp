@@ -75,12 +75,12 @@ plot(pos, betaTN2, col=col, ylim=ylim)
 
 ![](<%=pathTo('assets/images/aroma.cn%2CnormalizeTumorBoost.png')%>)
 
-Figure: The allele B fractions for the normal sample (first row), tumor
+_Figure: The allele B fractions for the normal sample (first row), tumor
 sample (second row), the TumorBoost normalized tumor sample using
 already estimated genotypes (third row), and the TumorBoost normalized
 tumor sample without genotypes (fourth row).  This is Illumina data on
 Chromosome 2 from a random TCGA sample (not TCGA-23-1027 used in the
-TumorBoost manuscript).
+TumorBoost manuscript)._
 
 
 ## References

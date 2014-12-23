@@ -6,10 +6,10 @@ Last updated: 2014-12-21
 
 ![](<%=pathTo('assets/images/ACNE/OrtizEstevezM_etal_2010-ACNE,Figure4.png')%>)
 
-Figure: Allele-specific copy numbers (C<sub>A</sub>,C<sub>B</sub>) using ACNE (left),
+_Figure: Allele-specific copy numbers (C<sub>A</sub>,C<sub>B</sub>) using ACNE (left),
 AS-dChip (center) and ASCRMA v2 (right) in a normal region where we know
-there should be three clouds located around (2,0), (1,1) and (0,2).
- Data is from an Mapping250K_Nsp data set.
+there should be three clouds located around (2,0), (1,1) and (0,2). 
+Data is from an Mapping250K_Nsp data set._
 
 This document describes how to estimate allele specific copy numbers
 (ASCNs) in <% cran('aroma.affymetrix') %> using ACNE <% citep('OrtizM_etal_2012-ACNE') %>.  ACNE is a summarization method that provides ASCNs based on signals normalized in a similar way to as CRMA v2 <% citep('BengtssonH_etal_2009-CRMAv2') %>.
