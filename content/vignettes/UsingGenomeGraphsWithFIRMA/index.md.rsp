@@ -150,6 +150,8 @@ are GenomeGraphs containers for the data to be plotted:
 
 ```r
 library("GenomeGraphs")
+library("R.devices")
+devOptions("png", width=1024)
 
 dp <- DisplayPars(plotMap=FALSE, color=cols, lwd=lwds)
 
@@ -190,7 +192,6 @@ below.
 ```r
 tracks <- list(ea1, ga, ea2, gr, tr)
 
-devOptions("png", width=1024)
 toPNG(getFullName(plm), tags=unitName, aspectRatio=0.8, {
   gdPlot(tracks)
 })

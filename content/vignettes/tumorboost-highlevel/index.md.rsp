@@ -100,6 +100,9 @@ vignette](<%=pathTo('/vignettes/CRMAv2')%>) for details.
 
 ```r
 library("aroma.cn")
+library("R.devices")
+devOptions("png", width=1024)
+
 log <- verbose <- Arguments$getVerbose(-8, timestamp=TRUE)
 rootPath <- "totalAndFracBData"
 rootPath <- Arguments$getReadablePath(rootPath)
@@ -352,38 +355,24 @@ names[names == "tumorN"] <- "normalized tumor"
 x <- pos/1e6
 xlim <- range(x, na.rm=TRUE)
 xlab <- "Position (Mb)"
-
-width <- 840
-width <- 1280
-aspect <- 0.6*1/3
 ```
 
 ### Plot allele B fractions
 
 ```r
-ylim <- c(-0.05,1.05)
-ylim <- c(-0.1,1.1)
-ylab <- "Allele B Fraction"
 cols <- as.integer(beta[,"callsN"] != 1) + 1L
 
 for (cc in 1:3) {
-  tag <- colnames(beta)[cc]
-  name <- names[cc]
-  figName <- sprintf("%s,%s,%s,%s,fracB", siteTag, sampleName, tag, chrTag)
-  pathname <- filePath(figPath, sprintf("%s.png", figName))
-  if (!isFile(pathname)) {
-    fig <- devNew("png", pathname, label=figName, width=width, height=aspect*width)
-    par(mar=c(2.7,2.5,1.1,1)+0.1, tcl=-0.3, mgp=c(1.4,0.4,0), cex=2)
-    par(mar=c(1.7,2.5,1.1,1)+0.1)
-    plot(NA, xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab, axes=FALSE)
+  toPNG(sampleName, tags=c(siteTag, colnames(beta)[cc], chrTag, "fracB"), aspectRatio=0.6*1/3, {
+    par(mar=c(1.7,2.5,1.1,1)+0.1, tcl=-0.3, mgp=c(1.4,0.4,0), cex=2)
+    plot(NA, xlim=xlim, ylim=c(-0.1,1.1), xlab=xlab, ylab="Allele B Fraction", axes=FALSE)
     axis(side=1)
     axis(side=2, at=c(0,1/2,1))
     points(x, beta[,cc], pch=".", col=cols)
-    label <- sprintf("%s (%s)", sampleName, name)
+    label <- sprintf("%s (%s)", sampleName, names[cc])
     stext(side=3, pos=0, label)
     stext(side=3, pos=1, chrTag)
-    devDone()
-  }
+  }, force=FALSE)
 }
 ```
 
@@ -429,23 +418,16 @@ C <- extractMatrix(dsPairC, units=units)
 C <- 2*C[,1]/C[,2]
 
 # Plot total CNs
-ylim <- c(0,6)
-ylab <- "Copy number"
-figName <- sprintf("%s,%s,%s,CN", siteTag, sampleName, chrTag)
-pathname <- filePath(figPath, sprintf("%s.png", figName))
-if (!isFile(pathname)) {
-  fig <- devNew("png", pathname, label=figName, width=width, height=aspect*width)
-  par(mar=c(2.7,2.5,1.1,1)+0.1, tcl=-0.3, mgp=c(1.4,0.4,0), cex=2)
-  par(mar=c(1.7,2.5,1.1,1)+0.1)
-  plot(NA, xlim=xlim, ylim=ylim, xlab=xlab, ylab=ylab, axes=FALSE)
+toPNG(sampleName, tags=c(siteTag, chrTag, "CN"), aspectRatio=0.6*1/3, {
+  par(mar=c(1.7,2.5,1.1,1)+0.1, tcl=-0.3, mgp=c(1.4,0.4,0), cex=2)
+  plot(NA, xlim=xlim, ylim=c(0,6), xlab=xlab, ylab="Copy number", axes=FALSE)
   axis(side=1)
   axis(side=2, at=c(0,2,4,6))
   points(x, C, pch=".")
   label <- sprintf("%s", sampleName)
   stext(side=3, pos=0, label)
   stext(side=3, pos=1, chrTag)
-  devDone()
-}
+})
 ```
 
 The images generated above are reproduced in Figure 1.

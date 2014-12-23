@@ -78,30 +78,13 @@ annotationData/
 
 ```r
 library("aroma.affymetrix")
+library("R.devices")
+devOptions("png", width=1024)
 
 # Use a nicer palette of colors
 colors <- RColorBrewer::brewer.pal(12, "Paired")
 palette(colors)
 
-# Default width of plots
-width <- 7
-
-devNew2 <- function(..., width=7, height=width) {
-imgFormat <- c("x11", "png")[2]
-if (imgFormat == "x11") {
-  devNew("x11", width=width, height=height, label=fig)
-} else {
-  # Rescale for PNG
-  c <- 640/7
-  width <- c*width
-  height <- c*height
-  figPath <- "figures"
-  mkdirs(figPath)
-  filename <- sprintf("%s.png", fig)
-  pathname <- filePath(figPath, filename)
-  devNew("png", file=pathname, width=width, height=height, label=fig)
-  }
-}
 
 # Setup the Verbose object
 verbose <- Arguments$getVerbose(-10, timestamp=TRUE)
@@ -390,14 +373,11 @@ col <- c("blue", "red")[n23]
 Mlab <- expression(log[2](theta/theta[R]))
 Mlim <- c(-5,2)
 
-fig <- "ChrX,biasCorrected"
-if (!devIsOpen(fig)) {
-  devNew2("png", width=width, height=0.618*width, label=fig)
+toPNG("ChrX", tags=c("biasCorrected"), aspectRatio=0.618, {
   boxplot(as.data.frame(M), col=col, ylim=Mlim, ylab=Mlab, las=2)
   abline(h=0, lty=4)
   title("Copy numbers on ChrX\n(bias corrected)")
-  devDone()
-}
+})
 ```
 
 To do the actual segmentation, do:
@@ -424,14 +404,11 @@ for (kk in 1:nbrOfArrays(cbs2)) {
 }
 colnames(M2) <- getArrays(cbs2)
 
-fig <- "ChrX,nonCorrected"
-if (!devIsOpen(fig)) {
-  devNew2("png", width=width, height=0.618*width, label=fig)
+toPNG("ChrX", tags=c("nonCorrected"), aspectRatio=0.618, {
   boxplot(as.data.frame(M2), col=col, ylim=Mlim, ylab=Mlab, las=2)
   abline(h=0, lty=4)
   title("Copy numbers on ChrX\n(non-bias corrected)")
-  devDone()
-}
+})
 ```
 
 

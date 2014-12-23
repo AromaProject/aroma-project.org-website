@@ -52,30 +52,12 @@ annotationData/
 
 ```r
 library("aroma.affymetrix")
+library("R.devices")
+devOptions("png", width=1024)
 
 # Use a nicer palette of colors
 colors <- RColorBrewer::brewer.pal(12, "Paired")
 palette(colors)
-
-# Default width of plots
-width <- 7
-
-devNew2 <- function(...) {
-  imgFormat <- c("x11", "png")[2]
-  if (imgFormat == "x11") {
-    devNew("x11", width=width, height=height, label=fig)
-  } else {
-    # Rescale for PNG
-    c <- 640/7
-    width <- c*width
-    height <- c*height
-    figPath <- "figures"
-    mkdirs(figPath)
-    filename <- sprintf("%s.png", fig)
-    pathname <- filePath(figPath, filename)
-    devNew("png", file=pathname, width=width, height=height, label=fig)
-  }
-}
 
 # Setup the Verbose object
 verbose <- Arguments$getVerbose(-10, timestamp=TRUE)
@@ -177,20 +159,16 @@ probes etc.  The following code illustrates how to use the `types`
 argument with `plotDensity()`.  See the below figure of the result.
 
 ```r
-height <- 0.618*width
 cols <- seq(along=types)
 
-fig <- "plotDensity,raw"
-if (!devIsOpen(fig)) {
-  devNew(width=width, height=height, label=fig)
+toPNG("plotDensity", tags=c(kk, "raw"), aspectRatio=0.618, {
   for (kk in seq(along=types)) {
     plotDensity(csR, types=types[kk], col=cols[kk], subset=NULL,
                 lwd=2, ylim=c(0,0.45), add=(kk > 1))
   }
   legend("topleft", col=cols, lwd=4, types)
   title("Raw probe signals")
-  devDone()
-}
+})
 ```
 
 ## Rank-based quantile normalization
@@ -227,9 +205,8 @@ for (type in types) {
   qn <- QuantileNormalization(csR, typesToUpdate=type, tags=c("*", type))
   print(qn)
   csN <- process(qn, verbose=verbose)
-  fig <- sprintf("plotDensity,QN,%s", type)
-  if (!devIsOpen(fig)) {
-    devNew(width=width, height=height, label=fig)
+
+  toPNG("plotDensity", tags=c("QN", type), aspectRatio=0.618, {
     # Plot the type normalized-by last.
     kks <- match(c(setdiff(types, type), type), types)
     for (kk in kks) {
@@ -237,8 +214,8 @@ for (type in types) {
     }
     legend("topleft", col=cols, lwd=4, types)
     title(sprintf("QuantileNormalization(..., typesToUpdate=\"%s\")", type))
-    devDone()
-  }
+  })
+  
   verbose && exit(verbose)
 }
 ```
