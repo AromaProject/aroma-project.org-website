@@ -1,7 +1,5 @@
 # Chip type: CytoScanHD_Array
 
-## CytoScanHD_Array
-
 From Affymetrix' web site: "The CytoScan HD Solution provides the
 broadest coverage, highest performance, and most "genotype-able" single
 nucleotide polymorphisms (SNPs) for detecting human chromosomal
@@ -27,7 +25,6 @@ Number of units: 2822125
 Cells per unit: 2.44
 Number of QC units: 4
 ```
-
 
 
 Affymetrix:

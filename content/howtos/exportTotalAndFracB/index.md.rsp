@@ -1,7 +1,5 @@
 # How to: Export total copy numbers and allele B fractions as aroma binary data files
 
-## Export total copy numbers and allele B fractions as aroma binary data sets
-
 Author: Henrik Bengtsson  
 Created on: 2010-11-04  
 Last updated: 2010-11-04
@@ -15,7 +13,7 @@ a ChipEffectSet.  The output is a list of two elements where the first
 specifies an AromaUnitTotalCnBinarySet and the second
 an AromaUnitFracBCnBinarySet.
 
-### Usage
+## Usage
 
 ```r
 dsList <- exportTotalAndFracB(cesN)

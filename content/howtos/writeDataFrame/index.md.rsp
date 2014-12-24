@@ -1,7 +1,5 @@
 # How to: Write data as a tab-delimited text file
 
-## Write data as a tab-delimited text file
-
 Author: Henrik Bengtsson  
 Created on: 2010-04-22  
 Last updated: 2010-04-23
@@ -46,14 +44,14 @@ the second and third columns will contain chromosome and position
 information for each unit (loci), which are obtained from the UGP file.
 
 
-### See also
+## See also
 
 To write annotation data, see how-to page '[Write annotation data as a
 tab-delimited text file](<%=pathTo('/howtos/annotationData-writeDataFrame')%>)'.
 
-### One data file per tab-delimited text file
+## One data file per tab-delimited text file
 
-#### Example: Export a single data file as a tab-delimited text file with annotation data added
+### Example: Export a single data file as a tab-delimited text file with annotation data added
 
 ```r
 dataSet <- "HapMap270,6.0,CEU,testSet"
@@ -135,7 +133,7 @@ print(data)
 ## 1024 SNP_A-2002002          1 34519557      1946.391
 ```
 
-### A whole data set per tab-delimited text file
+#### A whole data set per tab-delimited text file
 
 <% alert_warn({ %>
 <strong>Warning:</strong>
@@ -148,7 +146,7 @@ this, we recommend to generate one file per data file.
 <% }) %>
 
 
-#### Example: Export all data of a data set to a tab-delimited text file with annotation data added
+### Example: Export all data of a data set to a tab-delimited text file with annotation data added
 
 ```r
 dataSet <- "HapMap270,6.0,CEU,testSet"

@@ -1,7 +1,5 @@
 # HG_U95Av2
 
-## HG_U95Av2
-
 "This is a previous generation product [...].  This set of five GeneChip
 probe arrays contains almost 63,000 probe sets interrogating
 approximately 54,000 UniGene clusters derived from Build 95 of UniGene.
@@ -9,7 +7,7 @@ Based on this UniGene build and associated annotations, the HG-U95Av2
 array represents approximately 10,000 full-length genes, while arrays
 B-E represent EST clusters."  (Affymetrix Product page as of 2011-05-27)
 
-### HG_U95Av2
+## HG_U95Av2
 
 ```r
 > cdf <- AffymetrixCdfFile$byChipType("HG_U95Av2")

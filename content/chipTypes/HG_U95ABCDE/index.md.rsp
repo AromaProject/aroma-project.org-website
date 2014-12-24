@@ -1,7 +1,5 @@
 # Human Genome U95 Set
 
-## Human Genome U95 Set
-
 "This is a previous generation product [...].  This set of five GeneChip
 probe arrays contains almost 63,000 probe sets interrogating
 approximately 54,000 UniGene clusters derived from Build 95 of UniGene.
@@ -9,7 +7,7 @@ Based on this UniGene build and associated annotations, the HG-U95Av2
 array represents approximately 10,000 full-length genes, while arrays
 B-E represent EST clusters."  (Affymetrix Product page as of 2011-05-27)
 
-### HG_U95A
+## HG_U95A
 
 Note that the "A" chip was later replaced by the updated
 [HG_U95Av2](<%=pathTo('/chipTypes/HG_U95Av2')%>) chip type.
@@ -32,8 +30,7 @@ Number of QC units: 13
 ```
 
 
-
-### HG_U95B
+## HG_U95B
 
 ```r
 > cdf <- AffymetrixCdfFile$byChipType("HG_U95B")
@@ -71,7 +68,7 @@ Cells per unit: 32.39
 Number of QC units: 13
 ```
 
-### HG_U95D
+## HG_U95D
 
 ```r
 > cdf <- AffymetrixCdfFile$byChipType("HG_U95D")
@@ -90,7 +87,7 @@ Cells per unit: 32.39
 Number of QC units: 13
 ```
 
-### HG_U95E
+## HG_U95E
 
 ```r
 > cdf <- AffymetrixCdfFile$byChipType("HG_U95E")
@@ -108,7 +105,6 @@ Number of units: 12639
 Cells per unit: 32.41
 Number of QC units: 13
 ```
-
 
 
 ## Resources
