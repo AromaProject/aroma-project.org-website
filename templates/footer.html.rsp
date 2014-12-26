@@ -9,7 +9,7 @@
   <span style="float: right;">
   <%-- Link to W3 HTML validations --%>
   <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://<%@string
-  name="site_domain"%>/<%=url.path%>" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable" href="#content">Validate HTML</span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  name="site_domain"%>/<%=url.path%>" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
   &nbsp;
   <%-- Edit link --%>
   <a href="<%=editURL%>" id="edit"
