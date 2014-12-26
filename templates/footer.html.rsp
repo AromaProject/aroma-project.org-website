@@ -1,5 +1,5 @@
 <p class="muted credit" style="font-size: small;">
-  <a href="http://<%@string name="site_domain"%>">The Aroma Project</a>
+  The Aroma Project
   <span class="printonly">(http://<%@string name="site_domain"%>/)</span>
   ::
   © <%@string name="site_copyright"%>
@@ -8,14 +8,16 @@
 
   <span style="float: right;">
   <%-- Link to W3 HTML validations --%>
-  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://<%@string name="site_domain"%>/<%=url.path%>" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML"></span></a>
-  &nbsp;
-  <%-- Link to page on old site --%>
-  <a href="http://v1.aroma-project.org/<%=url.path%>" id="old-page" target="_blank"><span class="glyphicon glyphicon-time" title="See old page"></span></a>
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://<%@string
+  name="site_domain"%>/<%=url.path%>" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable" href="#content">Validate HTML</span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
   &nbsp;
   <%-- Edit link --%>
   <a href="<%=editURL%>" id="edit"
-  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit this page"></span></a>
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <%-- Link to page on old site --%>
+  <a href="http://v1.aroma-project.org/<%=url.path%>" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
   </span>
 </p>
 
