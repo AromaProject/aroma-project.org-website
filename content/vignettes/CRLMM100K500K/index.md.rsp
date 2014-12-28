@@ -384,7 +384,7 @@ for (cc in 1:ncol(conf)) {
 
 ## Appendix
 
-### Information about R and packages used
+### Session information
 
 ```r
 > sessionInfo()
