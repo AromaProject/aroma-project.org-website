@@ -188,7 +188,9 @@ _Figure: (thetaA, thetaB)_
 _Figure: (freqB)_
 
 
-## Session information
+## Appendix
+
+### Session information
 
 ```r
 R version 2.8.0 Patched (2008-10-21 r46766)  
