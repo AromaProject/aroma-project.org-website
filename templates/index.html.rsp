@@ -33,12 +33,12 @@
  BODY
  ----------------------------------------------------------------------------%>
 <div id="wrap">
-
+<div class="bs-docs-header" id="content">
 <div class="container">
 <%-- <h1 class="printonly">The Aroma Project</h1> --%>
 <%@include content="${body}"%>
 </div>
-
+</div> <%-- id="content" --%>
 </div> <%-- id="wrap" --%>
 
 <%-- Component used to expand such that it's possible
@@ -65,31 +65,9 @@
 <%--- Bootstrap core JavaScript ---%>
 <%--- Placed at the end of the document so the pages load faster ---%>
 <script src="<%@string name="jquery_url"%>/jquery.min.js"></script>
+<script src="<%=pathTo('assets/js/post-jquery.js')%>"></script>
 <script src="<%@string name="bootstrap_url"%>/js/bootstrap.min.js"></script>
-<%-- Auto-adjust height of navigation bar in case it
-     word wraps into two or more rows or some devices --%>
-<script>
-  $(document).ready(function(){
-      $(document.body).css('padding-top', $('#topnavbar').height() + 10);
-      $(window).resize(function(){
-          $(document.body).css('padding-top', $('#topnavbar').height() + 10);
-      });
-  });
-</script>
-<%-- Center images --%>
-<script type="text/javascript">
-  $(document).ready(function(){
-    var imgs = $('img'), i, img, parent;
-    for (i=0; i < imgs.length; i++) {
-      img = imgs[i];
-      // center an image if it is the only element of its parent
-      parent = img.parentElement;
-      if (parent.childElementCount === 1)
-        parent.style.textAlign = 'center';
-    }
-  });
-</script>
-
+<script src="<%=pathTo('assets/js/post-bootstrap.js')%>"></script>
 <%-- <%@include file="link-annotation.html.rsp"%> --%>
 <%-- Include any extras that the page wish to add to the end --%>
 <%@ifdef name="footer_tail"%>

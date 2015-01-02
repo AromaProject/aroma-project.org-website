@@ -105,6 +105,11 @@ gcrma.  (Bottom panel): The density of the log2-ratios between
 aroma.affymetrix and gcrma chip-effect estimates for the six arrays.*
 
 
+
+## References
+<% biblist() %>
+
+
 ## Appendix
 
 ### Session information
@@ -152,6 +157,3 @@ filename <- "12.doGCRMA_vs_gcrma.R"
 pathname <- file.path(path, filename)
 source(pathname)
 ```
-
-## References
-<% biblist() %>

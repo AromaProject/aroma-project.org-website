@@ -61,7 +61,7 @@
 -   [MoGene-1_1-st-v1](<%=pathTo('/chipTypes/MoGene-1_1-st-v1')%>)
 -   MoGene-2_0-st-v1
 -   [Mouse430_2](<%=pathTo('/chipTypes/Mouse430_2')%>)
--   [Mouse430A_2](<%=pathTo('/chipTypes/Mouse430_2')%>)
+-   [Mouse430A_2](<%=pathTo('/chipTypes/Mouse430A_2')%>)
 -   [PrimeView](<%=pathTo('/chipTypes/PrimeView')%>)
 -   [RaEx-1_0-st-v1](<%=pathTo('/chipTypes/RaEx-1_0-st-v1')%>)
 -   [RaGene-1_0-st-v1](<%=pathTo('/chipTypes/RaGene-1_0-st-v1')%>)

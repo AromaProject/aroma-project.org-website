@@ -12,14 +12,13 @@ also maintain such documentation.  Please consider
 [contributing](<%=pathTo('/getinvolved/')%>) to the online as well as help-page
 documentation.
 
+
 *FAQ. 2008-03-26: Why do you not want to answer questions sent to your
 private email address?*
 
-A: Please post all questions related to aroma.affymetrix to the
-
-aroma-affymetrix at googlegroups dot com
-
- mailing list.  This way there is a chance that others also can help out
+A: Please post all questions related to aroma.affymetrix to its dedicated
+[mailing list](<%=pathTo('/forum/')%>).
+This way there is a chance that others also can help out
 with your problem/question, which means that you hopefully get a reply
 quicker.  All questions and answers are archived and searchable online.
 Because of this, we can then refer to already answered questions by

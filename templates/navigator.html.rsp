@@ -1,3 +1,5 @@
+<%-- Accessibility --%>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
   <%-- Navigator --%>
   <div class="container-fluid">

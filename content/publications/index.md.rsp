@@ -1,4 +1,4 @@
-## Publications
+# Publications
 
 <%
 authors <- c('Bengtsson', 'Neuvial', 'Purdom', 'Robinson', 'Hansen', 'Bullard')
