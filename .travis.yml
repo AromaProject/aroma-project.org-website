@@ -54,7 +54,7 @@ script:
   - $RENV make
 
 after_success:
-  - rsync -avz --exclude '*~' --perms --chmod=ugo+rx --progress site/ $WEBSITE_PATH/beta/
+  - rsync -avz --exclude '*~' --perms --chmod=ugo+rx --progress html/ $WEBSITE_PATH/beta/
  
 notifications:
   email:
