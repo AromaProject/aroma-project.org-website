@@ -1,10 +1,19 @@
 R.utils::use("R.utils")
 
-input <- cmdArg(input="content")
-force <- cmdArg(force=FALSE)
-mstr(list(args=list(input=input, force=force)))
+sourceDirectory("templates/R/")
+#source("templates/R/aliases.R")
 
-tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), dest="html", force=FALSE) {
+## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Parse options
+## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+input <- ecget(input="content", inherits=FALSE)
+pattern <- ecget(pattern=NULL, inherits=FALSE)
+force <- ecget(force=FALSE, inherits=FALSE)
+mstr(list(args=list(input=input, pattern=pattern, force=force)))
+
+
+
+tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), dest="html", encoding="latin1", force=FALSE) {
   use("R.rsp")
   use("markdown")
 
@@ -22,7 +31,10 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
   pathS <- file.path(root, path)
   files <- list.files(pathS, pattern="[.]rsp$", recursive=TRUE)
 
-  sourceDirectory("templates/R/", verbose=-100)
+  # Subset of files?
+  if (!is.null(pattern)) {
+    files <- grep(pattern, files, value=TRUE)
+  }
 
   for (file in files) {
     fileS <- file.path(pathS, file)
@@ -36,7 +48,10 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
       mprintf("Compiling: %s -> %s\n", fileS, fileD)
 
       # Read content
-      body <- readLines(fileS, warn=FALSE)
+      body <- readLines2(fileS, warn=FALSE, encoding=encoding)
+      # Convert any non-ASCII strings into UTF-8 strings
+      body <- iconv(body, to="UTF-8")
+      stopifnot(all(is.element(Encoding(body), c("unknown", "UTF-8"))))
 
       # Find depth
       if (dir == ".") {
@@ -76,12 +91,16 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
       args$pathTo <- pathTo
       args$page <- page
       body <- rstring(body, type="application/x-rsp", args=args, workdir=pathD)
+      stopifnot(all(is.element(Encoding(body), c("unknown", "UTF-8"))))
       mcat("RSP Markdown -> Markdown...done\n")
 
       # Compile Markdown to HTML
       mcat("Markdown -> HTML...\n")
       body <- markdownToHTML(text=body, options="fragment_only", encoding="UTF-8")
-      body <- enc2utf8(body)
+      body <- iconv(body, to="UTF-8")
+      mprint(Encoding(body))
+      # Convert any non-ASCII strings into UTF-8 strings
+      stopifnot(all(is.element(Encoding(body), c("unknown", "UTF-8"))))
       mcat("Markdown -> HTML...done\n")
 
       # Compile RSP HTML with content
@@ -93,16 +112,13 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
       mcat("RSP arguments:\n")
       mstr(args)
 
-      if (charset == "UTF-8") {
-        oopts <- options(encoding="UTF-8")
-        on.exit(options(oopts))
-      }
-
-      html <- rfile(file="templates/index.html.rsp", args=args, workdir=pathD)
-
-      if (charset == "UTF-8") {
-        options(oopts)
-      }
+      html <- local({
+        if (charset == "UTF-8") {
+          oopts <- options(encoding="UTF-8")
+          on.exit(options(oopts))
+        }
+        rfile(file="templates/index.html.rsp", args=args, workdir=pathD)
+      })
 
       mcat("HTML + template -> HTML...done\n")
 
