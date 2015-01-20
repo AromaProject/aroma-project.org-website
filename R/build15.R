@@ -79,7 +79,9 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
       args$chipTypeData <- chipTypeData
       args$pathTo <- pathTo
       args$page <- page
-      body <- rstring(body, type="application/x-rsp", args=args, workdir=pathD)
+      body <- withLocale({
+        rstring(body, type="application/x-rsp", args=args, workdir=pathD, verbose=-10)
+      }, "LC_CTYPE", "C")
       mcat("RSP Markdown -> Markdown...done\n")
 
       # Compile Markdown to HTML
