@@ -36,7 +36,11 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
       mprintf("Compiling: %s -> %s\n", fileS, fileD)
 
       # Read content
-      body <- readLines(fileS, warn=FALSE)
+      body <- local({
+        con <- file(fileS, open="r", encoding="native.enc")
+        on.exit(close(con))
+        readLines(con, warn=FALSE)
+      })
 
       # Find depth
       if (dir == ".") {

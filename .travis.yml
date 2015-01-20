@@ -14,8 +14,8 @@ env:
   global:
     - secure: "WX4j9oqdP0lJejO0QzlbmYb/KBUdxoQs0u/E6DJgQScmCAkiKEPv5AfUbxdvcFxVrvGF0Zm2bpe+hIxW1Yjrn0b8sq77GK4NYJNHJ+5OCY2dxb7lf29qjYffqDdIk60SXGRYkRBbaJ+WSvo2wnnramZ6eUir7AbkWT/Q7EkiMyM="
     # Use r-travis or r-builder?
-#   - PKGR="./travis-tool.sh"  # r-travis
-    - PKGR="./pkg-build.sh"    # r-builder
+#   - RENV="./travis-tool.sh"  # r-travis
+    - RENV="./pkg-build.sh"    # r-builder
     - R_BUILD_ARGS="--no-manual"
     # Need LaTeX? (very time consuming to install)
     - BOOTSTRAP_LATEX=""
@@ -33,25 +33,25 @@ before_install:
   - openssl aes-256-cbc -K $encrypted_c3a636680457_key -iv $encrypted_c3a636680457_iv -in secrets.tar.enc -out secrets.tar -d
   - tar xvf secrets.tar > /dev/null
   - cp -R .ssh ~/
-  - echo PKGR=$PKGR
-  - if [ "$PKGR" == "./travis-tool.sh" ]; then
+  - echo RENV=$RENV
+  - if [ "$RENV" == "./travis-tool.sh" ]; then
       curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh;
-    elif [ "$PKGR" == "./pkg-build.sh" ]; then
+    elif [ "$RENV" == "./pkg-build.sh" ]; then
       curl -OL https://raw.githubusercontent.com/HenrikBengtsson/r-builder/master/pkg-build.sh;
     fi
-  - chmod 755 $PKGR
-  - $PKGR bootstrap
+  - chmod 755 $RENV
+  - $RENV bootstrap
   - if [ "BOOTSTRAP_LATEX" == "true" ]; then
       (cd /tmp && curl -OL http://mirrors.ctan.org/macros/latex/contrib/xcolor.zip && cd /usr/share/texmf/tex/latex && sudo unzip /tmp/xcolor.zip && cd xcolor && sudo latex xcolor.ins && sudo texhash)
     fi
 
 install:
-  - $PKGR install_r markdown R.utils R.rsp
-  - $PKGR run_script -e "R.utils::installPackages('http://braju.com/R/src/contrib/R.rsp_0.19.7.tar.gz')"
+  - $RENV install_r markdown R.utils R.rsp
+  - $RENV run_script -e "R.utils::installPackages('http://braju.com/R/src/contrib/R.rsp_0.19.7.tar.gz')"
 
 script:
   - echo "Building site"
-  - $PKGR make
+  - $RENV make
 
 after_success:
   - rsync -avz --exclude '*~' --perms --chmod=ugo+rx --progress site/ $WEBSITE_PATH/beta/
