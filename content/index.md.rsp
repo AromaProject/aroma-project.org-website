@@ -2,6 +2,7 @@
 <% alert_info({ %>
 News and recent updates:
 <ul>
+ <li>Jan 20, 2015: <a href="<%=pathTo('install/')%>">aroma.affymetrix 2.13.0</a> released.</li>
  <li>Jan 11, 2015: The Aroma Project turns 8 years</li>
  <li>Dec 23, 2014: New design of website (same content)</li>
  <li>Jun  8, 2014: PSCBS 0.43.0 released.</li>
