@@ -21,9 +21,9 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
   # All downloaded files
   pathS <- file.path(root, path)
   files <- list.files(pathS, pattern="[.]rsp$", recursive=TRUE)
+  mstr(files)
 
-  sourceDirectory("templates/R/", verbose=-100)
-
+  sourceDirectory("templates/R/")
   for (file in files) {
     fileS <- file.path(pathS, file)
     dir <- dirname(file)
@@ -37,7 +37,7 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
 
       # Read content
       body <- local({
-        con <- file(fileS, open="r", encoding="native.enc")
+        con <- file(fileS, open="r", encoding="latin1")
         on.exit(close(con))
         readLines(con, warn=FALSE)
       })
@@ -80,15 +80,18 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
       args$pathTo <- pathTo
       args$page <- page
       body <- withLocale({
-        rstring(body, type="application/x-rsp", args=args, workdir=pathD, verbose=-10)
+        rstring(body, type="application/x-rsp", args=args, workdir=pathD)
       }, "LC_CTYPE", "C")
+      body <- iconv(body, from="latin1", to="UTF-8")
       mcat("RSP Markdown -> Markdown...done\n")
 
       # Compile Markdown to HTML
       mcat("Markdown -> HTML...\n")
       body <- markdownToHTML(text=body, options="fragment_only", encoding="UTF-8")
-      body <- enc2utf8(body)
+      body <- iconv(body, from="latin1", to="UTF-8")  ## Does not seems to be needed?
+      mstr(body)
       mcat("Markdown -> HTML...done\n")
+
 
       # Compile RSP HTML with content
       mcat("HTML + template -> HTML...\n")
@@ -99,17 +102,41 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
       mcat("RSP arguments:\n")
       mstr(args)
 
+      main <- withLocale({
+        rstring(file="templates/index.html.rsp", args=args)
+      }, "LC_CTYPE", "C")
+      main <- iconv(main, from="latin1", to="UTF-8")
+      mprint(main)
+
+      ## AD HOC
+##      main <- gsub("<a9>", "\ua9", main)
+
+      ## Write to file
       html <- local({
         if (charset == "UTF-8") {
           oopts <- options(encoding="UTF-8")
           on.exit(options(oopts))
         }
-        ## FIXME: R.rsp should take care of this via an argument 'encoding'
-        withLocale({
-          rfile(file="templates/index.html.rsp", args=args, workdir=pathD, verbose=-50)
-        }, "LC_CTYPE", "C")
+
+        pathD <- Arguments$getWritablePath(pathD)
+        pathnameD <- file.path(pathD, "index.html")
+        con <- file(pathnameD, open="w")
+        on.exit(close(con), add=TRUE)
+        cat(main, file=con)
       })
 
+###      ## This hangs(!) on content/chipTypes/GenomeWideSNP_5/ /HB 2015-01-19
+###      html <- local({
+###        if (charset == "UTF-8") {
+###          oopts <- options(encoding="UTF-8")
+###          on.exit(options(oopts))
+###        }
+###
+###        ## FIXME: R.rsp should take care of this via an argument 'encoding'
+###        withLocale({
+###          rfile(file="templates/index.html.rsp", args=args, workdir=pathD, verbose=-100)
+###        }, "LC_CTYPE", "C")
+###      })
       mcat("HTML + template -> HTML...done\n")
 
 #      mprint(html)
