@@ -18,11 +18,6 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
   charset <- "UTF-8"
 ##  if (grepl("content", root)) charset <- "ISO-8859-1"
 
-  ## FIXME: R.rsp should take care of this via an argument 'encoding'
-  olocale <- Sys.getlocale("LC_CTYPE")
-  on.exit(Sys.setlocale("LC_CTYPE", olocale))
-  Sys.setlocale("LC_CTYPE", "C")
-
   # All downloaded files
   pathS <- file.path(root, path)
   files <- list.files(pathS, pattern="[.]rsp$", recursive=TRUE)
@@ -107,7 +102,10 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
           oopts <- options(encoding="UTF-8")
           on.exit(options(oopts))
         }
-        rfile(file="templates/index.html.rsp", args=args, workdir=pathD)
+        ## FIXME: R.rsp should take care of this via an argument 'encoding'
+        withLocale({
+          rfile(file="templates/index.html.rsp", args=args, workdir=pathD, verbose=-50)
+        }, "LC_CTYPE", "C")
       })
 
       mcat("HTML + template -> HTML...done\n")
