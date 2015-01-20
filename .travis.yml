@@ -37,7 +37,8 @@ before_install:
   - if [ "$PKGR" == "./travis-tool.sh" ]; then
       curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh;
     elif [ "$PKGR" == "./pkg-build.sh" ]; then
-      curl -OL https://raw.githubusercontent.com/metacran/r-builder/master/pkg-build.sh;
+#      curl -OL https://raw.githubusercontent.com/metacran/r-builder/master/pkg-build.sh;
+      curl -OL https://raw.githubusercontent.com/HenrikBengtsson/r-builder/master/pkg-build.sh;
     fi
   - chmod 755 $PKGR
   - $PKGR bootstrap
@@ -51,7 +52,7 @@ install:
 
 script:
   - echo "Building site"
-  - $PKGR run_script R/build15.R --input=content
+  - $PKGR make
 
 after_success:
   - rsync -avz --exclude '*~' --perms --chmod=ugo+rx --progress site/ $WEBSITE_PATH/beta/
