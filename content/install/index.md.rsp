@@ -6,11 +6,13 @@ To install or update aroma.affymetrix and all required and recommended
 packages, start R and do:
 
 ```r
+source('http://callr.org/install#aroma.core')
 source('http://callr.org/install#aroma.affymetrix')
 ```
 
 That's it. (You can install any CRAN and Bioconductor package using this
 approach)
+
 
 ## News/Change logs
 
