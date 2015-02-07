@@ -55,10 +55,3 @@ setwd(System$mapDriveOnWindows("Y:"))
  of absolute pathnames.  The limitation is deep down in the file
  system itself and it is the absolute pathname that counts.
 <% }) %>
-
-
-## Comments
-
-One could imagine that aroma should detect too long pathname and give a
-more informative error.  This is still something that has to be
-implemented. /HB 2010-01-06
