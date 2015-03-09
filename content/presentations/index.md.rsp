@@ -34,7 +34,7 @@ Slides (60): [pdf](<%=pathTo('/share/presentations/NeuvialP_20100930-StanfordBio
 Slides (9+7): [pdf](<%=pathTo('/share/presentations/neuvial,2010,CSB,TumorBoost,shortTalk.pdf')%>) [1.0Mb].
 
 2010-04-14: Pierre Neuvial, *On detecting and calling DNA copy number alterations in cancer samples from genotyping microarrays*, Institut Curie, Paris.  
-Slides (46): [pdf](http://neuvial.ensae.net/data/talks/neuvial,2010,CSB,TumorBoost,shortTalk.pdf) [2.1Mb].
+Slides (46): [pdf](<%=pathTo('/share/presentations/NeuvialP_2010spring-France.pdf')%>) [2.1Mb].
 
 ## 2009
 
