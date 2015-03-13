@@ -1,6 +1,6 @@
 <%------------------------------------------------------------%>
 <% alert_info({ %>
-<%@include file="content/news.md.rsp"%>
+<%@include file="content/news.html"%>
 <% }, icon=FALSE, css="margin: 0; padding: 1ex; font-size: small; font-style: italic;") %>
 <br>
 <%------------------------------------------------------------%>
