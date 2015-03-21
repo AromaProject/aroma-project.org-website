@@ -59,7 +59,7 @@ were designed.
 
 #### Ensembl-centric CDFs
 
-* [MoEx-1_0-st-v1,U-Ensembl50,G-Affy,EP.cdf](http://bcgc.lbl.gov/cdfFiles/MoEx-1_0-st-v1,U-Ensembl50,G-Affy/StandardBuild/MoEx-1_0-st-v1,U-Ensembl50,G-Affy,EP.cdf) [38.05MB] 21,837 units/transcript clusters with Ensembl identifiers,  279,424 groups/probesets.
+* <%=chipTypeData('MoEx-1_0-st-v1', 'MoEx-1_0-st-v1,U-Ensembl50,G-Affy,EP.cdf.gz')%> 21,837 units/transcript clusters with Ensembl identifiers,  279,424 groups/probesets.
 
 ### By Affymetrix:
 
