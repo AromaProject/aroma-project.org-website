@@ -1,12 +1,15 @@
 # Vignette: Sex-chromosome bias-corrected reference signals from pooled average
 
 Author: Henrik Bengtsson  
-Created on: 2009-09-19
+Created on: 2009-09-19  
+Updated on: 2015-04-17
 
 This document illustrates how to (i) use a sample annotation file to
 specify the gender of samples, and how to (ii) calculate a pooled
 copy-number reference that is corrected for sample biases due to
-difference in sex chromosomes.
+difference in sex chromosomes.  This gender-aware bias correction is
+described in Section '3.2.7 Reference signals' of
+<% citet('BengtssonH_etal_2009-CRMAv1') %>.
 
 In the below figure, the top and bottom panels show chromosome X copy-number
 estimates with and without bias correction.
@@ -15,8 +18,6 @@ estimates with and without bias correction.
 
 ![](<%=pathTo('assets/images/HapMap%2C250K%2CChrX%2Cbias-corrected.png')%>)
 
-The underlying model is described in Section '3.2.7 Reference signals'
-of <% citet('BengtssonH_etal_2009-CRMAv1') %>.
 
 
 ## Setup
