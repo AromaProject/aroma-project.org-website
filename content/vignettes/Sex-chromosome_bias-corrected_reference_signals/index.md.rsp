@@ -98,14 +98,12 @@ verbose <- Arguments$getVerbose(-10, timestamp=TRUE)
 cdf <- AffymetrixCdfFile$byChipType("Mapping50K_Hind240")
 print(cdf)
 
-gi <- getGenomeInformation(cdf)
-print(gi)
-
-si <- getSnpInformation(cdf)
-print(si)
-
-acs <- AromaCellSequenceFile$byChipType(getChipType(cdf, fullname=FALSE))
-print(acs)
+# Assert existance of Aroma UFL, UGP and ACS files needed
+# by the CRMA/CRMA v2 preprocessing methods
+# (these test are optional but it's helpful to check here)
+acs <- getAromaCellSequenceFile(cdf)
+ugp <- getAromaUgpFile(cdf)
+ufl <- getAromaUflFile(cdf)
 ```
 
 
@@ -301,41 +299,21 @@ NA07048 1   1
 ```
 
 
-## Calibration for crosstalk between alleles
-
+## Preprocessing (CEL files to copy-number signals)
+After having made sure everything above is correct, we next preprocess and summarize the raw CEL file data to obtain one copy-number signal per locus.  Here we the CRMA (v1) method <% citep('BengtssonH_etal_2009-CRMAv1') %>.
 ```r
-acc <- AllelicCrosstalkCalibration(csR)
-print(acc)
-csC <- process(acc, verbose=verbose)
-```
-
-## Probe summarization
-
-```r
-plm <- RmaCnPlm(csC, mergeStrands=TRUE, combineAlleles=TRUE)
-print(plm)
-
-fit(plm, verbose=verbose)
-
-# The estimated chip effects
-ces <- getChipEffectSet(plm)
-print(ces)
-```
-
-## Normalize for PCR fragment-length effects
-
-```r
-fln <- FragmentLengthNormalization(ces)
-print(fln)
-
-cesN <- process(fln, verbose=verbose)
+res <- doCRMAv1(csR, drop=FALSE)
+cesN <- res$cesN  # ChipEffectSet
 print(cesN)
+```
 
-# Example illustrating that the attributes applies to chip effects too
+Let's make sure the 'n23' and 'n24' attributes are also reflected in the chip effects returned:
+```r
 nXY <- t(sapply(cesN, function(cf) getAttributes(cf)[c("n23", "n24")]))
 rownames(nXY) <- getNames(cesN)
 print(nXY)
 ```
+
 
 ## Calculate sex-chromosome bias-corrected reference signals
 
