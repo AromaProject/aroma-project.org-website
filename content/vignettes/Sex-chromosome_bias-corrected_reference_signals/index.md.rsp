@@ -306,8 +306,9 @@ res <- doCRMAv1(csR, drop=FALSE)
 cesN <- res$cesN  # ChipEffectSet
 print(cesN)
 ```
+For modern chip types, such as GenomeWideSNP_6, it's recommended to use `doCRMAv2()` instead, which processes the data using the CRMA v2 method <% citep('BengtssonH_etal_2009-CRMAv2') %>.
 
-Let's make sure the 'n23' and 'n24' attributes are also reflected in the chip effects returned:
+Before continuing, lets convince ourselves that the 'n23' and 'n24' attributes are also reflected in the chip effects returned:
 ```r
 nXY <- t(sapply(cesN, function(cf) getAttributes(cf)[c("n23", "n24")]))
 rownames(nXY) <- getNames(cesN)
