@@ -74,14 +74,6 @@ use `setCacheRootPath()` to change the root directory.
 A: The NnnExplorer:s, such as ChromosomeExplorer and ArrayExplorer, are
 developed for modern web browser.  If it does not work on your browser,
 make sure to update and if that does not help, please let us know.
-~~A: The NnnExplorer:s, such as ChromosomeExplorer and ArrayExplorer, are
-developed for the Mozilla Firefox 2.0 v3.0 web browsers.  This means
-that they are likely to work under Firefox v1.5-2.0 too, but most likely
-not under Microsoft Internet Explorer or other web browsers (but should
-not be too hard to port, i.e. contributions appreciated).
-ChromosomeExplorer and ArrayExplorer has been updated to work with most
-modern web browsers.~~
-
 
 
 *FAQ. 2007-02-13: Why is aroma.affymetrix slow?*
