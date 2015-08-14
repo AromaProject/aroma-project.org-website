@@ -146,7 +146,7 @@ Chip type: HuGene-1_0-st-v1,r3
 Algorithm parameters: (subsetToUpdate: NULL, typesToUpdate: chr "pm",
 subsetToAvg: NULL, typesToAvg: chr "pm", .targetDistribution: NULL)
 Output path: probeData/tissues,RBC,QN/HuGene-1_0-st-v1
-Is done: TRUE
+Is done: FALSE
 RAM: 0.00MB
 ```
 
