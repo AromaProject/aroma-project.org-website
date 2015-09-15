@@ -126,7 +126,8 @@ check_images: images.log
 
 check_links:
 	wget -R '*+url+*' --spider -o wget.log -e robots=off -w 1 -r -p http://www.aroma-project.org/index.html
-	grep -B 2 '404' wget.log
+	grep -B 2 '404 Not Found' wget.log > wget.404.log
+	cat wget.404.log
 
 check_html:
 	$(R_SCRIPT) "R/w3c-html"
