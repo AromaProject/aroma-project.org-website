@@ -55,7 +55,7 @@ such that it installs.
 
 ### Usage
 
-Afterward installation, load the aroma and the sma packages by:
+After installation, load the aroma and the sma packages by:
 
 ```r
 > library("aroma")
