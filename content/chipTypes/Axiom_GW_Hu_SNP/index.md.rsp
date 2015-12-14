@@ -38,9 +38,9 @@ Cells per unit: 2.46
 Number of QC units: 4
 
 > unitNames <- getUnitNames(cdf)
-> seqToHumanReadable(grep("\^AFFX-", unitNames))
+> seqToHumanReadable(grep("^AFFX-", unitNames))
 [1] "1-8004"
-> seqToHumanReadable(grep("\^AX-", unitNames))
+> seqToHumanReadable(grep("^AX-", unitNames))
 [1] "8005-575100"
 ```
 

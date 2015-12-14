@@ -1,0 +1,42 @@
+# Chip type: Axiom_MNEc670
+
+## The Axiom Genotyping Solution
+
+More at <http://www.axiom.affymetrix.com/>.
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("Axiom_MNEc670", tags="r1")
+> cdf
+
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/Axiom_MNEc670
+Filename: Axiom_MNEc670,r1.cdf
+File size: 217.55 MB (228116405 bytes)
+Chip type: Axiom_MNEc670
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 1190x1190
+Number of cells: 1416100
+Number of units: 677340
+Cells per unit: 2.09
+Number of QC units: 4
+
+> unitNames <- getUnitNames(cdf)
+> seqToHumanReadable(grep("^AFFX-", unitNames))
+[1] "1-6544"
+> seqToHumanReadable(grep("^AX-", unitNames))
+[1] "6545-677340"
+```
+
+NOTE: There are no analysis methods in aroma.affymetrix that supports
+this chip type.  There are several reasons for this, one is that the CEL
+files the Axiom platform are so called multi-channel CEL, and none of
+the preprocessing methods are prepared for this.
+
+### Resources
+
+By Affymetrix.com:
+
+-   Product page:
+    <http://www.affymetrix.com/products_services/arrays/specific/axiom_solution.affx>
+-   Public data: ?

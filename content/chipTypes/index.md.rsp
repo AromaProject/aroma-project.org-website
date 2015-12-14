@@ -5,8 +5,6 @@
 ### DNA Copy Number and Genotyping arrays/array plates
 
 -   [ax13339](<%=pathTo('/chipTypes/ax13339')%>)
--   [Axiom_GW_Hu_SNP](<%=pathTo('/chipTypes/Axiom_GW_Hu_SNP')%>) [not supported by
-    aroma]
 -   [CentHindAv2 & CentXbaAv2](<%=pathTo('/chipTypes/CentHindAv2_and_CentXbaAv2')%>)
 -   [Citrus_SNP](<%=pathTo('/chipTypes/Citrus_SNP')%>)
 -   [Cytogenetics_Array](<%=pathTo('/chipTypes/Cytogenetics_Array')%>)
@@ -85,3 +83,10 @@
 ### Miscellaneous
 
 -   [Test3](<%=pathTo('/chipTypes/Test3')%>)
+
+
+### Axiom Genotyping Solution chip types
+_Note: None of the Axiom chip types are supported by the Aroma framework.  The reason for this is that the Affymetrix Axiom technology is quite different from the classical chip types.  For instance, Axiom is a multi-channel technology, whereas all other chip types are using a single-channel technology._
+
+-   [Axiom_GW_Hu_SNP](<%=pathTo('/chipTypes/Axiom_GW_Hu_SNP')%>)
+-   [Axiom_MNEc670](<%=pathTo('/chipTypes/Axiom_MNEc670')%>)
