@@ -1,0 +1,41 @@
+# Chip type: Axiom_Exome319
+
+## The Axiom Genotyping Solution
+
+More at <http://www.axiom.affymetrix.com/>.
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("Axiom_Exome319", tags="r1")
+> cdf
+
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/Axiom_Exome319
+Filename: Axiom_Exome319,r1.cdf
+File size: 130.05 MB (136363403 bytes)
+Chip type: Axiom_Exome319
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 992x992
+Number of cells: 984064
+Number of units: 404099
+Cells per unit: 2.44
+Number of QC units: 4
+
+> unitNames <- getUnitNames(cdf)
+> seqToHumanReadable(grep("^AFFX-", unitNames))
+[1] "1-85116"
+> seqToHumanReadable(grep("^AX-", unitNames))
+[1] "85117-404099"
+
+NOTE: There are no analysis methods in aroma.affymetrix that supports
+this chip type.  There are several reasons for this, one is that the CEL
+files the Axiom platform are so called multi-channel CEL, and none of
+the preprocessing methods are prepared for this.
+
+### Resources
+
+By Affymetrix.com:
+
+-   Product page:
+    <http://www.affymetrix.com/catalog/prod570018/AFFY/Axiom%26%23174%3B+Exome+Genotyping+Arrays#1_1>
+-   Public annotation data: [GEO GPL18760](http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GPL18760) - provides CDF.

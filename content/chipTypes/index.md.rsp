@@ -88,5 +88,6 @@
 ### Axiom Genotyping Solution chip types
 _Note: None of the Axiom chip types are supported by the Aroma framework.  The reason for this is that the Affymetrix Axiom technology is quite different from the classical chip types.  For instance, Axiom is a multi-channel technology, whereas all other chip types are using a single-channel technology._
 
+-   [Axiom_Exome319](<%=pathTo('/chipTypes/Axiom_Exome319')%>)
 -   [Axiom_GW_Hu_SNP](<%=pathTo('/chipTypes/Axiom_GW_Hu_SNP')%>)
 -   [Axiom_MNEc670](<%=pathTo('/chipTypes/Axiom_MNEc670')%>)
