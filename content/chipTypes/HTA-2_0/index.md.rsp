@@ -1,0 +1,45 @@
+# Chip type: HTA-2_0
+
+## Human Transcriptome Array 2.0
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("HTA-2_0", tags=c("r1", "exon"))
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HTA-2_0
+Filename: HTA-2_0,r1,exon.cdf
+File size: 818.80 MB (858574387 bytes)
+Chip type: HTA-2_0,r1,exon
+RAM: 0.00MB
+File format: v3 (text; ASCII)
+Dimension: 2572x2680
+Number of cells: 6892960
+Number of units: 914585
+Cells per unit: 7.54
+Number of QC units: 0
+```
+
+```r
+> cdf <- AffymetrixCdfFile$byChipType("HTA-2_0", tags=c("r1", "gene"))
+> cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HTA-2_0
+Filename: HTA-2_0,r1,gene.cdf
+File size: 467.96 MB (490696493 bytes)
+Chip type: HTA-2_0,r1,gene
+RAM: 0.00MB
+File format: v3 (text; ASCII)
+Dimension: 2572x2680
+Number of cells: 6892960
+Number of units: 70523
+Cells per unit: 97.74
+Number of QC units: 0
+```
+
+
+### Resources
+
+By Affymetrix.com:
+
+-   Product page:
+    <http://www.affymetrix.com/estore/browse/products.jsp?productId=prod760002&categoryId=35676&productName=GeneChip%2526%2523174%253B-Human-Transcriptome-Array-2.0#1_1>

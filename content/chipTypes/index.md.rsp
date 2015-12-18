@@ -42,7 +42,7 @@
 -   [HG-U133_Plus_2](<%=pathTo('/chipTypes/HG-U133_Plus_2')%>)
 -   [HG-U133A & HG-U133B](<%=pathTo('/chipTypes/HG-U133A_and_HG-U133B')%>)
 -   [HG-U133A_2](<%=pathTo('/chipTypes/HG-U133A_2')%>)
--   HTA-2_0
+-   [HTA-2_0](<%=pathTo('/chipTypes/HTA-2_0')%>)
 -   [HT_HG-U133A
     & HT_HG-U133B](<%=pathTo('/chipTypes/HT_HG-U133A_and_HT_HG-U133B')%>)
 -   [HT_HG-U133_Plus_PM](<%=pathTo('/chipTypes/HT_HG-U133_Plus_PM')%>)
