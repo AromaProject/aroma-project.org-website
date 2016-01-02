@@ -26,6 +26,7 @@ Number of QC units: 4
 [1] "1-85116"
 > seqToHumanReadable(grep("^AX-", unitNames))
 [1] "85117-404099"
+```
 
 NOTE: There are no analysis methods in aroma.affymetrix that supports
 this chip type.  There are several reasons for this, one is that the CEL
