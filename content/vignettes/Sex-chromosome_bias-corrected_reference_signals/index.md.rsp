@@ -98,7 +98,7 @@ verbose <- Arguments$getVerbose(-10, timestamp=TRUE)
 cdf <- AffymetrixCdfFile$byChipType("Mapping50K_Hind240")
 print(cdf)
 
-# Assert existance of Aroma UFL, UGP and ACS files needed
+# Assert existence of Aroma UFL, UGP and ACS files needed
 # by the CRMA/CRMA v2 preprocessing methods
 # (these test are optional but it's helpful to check here)
 acs <- getAromaCellSequenceFile(cdf)
