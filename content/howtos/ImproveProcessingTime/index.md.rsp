@@ -25,6 +25,13 @@ User success stories:
     issue](http://groups.google.com/group/aroma-affymetrix/browse_thread/thread/6d51a4bb43f1d360#)'
     (2010-01-11).
 
+
+## Enable parallel processing
+
+It is possible to process data in parallel on a local machine or on compute cluster.  To enable _multicore processing_ on the current machine, use `future::plan("multicore")`.  For more details, see How to '[Process data in parallel](<%=pathTo('/howtos/parallel_processing/')%>)'.
+
+
+
 ## Allow more memory to be used
 
 As far as possible, the algorithms of the package are designed and

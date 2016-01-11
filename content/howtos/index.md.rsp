@@ -85,6 +85,10 @@ will also become a problem.
 -   [Use Bioconductor data in aroma.*](<%=pathTo('/howtos/using_bioc_in_aroma')%>)
 
 
+## Performance
+-   [Improve processing time](<%=pathTo('/howtos/ImproveProcessingTime')%>)
+-   [Parallel processing](<%=pathTo('/howtos/parallel_processing')%>)
+
 
 ## Miscellaneous
 
@@ -96,12 +100,10 @@ will also become a problem.
     set](<%=pathTo('/howtos/CRMAv2_on_subset_of_arrays')%>)
 -   Distributed CRMA v2 processing across multiple machines [VOLUNTEERS
     NEEDED]
--   [Improve processing time](<%=pathTo('/howtos/ImproveProcessingTime')%>)
 -   [Delete intermediate data files while keeping final
     ones](<%=pathTo('/howtos/DeleteIntermediateDataFilesWhileKeepingFinalOnes')%>)
 -   [Process CEL files with mixed chip type
     aliases](<%=pathTo('/howtos/ProcessCELFilesWithDifferentChipTypeAliases')%>)
-
 
 
 ## Building custom-made annotation data
