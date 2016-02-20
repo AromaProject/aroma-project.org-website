@@ -72,10 +72,11 @@ data set name.  Then constraint filenames to have the following format:
 
 This format is read as "the fullname consists of a name followed by zero
 or more (the `*`) comma-separated tags".  Because of this format,
-*sample names and tags cannot contain commas*.  Footnote: A commas a
-legal character in all file systems we know of, and it has been used
-successfully for a long time in for instance the CVS version control
-system.
+*sample names and tags cannot contain commas*.
+
+Footnote: A commas is a legal character in all file systems we know of,
+and it has been used successfully for a long time in for instance the CVS
+version control system.
 
 
 ### Example continued
