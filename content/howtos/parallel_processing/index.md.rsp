@@ -10,30 +10,23 @@ Parallel processing is supported in Aroma since January 2016 with the release of
 As shown below, the `future::plan()` function can be used to control how data is processed.  I suggest that you add this to your `~/.Rprofile` file, or to a project-specific one `./.Rprofile` in the working directory.  This way you don't have to edit your scripts and therefore they should be able to run anywhere regardless of computational resources.
 
 
-## Sequential processing
+## Non-parallel processing
 The default is _single-core processing_ via synchronous "eager" futures. This can be explicit set as:
 ```r
 future::plan("eager")
 ```
 
-## Multicore processing
-To process data using _multiple cores_ on the current machine, make sure to call the following first:
+## Multiprocess processing
+To analyze data in parallel using _multiple processes_ on the current machine, make sure to call the following first:
 ```r
-future::plan("multicore")
+future::plan("multiprocess")
 ```
-That's it!  After this, methods in Aroma that supports parallel processing will automatically process the data in parallel.
+That's it!  After this, methods in Aroma that support parallel processing will automatically process the data in parallel.
 
-The number of cores utilized is given by `future::availableCores()`.  This function looks at a set of commonly used R options and system environment variables to infer the number of core available / assigned to the R session.  If no such settings are available, it will fall back to the total number of cores available on the machine as reported by `parallel::detectCores()`.  The easiest way to control these settings is to use `options(mc.cores=n)`.  See `help("availableCores", package="future")` for more details.
+If supported, the above will process data using multiple _forked_ R processes ("multicore"), otherwise, on for instance Microsoft Windows, it will process the data using multiple _background_ R processes ("multisession").
 
-Unfortunately, on Windows, R does not support multicore processing and will therefore fall back to use a single core.  An alternative is to instead use multisession processing.
+The number of parallel processes utilized is given by `future::availableCores()`.  This function looks at a set of commonly used R options and system environment variables to infer the number of core available / assigned to the R session.  If no such settings are available, it will fall back to the total number of cores available on the machine as reported by `parallel::detectCores()`.  The easiest way to control these settings is to use `options(mc.cores=n)`.  See `help("availableCores", package="future")` for more details.
 
-
-## Multisession processing
-To process data using _multiple R sessions running in the background_ on the current machine, use:
-```r
-future::plan("multisession")
-```
-The number of background sessions used is given by `future::availableCores()` just as for multicore processing above.
 
 
 ## Ad hoc cluster processing
