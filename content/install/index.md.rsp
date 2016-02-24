@@ -34,7 +34,7 @@ pkgs <- c("aroma.affymetrix", "aroma.cn", "aroma.core", "R.filesets", "PSCBS", "
 
 -   Software: [R](http://www.r-project.org/)
 -   Operating system: Linux, OS X, Windows, ... (any that runs R)
--   Memory: Minimum 500MB of RAM. Recommended \>1Gb.
+-   Memory: Minimum 500 MiB of RAM. Recommended \> 1 GiB.
 -   Disk space: Roughly 3-5 times the total size of your raw data files.
 
 ## License
