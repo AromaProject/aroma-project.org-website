@@ -16,7 +16,7 @@ approach)
 ## News/Change logs
 
 <%
-pkgs <- c("aroma.affymetrix", "aroma.cn", "aroma.core", "R.filesets", "PSCBS", "future")
+pkgs <- c("aroma.affymetrix", "aroma.cn", "aroma.core", "R.filesets", "PSCBS", "future", "future.BatchJobs")
 %>
 <% for (pkg in pkgs) { %>
 - [<%=pkg%>](http://cran.r-project.org/package=<%=pkg%>): 
