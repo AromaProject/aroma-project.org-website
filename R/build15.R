@@ -4,6 +4,26 @@ sourceDirectory("templates/R/")
 #source("templates/R/aliases.R")
 
 options(warn = 1L)
+options(encoding = "iso-8859-1")
+
+assert_no_plain_UTF8 <- function(x) {
+  name <- substitute(x)
+  x <- unlist(strsplit(x, split = "\n", fixed = TRUE))
+  if (anyNA(x)) {
+    bad <- rep("   ", times = length(x))
+    bad[is.na(x)] <- "==>"
+    lines <- sprintf("%s%3d: %s", bad, seq_along(x), sQuote(x))
+    msg <- sprintf("ENCODING ERROR: Detected NA character strings in %s:\n%s\n", sQuote(name), paste(lines, collapse = "\n"))
+    throw(msg)
+  }
+  if (any(grepl("<U+", x, fixed = TRUE))) {
+    bad <- rep("   ", times = length(x))
+    bad[grep("<U+", x)] <- "==>"
+    lines <- sprintf("%s%3d: %s", bad, seq_along(x), sQuote(x))
+    msg <- sprintf("ENCODING ERROR: Detected non-encoded UTF-8 character as plain text (e.g. '<U+00E9>') in %s:\n%s\n", sQuote(name), paste(lines, collapse = "\n"))
+    throw(msg)
+  }
+}
 
 
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -13,6 +33,7 @@ input <- ecget(input="content", inherits=FALSE)
 pattern <- ecget(pattern=NULL, inherits=FALSE)
 force <- ecget(force=FALSE, inherits=FALSE)
 verbose <- ecget(verbose=FALSE, inherits=FALSE)
+verbose <- -100
 mstr(list(args=list(input=input, pattern=pattern, force=force)))
 
 ## WORKAROUND:
@@ -20,7 +41,7 @@ mstr(list(args=list(input=input, pattern=pattern, force=force)))
 ## UTF-8 chararacter string.
 Sys.setlocale("LC_CTYPE", "C")
 
-tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), dest="html", encoding="latin1", force=FALSE, verbose=FALSE) {
+tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), dest="html", encoding=getOption("encoding"), force=FALSE, verbose=FALSE) {
   use("R.rsp")
   use("markdown")
 
@@ -30,9 +51,6 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
   # Argument 'dest':
   mkdirs(dest)
 
-
-  charset <- "UTF-8"
-##  if (grepl("content", root)) charset <- "ISO-8859-1"
 
   # All downloaded files
   pathS <- file.path(root, path)
@@ -55,10 +73,14 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
       mprintf("Compiling: %s -> %s\n", fileS, fileD)
 
       # Read content
-      body <- readLines2(fileS, warn=FALSE, encoding=encoding)
+      mcat("Read raw body ...\n")
+      body_raw <- readLines2(fileS, warn=FALSE, encoding = encoding)
+      assert_no_plain_UTF8(body_raw)
+      
       # Convert any non-ASCII strings into UTF-8 strings
-      body <- iconv(body, to="UTF-8")
-      stopifnot(all(is.element(Encoding(body), c("unknown", "UTF-8"))))
+      body_raw <- iconv(body_raw, from = encoding, to="UTF-8")
+      mprintf("Encoding of raw body: %s\n", hpaste(unique(sQuote(Encoding(body_raw)))))
+      stopifnot(all(Encoding(body) %in% c("unknown", "UTF-8")))
 
       # Find depth
       if (dir == ".") {
@@ -85,10 +107,16 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
       if (pathToRoot == ".") {
         page <- ""
       } else {
-        idx <- which(nzchar(body))[1L]
-        page <- trim(gsub("^[ ]*[#]+ *", "", body[idx]))
+        idx <- which(nzchar(body_raw))[1L]
+        page <- trim(gsub("^[ ]*[#]+ *", "", body_raw[idx]))
         mstr(page)
       }
+
+      assign("body_raw", body_raw, envir = globalenv())
+
+      assert_no_plain_UTF8(body_raw)
+#      body_raw <- iconv(body_raw, to = "iso-8859-1")
+#      assert_no_plain_UTF8(body_raw)
 
       # Compile RSP Markdown to Markdown
       mcat("RSP Markdown -> Markdown...\n")
@@ -97,34 +125,39 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
       args$chipTypeData <- chipTypeData
       args$pathTo <- pathTo
       args$page <- page
-      body <- rstring(body, type="application/x-rsp", args=args, workdir=pathD)
-      stopifnot(all(is.element(Encoding(body), c("unknown", "UTF-8"))))
+      body_md <- local({
+        oopts <- options(encoding = "UTF-8")
+	on.exit(options(oopts))
+        rstring(body_raw, type="application/x-rsp", args=args, workdir=pathD)#, encoding = "UTF-8")
+      })
+      mprintf("Encoding of RSP processed body: %s\n", hpaste(unique(sQuote(Encoding(body_md)))))
+      stopifnot(all(Encoding(body_md) %in% c("unknown", "UTF-8")))
+      assert_no_plain_UTF8(body_md)
+
       mcat("RSP Markdown -> Markdown...done\n")
 
       # Compile Markdown to HTML
       mcat("Markdown -> HTML...\n")
-      body <- markdownToHTML(text=body, options="fragment_only", encoding="UTF-8")
-      body <- iconv(body, to="UTF-8")
-      mprint(Encoding(body))
-      # Convert any non-ASCII strings into UTF-8 strings
-      stopifnot(all(is.element(Encoding(body), c("unknown", "UTF-8"))))
+      body_html <- markdownToHTML(text=body_md, options="fragment_only", encoding = "UTF-8")
+      mprintf("Encoding of Markdown processed body: %s\n", hpaste(unique(sQuote(Encoding(body_html)))))
+      assert_no_plain_UTF8(body_html)
+      stopifnot(all(is.element(Encoding(body_html), c("unknown", "UTF-8"))))
       mcat("Markdown -> HTML...done\n")
 
       # Compile RSP HTML with content
       mcat("HTML + template -> HTML...\n")
-      args$body <- body
-      args$charset <- charset
+      args$body <- body_html
+      args$charset <- "UTF-8" ## Forced by markdown::markdownToHtml()
       args$editURL <- file.path("https://github.com/AromaProject/aroma.project.org-website/tree/master/content", file, fsep="/")
       args$url.path <- sprintf("%s/", gsub("html/", "", pathD))
       mcat("RSP arguments:\n")
       mstr(args)
-
+      mprint(args$body)
+      assign("body", args$body, envir = globalenv())
       html <- local({
-        if (charset == "UTF-8") {
-          oopts <- options(encoding="UTF-8")
-          on.exit(options(oopts))
-        }
-        rfile(file="templates/index.html.rsp", args=args, workdir=pathD, verbose=verbose)
+        oopts <- options(encoding = "UTF-8")
+        on.exit(options(oopts))
+        rfile(file="templates/index.html.rsp", args=args, workdir=pathD, encoding = "UTF-8", verbose=verbose)
       })
 
       mcat("HTML + template -> HTML...done\n")
