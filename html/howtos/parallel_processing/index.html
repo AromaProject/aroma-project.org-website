@@ -49,7 +49,7 @@
 
 <p>Author: Henrik Bengtsson<br>
 Created on: 2016-01-11<br>
-Last updated: 2016-02-24</p>
+Last updated: 2017-01-03</p>
 
 <p>Parallel processing is supported in Aroma since January 2016 with the release of aroma.affymetrix 3.0.0.  The default is to process data sequentially (synchronously), but with a single change in setting, it is possible to process data in parallel (asynchroneously) on the current machine or on a cluster of compute node.  The mechanism for synchronously/asynchronously processing is automatically handled by the <a href="https://cran.r-project.org/package=future">future</a> package.</p>
 
@@ -79,14 +79,17 @@ Last updated: 2016-02-24</p>
 
 <p>To process data using <em>multiple R sessions running on different machines</em>, use something like:</p>
 
-<pre><code class="r">hosts &lt;- c(&quot;n1&quot;, &quot;n4&quot;, &quot;n4&quot;, &quot;n6&quot;, &quot;n7&quot;)
-cl &lt;- parallel::makeCluster(hosts)
-future::plan(&quot;cluster&quot;, cluster=cl)
+<pre><code class="r">future::plan(&quot;cluster&quot;, workers=c(&quot;n1&quot;, &quot;n4&quot;, &quot;n4&quot;, &quot;n6&quot;, &quot;n7&quot;))
 </code></pre>
 
 <h2>Job scheduler processing</h2>
 
-<p>Some of you have access to compute clusters with job schedulers such as Torque/PBS and Slurm.  Work is being done to support these type of environments as well and lots of testing is done internally.  However, we do not feel we&#39;re ready to release support for this just yet, but as soon as we are, we&#39;ll announce it.</p>
+<p>To process data on compute clusters via job schedulers such as Torque/PBS, install the <a href="https://cran.r-project.org/package=future.BatchJobs">future.BatchJobs</a> package and specify:</p>
+
+<pre><code class="r">future::plan(future.BatchJobs::batchjobs_torque)
+</code></pre>
+
+<p>There are similar settings for other job schedulers, e.g. Slurm and SGE.  For full details on how to configure BatchJobs, please see the <a href="https://cran.r-project.org/package=future.BatchJobs">future.BatchJobs</a> vignette. </p>
 </div>
 </div> 
 </div> 

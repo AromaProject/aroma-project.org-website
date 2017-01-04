@@ -2,7 +2,7 @@
 
 Author: Henrik Bengtsson  
 Created on: 2016-01-11  
-Last updated: 2016-02-24
+Last updated: 2017-01-03
 
 
 Parallel processing is supported in Aroma since January 2016 with the release of aroma.affymetrix 3.0.0.  The default is to process data sequentially (synchronously), but with a single change in setting, it is possible to process data in parallel (asynchroneously) on the current machine or on a cluster of compute node.  The mechanism for synchronously/asynchronously processing is automatically handled by the [future] package.
@@ -32,14 +32,17 @@ The number of parallel processes utilized is given by `future::availableCores()`
 ## Ad hoc cluster processing
 To process data using _multiple R sessions running on different machines_, use something like:
 ```r
-hosts <- c("n1", "n4", "n4", "n6", "n7")
-cl <- parallel::makeCluster(hosts)
-future::plan("cluster", cluster=cl)
+future::plan("cluster", workers=c("n1", "n4", "n4", "n6", "n7"))
 ```
 
 
 ## Job scheduler processing
-Some of you have access to compute clusters with job schedulers such as Torque/PBS and Slurm.  Work is being done to support these type of environments as well and lots of testing is done internally.  However, we do not feel we're ready to release support for this just yet, but as soon as we are, we'll announce it.
+To process data on compute clusters via job schedulers such as Torque/PBS, install the [future.BatchJobs] package and specify:
+```r
+future::plan(future.BatchJobs::batchjobs_torque)
+```
+There are similar settings for other job schedulers, e.g. Slurm and SGE.  For full details on how to configure BatchJobs, please see the [future.BatchJobs] vignette. 
 
 
 [future]: https://cran.r-project.org/package=future
+[future.BatchJobs]: https://cran.r-project.org/package=future.BatchJobs
