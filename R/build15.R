@@ -9,11 +9,15 @@ sourceDirectory("templates/R/")
 input <- ecget(input="content", inherits=FALSE)
 pattern <- ecget(pattern=NULL, inherits=FALSE)
 force <- ecget(force=FALSE, inherits=FALSE)
+verbose <- ecget(verbose=FALSE, inherits=FALSE)
 mstr(list(args=list(input=input, pattern=pattern, force=force)))
 
+## WORKAROUND:
+## With 'en_US.UTF-8' (default on Ubuntu 16.04) we get invalid
+## UTF-8 chararacter string.
+Sys.setlocale("LC_CTYPE", "C")
 
-
-tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), dest="html", encoding="latin1", force=FALSE) {
+tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), dest="html", encoding="latin1", force=FALSE, verbose=FALSE) {
   use("R.rsp")
   use("markdown")
 
@@ -117,7 +121,7 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
           oopts <- options(encoding="UTF-8")
           on.exit(options(oopts))
         }
-        rfile(file="templates/index.html.rsp", args=args, workdir=pathD)
+        rfile(file="templates/index.html.rsp", args=args, workdir=pathD, verbose=verbose)
       })
 
       mcat("HTML + template -> HTML...done\n")
@@ -133,13 +137,13 @@ if (!file_test("-d", "html/assets")) {
 
 if (input == "content,tmp") {
   root <- "content,tmp"
-  tohtml(root=root, force=force)
+  tohtml(root=root, force=force, verbose=verbose)
 } else if (input == "content") {
   root <- "content"
-  tohtml(root=root, force=force)
+  tohtml(root=root, force=force, verbose=verbose)
 } else if (input == "scrape") {
   root <-"scraped/5.rsp"
-  tohtml(root=root, dest="content,scraped", force=force)
+  tohtml(root=root, dest="content,scraped", force=force, verbose=verbose)
   str(root)
 } else {
   throw("Unknown '--input' value: ", input)
