@@ -138,9 +138,9 @@ check_css:
 
 
 #=====================================================================
-# Publish (=go live!)
+# Deploy (publish == go live!)
 #=====================================================================
-publish:
+deploy:
 	rsync -avvz --exclude '*~' --exclude 'references/*' --perms --chmod=ugo+rx --progress html/ aroma-project.org:public_html/aroma-project.org
 
 
