@@ -115,8 +115,6 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
       assign("body_raw", body_raw, envir = globalenv())
 
       assert_no_plain_UTF8(body_raw)
-#      body_raw <- iconv(body_raw, to = "iso-8859-1")
-#      assert_no_plain_UTF8(body_raw)
 
       # Compile RSP Markdown to Markdown
       mcat("RSP Markdown -> Markdown...\n")
@@ -132,6 +130,13 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
       })
       mprintf("Encoding of RSP processed body: %s\n", hpaste(unique(sQuote(Encoding(body_md)))))
       stopifnot(all(Encoding(body_md) %in% c("unknown", "UTF-8")))
+      assign("body_md", body_md, envir = globalenv())
+
+      ## WORKAROUND: R.rsp outputs UTF-8 characters as "<U+NNNN>" strings,
+      ## whereas ideally they should be outputted as '\uNNNN' characters.
+      ## As a workaround, we here translate those into HTML-escaped
+      ## characters, i.e. "<U+NNNN>" becomes "&#xNNNN;".
+      body_md <- gsub("<U[+]([0-9A-F]{4})>", "&#x\\1;", body_md)
       assign("body_md", body_md, envir = globalenv())
       assert_no_plain_UTF8(body_md)
 
