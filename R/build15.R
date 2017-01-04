@@ -80,7 +80,7 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
       # Convert any non-ASCII strings into UTF-8 strings
       body_raw <- iconv(body_raw, from = encoding, to="UTF-8")
       mprintf("Encoding of raw body: %s\n", hpaste(unique(sQuote(Encoding(body_raw)))))
-      stopifnot(all(Encoding(body) %in% c("unknown", "UTF-8")))
+      stopifnot(all(Encoding(body_raw) %in% c("unknown", "UTF-8")))
 
       # Find depth
       if (dir == ".") {
@@ -128,10 +128,11 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
       body_md <- local({
         oopts <- options(encoding = "UTF-8")
 	on.exit(options(oopts))
-        rstring(body_raw, type="application/x-rsp", args=args, workdir=pathD)#, encoding = "UTF-8")
+        rstring(body_raw, type="application/x-rsp", args=args, workdir=pathD, encoding = "UTF-8")
       })
       mprintf("Encoding of RSP processed body: %s\n", hpaste(unique(sQuote(Encoding(body_md)))))
       stopifnot(all(Encoding(body_md) %in% c("unknown", "UTF-8")))
+      assign("body_md", body_md, envir = globalenv())
       assert_no_plain_UTF8(body_md)
 
       mcat("RSP Markdown -> Markdown...done\n")
