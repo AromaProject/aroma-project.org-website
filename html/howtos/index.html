@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): How tos">Aroma: How tos</title>
+  <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../getstarted/index.html">Get Started</a></li>
+        <li><a href="../docs/index.html">Documentation</a></li>
+        <li><a href="../features/index.html">Features</a></li>
+        <li><a href="../resources/index.html">Resources</a></li>
+        <li><a href="../forum/index.html">Forum</a></li>
+        <li><a href="../FAQ/index.html">FAQ</a></li>
+        <li><a href="../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>How tos</h1>
+
+<h2>Packages</h2>
+
+<ul>
+<li>  <a href="../install/index.html">Install / update aroma.* packages</a></li>
+</ul>
+
+<h2>Directories and files</h2>
+
+<ul>
+<li>  <a href="../howtos/how-access-cel-files-non-standard-directory/index.html">Access CEL files in a non-standard directory using
+links</a></li>
+<li>  <a href="../howtos/setFullNamesTranslator/index.html">Use fullname translators to rename data
+files</a></li>
+</ul>
+
+<h2>Setting up data sets</h2>
+
+<ul>
+<li>  <a href="../howtos/SetupOfAromaUnitNnnCnBinarySet/index.html">Setting up an AromaUnitTotalCnBinarySet or an
+AromaUnitFracBCnBinarySet</a></li>
+</ul>
+
+<h2>Calculations</h2>
+
+<ul>
+<li>  <a href="../howtos/exportTotalCnRatioSet/index.html">Calculate total copy number ratios from from total
+(non-polymorphic) signals</a></li>
+</ul>
+
+<h2>Export signals</h2>
+
+<ul>
+<li>  <a href="../howtos/exportTotalAndFracB/index.html">Export total copy numbers and allele B fractions as aroma binary
+data files</a> [DOC IN PROGRESS]</li>
+<li>  <a href="../howtos/writeDataFrame/index.html">Write total copy numbers and allele B fractions as tab-delimited
+text files</a> [DOC IN PROGRESS]</li>
+</ul>
+
+<h2>Extract data as basic R objects</h2>
+
+<ul>
+<li>  <a href="../howtos/extractDataFrame/index.html">Extract probeset summaries (chip effects) as a data
+frame</a></li>
+<li>  <a href="../howtos/extractTheta/index.html">Extract probeset summaries (chip effects) as a multi-dimensional
+array</a></li>
+</ul>
+
+<h2>Extract data as objects recognized by Bioconductor packages</h2>
+
+<p>Both probe-level data and probe-summary data can be exported by aroma.*
+packages for further analysis in Bioconductor.  Note that most of <em>these
+methods will export data as in-memory object</em>, because that is how most
+of Bioconductor is designed.  For large probe-level data set this often
+means that it is not possible not export the complete data set.  For
+probe-summarized data, an order of magnitude larger data sets can be
+exported, but for really large data sets working with in-memory object
+will also become a problem.</p>
+
+<ul>
+<li>  <a href="../howtos/extractAffyBatch/index.html">Extract probe signals as an &#39;affy&#39; AffyBatch
+object</a></li>
+<li>  <a href="../howtos/extractExpressionSet/index.html">Extract probeset summaries (chip effects) as a &#39;Biobase&#39;
+ExpressionSet object</a></li>
+<li>  <a href="../howtos/extractSnpQSet/index.html">Extract probeset summaries (chip effects) as an &#39;oligo&#39; SnpQSet or
+SnpCnvQSet object</a></li>
+<li>  <a href="../howtos/using_aroma_in_bioc/index.html">Use aroma.* data within Bioconductor</a></li>
+</ul>
+
+<h2>Interaction with Bioconductor packages</h2>
+
+<ul>
+<li>  <a href="../howtos/using_bioc_in_aroma/index.html">Use Bioconductor data in aroma.*</a></li>
+</ul>
+
+<h2>Performance</h2>
+
+<ul>
+<li>  <a href="../howtos/ImproveProcessingTime/index.html">Improve processing time</a></li>
+<li>  <a href="../howtos/parallel_processing/index.html">Parallel processing</a></li>
+</ul>
+
+<h2>Miscellaneous</h2>
+
+<ul>
+<li>  <a href="../howtos/MigrateAndReproduceAnAnalysisElsewhere/index.html">Migrate and reproduce an analysis
+elsewhere</a></li>
+<li>  <a href="../howtos/migrate_to_other_system/index.html">Migrating all or parts of a project to another file
+system</a> [VOLUNTEERS NEEDED]</li>
+<li>  <a href="../howtos/CRMAv2_on_subset_of_arrays/index.html">Run CRMA v2 on a subset of arrays in a data
+set</a></li>
+<li>  <a href="../howtos/DeleteIntermediateDataFilesWhileKeepingFinalOnes/index.html">Delete intermediate data files while keeping final
+ones</a></li>
+<li>  <a href="../howtos/ProcessCELFilesWithDifferentChipTypeAliases/index.html">Process CEL files with mixed chip type
+aliases</a></li>
+</ul>
+
+<h2>Building custom-made annotation data</h2>
+
+<h3>CDF (Chip Definition File)</h3>
+
+<ul>
+<li>  <a href="../howtos/create_CDF_from_scratch/index.html">Create a CDF file from scratch (or from CLF and PGF
+files)</a></li>
+<li>  <a href="../howtos/bpmapCluster2Cdf/index.html">Create a CDF (and associated) files from a BpMap file (tiling
+arrays)</a></li>
+<li>  <a href="../howtos/createCdfFromBioconductorPlatformDesignInfo/index.html">Create a CDF file from Bioconductor Platform Design (PD) Info
+package</a></li>
+<li>  <a href="../howtos/createCdfFromBioconductorCdfPackage/index.html">Create a CDF file from Bioconductor CDF
+package</a></li>
+</ul>
+
+<h3>Aroma-specific annotation files</h3>
+
+<ul>
+<li>  <a href="../howtos/CreateUGP/index.html">Create a Unit Genome Position (UGP) files</a></li>
+<li>  <a href="../howtos/CreateAUnitFragmentLengthFile/index.html">Create a Unit Fragment Length (UFL)
+files</a></li>
+<li>  <a href="../howtos/CreateAcsFile/index.html">Create an Aroma Cell Sequence (ACS) file</a></li>
+<li>  <a href="../howtos/annotationData-writeDataFrame/index.html">Write annotation data as a tab-delimited text
+file</a></li>
+</ul>
+
+<h2>MS Windows specific solutions</h2>
+
+<ul>
+<li>  <a href="../howtos/UseLongFilenamesOnWindows/index.html">Use filenames longer than 255 characters on
+Windows</a></li>
+</ul>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/howtos/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/howtos/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/howtos/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

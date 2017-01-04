@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Chip type: MoEx-1_0-st-v1">Aroma: Chip type: MoEx-1_0-st-v1</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Chip type: MoEx-1_0-st-v1</h1>
+
+<h2>Mouse Exon 1.0 ST Array</h2>
+
+<p>Affymetrix press release: <a href="http://investor.affymetrix.com/phoenix.zhtml?c=116408&amp;p=irol-newsArticle_Print&amp;ID=845557">First quarter of
+2006</a>.</p>
+
+<h3>MoEx-1_0-st-v1</h3>
+
+<pre><code class="r">&gt; cdf &lt;- AffymetrixCdfFile$byChipType(&quot;MoEx-1_0-st-v1&quot;)
+&gt; print(cdf)
+
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/MoEx-1_0-st-v1
+Filename: MoEx-1_0-st-v1.cdf
+Filesize: 274.30MB
+Chip type: MoEx-1_0-st-v1
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 2560x2560
+Number of cells: 6553600
+Number of units: 1257006
+Cells per unit: 5.21
+Number of QC units: 0
+</code></pre>
+
+<p>The above displays the default CDF for this chip type. There exist
+several custom CDFs, among some are listed below, that are likely to be
+more appropriate for your analysis.</p>
+
+<h2>Resources</h2>
+
+<h3>By aroma-project.org:</h3>
+
+<ul>
+<li><a href="http://aroma-project.org/data/annotationData/chipTypes/MoEx-1_0-st-v1/MoEx-1_0-st-v1,HB20100926.acs.gz">MoEx-1_0-st-v1,HB20100926.acs.gz</a> -
+Aroma Cell Sequence (ACS) annotation file mapping cell indices to 25-mer
+sequences and target strandedness.  Sources: Affymetrix probe_tab file.
+The latter provides only 4,779,314 (72.9%) out of 6,553,600 sequences;
+please help us find the sequences for the remaining probes.  Created by:
+Henrik Bengtsson, 2010-09-26.</li>
+</ul>
+
+<p>As with Human Exon 1.0 ST array, we have created versions of CDFs based
+on Affymetrix&#39;s annotation &#39;level&#39; as given in the NetAffx probesets csv
+file (see <a href="http://www.affymetrix.com/analysis/downloads/current_exon/">http://www.affymetrix.com/analysis/downloads/current_exon/)</a>.
+Consult the Affymetrix documentation for how these levels of annotation
+were designed.</p>
+
+<h4>NetAffx (R1) 18 Jul 2008, created by Mark Robinson (WEHI/Garvan)</h4>
+
+<ul>
+<li><a href="http://aroma-project.org/data/annotationData/chipTypes/MoEx-1_0-st-v1/MoEx-1_0-st-v1.cdf.gz">MoEx-1_0-st-v1.cdf.gz</a> Binary
+version of the unsupported CDF file (shown above) from Affymetrix.
+1,257,006 units each representing a probeset, no grouping.</li>
+<li><a href="http://aroma-project.org/data/annotationData/chipTypes/MoEx-1_0-st-v1/MoEx-1_0-st-v1,coreR1,A20080718,MR.cdf.gz">MoEx-1_0-st-v1,coreR1,A20080718,MR.cdf.gz</a> Core probesets only.  17,831 units/transcript clusters, 224,053
+groups/probesets.</li>
+<li> <a href="http://aroma-project.org/data/annotationData/chipTypes/MoEx-1_0-st-v1/MoEx-1_0-st-v1,extendedR1,A20080718,MR.cdf.gz">MoEx-1_0-st-v1,extendedR1,A20080718,MR.cdf.gz</a> Extended + Core probesets: 112,205 units/transcript clusters, 626,470 groups/probesets.</li>
+<li> <a href="http://aroma-project.org/data/annotationData/chipTypes/MoEx-1_0-st-v1/MoEx-1_0-st-v1,fullR1,A20080718,MR.cdf.gz">MoEx-1_0-st-v1,fullR1,A20080718,MR.cdf.gz</a> Full+Extended+Core probesets: 265,508 units/transcript clusters.</li>
+</ul>
+
+<h4>Ensembl-centric CDFs</h4>
+
+<ul>
+<li><a href="http://aroma-project.org/data/annotationData/chipTypes/MoEx-1_0-st-v1/MoEx-1_0-st-v1,U-Ensembl50,G-Affy,EP.cdf.gz">MoEx-1_0-st-v1,U-Ensembl50,G-Affy,EP.cdf.gz</a> 21,837 units/transcript clusters with Ensembl identifiers,  279,424 groups/probesets.</li>
+</ul>
+
+<h3>By Affymetrix:</h3>
+
+<ul>
+<li><a href="http://www.affymetrix.com/support/technical/byproduct.affx?product=moexon-st">Technical Support Documentation</a></li>
+<li><a href="http://www.affymetrix.com/support/technical/datasheets/exon_arraydesign_datasheet.pdf" title="http://www.affymetrix.com/support/technical/datasheets/500k datasheet.pdf">Datasheet</a></li>
+<li>Public data sets: <a href="http://www.affymetrix.com/support/technical/sample_data/exon_array_data.affx">Tissue / Mixture / Colon Cancer datasets</a></li>
+</ul>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/chipTypes/MoEx-1_0-st-v1/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/chipTypes/MoEx-1_0-st-v1/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/chipTypes/MoEx-1_0-st-v1/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Definition: Fullnames, names and tags of directories and files">Aroma: Definition: Fullnames, names and tags of directories and files</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Definition: Fullnames, names and tags of directories and files</h1>
+
+<p>In order to keep track of data sets, samples, chip types etc between
+sessions, the aroma.* packages have well defined rules how to name and
+structure data files and data sets.  In order to explain how this works,
+we have to define a few terms.</p>
+
+<h2>Pathname</h2>
+
+<p>A pathname, which consists of a path followed by a filename, refers to
+the string identifying a file.  Formally, we say the format is:</p>
+
+<pre><code>&lt;pathname&gt; = &lt;path&gt;/&lt;filename&gt;
+</code></pre>
+
+<p>For instance, for a a file with pathname
+/rawData/BooA_2007/Mapping250K_Nsp/C358,2007-01-24.cel the path is
+directory /rawData/BooA_2007/Mapping250K_Nsp/ and the filename is
+C358,2007-01-24.cel.  </p>
+
+<h2>Filename</h2>
+
+<p>In turn, we say that a filename consists of a fullname, a dot, and a
+filename extension, e.g. the above file has fullname &quot;C358,2007-01-24&quot;
+and filename extension &quot;cel&quot;.  The format for this is:</p>
+
+<pre><code>&lt;filename&gt; = &lt;fullname&gt;.&lt;extension&gt;
+</code></pre>
+
+<p>Footnote: The term &quot;fullname&quot; is our convention. In the *nix world the
+term &quot;basename&quot; is used for the same thing, but in R that term is the
+same as the filename.  To avoid ambiguity, we decided to use the term
+fullname.</p>
+
+<h2>Sample names, tags and filenames</h2>
+
+<p>Data files typically have filenames that reveals the name of the sample
+plus extra information such as the chip type, the lab the hybridization
+data and so on, followed by the filename extension.</p>
+
+<h3>Example</h3>
+
+<p>Here are some examples from randomly picked data sets:</p>
+
+<ul>
+<li>MCF7_Hind.CEL,</li>
+<li>MCF7_Xba.CEL,</li>
+<li>C358 Nsp 24-01-2007 250K.CEL, and</li>
+<li>NA06985_Hind_B5_3005533.CEL.</li>
+</ul>
+
+<p>As humans we infer that the first two files refer to CEL data for a
+sample &quot;MCF7&quot; hybridized to chip types &quot;Hind&quot; and &quot;Xba&quot;, that the third
+file is sample &quot;C358&quot; hybridized to an &quot;250K&quot; &quot;Nsp&quot; chip on January 24,
+2007, and that the last file is sample &quot;NA06985&quot; hybridized to a &quot;Hind&quot;
+chip with extra tag &quot;B5_3005533&quot;, which do not know what it means.</p>
+
+<h2>Fullname</h2>
+
+<p>In order for the computer to know what part of the the filename is
+referring to the sample name and what is extra information we define the
+terms &quot;name&quot; and &quot;tag&quot;, where name is typically either a sample name or a
+data set name.  Then constraint filenames to have the following format:</p>
+
+<pre><code>&lt;fullname&gt; = &lt;name&gt;(,&lt;tag&gt;)*  
+</code></pre>
+
+<p>This format is read as &quot;the fullname consists of a name followed by zero
+or more (the <code>*</code>) comma-separated tags&quot;.  Because of this format,
+<em>sample names and tags cannot contain commas</em>.</p>
+
+<p>Footnote: A commas is a legal character in all file systems we know of,
+and it has been used successfully for a long time in for instance the CVS
+version control system.</p>
+
+<h3>Example continued</h3>
+
+<p>To follow the above format, we rename the above four CEL files as:</p>
+
+<ul>
+<li>MCF7,Hind.CEL,<br></li>
+<li>MCF7,Xba.CEL,<br></li>
+<li>C358,Nsp,24-01-2007,250K.CEL, and<br></li>
+<li>NA06985,Hind,B5_3005533.CEL.</li>
+</ul>
+
+<p>With this filename format, the package can identify the sample names
+unambiguously.</p>
+
+<h2>Directory names</h2>
+
+<p>Analogously to a filename, a directory name consists of a name followed
+by optional tags:</p>
+
+<pre><code>&lt;dirname&gt; = &lt;fullname&gt;  
+&lt;path&gt; = &lt;path&gt;/&lt;dirname&gt;
+</code></pre>
+
+<p>In aroma.*, each data set has a its own unique path, and its fullname
+is inferred from the directory name.   For example, the directory name
+&quot;Affymetrix_2006-500k,ACT,QN&quot; refers data set name
+&quot;Affymetrix_2006-500k&quot; with tags &quot;ACT&quot; and &quot;QN&quot;.</p>
+
+<h2>Formal grammar</h2>
+
+<p>Generic to all (<a href="http://cran.r-project.org/package=R.filesets">R.filesets</a>) data sets:</p>
+
+<pre><code>&lt;pathname&gt; = &lt;path&gt;/&lt;filename&gt;  
+&lt;path&gt; = &lt;path&gt;/&lt;dirname&gt;  
+&lt;dirname&gt; = &lt;fullname&gt;  
+&lt;filename&gt; = &lt;fullname&gt;.&lt;extension&gt;  
+&lt;fullname&gt; = &lt;name&gt;(,&lt;tag&gt;)*
+</code></pre>
+
+<p>Specific to all aroma.* data files:</p>
+
+<pre><code>&lt;dataPathname&gt; = &lt;rootPath&gt;/&lt;dataSet&gt;/&lt;chipType&gt;/&lt;dataFilename&gt;  
+&lt;dataFilename&gt; = &lt;sampleName&gt;(,&lt;tags&gt;)*.&lt;extension&gt;  
+&lt;rootPath&gt; = ./&lt;dirname&gt;  
+&lt;dataSet&gt; = &lt;dirname&gt;  
+&lt;chipType&gt; = &lt;dirname&gt;
+</code></pre>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/definitions/namesAndTags/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/definitions/namesAndTags/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/definitions/namesAndTags/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

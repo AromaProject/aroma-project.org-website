@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Vignette: CRLMM genotyping (100K and 500K)">Aroma: Vignette: CRLMM genotyping (100K and 500K)</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Vignette: CRLMM genotyping (100K and 500K)</h1>
+
+<p>Author: Henrik Bengtsson<br>
+Created on: 2009-01-15<br>
+Last updated: 2009-01-15</p>
+
+<h2>Introduction</h2>
+
+<p>This document shows how to estimate genotypes based on the CRLMM
+algorithm <a name=cite-CarvalhoB_etal_2006-CRLMM></a>(<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=17189563">Carvalho, Bengtsson, Speed, and Irizarry, 2007</a>).  The setup is such that it tries to replicate the estimates
+of the <code>justCRLMMv2()</code> of the <a href="http://www.bioconductor.org/packages/release/bioc/html/oligo.html">oligo</a> package.  Support for CRLMM in
+aroma.affymetrix is currently for the 100K and the 500K chip types.  The
+GWS5 or GWS6 chip types are yet not supported.</p>
+
+<h2>Setup</h2>
+
+<p>If this is your first analysis in <a href="http://cran.r-project.org/package=aroma.affymetrix">aroma.affymetrix</a>, please make sure to
+first read the first few pages in the online &#39;Users Guide&#39;.  This will
+explain the importance of following a well defined directory structure
+and file names.  Understanding this is important and will save you a lot
+of time.</p>
+
+<h3>Annotation data</h3>
+
+<pre><code>annotationData/  
+    chipTypes/  
+      Mapping250K_Nsp/  
+       Mapping250K_Nsp.cdf  
+       Mapping250K_Nsp,na26,HB20080915.ugp
+</code></pre>
+
+<h3>Raw data</h3>
+
+<pre><code>rawData/  
+   HapMap270,500K,CEU,testSet/  
+     Mapping250K_Nsp/  
+       NA06985.CEL    NA06991.CEL    NA06993.CEL  
+       NA06994.CEL    NA07000.CEL    NA07019.CEL
+</code></pre>
+
+<p>TThere should be 6 CEL files in total.   This data was downloaded from the HapMap website.</p>
+
+<h2>Analysis</h2>
+
+<pre><code class="r">library(&quot;aroma.affymetrix&quot;)
+log &lt;- verbose &lt;- Arguments$getVerbose(-8, timestamp=TRUE)
+</code></pre>
+
+<h3>Setup raw data set</h3>
+
+<pre><code class="r">cdf &lt;- AffymetrixCdfFile$byChipType(&quot;Mapping50K_Nsp&quot;)
+print(cdf)
+
+## AffymetrixCdfFile:  
+## Path: annotationData/chipTypes/Mapping250K_Nsp  
+## Filename: Mapping250K_Nsp.cdf  
+## Filesize: 185.45MB  
+## Chip type: Mapping250K_Nsp  
+## RAM: 11.01MB  
+## File format: v4 (binary; XDA)  
+## Number of cells: 6553600  
+## Number of units: 262338  
+## Cells per unit: 24.98  
+## Number of QC units: 6
+
+csR &lt;- AffymetrixCelSet$byName(&quot;HapMap270,500K,CEU,testSet&quot;, cdf=cdf)
+print(csR)
+
+## AffymetrixCelSet:
+## Name: HapMap270
+## Tags: 500K,CEU,testSet
+## Path: rawData/HapMap270,500K,CEU,testSet/Mapping250K_Nsp
+## Platform: Affymetrix
+## Chip type: Mapping250K_Nsp
+## Number of arrays: 6
+## Names: NA06985, NA06991, ..., NA07019
+## Time period: 2005-11-16 15:17:51 -- 2005-11-18 19:08:24
+## Total file size: 375.88MB
+## RAM: 0.01MB
+</code></pre>
+
+<h3>SNPRMA (normalization and summarization)</h3>
+
+<pre><code class="r">ces &lt;- justSNPRMA(csR, normalizeToHapmap=TRUE, returnESet=FALSE, verbose=log)
+print(ces)
+
+## SnpChipEffectSet:
+## Name: HapMap270
+## Tags: 500K,CEU,testSet,QN,HapMapRef,RMA,oligo,+-
+## Path: plmData/HapMap270,500K,CEU,testSet,QN,HapMapRef,RMA,oligo,+-/Mapping250K_Nsp
+## Platform: Affymetrix
+## Chip type: Mapping250K_Nsp,monocell
+## Number of arrays: 6
+## Names: NA06985, NA06991, ..., NA07019
+## Time period: 2009-01-10 17:34:45 -- 2009-01-10 17:34:46
+## Total file size: 57.34MB
+## RAM: 0.01MB
+## Parameters: (probeModel: chr &quot;pm&quot;, mergeStrands: logi FALSE)
+</code></pre>
+
+<h3>Genotype calling using the CRLMM model</h3>
+
+<p>Setting up the model:</p>
+
+<pre><code class="r">crlmm &lt;- CrlmmModel(ces, tags=&quot;*,oligo&quot;)
+print(crlmm)
+
+## CrlmmModel:
+## Data set: HapMap270
+## Chip type: Mapping250K_Nsp,monocell
+## Input tags: 500K,CEU,testSet,QN,HapMapRef,RMA,oligo,+-
+## Output tags: 500K,CEU,testSet,QN,HapMapRef,RMA,oligo,+-,CRLMM,oligo
+## Parameters: (balance: num 1.5; minLLRforCalls: num [1:3] 5 1 5
+## recalibrate: logi FALSE;flavor: chr &quot;v2&quot;).
+## Path: crlmmData/HapMap270,500K,CEU,testSet,QN,HapMapRef,RMA,oligo,+-,CRLMM,oligo/Mapping250K_Nsp
+## RAM: 0.00MB
+</code></pre>
+
+<p>Fitting the model:</p>
+
+<pre><code class="r">units &lt;- fit(crlmm, ram=&quot;oligo&quot;, verbose=log)
+str(units)
+
+## int [1:262264] 135666 261964 227992 3670 227993 159191 212754 24401 ...
+</code></pre>
+
+<h3>Accessing individual genotype calls and confidence scores</h3>
+
+<p>Retrieving the genotype calls (without actually loading anything):</p>
+
+<pre><code class="r">callSet &lt;- getCallSet(crlmm)
+print(callSet)
+
+## AromaUnitGenotypeCallSet:  
+## Name: HapMap270  
+## Tags: 500K,CEU,testSet,QN,HapMapRef,RMA,oligo,+-,CRLMM,oligo  
+## Full name: HapMap270,500K,CEU,testSet,QN,HapMapRef,RMA,oligo,+-,CRLMM,oligo  
+## Number of files: 6  
+## Names: NA06985, NA06991, ..., NA07019  
+## Path (to the first file): crlmmData/HapMap270,500K,CEU,testSet,QN,HapMapRef,RMA,oligo,+-,CRLMM,oligo/Mapping250K_Nsp  
+## Total file size: 3.00MB  
+## RAM: 0.01MB
+
+calls &lt;- extractGenotypes(callSet, units=2001:2005)
+print(calls)
+
+## NA06985 NA06991 NA06993 NA06994 NA07000 NA07019
+## [1,] &quot;AA&quot; &quot;AA&quot; &quot;AA&quot; &quot;AA&quot; &quot;AA&quot; &quot;AA&quot;
+## [2,] &quot;AA&quot; &quot;AB&quot; &quot;AB&quot; &quot;BB&quot; &quot;AB&quot; &quot;AB&quot;
+## [3,] &quot;AA&quot; &quot;AB&quot; &quot;AB&quot; &quot;AB&quot; &quot;AA&quot; &quot;AB&quot;
+## [4,] &quot;BB&quot; &quot;AB&quot; &quot;AB&quot; &quot;BB&quot; &quot;BB&quot; &quot;BB&quot;
+## [5,] &quot;AA&quot; &quot;AA&quot; &quot;AA&quot; &quot;AA&quot; &quot;AA&quot; &quot;AA&quot;
+</code></pre>
+
+<h4>Retrieving the confidence scores for the calls:</h4>
+
+<pre><code class="r">confSet &lt;- getConfidenceScoreSet(crlmm)
+print(confSet)
+
+## AromaUnitSignalBinarySet:  
+## Name: HapMap270  
+## Tags: 500K,CEU,testSet,QN,HapMapRef,RMA,oligo,+-,CRLMM,oligo  
+## Full name: HapMap270,500K,CEU,testSet,QN,HapMapRef,RMA,oligo,+-,CRLMM,oligo  
+## Number of files: 6  
+## Names: NA06985, NA06991, ..., NA07019  
+## Path (to the first file): crlmmData/HapMap270,500K,CEU,testSet,QN,HapMapRef,RMA,oligo,+-,CRLMM,oligo/Mapping250K_Nsp  
+## Total file size: 6.01MB  
+## RAM: 0.01MB
+
+scores &lt;- extractMatrix(confSet, units=2001:2005)
+print(scores)
+
+## NA06985 NA06991 NA06993 NA06994 NA07000 NA07019
+## [1,] 0.9998 0.9998 0.9998 0.9999 0.9999 0.9998
+## [2,] 0.9968 0.9932 0.9931 0.9998 0.9976 0.9974
+## [3,] 0.9997 0.9993 0.9967 0.9988 0.9998 0.9975
+## [4,] 0.9986 0.9961 0.9894 0.9994 0.9994 0.9989
+## [5,] 0.9998 0.9999 0.9998 0.9999 0.9998 0.9998
+</code></pre>
+
+<h3>Plotting raw CNs and raw genotypes annotated by genotypes</h3>
+
+<pre><code class="r">gi &lt;- getGenomeInformation(cdf)
+units &lt;- getUnitsOnChromosome(gi, chromosome=2, region=c(75,90)*1e6)
+pos &lt;- getPositions(gi, units=units) / 1e6
+</code></pre>
+
+<p>Get data for the last array:</p>
+
+<pre><code class="r">array &lt;- 6
+ce &lt;- ces[[array]]
+data &lt;- extractTotalAndFreqB(ce, units=units)
+str(data)
+
+## num [1:1306, 1:2] 2312 2185 1994 3242 4156 ...
+## - attr(*, &quot;dimnames&quot;)=List of 2
+## ..$ : NULL
+## ..$ : chr [1:2] &quot;total&quot; &quot;freqB&quot;
+</code></pre>
+
+<p>Extract the (total) theta and the freqB columns:</p>
+
+<pre><code class="r">theta &lt;- data[,&quot;total&quot;]
+freqB &lt;- data[,&quot;freqB&quot;]
+</code></pre>
+
+<p>We calculate the copy-neutral reference as the robust average of all
+arrays:</p>
+
+<pre><code class="r">ceR &lt;- getAverageFile(ces)
+dataR &lt;- extractTotalAndFreqB(ceR, units=units)
+thetaR &lt;- dataR[,&quot;total&quot;]
+</code></pre>
+
+<p>Then we calculate the log2 copy-number ratios:</p>
+
+<pre><code class="r">M &lt;- log2(theta/thetaR)
+</code></pre>
+
+<p>Finally, we extract the corresponding genotype calls:</p>
+
+<pre><code class="r">cf &lt;- callSet[[array]]
+calls &lt;- extractGenotypes(cf, units=units)
+</code></pre>
+
+<p>Next, we plot the (x,C) and (x,freqB) along the genome annotated with
+colors according to genotype:</p>
+
+<pre><code class="r">col &lt;- c(AA=1, AB=2, BB=3)[calls]
+xlim &lt;- range(pos, na.rm=TRUE)
+xlab &lt;- &quot;Physical position (Mb)&quot;
+Mlab &lt;- expression(log[2](theta/theta[R]))
+Blab &lt;- expression(beta == theta[B]/theta)
+subplots(2, ncol=1)
+par(mar=c(3,4,1,1)+0.1, pch=&quot;.&quot;)
+plot(pos, M, col=col, cex=3, xlim=xlim, ylim=c(-2,2), xlab=xlab, ylab=Mlab)
+stext(side=3, pos=0, getName(ce))
+stext(side=3, pos=1, &quot;Chr 2&quot;)
+plot(pos, freqB, col=col, cex=3, xlim=xlim, ylim=c(0,1), xlab=xlab, ylab=Blab)
+</code></pre>
+
+<p><img src="../../assets/images/CRLMM100K500K%2CTCN-and-BAF-by-genotype%2Caroma.affymetrix.png" alt=""></p>
+
+<h2>Comparing with CRLMM in oligo</h2>
+
+<pre><code class="r">path &lt;- file.path(&quot;oligoData&quot;, getFullName(csR), getChipType(csR, fullname=FALSE))
+path &lt;- Arguments$getWritablePathname(path)
+if (!isDirectory(path)) {
+  mkdirs(getParent(path))
+  oligo:::justCRLMMv2(getPathnames(csR), tmpdir=path, recalibrate=FALSE, balance=1.5, verbose=TRUE)
+}
+</code></pre>
+
+<h3>Comparing genotype calls</h3>
+
+<h4>Genotype calls according to oligo</h4>
+
+<pre><code class="r">calls0 &lt;- readSummaries(&quot;calls&quot;, path)
+dimnames(calls0) &lt;- NULL
+</code></pre>
+
+<h4>Genotype calls according to aroma.affymetrix</h4>
+
+<pre><code class="r">units &lt;- indexOf(cdf, pattern=&quot;^SNP&quot;)
+unitNames &lt;- getUnitNames(cdf, units=units)
+units &lt;- units[order(unitNames)]
+calls &lt;- extractGenotypes(callSet, units=units, encoding=&quot;oligo&quot;)
+dimnames(calls) &lt;- NULL
+</code></pre>
+
+<h4>Differences between aroma.affymetrix and oligo</h4>
+
+<pre><code class="r">count &lt;- 0
+for (cc in 1:ncol(calls)) {
+  idxs &lt;- which(calls[,cc] != calls0[,cc])
+  count &lt;- count + length(idxs)
+  printf(&quot;%s: &quot;, getNames(callSet)[cc])
+  if (length(idxs) &gt; 0) {
+    map &lt;- c(&quot;AA&quot;, &quot;AB&quot;, &quot;BB&quot;)
+    cat(paste(map[calls[idxs,cc]], map[calls0[idxs,cc]], sep=&quot;!=&quot;), sep=&quot;,&quot;)
+  }
+  cat(&quot;\n&quot;)
+}
+</code></pre>
+
+<p>We identify the following difference for each of the genotyped samples:</p>
+
+<ul>
+<li>NA06985: AB!=AA, AB!=BB, AB!=AA, BB!=AB, BB!=AB<br></li>
+<li>NA06991: AB!=AA<br></li>
+<li>NA06993: AA!=AB, BB!=AB<br></li>
+<li>NA06994: AB!=AA, BB!=AB<br></li>
+<li>NA07000: AB!=BB, AA!=AB<br></li>
+<li>NA07019: AA!=AB, AA!=AB, AA!=AB, AA!=AB</li>
+</ul>
+
+<p>Note that these differences are only in one allele, that is, one
+implementation calls a SNP heterozygote whereas the other calls a
+homozygote.</p>
+
+<pre><code class="r">printf(&quot;Averages number of discrepancies per array: %.1f\n&quot;, count/ncol(calls))
+</code></pre>
+
+<p>Averages number of discrepancies per array: 2.7</p>
+
+<pre><code class="r">errorRate &lt;- count/length(calls)
+printf(&quot;Concordance rate: %.5f%%\n&quot;, 100*(1-errorRate))
+</code></pre>
+
+<p>Concordance rate: 99.99898%</p>
+
+<h3>Comparing confidence scores</h3>
+
+<p>Confidence scores according to oligo:</p>
+
+<pre><code class="r">conf0 &lt;- readSummaries(&quot;conf&quot;, path)
+dimnames(conf) &lt;- NULL
+</code></pre>
+
+<p>Confidence scores according to aroma.affymetrix:</p>
+
+<pre><code class="r">conf &lt;- extractMatrix(confSet, units=units)
+dimnames(conf) &lt;- NULL
+</code></pre>
+
+<p>Differences between aroma.affymetrix and oligo:</p>
+
+<pre><code class="r">delta &lt;- conf - conf0
+avgDelta &lt;- mean(abs(delta), na.rm=TRUE)
+printf(&quot;Averages difference: %.2g\n&quot;, avgDelta)
+</code></pre>
+
+<p>Averages difference: 7.1e-06</p>
+
+<p>Pairwise plots:</p>
+
+<pre><code class="r">subplots(ncol(conf))
+par(mar=c(3,2,1,1)+0.1)
+lim &lt;- c(0,1)
+for (cc in 1:ncol(conf)) {
+  plot(NA, xlim=lim, ylim=lim)
+  abline(a=0, b=1, col=&quot;#999999&quot;)
+  points(conf[,cc], conf0[,cc], pch=&quot;.&quot;, cex=3)
+  rho &lt;- cor(conf[,cc], conf0[,cc])
+  stext(side=3, pos=0, line=-1, sprintf(&quot;rho=%.4f&quot;, rho))
+  stext(side=3, pos=0, getNames(confSet)[cc])
+  printf(&quot;Array #%d: Correlation: %.4f\n&quot;, cc, rho)
+}
+</code></pre>
+
+<p><img src="../../assets/images/CRLMM100K500K%2CconfScore%2Caroma.affymetrix_vs_oligo.png" alt=""></p>
+
+<h2>References</h2>
+
+<p><a
+name=bib-CarvalhoB_etal_2006-CRLMM></a><a href="#cite-CarvalhoB_etal_2006-CRLMM">[1]</a>
+B. Carvalho, H. Bengtsson, T. P. Speed, et al. &quot;Exploration,
+normalization, and genotype calls of high-density oligonucleotide SNP
+array data&quot;. Eng. In: <em>Biostatistics (Oxford, England)</em> 8.2 (2007), pp.
+485-99. DOI:
+<a href="http://dx.doi.org/10.1093/biostatistics/kxl042">10.1093/biostatistics/kxl042</a>.
+PMID:
+<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;cmd=prlinks&amp;retmode=ref&amp;id=17189563">17189563</a>.</p>
+
+<h2>Appendix</h2>
+
+<h3>Session information</h3>
+
+<pre><code class="r">&gt; sessionInfo()
+
+R version 2.8.1 Patched (2008-12-22 r47296)  
+ i386-pc-mingw32  
+ locale:  
+ LC_COLLATE=English_United States.1252;LC_CTYPE=English_United
+States.1252;LC_MONETARY=English_United
+States.1252;LC_NUMERIC=C;LC_TIME=English_United States.1252
+
+attached base packages:
+
+[1] splines tools stats graphics grDevices utils datasets
+[8] methods base
+
+other attached packages:
+
+[1] pd.mapping250k.nsp_0.4.1 oligoClasses_1.3.8
+[4] AnnotationDbi_1.3.12 preprocessCore_1.3.4 RSQLite_0.7-0
+[7] DBI_0.2-4 Biobase_2.1.7 aroma.affymetrix_1.0.0
+[10] aroma.apd_0.1.4 R.huge_0.1.6 affxparser_1.15.1
+[13] aroma.core_1.0.0 aroma.light_1.11.1 oligo_1.5.9
+[16] digest_0.3.1 matrixStats_0.1.3 R.rsp_0.3.4
+[19] R.cache_0.1.7 R.utils_1.1.3 R.oo_1.4.6
+[22] R.methodsS3_1.0.3
+</code></pre>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/vignettes/CRLMM100K500K/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/vignettes/CRLMM100K500K/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/vignettes/CRLMM100K500K/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

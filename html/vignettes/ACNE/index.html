@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Vignette: ACNE: Allele-specific copy numbers using non-negative matrix factorization">Aroma: Vignette: ACNE: Allele-specific copy numbers using non-negative matrix factorization</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Vignette: ACNE: Allele-specific copy numbers using non-negative matrix factorization</h1>
+
+<p>Author: Maria Ortiz (cleanup by Henrik Bengtsson)<br>
+Created on: 2009-11-18<br>
+Last updated: 2014-12-21</p>
+
+<p><img src="../../assets/images/ACNE/OrtizEstevezM_etal_2010-ACNE,Figure4.png" alt=""></p>
+
+<p><em>Figure: Allele-specific copy numbers (C<sub>A</sub>,C<sub>B</sub>) using ACNE (left),
+AS-dChip (center) and ASCRMA v2 (right) in a normal region where we know
+there should be three clouds located around (2,0), (1,1) and (0,2). 
+Data is from an Mapping250K_Nsp data set.</em></p>
+
+<p>This document describes how to estimate allele specific copy numbers
+(ASCNs) in <a href="http://cran.r-project.org/package=aroma.affymetrix">aroma.affymetrix</a> using ACNE <a name=cite-OrtizM_etal_2012-ACNE></a>(<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=20529889">Ortiz-Estevez, Bengtsson, and Rubio, 2010</a>).  ACNE is a summarization method that provides ASCNs based on signals normalized in a similar way to as CRMA v2 <a name=cite-BengtssonH_etal_2009-CRMAv2></a>(<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=19535535">Bengtsson, Wirapati, and Speed, 2009</a>).</p>
+
+<p>Eight (8) Affymetrix GenomeWideSNP_6 arrays deposited in NCBI-GEO under
+accession numbers <a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE14996">GSE14996</a> (GSM374529 -- 36) will be used to illustrate the
+necessary steps in aroma.affymetrix in order to apply ACNE summarization
+method.</p>
+
+<p>Note: This analysis requires the <a href="http://cran.r-project.org/package=ACNE">ACNE</a> package in addition to aroma.affymetrix.</p>
+
+<h2>Setup</h2>
+
+<h3>Annotation data</h3>
+
+<pre><code>annotationData/
+  chipTypes/
+    GenomeWideSNP_6/
+      GenomeWideSNP_6,Full.cdf
+        GenomeWideSNP_6,Full,na26,HB20080821.ugp
+        GenomeWideSNP_6,Full,na26,HB20080722.ufl
+        GenomeWideSNP_6,Full,HB20080710.acs
+</code></pre>
+
+<p><em>Note that *.Full.cdf have to be renamed to *,Full.cdf (w/ a comma).</em></p>
+
+<h3>Raw data</h3>
+
+<pre><code>rawData/
+  GSE14996,testSet/
+    GenomeWideSNP_6/
+       GSM374529.CEL, GSM374530.CEL, GSM374531.CEL, GSM374532.CEL,
+       GSM374533.CEL, GSM374534.CEL, GSM374535.CEL, GSM374536.CEL
+</code></pre>
+
+<h2>Analysis</h2>
+
+<h3>Setup</h3>
+
+<pre><code class="r">library(&quot;aroma.affymetrix&quot;)
+library(&quot;ACNE&quot;)
+verbose &lt;- Arguments$getVerbose(-10, timestamp=TRUE)
+
+dataSet &lt;- &quot;GSE14996,testSet&quot;
+chipType &lt;- &quot;GenomeWideSNP_6&quot;
+</code></pre>
+
+<h4>Annotation data</h4>
+
+<pre><code class="r">cdf &lt;- AffymetrixCdfFile$byChipType(chipType, tags=&quot;Full&quot;)
+print(cdf)
+</code></pre>
+
+<p>which gives:</p>
+
+<pre><code>AffymetrixCdfFile:  
+Path: annotationData/chipTypes/GenomeWideSNP_6  
+Filename: GenomeWideSNP_6,Full.cdf  
+Filesize: 470.44MB  
+Chip type: GenomeWideSNP_6,Full  
+RAM: 0.00MB  
+File format: v4 (binary; XDA)  
+Dimension: 2572x2680  
+Number of cells: 6892960  
+Number of units: 1881415  
+Cells per unit: 3.66  
+Number of QC units: 4
+</code></pre>
+
+<p>and</p>
+
+<pre><code class="r">gi &lt;- getGenomeInformation(cdf)
+print(gi)
+</code></pre>
+
+<p>which gives:</p>
+
+<pre><code>UgpGenomeInformation:  
+Name: GenomeWideSNP_6  
+Tags: Full,na26,HB20080821  
+Full name: GenomeWideSNP_6,Full,na26,HB20080821  
+Pathname:
+annotationData/chipTypes/GenomeWideSNP_6/GenomeWideSNP_6,Full,na26,HB20080821.ugp  
+File size: 8.97 MB (9407937 bytes)  
+RAM: 0.00 MB  
+Chip type: GenomeWideSNP_6,Full
+</code></pre>
+
+<p>and</p>
+
+<pre><code class="r">print(si)
+</code></pre>
+
+<p>which gives:</p>
+
+<pre><code>UflSnpInformation:  
+Name: GenomeWideSNP_6  
+Tags: Full,na26,HB20080722  
+Full name: GenomeWideSNP_6,Full,na26,HB20080722  
+Pathname:
+annotationData/chipTypes/GenomeWideSNP_6/GenomeWideSNP_6,Full,na26,HB20080722.ufl  
+File size: 7.18 MB (7526454 bytes)  
+RAM: 0.00 MB  
+Chip type: GenomeWideSNP_6,Full  
+Number of enzymes: 2
+</code></pre>
+
+<p>Then</p>
+
+<pre><code class="r">acs &lt;- AromaCellSequenceFile$byChipType(getChipType(cdf, fullname=FALSE))
+print(acs)
+</code></pre>
+
+<p>which outputs:</p>
+
+<pre><code>AromaCellSequenceFile:  
+Name: GenomeWideSNP_6  
+Tags: Full,HB20080710  
+Full name: GenomeWideSNP_6,Full,HB20080710  
+Pathname:
+annotationData/chipTypes/GenomeWideSNP_6/GenomeWideSNP_6,Full,HB20080710.acs  
+File size: 170.92 MB (179217531 bytes)  
+RAM: 0.00 MB  
+Number of data rows: 6892960  
+File format: v1  
+Dimensions: 6892960x26  
+Column classes: raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw,
+raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw,
+raw  
+Number of bytes per column: 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1  
+Footer: \&lt;createdOn\&gt;20080710 22:47:02
+PDT\&lt;/createdOn\&gt;\&lt;platform\&gt;Affymetrix\&lt;/platform\&gt;\&lt;chipType\&gt;GenomeWideSNP_6\&lt;/chipType\&gt;\&lt;srcFile\&gt;\&lt;filename\&gt;GenomeWideSNP_6.probe_tab\&lt;/filename\&gt;\&lt;filesize\&gt;341479928\&lt;/filesize\&gt;\&lt;checksum\&gt;2037c033c09fd8f7c06bd042a77aef15\&lt;/checksum\&gt;\&lt;/srcFile\&gt;\&lt;srcFile2\&gt;\&lt;filename\&gt;GenomeWideSNP_6.CN_probe_tab\&lt;/filename\&gt;\&lt;filesize\&gt;96968290\&lt;/filesize\&gt;\&lt;checksum\&gt;3dc2d3178f5eafdbea9c8b6eca88a89c\&lt;/checksum\&gt;\&lt;/srcFile2\&gt;  
+Chip type: GenomeWideSNP_6  
+Platform: Affymetrix
+</code></pre>
+
+<h4>Raw data</h4>
+
+<pre><code class="r">cs &lt;- AffymetrixCelSet$byName(dataSet, cdf=cdf)
+print(cs)
+</code></pre>
+
+<pre><code>AffymetrixCelSet:  
+Name: GSE14996  
+Tags: testSet  
+Path: rawData/GSE14996,testSet/GenomeWideSNP_6  
+Platform: Affymetrix  
+Chip type: GenomeWideSNP_6,Full  
+Number of arrays: 8  
+Names: GSM374529, GSM374530, ..., GSM374536  
+Time period: 2007-09-21 18:56:58 -- 2007-12-31 12:29:36  
+Total file size: 526.64MB  
+RAM: 0.01MB
+</code></pre>
+
+<h3>Pre-processing</h3>
+
+<h4>Cross-talk calibration</h4>
+
+<pre><code class="r">acc &lt;- AllelicCrosstalkCalibration(cs, model=&quot;CRMAv2&quot;)
+print(acc)
+</code></pre>
+
+<pre><code>AllelicCrosstalkCalibration:  
+Data set: GSE14996  
+Input tags: testSet  
+User tags: *  
+Asterisk (&#39;*&#39;) tags: ACC,ra,-XY  
+Output tags: testSet,ACC,ra,-XY  
+Number of files: 8 (526.64MB)  
+Platform: Affymetrix  
+Chip type: GenomeWideSNP_6,Full  
+Algorithm parameters: (rescaleBy: chr &quot;all&quot;, targetAvg: num 2200,
+subsetToAvg: chr &quot;-XY&quot;, mergeShifts: logi TRUE, B: int 1, flavor: chr
+&quot;sfit&quot;, algorithmParameters:List of 3, ..\$ alpha: num [1:8] 0.1 0.075
+0.05 0.03 0.01 0.0025 0.001 0.0001, ..\$ q: num 2, ..\$ Q: num 98)  
+Output path: probeData/GSE14996,testSet,ACC,ra,-XY/GenomeWideSNP_6  
+Is done: FALSE  
+RAM: 0.00MB
+</code></pre>
+
+<pre><code class="r">csC &lt;- process(acc, verbose=verbose)
+print(csC)
+</code></pre>
+
+<pre><code>AffymetrixCelSet:  
+Name: GSE14996  
+Tags: testSet,ACC,ra,-XY  
+Path: probeData/GSE14996,testSet,ACC,ra,-XY/GenomeWideSNP_6  
+Platform: Affymetrix  
+Chip type: GenomeWideSNP_6,Full  
+Number of arrays: 8  
+Names: GSM374529, GSM374530, ..., GSM374536  
+Time period: 2007-09-21 18:56:58 -- 2007-12-31 12:29:36  
+Total file size: 526.64MB  
+RAM: 0.01MB
+</code></pre>
+
+<h4>Nucleotide-position sequence normalization</h4>
+
+<pre><code class="r">bpn &lt;- BasePositionNormalization(csC, target=&quot;zero&quot;)
+print(bpn)
+</code></pre>
+
+<pre><code>BasePositionNormalization:  
+Data set: GSE14996  
+Input tags: testSet,ACC,ra,-XY  
+User tags: *  
+Asterisk (&#39;*&#39;) tags: BPN,-XY  
+Output tags: testSet,ACC,ra,-XY,BPN,-XY  
+Number of files: 8 (526.64MB)  
+Platform: Affymetrix  
+Chip type: GenomeWideSNP_6,Full  
+Algorithm parameters: (unitsToFit: chr &quot;-XY&quot;, typesToFit: chr &quot;pm&quot;,
+unitsToUpdate: NULL, typesToUpdate: chr &quot;pm&quot;, shift: num 0, target: chr
+&quot;zero&quot;, model: chr &quot;smooth.spline&quot;, df: int 5)  
+Output path:
+probeData/GSE14996,testSet,ACC,ra,-XY,BPN,-XY/GenomeWideSNP_6  
+Is done: FALSE  
+RAM: 0.00MB
+</code></pre>
+
+<pre><code class="r">csN &lt;- process(bpn, verbose=verbose)
+print(csN)
+</code></pre>
+
+<pre><code>AffymetrixCelSet:  
+Name: GSE14996  
+Tags: testSet,ACC,ra,-XY,BPN,-XY  
+Path: probeData/GSE14996,testSet,ACC,ra,-XY,BPN,-XY/GenomeWideSNP_6  
+Platform: Affymetrix  
+Chip type: GenomeWideSNP_6,Full  
+Number of arrays: 8  
+Names: GSM374529, GSM374530, ..., GSM374536  
+Time period: 2007-09-21 18:56:58 -- 2007-12-31 12:29:36  
+Total file size: 526.64MB  
+RAM: 0.01MB
+</code></pre>
+
+<h4>Probe summarization using non-negative-matrix factorization (NMF)</h4>
+
+<pre><code class="r">plm &lt;- NmfSnpPlm(csN, mergeStrands=TRUE)
+print(plm)
+</code></pre>
+
+<pre><code>NmfSnpPlm:
+Data set: GSE14996
+Chip type: GenomeWideSNP_6,Full
+Input tags: testSet,ACC,ra,-XY,BPN,-XY
+Output tags: testSet,ACC,ra,-XY,BPN,-XY,NMF,v4
+Parameters: (probeModel: chr &quot;pm&quot;; shift: num 0; mergeStrands: logiTRUE).
+Path: plmData/GSE14996,testSet,ACC,ra,-XY,BPN,-XY,NMF,v4/GenomeWideSNP_6
+RAM: 0.00MB
+</code></pre>
+
+<pre><code class="r">if (length(findUnitsTodo(plm)) &gt; 0) {
+   # Fit CN probes quickly (~5-10s/array + some overhead)
+  units &lt;- fitCnProbes(plm, verbose=verbose)
+  str(units)
+  # int [1:945826] 935590 935591 935592 935593 935594 935595 ...
+
+  # Fit remaining units, i.e. SNPs (~5-10min/array)
+  units &lt;- fit(plm, verbose=verbose)
+  str(units)
+}
+
+ces &lt;- getChipEffectSet(plm)
+print(ces)
+</code></pre>
+
+<pre><code>SnpChipEffectSet:  
+Name: GSE14996  
+Tags: testSet,ACC,ra,-XY,BPN,-XY,NMF,v4  
+Path:
+plmData/GSE14996,testSet,ACC,ra,-XY,BPN,-XY,NMF,v4/GenomeWideSNP_6  
+Platform: Affymetrix  
+Chip type: GenomeWideSNP_6,Full,monocell  
+Number of arrays: 8  
+Names: GSM374529, GSM374530, ..., GSM374536  
+Time period: 2009-11-19 10:51:15 -- 2009-11-19 10:51:16  
+Total file size: 215.59MB  
+RAM: 0.01MB  
+Parameters: (probeModel: chr &quot;pm&quot;, mergeStrands: logi TRUE)
+</code></pre>
+
+<h2>Results</h2>
+
+<h3>Extracting allele-specific CNs</h3>
+
+<h4>Example: ASCNs for Chromosome 2</h4>
+
+<pre><code class="r">chromosome &lt;- 2
+units &lt;- getUnitsOnChromosome(gi, chromosome=chromosome)
+str(units)
+
+## int [1:153663] 26048 26049 26050 26052 26053 26054 26055 26056 26057 26058 ...
+
+pos &lt;- getPositions(gi, units=units)
+str(pos)
+
+## int [1:153663] 102496 141464 155674 160576 160616 166395 179818 179972 214086 214192 ...
+</code></pre>
+
+<h4>Example: ASCNs for Sample #1</h4>
+
+<pre><code class="r">cf &lt;- ces[[1]]
+data &lt;- extractTotalAndFreqB(cf, units=units)
+CT &lt;- data[,&quot;total&quot;]
+
+# NmfSnpPlm returns relative ASCNs (CA, CB) already standardized to the pool of all arrays.
+C &lt;- CT
+cn &lt;- RawCopyNumbers(C, pos, chromosome=chromosome)
+print(cn)
+</code></pre>
+
+<pre><code>RawCopyNumbers:  
+Name:  
+Chromosome: 2  
+Position range: [2785,2.42738e+08]  
+Number of loci: 153663  
+Mean distance between loci: 1579.67  
+Loci fields: x [153663xnumeric], y [153663xnumeric]  
+RAM: 1.76MB
+</code></pre>
+
+<pre><code class="r">beta &lt;- data[,&quot;freqB&quot;]
+fracB &lt;- RawAlleleBFractions(beta, pos, chromosome=chromosome)
+print(fracB)
+</code></pre>
+
+<pre><code class="r">RawAlleleBFractions:
+Name:
+Chromosome: 2
+Position range: [2785,2.42738e+08]
+Number of loci: 153663
+Mean distance between loci: 1579.67
+Loci fields: x [153663xnumeric], y [153663xnumeric]
+RAM: 1.76MB
+</code></pre>
+
+<h4>Plotting TCN and BAF</h4>
+
+<pre><code class="r">xScale &lt;- 1e-6
+cn &lt;- extractSubset(cn, which(!is.na(beta))) # to erase the CN probes
+
+subplots(2, ncol=1)
+plot(cn, xScale=xScale, ylim = c(0,6), cex = .3)
+stext(side=3, pos=0, getName(cn))
+stext(side=3, pos=1, sprintf(&quot;Chr%d&quot;, chromosome))
+plot(fracB, xScale=xScale, cex = .3, ylim = c(0,1))
+</code></pre>
+
+<p><img src="../../assets/images/CN-fracB-GWS6.0_0.png" alt="Total Copy Number and Fraction of Allele B"></p>
+
+<h2>References</h2>
+
+<p><a
+name=bib-BengtssonH_etal_2009-CRMAv2></a><a href="#cite-BengtssonH_etal_2009-CRMAv2">[1]</a>
+H. Bengtsson, P. Wirapati and T. P. Speed. &quot;A single-array
+preprocessing method for estimating full-resolution raw copy numbers
+from all Affymetrix genotyping arrays including GenomeWideSNP 5 &amp; 6&quot;.
+Eng. In: <em>Bioinformatics (Oxford, England)</em> 25.17 (2009), pp. 2149-56.
+DOI:
+<a href="http://dx.doi.org/10.1093/bioinformatics/btp371">10.1093/bioinformatics/btp371</a>.
+PMID:
+<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;cmd=prlinks&amp;retmode=ref&amp;id=19535535">19535535</a>.</p>
+
+<p><a
+name=bib-OrtizM_etal_2012-ACNE></a><a href="#cite-OrtizM_etal_2012-ACNE">[2]</a>
+M. Ortiz-Estevez, H. Bengtsson and A. Rubio. &quot;ACNE: a summarization
+method to estimate allele-specific copy numbers for Affymetrix SNP
+arrays&quot;. Eng. In: <em>Bioinformatics (Oxford, England)</em> 26.15 (2010), pp.
+1827-33. DOI:
+<a href="http://dx.doi.org/10.1093/bioinformatics/btq300">10.1093/bioinformatics/btq300</a>.
+PMID:
+<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;cmd=prlinks&amp;retmode=ref&amp;id=20529889">20529889</a>.</p>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/vignettes/ACNE/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/vignettes/ACNE/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/vignettes/ACNE/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

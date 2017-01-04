@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Vignette: Calculating raw total copy numbers manually">Aroma: Vignette: Calculating raw total copy numbers manually</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Vignette: Calculating raw total copy numbers manually</h1>
+
+<p>Author: Henrik Bengtsson<br>
+Created: 2007-12-12<br>
+Last modified: 2014-12-21</p>
+
+<p>You can calculate raw copy numbers (CNs) from chip effect estimates by first &quot;extracting&quot; the chip effects and then taking the log2 ratios.  Basically, first decide for which units you wish to calculate the raw CNs, extract the theta estimates across samples for these units, and calculate the log2 ratios.</p>
+
+<p>Note, a more convenient way to extract raw copy numbers is by using <code>extractRawCopyNumbers()</code> of CopyNumberChromosomalModel.  See Vignettes &#39;<a href="../../vignettes/CRMAv1/index.html">CRMA v1: Total copy number analysis (10K, 100K, 500K)</a>&#39; and &#39;<a href="../../vignettes/CRMAv1/index.html">CRMA v2: Estimation of total copy numbers using the CRMA v2 method (10K-GWS6)</a>&#39; for examples.</p>
+
+<div class="alert alert-info" role="alert">
+ <p>
+  <span class="glyphicon glyphicon-thumbs-up" style="font-size: 1.2em;"></span>
+  <em>To help support this work, please consider citing the following relevant references in your publications or talks whenever using their methods or results:</em>
+ </p><br>
+ <ul>
+  <li>
+<p>H. Bengtsson, K. Simpson, J. Bullard, et al.
+<em>aroma.affymetrix: A generic framework in R for analyzing small to very large Affymetrix data sets in bounded memory</em>.
+Tech. rep. 745.
+Department of Statistics, University of California, Berkeley, Feb. 2008.</p>
+
+  </li>
+  <li>
+<p>H. Bengtsson, R. Irizarry, B. Carvalho, et al.
+&ldquo;Estimation and assessment of raw copy numbers at the single locus level&rdquo;.
+Eng.
+In: <em>Bioinformatics (Oxford, England)</em> 24.6 (2008), pp. 759-67.
+DOI: <a href="http://dx.doi.org/10.1093/bioinformatics/btn016">10.1093/bioinformatics/btn016</a>.
+PMID: <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;cmd=prlinks&amp;retmode=ref&amp;id=18204055">18204055</a>.</p>
+
+  </li>
+  <li>
+<p>H. Bengtsson, P. Wirapati and T. P. Speed.
+&ldquo;A single-array preprocessing method for estimating full-resolution raw copy numbers from all Affymetrix genotyping arrays including GenomeWideSNP 5 &amp; 6&rdquo;.
+Eng.
+In: <em>Bioinformatics (Oxford, England)</em> 25.17 (2009), pp. 2149-56.
+DOI: <a href="http://dx.doi.org/10.1093/bioinformatics/btp371">10.1093/bioinformatics/btp371</a>.
+PMID: <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;cmd=prlinks&amp;retmode=ref&amp;id=19535535">19535535</a>.</p>
+
+  </li>
+ </ul>
+</div>
+
+<h2>Example</h2>
+
+<p>This example assumes you have got a normalized CnChipEffectSet object called
+<code>cesN</code> consisting of chip-effect estimates for <em>total copy number
+analysis</em>.  To obtain these, please see one of the total copy number
+vignettes.</p>
+
+<p>Identify all units on chromosome 19:</p>
+
+<pre><code class="r"># Get the genome information file
+cdf &lt;- getCdf(cesN)
+gi &lt;- getGenomeInformation(cdf)
+print(gi)
+
+## UgpGenomeInformation:
+## Name: GenomeWideSNP_6
+## Tags: Full,na24,HB20080214
+## Pathname: annotationData/chipTypes/GenomeWideSNP_6/
+##           GenomeWideSNP_6,Full,na24,HB20080214.ugp  
+## File size: 8.97MB  
+## RAM: 0.00MB  
+## Chip type: GenomeWideSNP_6,Full
+</code></pre>
+
+<p>Get all units on chromosome 19:</p>
+
+<pre><code class="r">units &lt;- getUnitsOnChromosome(gi, chromosome=19)
+str(units)
+
+## int [1:30362] 25670 25671 25672 25673 25674 25675 ...
+</code></pre>
+
+<p>Get the physical position for these units:</p>
+
+<pre><code class="r">pos &lt;- getPositions(gi, units=units)
+str(pos)
+
+## int [1:30362] 341341 2705548 2963883 3574534 4367411 4368845 ...
+</code></pre>
+
+<p>Get the names of the units:</p>
+
+<pre><code class="r">unitNames &lt;- getUnitNames(cdf, units=units)
+str(unitNames)
+
+## chr [1:30362] &quot;SNP_A-1938296&quot; &quot;SNP_A-4259059&quot; &quot;SNP_A-1939610&quot; ...
+</code></pre>
+
+<p>Extract the chip effects across samples for these units:</p>
+
+<pre><code class="r">theta &lt;- extractMatrix(cesN, units=units)
+rownames(theta) &lt;- unitNames
+print(theta[1:5,])
+</code></pre>
+
+<pre><code>##                 NA06985   NA06991   NA06993   NA06994   NA07000
+NA07019  
+## SNP_A-1938296  2679.284  2830.551  2657.694  2677.040  3157.389  2847.244  
+## SNP_A-4259059 14688.840 12187.581 15538.014 11971.401 11002.526 14254.147  
+## SNP_A-1939610  4901.532  5198.730  6546.090  6711.787  8270.660  7745.191  
+## SNP_A-1940033 16756.266 16171.789 19242.760 16371.320 15542.183 19314.775  
+## SNP_A-4259154  2543.355  2915.118  3375.513  2695.686  3262.761  3523.717
+</code></pre>
+
+<p>Calculate the raw CNs as the log2-ratio over the robust average across samples:</p>
+
+<pre><code class="r"># Robust average unit by unit across samples
+thetaR &lt;- rowMedians(theta, na.rm=TRUE)
+str(thetaR)
+
+## num [1:30362]  2755 13221  6629 16564  3089 ...
+</code></pre>
+
+<p>Calculate the raw CNs:</p>
+
+<pre><code class="r">M &lt;- log2(theta/thetaR)
+print(M[1:5,])
+
+##               NA06985 NA06991 NA06993 NA06994 NA07000 NA07019
+## SNP_A-1938296 -0.0402  0.0391 -0.0518 -0.0414  0.1967  0.0476
+## SNP_A-4259059  0.1519 -0.1174  0.2330 -0.1432 -0.2650  0.1086
+## SNP_A-1939610 -0.4355 -0.3506 -0.0181  0.0179  0.3192  0.2245
+## SNP_A-1940033  0.0167 -0.0346  0.2163 -0.0169 -0.0918  0.2217
+## SNP_A-4259154 -0.2804 -0.0836  0.1280 -0.1965  0.0790  0.1900
+</code></pre>
+
+<p>In order to calculate paired raw CNs, you have to use a separate
+reference in the denominator for each column.  I leave that as an
+exercise.</p>
+
+<p>Plot the raw CNs along the chromosome for a given sample:</p>
+
+<pre><code class="r">xlab &lt;- &quot;Position&quot;
+ylab &lt;- expression(M==log[2](theta/theta[R]))
+sample &lt;- &quot;NA06985&quot;
+plot(pos, M[,sample], pch=20, ylim=c(-3,3), xlab=xlab, ylab=ylab)
+title(main=sample)
+</code></pre>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/vignettes/calculating_raw_total_copy_numbers_manually/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/vignettes/calculating_raw_total_copy_numbers_manually/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/vignettes/calculating_raw_total_copy_numbers_manually/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

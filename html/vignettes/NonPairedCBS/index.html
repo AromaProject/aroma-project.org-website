@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Vignette: Total copy-number segmentation (non-paired CBS)">Aroma: Vignette: Total copy-number segmentation (non-paired CBS)</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Vignette: Total copy-number segmentation (non-paired CBS)</h1>
+
+<p>Author: Henrik Bengtsson<br>
+Created on: 2011-11-05<br>
+Last updated: 2011-11-05</p>
+
+<p>This document explains how to do total copy-number (CN) segmentation on
+a CN data set, how to export the segmentation results to tabular text
+files.</p>
+
+<h2>Prepreprocessing</h2>
+
+<p>We assume that locus-specific CN estimates have already been obtained
+via one of many CN preprocessing methods (e.g.
+<a href="../../vignettes/CRMAv2/index.html">CRMA v2</a>) and that those estimates are available as
+a AromaUnitTotalCnBinarySet data set(*).  Note that
+a AromaUnitTotalCnBinarySet can hold CN data of any microarray
+technology, not only Affymetrix, which means that what follows can be
+used to segment for instance also Illumina and Agilent CN data.</p>
+
+<p>(*) Alternatively, a CnChipEffectSet (Affymetrix only) can also be
+used.</p>
+
+<h2>Setting up an already preprocessed data set</h2>
+
+<p>Assume that a CEL data set named &#39;HapMap270,6.0,CEU,testSet&#39; has
+previously been processed by <code>doCRMAv2()</code> and afterward R was quit.  To
+access the results, which was automatically stored on the file system,
+do:</p>
+
+<pre><code class="r">dataSet &lt;- &quot;HapMap270,6.0,CEU,testSet&quot;
+tags &lt;- &quot;ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY&quot;;  # Tags added by CRMA v2
+chipType &lt;- &quot;GenomeWideSNP_6&quot;
+ds &lt;- AromaUnitTotalCnBinarySet$byName(dataSet, tags=tags, chipType=chipType)
+</code></pre>
+
+<p>so that <code>print(ds)</code> gives:</p>
+
+<pre><code>AromaUnitTotalCnBinarySet:
+Name: HapMap270
+Tags: 6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY
+Full name: HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY
+Number of files: 3
+Names: NA06991, NA06993, NA07000 [3]
+Path (to the first file): totalAndFracBData/HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY/GenomeWideSNP_6
+Total file size: 21.53 MB
+RAM: 0.00MB
+
+AromaUnitTotalCnBinarySet:
+Name: HapMap270
+Tags: 6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY
+Full name: HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY
+Number of files: 3
+Names: NA06991, NA06993, NA07000 [3]
+Path (to the first file): totalAndFracBData/HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY/GenomeWideSNP_6
+Total file size: 21.53 MB
+RAM: 0.00MB
+</code></pre>
+
+<h2>Segmenting</h2>
+
+<p>Here we will use the Circular Binary Segmentation (CBS) method for
+partitioning the CN signals in data set <code>ds</code> into segments of equal
+underlying CN levels.  To <em>setup</em> a CBS model for our data set, we do:</p>
+
+<pre><code class="r">sm &lt;- CbsModel(ds)
+</code></pre>
+
+<p>so that <code>print(sm)</code> gives:</p>
+
+<pre><code>**CbsModel**:
+Name: HapMap270
+Tags: 6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY
+Chip type (virtual): GenomeWideSNP_6
+Path: cbsData/**HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY**/GenomeWideSNP_6
+Number of chip types: **1**
+Sample &amp; reference file pairs:
+Chip type #1 (&#39;**GenomeWideSNP_6**&#39;) of 1:
+Sample data set:
+AromaUnitTotalCnBinarySet:
+Name: HapMap270
+Tags: 6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY
+Full name: HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY
+Number of files: **3**
+Names: **NA06991, NA06993, NA07000** [3]
+Path (to the first file): totalAndFracBData/HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY/GenomeWideSNP_6
+Total file size: 21.53 MB
+RAM: 0.00MB
+Reference data set/file:
+**&lt;average across arrays&gt;**
+RAM: 0.00MB
+</code></pre>
+
+<p>From this we can see that:</p>
+
+<ul>
+<li>Segmentation will be done using CBS (&quot;CbsModel&quot;)</li>
+<li>The full name of the data set will be
+&#39;HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY&#39;.</li>
+<li>There is only type of chips segmented (&quot;GenomeWideSNP_6&quot;).</li>
+<li>There are 3 samples that will be segmented.</li>
+<li>Total copy numbers for these 3 samples are calculated using the pool
+of all samples (the 3 ones) as a reference (&quot;&lt;average across arrays&gt;&quot;).</li>
+</ul>
+
+<p>Note that above we have only setup the segmentation method.  We still
+have to run the segmentation, which we do by:</p>
+
+<pre><code class="r">fit(sm, verbose=-10)
+</code></pre>
+
+<p>This will segment each sample and each chromosome independently (and
+store the results to binary files).  Note that this may take several
+minutes per sample.  It is possible to segment a subset of the samples
+and chromosomes, by specifying arguments &#39;arrays&#39; and &#39;chromosomes&#39;.</p>
+
+<p>To use another segmentation method, all that is need is to replace
+<code>CbsModel()</code>, e.g. <code>GladModel()</code> to use the GLAD segmentation (and calling)
+method.</p>
+
+<h2>Exporting segmentation results to tabular text files</h2>
+
+<p>To write the identified segments of all samples to a tab-delimited text
+file, do:</p>
+
+<pre><code class="r">pathname &lt;- writeRegions(sm, verbose=verbose)
+</code></pre>
+
+<p>The <code>pathname</code> specifies where the file is saved, e.g. <code>print(pathname)</code>:</p>
+
+<pre><code>[1]
+&quot;cbsData/HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY/GenomeWideSNP_6/HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY,regions.xls&quot;
+</code></pre>
+
+<p>The contents of this file can be loaded using <code>read.table()</code>, or more
+conveniently as:</p>
+
+<pre><code class="r">library(&quot;R.filesets&quot;)
+db &lt;- TabularTextFile(pathname)
+df &lt;- readDataFrame(db)
+</code></pre>
+
+<p>such that <code>print(df[1:5,1:6])</code> gives:</p>
+
+<pre><code>   sample chromosome     start      stop   mean count  
+1 NA06991          1     61736 106013377 -0.002 65870  
+2 NA06991          1 106019206 106022376 -1.675     1  
+3 NA06991          1 106024056 149036525 -0.002 11462  
+4 NA06991          1 149040066 149256692 -0.443   141  
+5 NA06991          1 149259417 149436843 -0.144    36
+</code></pre>
+
+<p>The content of the segmentation table is specific to the segmentation
+method used.  Note also that it is only some &quot;segmentation&quot; method that
+also call the CN state of the segments, e.g. GLAD (GladModel).  The CBS
+method used here does not do that.  Calling CN states is a hard problem,
+especially when there are heterogeneity in the cell population.</p>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/vignettes/NonPairedCBS/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/vignettes/NonPairedCBS/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/vignettes/NonPairedCBS/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Package aroma (2001-): Preprocessing of spotted microarray data">Aroma: Package aroma (2001-): Preprocessing of spotted microarray data</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Package aroma (2001-): Preprocessing of spotted microarray data</h1>
+
+<h2>aroma - Preprocessing of spotted microarray data</h2>
+
+<p>Developed since: 2001-03-10<br>
+Previously known as: com.braju.sma<br>
+Author: Henrik Bengtsson<br>
+Page last updated: 2011-02-26<br>
+Last successful installation: 2013-02-07</p>
+
+<h3>Description</h3>
+
+<p>The aroma (&quot;An R Object-oriented Microarray Analysis package&quot;) package
+was first developed in March 2001 as an extension to the
+<a href="http://cran.r-project.org/package=sma">sma</a> (&quot;Statistical Microarray Analysis&quot;) package
+(Yee Hwa Yang et al.).</p>
+
+<div class="alert alert-warning" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign" style="font-size: 1.2em;"></span>
+<strong>NOTE</strong>:
+Despite its name, this package is independent of the other
+packages in the Aroma Project framework.  This page was added to the
+Aroma Project website for the convenience of the users and developers
+who are using this package.
+</div>
+
+<div class="alert alert-warning" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign" style="font-size: 1.2em;"></span>
+<strong>NOTE</strong>:
+The development of this package has stopped. It is only kept to
+a minimum such that it still installs.  For two-color microarray
+analysis, I recommend to use the <a href="http://www.bioconductor.org/packages/release/bioc/html/limma.html">limma</a> package available on Bioconductor.
+</div>
+
+<h3>Installation</h3>
+
+<p>In order to install the aroma package and all its dependencies
+(including the sma package), in a fresh R session do:</p>
+
+<pre><code class="r">source(&quot;http://aroma-project.org/hbLite.R&quot;)
+hbInstall(&quot;aroma&quot;)
+</code></pre>
+
+<p>You may see some warnings, especially while installing the sma package,
+but you should <em>not</em> see/get any errors.</p>
+
+<p>COMMENT: The sma package has been deprecated by its maintainer(s) and is
+(as of Feb 2011) only available via the <a href="http://cran.r-project.org/src/contrib/Archive/sma/">CRAN
+archives</a>.  The last
+available version (sma v0.5.15) will no longer install on recent R
+version.  For this reason, we have &quot;patched&quot; sma to v0.5.16 (not on
+CRAN; only on the servers of the Aroma Project) by doing minimal fixes
+such that it installs.</p>
+
+<h3>Usage</h3>
+
+<p>After installation, load the aroma and the sma packages by:</p>
+
+<pre><code class="r">&gt; library(&quot;aroma&quot;)
+Loading required package: R.methodsS3
+R.methodsS3 v1.4.2 (2012-06-22) successfully loaded. See ?R.methodsS3 for help.
+Loading required package: R.oo
+R.oo v1.11.7 (2013-01-08) successfully loaded. See ?R.oo for help.
+Loading required package: R.utils
+R.utils v1.19.5 (2013-01-11) successfully loaded. See ?R.utils for help.
+Loading required package: aroma.light
+Loading required package: matrixStats
+matrixStats v0.7.0 (2013-01-14) successfully loaded. See ?matrixStats for help.
+aroma.light v1.28.0 (2012-10-01) successfully loaded. See ?aroma.light for help.
+Loading required package: R.graphics
+Loading required package: R.basic
+R.basic v0.52.0 (2013-02-07) successfully loaded. See ?R.basic for help.
+Loading required package: R.colors
+R.colors v0.6.0 (2013-02-07) successfully loaded. See ?R.colors for help.
+R.graphics v0.44.0 (2013-02-07) successfully loaded. See ?R.graphics for help.
+aroma v0.97.0 (2013-02-07) successfully loaded. See ?aroma for help.
+
+&gt; library(&quot;sma&quot;)
+&gt;
+</code></pre>
+
+<p>To further assert that the packages were successfully installed, try one
+of the examples, e.g.</p>
+
+<pre><code class="r">&gt; example(GenePixData)
+</code></pre>
+
+<p>This should load some example data and generate a log-ratio
+log-intensity scatter plot.</p>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/packages/aroma/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/packages/aroma/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/packages/aroma/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

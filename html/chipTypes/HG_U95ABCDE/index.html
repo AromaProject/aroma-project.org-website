@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Human Genome U95 Set">Aroma: Human Genome U95 Set</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Human Genome U95 Set</h1>
+
+<p>&quot;This is a previous generation product [...].  This set of five GeneChip
+probe arrays contains almost 63,000 probe sets interrogating
+approximately 54,000 UniGene clusters derived from Build 95 of UniGene.
+Based on this UniGene build and associated annotations, the HG-U95Av2
+array represents approximately 10,000 full-length genes, while arrays
+B-E represent EST clusters.&quot;  (Affymetrix Product page as of 2011-05-27)</p>
+
+<h2>HG_U95A</h2>
+
+<p>Note that the &quot;A&quot; chip was later replaced by the updated
+<a href="../../chipTypes/HG_U95Av2/index.html">HG_U95Av2</a> chip type.</p>
+
+<pre><code class="r">&gt; cdf &lt;- AffymetrixCdfFile$byChipType(&quot;HG_U95A&quot;)
+&gt; cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HG_U95A
+Filename: HG_U95A.cdf
+Filesize: 29.11MB
+Chip type: HG_U95A
+RAM: 0.00MB
+File format: v3 (text; ASCII)
+Dimension: 640x640
+Number of cells: 409600
+Number of units: 12626
+Cells per unit: 32.44
+Number of QC units: 13
+</code></pre>
+
+<h2>HG_U95B</h2>
+
+<pre><code class="r">&gt; cdf &lt;- AffymetrixCdfFile$byChipType(&quot;HG_U95B&quot;)
+&gt; cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HG_U95B
+Filename: HG_U95B.CDF
+Filesize: 29.16MB
+Chip type: HG_U95B
+RAM: 0.00MB
+File format: v3 (text; ASCII)
+Dimension: 640x640
+Number of cells: 409600
+Number of units: 12620
+Cells per unit: 32.46
+Number of QC units: 13
+</code></pre>
+
+<h3>HG_U95C</h3>
+
+<pre><code class="r">&gt; cdf &lt;- AffymetrixCdfFile$byChipType(&quot;HG_U95C&quot;)
+&gt; cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HG_U95C
+Filename: HG_U95C.CDF
+Filesize: 29.22MB
+Chip type: HG_U95C
+RAM: 0.00MB
+File format: v3 (text; ASCII)
+Dimension: 640x640
+Number of cells: 409600
+Number of units: 12646
+Cells per unit: 32.39
+Number of QC units: 13
+</code></pre>
+
+<h2>HG_U95D</h2>
+
+<pre><code class="r">&gt; cdf &lt;- AffymetrixCdfFile$byChipType(&quot;HG_U95D&quot;)
+&gt; cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HG_U95D
+Filename: HG_U95D.CDF
+Filesize: 29.20MB
+Chip type: HG_U95D
+RAM: 0.00MB
+File format: v3 (text; ASCII)
+Dimension: 640x640
+Number of cells: 409600
+Number of units: 12644
+Cells per unit: 32.39
+Number of QC units: 13
+</code></pre>
+
+<h2>HG_U95E</h2>
+
+<pre><code class="r">&gt; cdf &lt;- AffymetrixCdfFile$byChipType(&quot;HG_U95E&quot;)
+&gt; cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HG_U95E
+Filename: HG_U95E.CDF
+Filesize: 29.20MB
+Chip type: HG_U95E
+RAM: 0.00MB
+File format: v3 (text; ASCII)
+Dimension: 640x640
+Number of cells: 409600
+Number of units: 12639
+Cells per unit: 32.41
+Number of QC units: 13
+</code></pre>
+
+<h2>Resources</h2>
+
+<p>By Affymetrix:</p>
+
+<ul>
+<li><a href="http://www.affymetrix.com/estore/browse/products.jsp;jsessionid=2292CB3507B7386C16260BF68DF05199?navMode=34000&amp;productId=131538&amp;navAction=jump&amp;aId=productsNav#1_1">Product page</a></li>
+</ul>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/chipTypes/HG_U95ABCDE/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/chipTypes/HG_U95ABCDE/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/chipTypes/HG_U95ABCDE/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

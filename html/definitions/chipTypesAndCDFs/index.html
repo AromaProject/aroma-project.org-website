@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Differences between chip type and chip definition file (CDF)">Aroma: Differences between chip type and chip definition file (CDF)</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Differences between chip type and chip definition file (CDF)</h1>
+
+<h2>Chip type</h2>
+
+<p>Each Affymetrix microarray has a particular chip type.  The chip type
+identifies the type array produced in the factory.  The chip type and
+its content, such as the probes, the probe sequences, the probe
+locations, will never change during the life time of the array and array
+type.</p>
+
+<p>Example of chip types are Mapping10K_Xba142, GenomeWideSNP_6,
+HG-U133A, and HuGene-1_0-st-v1.</p>
+
+<h3>Chip type aliases</h3>
+
+<p>In early stages, Affymetrix sometimes labels their chip types different.
+ For instance, early on the chip type GenomeWideSNP_6 was also referred
+to as GenomeWideEx_6 and GenomeWideEx_6_v2.  We refer to these as
+<em>chip type aliases</em>.</p>
+
+<h3>The aroma framework and chip types</h3>
+
+<p>The aroma.affymetrix package expects any annotation data file to be
+located under annotationData/chipTypes/&lt;chipType&gt;/, where &lt;chipType&gt;
+is the chip type of interest.  For example, all annotation data files
+for chip type GenomeWideSNP_6 should be located
+under annotationData/chipTypes/GenomeWideSNP_6/.  See also page
+&#39;<a href="../../setup/index.html">Setup</a>&#39;.</p>
+
+<h2>Chip definition file (CDF)</h2>
+
+<p>A CDF is an type of <em>annotation file</em> that contains one (of many
+possible) annotations of a particular chip type.  A CDF typically
+specifies which probes (cells) maps to the same genomic unit of
+interest.  For instance, for gene expression there are CDFs that
+specifies sets of probes that maps to the same gene, and for genotyping
+arrays there are CDFs that specifies which probes interrogates which SNP
+and which allele type.  Different CDFs may be used to interrogate
+different genomic units.  For instance, one CDF may be used to
+interrogate gene transcripts and another CDF to interrogate exons,
+although the two CDFs are for the same chip type.</p>
+
+<p>Affymetrix provides &quot;official&quot; CDFs for most of their chip types.  In
+addition to these, various groups provides so called &quot;custom CDFs&quot; that
+are optimized for various genomic features.  CDFs are typically updated
+when the genome annotation is updated.</p>
+
+<p>Example of CDFs are Mapping10K_Xba142.cdf,
+GenomeWideSNP_6.cdf, GenomeWideSNP_6.Full.cdf, HuEx-1_0-st-v2.cdf
+and HuEx-1_0-st-v2,coreR3,A20071112,EP.cdf.</p>
+
+<h3>Remarks</h3>
+
+<p>Note 1: The chip type of CDF GenomeWideSNP_6.Full.cdf
+is GenomeWideSNP_6.</p>
+
+<p>Note 2: Note that the term &#39;CDF&#39; is sometimes used incorrectly when the
+term &#39;chip type&#39; is meant.</p>
+
+<p>Note 3: In the Bioconductor project, there are &#39;CDF environments&#39; and
+&#39;CDF packages&#39;.  Although sometimes referred to as &quot;CDFs&quot; in the
+Bioconductor community, these are not CDFs, but instead R-specific data
+structures that contain all or parts of the information available in a
+CDF.</p>
+
+<h3>The aroma framework and CDFs</h3>
+
+<p>As mentioned above, the aroma.affymetrix package expects CDF annotation
+data files to be located under annotationData/chipTypes/&lt;chipType&gt;/,
+where &lt;chipType&gt; is the chip type of interest.  For example, the
+GenomeWideSNP_6.cdf file should be located
+under annotationData/chipTypes/GenomeWideSNP_6/.</p>
+
+<p>Furthermore, all annotation data files for a particular chip type should
+have filenames that start with the chip type followed by an optional set
+of comma-separated tags, and then the filename extension, i.e.
+&lt;chipType&gt;,&lt;tags&gt;.&lt;ext&gt;.  This means that you may have to rename
+certain annotation data files.  For instance, the
+GenomeWideSNP_6.Full.cdf file needs to be renamed
+to GenomeWideSNP_6,Full.cdf.  For more information on names and tags,
+see page &#39;<a href="../../definitions/namesAndTags/index.html">Fullnames, names and tags of directories and
+files</a>&#39;.</p>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/definitions/chipTypesAndCDFs/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/definitions/chipTypesAndCDFs/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/definitions/chipTypesAndCDFs/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

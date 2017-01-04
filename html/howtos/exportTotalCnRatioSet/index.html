@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): How to: Calculate total copy number ratios from from total (non-polymorphic) signals">Aroma: How to: Calculate total copy number ratios from from total (non-polymorphic) signals</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>How to: Calculate total copy number ratios from from total (non-polymorphic) signals</h1>
+
+<p>Author: Henrik Bengtsson<br>
+Created on: 2011-12-03<br>
+Last updated: 2011-12-03</p>
+
+<p>Copy-number (CN) preprocessing method such as <code>doCRMAv2()</code> and
+<code>doASCRMAv2()</code> outputs total signals for each locus.  These signals
+are <em>not CN ratios,</em> but only signals that are not comparable across
+loci, meaning they cannot be segmented.  In order to obtain <em>total
+CNs</em> (TCN), we need to calculate the ratios for these signals relative
+to corresponding signals of a reference.  For instance, for a tumor the
+reference can be a matched normal.  Another choice of reference is a
+robust average of a large pool of samples.  This section describes how
+to calculate total CN ratios relative to a reference.</p>
+
+<h2>Setting up an already preprocessed data set</h2>
+
+<p>Assume that a CEL data set named &#39;MyDataSet&#39; has previously been
+processed by <code>doCRMAv2()</code> and afterward R was quit.  To access the
+results, which was automatically stored on the file system, do:</p>
+
+<pre><code class="r">dataSet &lt;- &quot;MyDataSet&quot;
+tags &lt;- &quot;ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY&quot;;  # Tags added by CRMA v2
+chipType &lt;- &quot;GenomeWideSNP_6&quot;
+ds &lt;- AromaUnitTotalCnBinarySet$byName(dataSet, tags=tags, chipType=chipType)
+</code></pre>
+
+<p>so that <code>print(ds)</code> gives:</p>
+
+<pre><code>AromaUnitTotalCnBinarySet:
+Name: MyDataSet
+Tags: ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY
+Full name: MyDataSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY
+Number of files: 12
+Names: GSA2031T,
+GSA2031N, GSA2032T, GSA2032N, ... [12]
+Path (to the first file):
+totalAndFracBData/MyDataSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY/GenomeWideSNP_6
+Total file size: 21.53 MB
+RAM: 0.00MB
+</code></pre>
+
+<h2>Generating paired total copy numbers</h2>
+
+<p>In order to calculated paired total copy numbers (TCN), that is, TCN
+ratios of tumors relative to their matched normals, we first need to
+match up the tumor and normals by placing the in two separate data sets
+and making sure their ordering matches.  Then we can
+use <code>exportTotalCnRatioSet()</code> to calculate the TCNs for us.  For example:</p>
+
+<pre><code class="r"># Extract the tumors
+dsT &lt;- ds[indexOf(ds, pattern=&quot;T$&quot;)]
+
+# Extract the normals
+dsN &lt;- ds[indexOf(ds, pattern=&quot;N$&quot;)]
+
+# We will assume that the names matches
+stopifnot(gsub(&quot;T$&quot;, getNames(dsT)) == gsub(&quot;N$&quot;, getNames(dsN)))
+
+# Calculate TCNs
+dsTN &lt;- exportTotalCnRatioSet(dsT, ref=dsN)
+</code></pre>
+
+<h2>Generating total copy numbers relative to pool of all samples</h2>
+
+<p>In order to calculate paired TCNs relative to the average of a set of
+reference samples, do:</p>
+
+<pre><code class="r"># Use the normals as the reference set
+dsN &lt;- ds[indexOf(ds, pattern=&quot;N$&quot;)]
+
+# Calculate the average normal
+dfR &lt;- getAverageFile(dsN)
+
+# Calculate TCNs
+dsTR &lt;- exportTotalCnRatioSet(dsT, ref=dfR)
+</code></pre>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/howtos/exportTotalCnRatioSet/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/howtos/exportTotalCnRatioSet/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/howtos/exportTotalCnRatioSet/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Chip type: HuEx-1_0-st-v2">Aroma: Chip type: HuEx-1_0-st-v2</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Chip type: HuEx-1_0-st-v2</h1>
+
+<h2>GeneChip Human Exon 1.0 ST Array</h2>
+
+<p>Affymetrix press release: Affymetrix Launches GeneChip(R) Human Exon
+Array - New Microarray Offers Exon-Level, Genome-Wide Expression
+Profiling on a Single Array, <a href="http://investor.affymetrix.com/phoenix.zhtml?c=116408&amp;p=irol-newsArticle&amp;ID=763269">Oct 3,
+2005</a>.</p>
+
+<p>Comments: ST == Sense Target.  </p>
+
+<h2>HuEx-1_0-st-v2</h2>
+
+<p>Affymetrix offers a by them
+unsupported <a href="http://www.affymetrix.com/Auth/support/downloads/library_files/HuEx-1_0-st-v2.cdf.zip">CDF</a>
+for the chip type HuEx-1_0-st-v2.</p>
+
+<pre><code class="r">&gt; cdf &lt;- AffymetrixCdfFile$byChipType(&quot;HuEx-1_0-st-v2&quot;)
+&gt; print(cdf)
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HuEx-1_0-st-v2/ASCII
+Filename: HuEx-1_0-st-v2.cdf
+Filesize: 933.84MB
+File format: v3 (text; ASCII)
+Chip type: HuEx-1_0-st-v2
+Dimension: 2560x2560
+Number of cells: 6553600
+Number of units: 1432154
+Cells per unit: 4.58
+Number of QC units: 0RAM: 0.00MB
+</code></pre>
+
+<p>This is a CDF per exon: each unit has one group/probeset, which is the
+exon. There is no information about clustering exons/probesets into
+genes -- see the following subpages for options for CDFs with
+clusterings of exons into gene models. There are also a number of
+strange probesets corresponding to control probes which can contain VERY
+large numbers of probes per probeset and significantly slow down RMA
+fitting.  See Thread &#39;<a href="http://groups.google.com/group/aroma-affymetrix/browse_thread/thread/ddf66c8f33b37544#">Ram option is aroma
+Options</a>&#39;
+(Nov 8, 2007), for examples. These probesets should be removed or one of
+the CDFs below which do not contain them should be used.</p>
+
+<p>Note I: The CDF downloaded from the Affymetrix website is in an ASCII
+(text) file format.  It is highly recommended to work with  binary CDFs
+instead since they are orders of magnitude faster to query and more
+memory efficient to work with.  Use <code>convertCdf()</code> in the affxparser
+package to convert an ASCII CDF into binary.</p>
+
+<p>Note II: Older CEL files for this chip type, may be reported to have
+chip type &#39;HuEx-1_0-st-v1&#39;.  This chip is slightly different from the
+&#39;HuEx-1_0-st-v2&#39; chip.  According to Affymetrix support, the difference
+is only in the control probes; &quot;There is only a minor difference between
+the v1 and the v2 library files and it has to do with the manufacturing
+controls on the array. There is no difference with the probes
+interrogating the exons between v1 and v2.&quot;, cf. Thread &#39;<a href="http://groups.google.com/group/aroma-affymetrix/browse_thread/thread/6b3e53d3036d2515">Discussion on
+affymetrix-defined-transcript-clusters</a>&#39;
+(Nov 25-Dec 2, 2008).  We don&#39;t have details on the exact differences
+and we don&#39;t have access to the HuEx-1_0-st.v1.CDF (please fwd if you
+have it), but from Affymetrix&#39; feedback it sounds like one could use the
+new HuEx-1_0-st-v2.CDF.  In aroma.affymetrix, one can override the
+default CDF by:</p>
+
+<pre><code class="r">cdf &lt;- AffymetrixCdfFile$byChipType(&quot;HuEx-1_0-st-v2&quot;)
+csR &lt;- AffymetrixCelSet$byName(&quot;MyDataSet&quot;, cdf=cdf)
+</code></pre>
+
+<h2>Resources</h2>
+
+<p>By aroma-project.org:</p>
+
+<ul>
+<li>  <a href="http://aroma-project.org/data/annotationData/chipTypes/HuEx-1_0-st-v2/HuEx-1_0-st-v2,HB20080710.acs.gz">HuEx-1_0-st-v2,HB20080710.acs.gz</a>
+
+<ul>
+<li>Aroma Cell Sequence (ACS) annotation file mapping cell indices to
+25-mer sequences and target strandedness.  Sources: Affymetrix
+HuEx-1_0-st-v2.probe.tab file.  Created by: Henrik Bengtsson,
+2008-07-10.</li>
+</ul></li>
+<li>  <a href="http://aroma-project.org/data/annotationData/chipTypes/HuEx-1_0-st-v2/HuEx-1_0-st-v2.cdf.gz">HuEx-1_0-st-v2.cdf.gz</a> -
+A binary version of the Affymetrix unsupported CDF.  Sources:
+Affymetrix HuEx-1_0-st-v2.text.CDF.  Created by: Henrik Bengtsson,
+2010-12-03.</li>
+</ul>
+
+<p>The following subpages contain <strong>custom CDFs</strong> that map the exon array
+probes to gene models:</p>
+
+<ul>
+<li>  <a href="../../chipTypes/HuEx-1_0-st-v2/transcriptClustersCDFs/index.html">Affymetrix-Defined transcript
+clusters</a> are a
+&#39;gene model&#39; of sorts defined by clustering of exons automatically
+done by Affymetrix. The CDF contains both the transcript clusters as
+well as the exon identifications of the probes in a nested fashion.</li>
+<li>  <a href="../../chipTypes/HuEx-1_0-st-v2/Ensembl_Gene_Definitions/index.html">Ensembl Gene Definitions</a> gene models based on the Ensembl annotation.</li>
+<li>  <a href="../../chipTypes/HuEx-1_0-st-v2/HsEx10stv2_Hs_REFSEQ/index.html">HsEx10stv2_Hs_REFSEQ</a> give
+some notes regarding regarding custom CDFs from U Michigan that map
+the exons to RefSeq transcript identifications.</li>
+</ul>
+
+<p>If you would like to contribute a custom-made CDF that would be great.
+Please give your file descriptive tags that indicate either the date of
+creation or the date of the annotation on which it is based (something
+like: HuEx-1_0-st-v2,MyFavAnnot,20070525,xx.cdf where xx are you or
+your institution&#39;s initials) and create a page describing how it was
+made. Please do not give it a name of a pre-existing CDF available here!
+Contact Elizabeth Purdom if you need assistance with contributing a CDF.</p>
+
+<p>By Affymetrix:</p>
+
+<ul>
+<li>  <a href="http://www.affymetrix.com/browse/products.jsp?productId=131452&amp;navMode=34000&amp;navAction=jump&amp;aId=productsNav#1_1" title="http://www.affymetrix.com/support/technical/byproduct.affx?product=500k">Support
+Materials</a> (Library
+files w/ CDFs, probe sequences etc.)</li>
+</ul>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/chipTypes/HuEx-1_0-st-v2/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/chipTypes/HuEx-1_0-st-v2/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/chipTypes/HuEx-1_0-st-v2/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

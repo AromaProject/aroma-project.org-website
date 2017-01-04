@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Vignette: FIRMA - Human exon array analysis">Aroma: Vignette: FIRMA - Human exon array analysis</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Vignette: FIRMA - Human exon array analysis</h1>
+
+<p>Authors: Ken Simpson, Elizabeth Purdom, Mark Robinson, Henrik Bengtsson<br>
+Created: 2007-02-16<br>
+Last updated: 2014-12-21</p>
+
+<p>This document describes how to perform FIRMA <a name=cite-PurdomE_etal_2008-FIRMA></a>(<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=18573797">Purdom, Simpson, Robinson, Conboy, Lapuk, and Speed, 2008</a>) on an HuEx-1_0-st-v2 exon microarray data set.</p>
+
+<div class="alert alert-info" role="alert">
+ <p>
+  <span class="glyphicon glyphicon-thumbs-up" style="font-size: 1.2em;"></span>
+  <em>To help support this work, please consider citing the following relevant references in your publications or talks whenever using their methods or results:</em>
+ </p><br>
+ <ul>
+  <li>
+<p>H. Bengtsson, K. Simpson, J. Bullard, et al.
+<em>aroma.affymetrix: A generic framework in R for analyzing small to very large Affymetrix data sets in bounded memory</em>.
+Tech. rep. 745.
+Department of Statistics, University of California, Berkeley, Feb. 2008.</p>
+
+  </li>
+  <li>
+<p>E. Purdom, K. M. Simpson, M. D. Robinson, et al.
+&ldquo;FIRMA: a method for detection of alternative splicing from exon array data&rdquo;.
+Eng.
+In: <em>Bioinformatics (Oxford, England)</em> 24.15 (2008), pp. 1707-14.
+DOI: <a href="http://dx.doi.org/10.1093/bioinformatics/btn284">10.1093/bioinformatics/btn284</a>.
+PMID: <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;cmd=prlinks&amp;retmode=ref&amp;id=18573797">18573797</a>.</p>
+
+  </li>
+ </ul>
+</div>
+
+<h2>Setup</h2>
+
+<h3>Raw data</h3>
+
+<ul>
+<li><p>Test set: BCGC_2006 (35x breast cancer samples on human exon arrays from  Lawrence Berkeley National Laboratory (LBNL). Unfortunately this data is currently not publicly available.)</p></li>
+<li><p>Path: rawData/BCGC_2006/HuEx-1_0-st-v2/</p></li>
+</ul>
+
+<h3>Annotation data</h3>
+
+<p>Here we will use a custom CDF that consists of only &#39;core&#39; probesets.
+Get the following annotation files and place them in
+annotationData/chipTypes/HuEx-1_0-st-v2/.</p>
+
+<ul>
+<li>HuEx-1_0-st-v2,coreR2,A20070914,EP.cdf - the CDF defining &quot;core&quot; units.</li>
+</ul>
+
+<p>This custom CDF (and also more current versions) can be downloaded from
+subpage &#39;Affymetrix-Defined transcript clusters&#39; on
+Page <a href="../../chipTypes/HuEx-1_0-st-v2/index.html">HuEx-1_0-st-v2</a>.</p>
+
+<div class="alert alert-warning" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign" style="font-size: 1.2em;"></span>
+  Do <em>not</em> use the default CDF named HuEx-1_0-st-v2.cdf that is provided by Affymetrix.
+</div>
+
+<p>Important: Make sure you replicate the structure outlined in the
+<a href="../../setup/index.html">Setup</a> pages - this will allow aroma.affymetrix to easily find
+your data sets and CDFs.</p>
+
+<h4>About custom CDFs</h4>
+
+<p>For the exon array analysis carried out here we need to be able to map
+transcript cluster IDs to exon IDs.  For this reason, we cannot use the
+default CDF provided by Affymetrix (do not use it), which only have
+information on exon IDs but <em>not on transcripts</em>.  Instead, we use
+custom CDFs that map transcript cluster IDs to exon IDs according to
+Affymetrix&#39;s definition of &#39;transcript clusters&#39;, cf. [ref needed].  The
+above core CDF is one such <em>custom CDF where each unit corresponds to a
+transcript cluster and each group within a unit corresponds to an
+exon/probeset</em>.  For details on this and other alternative custom CDFs
+of the same kind, see Page
+<a href="../../chipTypes/HuEx-1_0-st-v2/index.html">HuEx-1_0-st-v2</a>.  We might also use other
+gene models to group the exon.  For further alternatives, see
+Page <a href="../../chipTypes/HuEx-1_0-st-v2/index.html">HuEx-1_0-st-v2</a> and its subpages.</p>
+
+<p>It can still be useful to have the default Affymetrix CDF as well,
+however you should NOT use it for certain steps of the analysis
+(particularly for the step fitting the probe model). If you make use of
+the default Affymetrix CDF, make sure that you convert Affymetrix&#39;s
+ASCII CDF to binary. Even if you only want probeset summaries, you don&#39;t
+want to use Affymetrix&#39;s default CDF because it contains some very
+strange and large probesets (&gt; 10,000 probes) that would slow down the
+processing enormously if modeled.  There is
+not currently a &#39;cleaned-up&#39; version of Affymetrix&#39;s default CDF that
+does all the probesets but without these problem probesets. There are
+also some possible omissions in Affymetrix&#39;s default CDF (see
+<a href="http://groups.google.com/group/aroma-affymetrix/browse_thread/thread/86e48eff1e7bd457/c892034d3061d32f?lnk=gst&amp;q=miRNA#c892034d3061d32f">discussion</a>)
+and these omissions are carried through to the custom CDFs as well.</p>
+
+<p>It is highly recommended that you &quot;tag&quot; your results every time you
+switch CDFs (including the first time you start your analysis if with a
+custom CDF). You can add a tag at each major step of the analysis.
+Otherwise you can run into problems if you later use a different CDF.
+See following
+<a href="http://groups.google.com/group/aroma-affymetrix/browse_thread/thread/606ce66d425d2fae#">discussion</a>
+for explanation and examples of tagging.</p>
+
+<h2>Low-level analysis</h2>
+
+<pre><code class="r">library(&quot;aroma.affymetrix&quot;)
+verbose &lt;- Arguments$getVerbose(-8, timestamp=TRUE)
+</code></pre>
+
+<h3>Setting up annotation data</h3>
+
+<p>In this vignette we will use a custom CDF.  In order to use that,
+instead of the default CDF automatically located, we setup the CDF
+explicitly as:</p>
+
+<pre><code class="r">chipType &lt;- &quot;HuEx-1_0-st-v2&quot;
+cdf &lt;- AffymetrixCdfFile$byChipType(chipType, tags=&quot;coreR2,A20070914,EP&quot;)
+print(cdf)
+</code></pre>
+
+<p>This gives:</p>
+
+<pre><code>AffymetrixCdfFile:
+Path: annotationData/chipTypes/HuEx-1_0-st-v2
+Filename: HuEx-1_0-st-v2,coreR2,A20070914,EP.cdf
+Filesize: 38.25MB
+File format: v4 (binary; XDA)
+Chip type: HuEx-1_0-st-v2,coreR2,A20070914,EP
+Dimension: 2560x2560
+Number of cells: 6553600
+Number of units: 18708
+Cells per unit: 350.31
+Number of QC units: 1
+RAM: 0.00MB
+</code></pre>
+
+<h3>Defining CEL set</h3>
+
+<p>Next we setup the CEL set with the above custom CDF:</p>
+
+<pre><code class="r">cs &lt;- AffymetrixCelSet$byName(&quot;BCGC_2006&quot;, cdf=cdf)
+print(cs)
+</code></pre>
+
+<p>This gives:</p>
+
+<pre><code>AffymetrixCelSet:
+Name: BCGC_2006
+Tags:
+Path: rawData/BCGC_2006/HuEx-1_0-st-v2
+Chip type: HuEx-1_0-st-v2,coreR2,A20070914,EP
+Number of arrays: 35
+Names: BR_BT20_14_v1_WT, BR_BT474_11_v1_WT, ...,
+BR_ZR75B_14_v1_WT
+Time period: 2005-08-23 21:02:51 -- 2005-09-15 04:51:47
+Total file size: 2199.03MB
+RAM: 0.04MB
+</code></pre>
+
+<p>Note how the custom CDF is used. Otherwise by default it will search for
+a CDF of the name HuEx-1_0-st-v2.cdf (and if it does not find it, will
+produce an error). This CDF name is reserved to the default CDF provided
+by Affymetrix.</p>
+
+<p>There can be different stages as which you choose to start using the
+custom CDF. If you want to start with using all of the probes for background
+correction and normalization, you can initially have the Affymetrix CDF
+(by leaving out the option <code>cdf</code> above). Then to change the CDF of any
+AffymetrixCelSet (like the <code>cs</code> object above or the <code>csN</code>
+post-normalization object below)</p>
+
+<pre><code class="r">setCdf(cs, cdf)
+</code></pre>
+
+<h3>Background Adjustment and Normalization</h3>
+
+<p>In order to do RMA background correction, we setup a correction method
+and runs it by:</p>
+
+<pre><code class="r">bc &lt;- RmaBackgroundCorrection(cs, tags=&quot;*,coreR2&quot;)
+csBC &lt;- process(bc,verbose=verbose)
+</code></pre>
+
+<p>Note that this is the first step where we will create new files, so we
+have put in a tag that should follow through the rest of the analysis.</p>
+
+<p>We then setup a quantile normalization method:</p>
+
+<pre><code class="r">qn &lt;- QuantileNormalization(csBC, typesToUpdate=&quot;pm&quot;)
+print(qn)
+</code></pre>
+
+<p>which gives:</p>
+
+<pre><code>QuantileNormalization:Data set: BCGC_2006  
+Input tags: RBC,coreR2  
+Output tags: QN  
+Number of arrays: 35 (2199.03MB)  
+Chip type: HuEx-1_0-st-v2,coreR2,A20070914,EP  
+Algorithm parameters: (subsetToUpdate: NULL, typesToUpdate: chr &quot;pm&quot;,
+subsetToAvg: NULL, typesToAvg: chr &quot;pm&quot;, .targetDistribution: NULL)  
+Output path: probeData/BCGC_2006,RBC,QN/HuEx-1_0-st-v2  
+Is done: FALSE
+</code></pre>
+
+<p>and we then run it by:</p>
+
+<pre><code class="r">csN &lt;- process(qn, verbose=verbose)
+</code></pre>
+
+<p>This will take approx 30-60s per array.  Then <code>print(csN)</code> gives:</p>
+
+<pre><code>AffymetrixCelSet:
+Name: BCGC_2006
+Tags: RBC,coreR2,QN
+Path: probeData/BCGC_2006,RBC,coreR2,QN/HuEx-1_0-st-v2
+Chip type: HuEx-1_0-st-v2,coreR2,A20070914,EP
+Number of arrays: 35
+Names: BR_BT20_14_v1_WT, BR_BT474_11_v1_WT, ...,
+BR_ZR75B_14_v1_WT
+Time period: 2005-08-23 21:02:51 -- 2005-09-15 04:51:47
+Total file size: 2199.03MB
+RAM: 0.04MB
+</code></pre>
+
+<p>Note how the standard &#39;QN&#39; tag is added after the composite &#39;BG&#39;
+correction tag (which is a combination of the standard &#39;RBC&#39; and our
+custom &#39;coreR2&#39;). The path where the results are stored also have the
+custom tag, so if we redid the analysis with a different tag (e.g. for a
+different CDF) the results would be stored in a different path and thus
+kept distinct. This tag will follow through the subsequent analysis, as
+it did with the quantile normalization. This also means that if you go
+back and rerun your code you must remember to keep the tag -- otherwise
+the results will be stored in a different location and therefore all of
+the calculations will be redone!</p>
+
+<h3>Summarization</h3>
+
+<p>If you have not already done so, now is the time to set your custom CDF
+(see instructions above). If at the beginning you imported the data with
+the custom CDF (like the code on this page), then you do not need to do
+anything -- all of the background correction and normalization steps used only the probes
+defined on that CDF and each new product that was created continued to
+have this CDF. You can check with the command</p>
+
+<pre><code class="r">getCdf(csN)
+
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HuEx-1_0-st-v2
+Filename: HuEx-1_0-st-v2,coreR2,A20070914,EP.cdf
+Filesize: 38.25MB
+File format: v4 (binary; XDA)
+Chip type: HuEx-1_0-st-v2,coreR2,A20070914,EP
+Dimension: 2560x2560
+Number of cells: 6553600
+Number of units: 18708
+Cells per unit: 350.31
+Number of QC units: 1
+RAM: 0.00MB
+</code></pre>
+
+<p>There are two options, regardless of the kind of custom CDF you use. To
+fit a summary of the entire transcript (i.e. estimate the overall
+expression for the transcript), do:</p>
+
+<pre><code class="r">plmTr &lt;- ExonRmaPlm(csN, mergeGroups=TRUE)
+print(plmTr)
+</code></pre>
+
+<p>Otherwise, to fit exon-by-exon, change the value of <code>mergeGroups</code> to <code>FALSE</code>
+in the <code>ExonRmaPlm()</code> call above.</p>
+
+<pre><code class="r">plmEx &lt;- ExonRmaPlm(csN, mergeGroups=FALSE)
+print(plmEx)
+</code></pre>
+
+<p>To fit the PLM to all of the data, do:</p>
+
+<pre><code class="r">fit(plmTr, verbose=verbose)
+</code></pre>
+
+<p>or similarly for <code>plmEx</code>. This will roughly take a few minutes per array
+if you are using the core probesets only.</p>
+
+<h4>Quality assessment of PLM fit</h4>
+
+<p>To calculate the residuals from the PLM fit, do:</p>
+
+<pre><code class="r">rs &lt;- calculateResidualSet(plmTr, verbose=verbose)
+</code></pre>
+
+<p>To browse spatial false-colored images of the residuals, do:</p>
+
+<pre><code class="r">ae &lt;- ArrayExplorer(rs)
+setColorMaps(ae, c(&quot;log2,log2neg,rainbow&quot;, &quot;log2,log2pos,rainbow&quot;))
+process(ae, interleaved=&quot;auto&quot;, verbose=verbose)
+display(ae)
+</code></pre>
+
+<p>This will take 30-60 seconds per array. Note that you will only have
+proper residuals for the probes you used in your fit -- i.e. the ones in
+the custom CDF you chose. So these plots may be of lesser value.</p>
+
+<p>To examine NUSE and RLE plots, do</p>
+
+<pre><code class="r">qamTr &lt;- QualityAssessmentModel(plmTr)
+plotNuse(qamTr)
+plotRle(qamTr)
+</code></pre>
+
+<p>Note that this can be done to fits based on the transcript level or exon
+level depending on which PLM you chose and can give different
+interpretations.</p>
+
+<p>To extract the estimates (transcript or probeset) use either
+<code>extractMatrix()</code> or <code>extractDataFrame()</code> on the ChipEffectSet that
+corresponds to the PLM object:</p>
+
+<pre><code class="r">cesTr &lt;- getChipEffectSet(plmTr)
+trFit &lt;- extractDataFrame(cesTr, units=1:3, addNames=TRUE)
+</code></pre>
+
+<p>This will give a data.frame with three rows, each row corresponding to a
+unit/transcript. To get all units, choose <code>units=NULL</code>. The <code>addNames=TRUE</code> argument adds the unit and group names to the entries of the data frame, but will take longer the first time you process this chip type. Note that if you had <code>mergeGroups=TRUE</code>, there is no &#39;group&#39; or
+exon estimate, but <code>extractDataFrame()</code> will still return a group name.
+This will always be the first probeset in the transcript and should be
+ignored -- it has nothing to do with the estimate but is simply an
+artifact of how the data is stored.</p>
+
+<p>To get estimates of the probesets/exons you must choose
+<code>mergeGroups=FALSE</code> as described above when you define your PLM object,
+and then extract the estimates from it.</p>
+
+<pre><code class="r">cesEx &lt;- getChipEffectSet(plmEx)
+exFit &lt;- extractDataFrame(cesEx, units=1:3, addNames=TRUE)
+</code></pre>
+
+<p>This will return a data frame with 27 rows equal to the 4+15+8 exons
+that are in the first three units. Again, <code>units=NULL</code> gives all exons.
+Note that you can also <code>readUnits()</code> to get the output in the traditional
+list format (applied to either <code>cesEx</code> or <code>cesTr</code>, as appropriate). However,
+if you are then going to unlist it into a matrix form, use
+<code>extractMatrix()</code> or <code>extractDataFrame()</code> -- it will be much safer.</p>
+
+<div class="alert alert-warning" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign" style="font-size: 1.2em;"></span>
+ Do <em>not</em> use getData(), getIntensities() or any other such commands to get transcript or exon summaries.
+</div>
+
+<h2>Alternative Splicing Analysis (FIRMA)</h2>
+
+<p>The FIRMA analysis <em>only</em> works from the PLM based on transcripts.</p>
+
+<pre><code class="r">firma &lt;- FirmaModel(plmTr)
+fit(firma, verbose=verbose)
+fs &lt;- getFirmaScores(firma)
+</code></pre>
+
+<p>You can extract the FIRMA scores in the same way as the transcript/exon
+estimates with <code>extractDataFrame()</code> applied to <code>fs</code>.</p>
+
+<h2>References</h2>
+
+<p><a
+name=bib-PurdomE_etal_2008-FIRMA></a><a href="#cite-PurdomE_etal_2008-FIRMA">[1]</a>
+E. Purdom, K. M. Simpson, M. D. Robinson, et al. &quot;FIRMA: a method for
+detection of alternative splicing from exon array data&quot;. Eng. In:
+<em>Bioinformatics (Oxford, England)</em> 24.15 (2008), pp. 1707-14. DOI:
+<a href="http://dx.doi.org/10.1093/bioinformatics/btn284">10.1093/bioinformatics/btn284</a>.
+PMID:
+<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;cmd=prlinks&amp;retmode=ref&amp;id=18573797">18573797</a>.
+    y</p>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/vignettes/FIRMA-HumanExonArrayAnalysis/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/vignettes/FIRMA-HumanExonArrayAnalysis/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/vignettes/FIRMA-HumanExonArrayAnalysis/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

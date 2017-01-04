@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Vignette: Gene 1.0 ST array analysis">Aroma: Vignette: Gene 1.0 ST array analysis</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Vignette: Gene 1.0 ST array analysis</h1>
+
+<p>Authors: Mark Robinson<br>
+Created: 2008-11-25<br>
+Last updated: 2008-11-25</p>
+
+<div class="alert alert-info" role="alert">
+ <p>
+  <span class="glyphicon glyphicon-thumbs-up" style="font-size: 1.2em;"></span>
+  <em>To help support this work, please consider citing the following relevant references in your publications or talks whenever using their methods or results:</em>
+ </p><br>
+ <ul>
+  <li>
+<p>H. Bengtsson, K. Simpson, J. Bullard, et al.
+<em>aroma.affymetrix: A generic framework in R for analyzing small to very large Affymetrix data sets in bounded memory</em>.
+Tech. rep. 745.
+Department of Statistics, University of California, Berkeley, Feb. 2008.</p>
+
+  </li>
+ </ul>
+</div>
+
+<h2>Setup</h2>
+
+<h3>Raw data</h3>
+
+<p>Test set: tissues (11 human tissues, each with 3 biological replicates,
+run by Affymetrix and publicly available from
+<a href="http://www.affymetrix.com/">www.affymetrix.com</a>)</p>
+
+<p>Path: rawData/tissues/HuGene-1_0-st-v1/</p>
+
+<h3>Annotation data</h3>
+
+<p>For Gene 1.0 ST array, we will use a binary-converted version of the
+&#39;unsupported&#39; CDF that is provided by Affymetrix.  Instead of creating
+these yourself, you can simply download it from the following links,
+depending on which organism you are working with:</p>
+
+<ul>
+<li>Human: <a href="../../chipTypes/HuGene-1_0-st-v1/index.html">HuGene-1_0-st-v1,r3.cdf</a></li>
+<li>Mouse: <a href="../../chipTypes/MoGene-1_0-st-v1/index.html">MoGene-1_0-st-v1,r3.cdf</a></li>
+<li>Rat: <a href="../../chipTypes/RaGene-1_0-st-v1/index.html">RaGene-1_0-st-v1,r3.cdf</a></li>
+</ul>
+
+<p>For the PM plate arrays (these are newer PM-only versions of the older
+generation HG-U133, MG-430, RG-230 chips), you can get a binary version
+of the CDF directly from the &quot;Library Files&quot; archive from Affymetrix.
+See the <a href="../../chipTypes/HT_HG-U133_Plus_PM/index.html">HT_HG-U133_Plus_PM</a> page for
+details on the human array and see the Affymetrix web site for details.
+The below scripts should work by just replacing the &quot;chipType&quot; and tags
+where appropriate.</p>
+
+<p>Be sure to put the CDF file in your
+annotationData/chipTypes/&lt;chipType&gt;/ where &lt;chipType&gt; is the
+platform you are using (e.g. HuGene-1_0-st-v1 for Human Gene 1.0 ST,
+HT_HG-U133_Plus_PM for the human PM plate arrays etc.)</p>
+
+<p>Important: Make sure you replicate the structure outlined in
+<a href="../../setup/index.html">Setup</a> - this will allow the Aroma framework to easily find
+your data sets and CDFs.</p>
+
+<h2>Low-level analysis</h2>
+
+<p>Most of what follows is very similar to the use case for Human Exon
+arrays.  In fact, this vignette was created by cutting and pasting the
+Human Exon array analysis page and modified.
+Thanks are due to Elizabeth Purdom and Ken Simpson for the original document.</p>
+
+<pre><code class="r">library(&quot;aroma.affymetrix&quot;)
+verbose &lt;- Arguments$getVerbose(-8, timestamp=TRUE)
+</code></pre>
+
+<h3>Getting annotation data files</h3>
+
+<p>In this vignette we will use the standard CDF (which you can download
+from the link above).  We setup the CDF as:</p>
+
+<pre><code class="r">chipType &lt;- &quot;HuGene-1_0-st-v1&quot;
+cdf &lt;- AffymetrixCdfFile$byChipType(chipType, tags=&quot;r3&quot;)
+print(cdf)
+</code></pre>
+
+<p>This gives:</p>
+
+<pre><code>AffymetrixCdfFile:
+Path: annotationData/chipTypes/HuGene-1_0-st-v1
+Filename: HuGene-1_0-st-v1,r3.cdf
+Filesize: 16.67MB
+Chip type: HuGene-1_0-st-v1,r3
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 1050x1050
+Number of cells: 1102500
+Number of units: 33252
+Cells per unit: 33.16
+Number of QC units: 0
+</code></pre>
+
+<h3>Defining CEL set</h3>
+
+<p>Next we setup the CEL set with the above custom CDF, assuming the data
+has been</p>
+
+<pre><code class="r">cs &lt;- AffymetrixCelSet$byName(&quot;tissues&quot;, cdf=cdf)
+print(cs)
+</code></pre>
+
+<p>This gives:</p>
+
+<pre><code>AffymetrixCelSet:
+Name: tissues
+Tags:
+Path: rawData/tissues/HuGene-1_0-st-v1
+Platform: Affymetrix
+Chip type: HuGene-1_0-st-v1,r3
+Number of arrays: 33
+Names: TisMap_Brain_01_v1_WTGene1, TisMap_Brain_02_v1_WTGene1,
+..., TisMap_Thyroid_03_v1_WTGene1
+Time period: 2006-10-03 12:29:27 -- 2006-10-05 13:39:50
+Total file size: 349.03MB
+RAM: 0.03MB
+</code></pre>
+
+<h3>Background Adjustment and Normalization</h3>
+
+<p>In order to do RMA background correction, we setup a correction method
+and runsit by:</p>
+
+<pre><code class="r">bc &lt;- RmaBackgroundCorrection(cs)
+csBC &lt;- process(bc,verbose=verbose)
+</code></pre>
+
+<p>We then setup a quantile normalization method:</p>
+
+<pre><code class="r">qn &lt;- QuantileNormalization(csBC, typesToUpdate=&quot;pm&quot;)
+print(qn)
+</code></pre>
+
+<p>which gives:</p>
+
+<pre><code>QuantileNormalization:
+Data set: tissues
+Input tags: RBC
+User tags: *
+Asterisk (&#39;*&#39;) tags: QN
+Output tags: RBC,QN
+Number of files: 33 (349.03MB)
+Platform: Affymetrix
+Chip type: HuGene-1_0-st-v1,r3
+Algorithm parameters: (subsetToUpdate: NULL, typesToUpdate: chr &quot;pm&quot;,
+subsetToAvg: NULL, typesToAvg: chr &quot;pm&quot;, .targetDistribution: NULL)
+Output path: probeData/tissues,RBC,QN/HuGene-1_0-st-v1
+Is done: FALSE
+RAM: 0.00MB
+</code></pre>
+
+<p>and we then run it by:</p>
+
+<pre><code class="r">csN &lt;- process(qn, verbose=verbose)
+</code></pre>
+
+<p>Then, <code>print(csN)</code> gives:</p>
+
+<pre><code>AffymetrixCelSet:
+Name: tissues
+Tags: RBC,QN
+Path: probeData/tissues,RBC,QN/HuGene-1_0-st-v1
+Platform: Affymetrix
+Chip type: HuGene-1_0-st-v1,r3
+Number of arrays: 33
+Names: TisMap_Brain_01_v1_WTGene1, TisMap_Brain_02_v1_WTGene1,
+..., TisMap_Thyroid_03_v1_WTGene1
+Time period: 2006-10-03 12:29:27 -- 2006-10-05 13:39:50
+Total file size: 349.03MB
+RAM: 0.03MB
+</code></pre>
+
+<h3>Summarization</h3>
+
+<p>Unlike Exon arrays, the Gene arrays do not (at least by default) have
+information within the CDF regarding exons, or more specifically, the
+Gene arrays do not have separate probesets within a transcript cluster
+and the Exon CDFs do.  There has been some recent work that suggests you
+can use the Gene arrays to do splicing analysis.  More on that to come.
+Here, we&#39;ll just fit the RMA &quot;probe-level model&quot; (PLM) in order to get
+gene-level summaries for each gene.  To do this, you would call:</p>
+
+<pre><code class="r">plm &lt;- RmaPlm(csN)
+print(plm)
+</code></pre>
+
+<p>This gives</p>
+
+<pre><code>RmaPlm:
+Data set: tissues
+Chip type: HuGene-1_0-st-v1,r3
+Input tags: RBC,QN
+Output tags: RBC,QN,RMA
+Parameters: (probeModel: chr &quot;pm&quot;; shift: num 0; flavor: chr &quot;affyPLM&quot;
+treatNAsAs: chr &quot;weights&quot;).
+Path: plmData/tissues,RBC,QN,RMA/HuGene-1_0-st-v1
+RAM: 0.00MB
+</code></pre>
+
+<p>To actually fit the PLM to all of the data, do:</p>
+
+<pre><code class="r">fit(plm, verbose=verbose)
+</code></pre>
+
+<h3>Quality assessment of PLM fit</h3>
+
+<p>To examine NUSE and RLE plots, do:</p>
+
+<pre><code class="r">qam &lt;- QualityAssessmentModel(plm)
+plotNuse(qam)
+plotRle(qam)
+</code></pre>
+
+<p>To extract the estimates, you can use <code>extractDataFrame()</code> on the
+ChipEffectSet object that corresponds to the <code>plm</code> object:</p>
+
+<pre><code class="r">ces &lt;- getChipEffectSet(plm)
+gExprs &lt;- extractDataFrame(ces, units=1:3, addNames=TRUE)
+</code></pre>
+
+<p>This will give a data.frame with three rows, each row corresponding to a
+unit/transcript. To get all units, choose <code>units=NULL</code> (default).  The
+<code>addNames=TRUE</code> argument adds the unit and group names to the entries of
+the data frame, which will take a bit longer the first time you analyze
+a chip type.</p>
+
+<p>A few other considerations you may wish to think about:</p>
+
+<ul>
+<li>Notice that the data frame you get from <code>extractDataFrame()</code> gives the
+gene-level summaries on the linear scale. Typically, you&#39;ll want to
+take &#39;log2&#39; of those for use with clustering, <a href="http://www.bioconductor.org/packages/release/bioc/html/limma.html">limma</a>, or other tools.</li>
+<li>You may wish to consult the &#39;library&#39; files from Affymetrix.  Of the
+33,252 units in the human CDF file, there are a few thousand that
+represent control spots and so on.  Specifically, the &#39;Transcript
+Cluster Annotations CSV&#39; file will contain this and other relevant
+information with respect to the probesets.</li>
+</ul>
+
+<h2>Appendix</h2>
+
+<p>Here is a  complete list of commands from above, in case you want to cut
+and paste them all at once:</p>
+
+<pre><code class="r">library(&quot;aroma.affymetrix&quot;)
+verbose &lt;- Arguments$getVerbose(-8, timestamp=TRUE)
+
+chipType &lt;- &quot;HuGene-1_0-st-v1&quot;
+cdf &lt;- AffymetrixCdfFile$byChipType(chipType, tags=&quot;r3&quot;)
+cs &lt;- AffymetrixCelSet$byName(&quot;tissues&quot;, cdf=cdf)
+
+bc &lt;- RmaBackgroundCorrection(cs)
+csBC &lt;- process(bc,verbose=verbose)
+qn &lt;- QuantileNormalization(csBC, typesToUpdate=&quot;pm&quot;)
+csN &lt;- process(qn, verbose=verbose)
+
+plm &lt;- RmaPlm(csN)
+fit(plm, verbose=verbose)
+
+qam &lt;- QualityAssessmentModel(plm)
+plotNuse(qam)
+plotRle(qam)
+
+ces &lt;- getChipEffectSet(plm)
+gExprs &lt;- extractDataFrame(ces, units=NULL, addNames=TRUE)
+</code></pre>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/vignettes/GeneSTArrayAnalysis/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/vignettes/GeneSTArrayAnalysis/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/vignettes/GeneSTArrayAnalysis/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

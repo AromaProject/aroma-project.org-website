@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Replication: Reproducing CBS using MPCBS with K=1 platforms">Aroma: Replication: Reproducing CBS using MPCBS with K=1 platforms</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Replication: Reproducing CBS using MPCBS with K=1 platforms</h1>
+
+<p>Wed, 2010-03-03 01:15<br>
+Author: Henrik Bengtsson<br>
+Created on: 2010-03-03</p>
+
+<p><strong>Update 2010-03-20: The problem reported here has been solved in mpcbs v1.1.1.</strong></p>
+
+<h2>Failed MPCBS segmentation</h2>
+
+<p>I have identified a problem with the current implementation of MPCBS
+that causes it to miss some obvious segments.  I am simulating data and
+compare with the results of CBS (<code>DNAcopy::segment()</code>), GLAD
+(<code>GLAD::glad()</code>), and HaarSeg (<code>HaarSeg::haarSeg()</code>).  Since the error terms
+are drawn randomly (without a fixed seed), the issue with MPCBS does not
+occur every time.  Indeed, it only occurs every 10-20 times.  However,
+with 24 chromosomes and hundreds of samples, this becomes a real issue.</p>
+
+<p><img src="../../assets/images/MPCBS/mpcbs%2Cbug.png" alt=""></p>
+
+<p><em>Figure: Simulated log2 CNs (gray) segmented by CBS (red), GLAD (blue),
+HaarSeg (orange) and MPCBS (purple).  500kb smoothed CNs (black) are
+also shown.  The true CN segmentation is the same across runs, but the
+noise is randomly drawn.  For this particular run, MPCBS failed to
+identify the last change point.  There are J=1000 data points.</em></p>
+
+<h2>Setup</h2>
+
+<p>In R v2.10.0 or newer, do:</p>
+
+<pre><code class="r">source(&quot;http://aroma-project.org/hbLite.R&quot;)
+
+# Install aroma.affymetrix and friends
+hbInstall(&quot;aroma.affymetrix&quot;)
+
+# Install developers aroma.core v1.5.1 (*) 
+installPackages(&quot;http://www.braju.com/R/repos/aroma.core_1.5.1.tar.gz&quot;)
+
+# Install mpcbs v1.1.0 (*)
+installPackages(&quot;http://www.braju.com/R/repos/mpcbs_1.1.0.tar.gz&quot;)
+
+# Install DNAcopy
+biocLite(&quot;DNAcopy&quot;)
+</code></pre>
+
+<p>Footnote:<br>
+(*) Windows users: To install on Windows, replace *.tar.gz with *.zip.<br>
+(*) OS X users: To install on OS X, add argument <code>type=&quot;source&quot;</code>, e.g. <code>installPackages(&quot;http://www.braju.com/R/repos/aroma.core_1.5.1.tar.gz&quot;,
+type=&quot;source&quot;)</code></p>
+
+<h2>Notes</h2>
+
+<p>In  cran(&#39;aroma.core&#39;) &gt; I provide <code>segmentByCBS()</code>, <code>segmentByGLAD()</code>,
+<code>segmentByHaarSeg()</code> and <code>segmentByMPCBS()</code> that are standardized wrappers
+calling the corresponding segmentation method.  This means that the
+results will be identical to what you would get if you called the
+individual packages directly.  No parameter settings are changed.  Note
+that if the underlying segmentation package/function is updated, this
+will directly reflect the results of the <code>segmentByNnn()</code> methods.</p>
+
+<h2>Script</h2>
+
+<p>The R script that simulates CNs and runs the different segmentation
+methods can be downloaded/seen here:</p>
+
+<p><a href="http://r-forge.r-project.org/plugins/scmsvn/viewcvs.php/*checkout*/pkg/aroma.core/incl/RawGenomicSignals.SEG.Rex?rev=1922&amp;root=aroma-dots">http://r-forge.r-project.org/plugins/scmsvn/viewcvs.php/*checkout*/pkg/aroma.core/incl/RawGenomicSignals.SEG.Rex?rev=1922&amp;root=aroma-dots</a></p>
+
+<p>You can even run this directly from R as:</p>
+
+<pre><code class="r">library(&quot;aroma.core&quot;)
+source(&quot;http://r-forge.r-project.org/plugins/scmsvn/viewcvs.php/*checkout*/pkg/aroma.core/incl/RawGenomicSignals.SEG.Rex?rev=1922&amp;root=aroma-dots&quot;)
+</code></pre>
+
+<p>and you should get a plot similar to the above.</p>
+
+<p>The simulated data that generates the above data and plot can be loaded
+as:</p>
+
+<pre><code>library(&quot;aroma.core&quot;)
+load(url(&quot;http://www.aroma-project.org/xfer/MPCBS/mpcbs,bug.RData&quot;))
+</code></pre>
+
+<h2>Session information</h2>
+
+<pre><code class="r">&gt; sessionInfo()
+R version 2.10.1 Patched (2010-01-12 r50990)
+i386-pc-mingw32
+
+locale:
+[1] LC_COLLATE=English_United States.1252
+[2] LC_CTYPE=English_United States.1252
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C
+[5] LC_TIME=English_United States.1252
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base
+
+other attached packages:
+[1] mpcbs_1.1.0        fields_6.01     spam_0.20-2       HaarSeg_0.0.2
+[5] GLAD_2.4.0         DNAcopy_1.20.0  aroma.core_1.5.1  aroma.light_1.15.1
+[9] matrixStats_0.1.9  R.rsp_0.3.6     R.filesets_0.8.0  digest_0.4.2
+[13] R.cache_0.2.0     R.utils_1.3.4   R.oo_1.6.7        R.methodsS3_1.1.0
+
+loaded via a namespace (and not attached):
+[1] tools_2.10.1
+</code></pre>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/replication/MPCBSandCBS/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/replication/MPCBSandCBS/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/replication/MPCBSandCBS/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Developers' Corner">Aroma: Developers' Corner</title>
+  <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../getstarted/index.html">Get Started</a></li>
+        <li><a href="../docs/index.html">Documentation</a></li>
+        <li><a href="../features/index.html">Features</a></li>
+        <li><a href="../resources/index.html">Resources</a></li>
+        <li><a href="../forum/index.html">Forum</a></li>
+        <li><a href="../FAQ/index.html">FAQ</a></li>
+        <li><a href="../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Developers&#39; Corner</h1>
+
+<p>Author: Henrik Bengtsson<br>
+Created on: 2010-06-01</p>
+
+<p><em>CONTRIBUTIONS NEEDED: This page is under development.  Please consider
+contributing to it.</em></p>
+
+<p>In order to do sustainable and reproducible statistical research we must
+provide high-quality reliable models, methods, algorithms and
+implementations.  To achieve this we have to take software engineering
+seriously starting already from the first sketch to the released tool.
+ Thinking long term (2-3 years and beyond) and realizing that you and
+your fellows have to support and maintain what you promise/deliver is
+key to success.   Coding conventions, lots of system and redundancy
+testing, version control, and heaps of real CPU hours (=users) are
+resources that will help you in the long run.</p>
+
+<p>So, if you&#39;re a developer that plan to contribute to the Aroma project,
+please consider the below documents.</p>
+
+<h2>The aroma coding style</h2>
+
+<ul>
+<li>  Henrik Bengtsson, <a href="../developers/AromaRCC/index.html">The Aroma R Coding Conventions (Aroma
+RCC)</a>, Dept of Statistics, University of
+California, Berkeley, 2009.</li>
+<li>  Henrik Bengtsson, <a href="../developers/RCC/index.html">R Coding Conventions (RCC) - a draft, Version
+0.9</a>, Dept of Statistics, University of California,
+Berkeley, January 2002-2009.</li>
+</ul>
+
+<h2>Rdoc - An extended Rd language embedded in R comments</h2>
+
+<p>Rdoc comments are regular R source code comments that contains a special
+markup for compiling the comments into Rd help files.  The idea is that
+it should be possible to keep the documentation of the API together with
+the source code in the same file.  This makes it easier to keep the
+documentation up to date with source code.  With a special Rdoc compile,
+regular R files containing Rdoc comments are compiled into Rd files.</p>
+
+<p>The Rdoc comments support automatic generation of Rd <code>\usage{}</code>
+statements (e.g. <code>@synopsis</code>), importing of external files such as
+example code  (e.g. <code>@examples &quot;../incl/foo.R&quot;</code>), shortcuts for linking
+to common Rd pages (e.g. <code>@matrix</code>), and much more.  This makes it
+easier to maintain the documentation, especially in projects where the
+API is constantly being updated.  Rdoc comments are recognized by their
+begin and end symbols <code>#/**</code> and <code>#*/</code> (cf. Javadoc for Java).  An R
+file may contain zero, one, or more Rdoc comments.  Here is a brief
+example:</p>
+
+<pre><code class="r">#########################################################/**
+# @RdocFunction foo
+#
+# @title &quot;The foo method&quot;
+#
+# \description{@get &quot;title&quot; is a very fooish utility.}
+#
+# @synopsis
+#
+# \arguments{
+#   \item{x}{An Kx3 @integer @matrix.}
+#   \item{verbose}{If @TRUE, verbose statements are show.}
+# }
+#
+# \value{A @list structure.}
+#
+# @examples &quot;../incl/foo.R&quot;
+#
+# \seealso{
+#   @see &quot;base::ls&quot;.
+# }
+#*/##########################################################
+foo &lt;- function(x, verbose) {
+  # code here
+}
+</code></pre>
+
+<p>There is currently no documentation of all features of the Rdoc compiler
+and the Rdoc language.  The best source of information is to look at how
+it is used in the source code of <a href="http://cran.r-project.org/package=R.methodsS3">R.methodsS3</a>,
+<a href="http://cran.r-project.org/package=R.oo">R.oo</a>, <a href="http://cran.r-project.org/package=R.utils">R.utils</a> and more.</p>
+
+<p>The Rdoc compiles is available in the R.oo package.  In order to compile
+the Rdoc comments for a particular package, <em>the package has to be
+installed.</em>  For example, consider that the package is called &#39;foo&#39;.
+ Then, in R, do:</p>
+
+<ol>
+<li> Change the working directory to the where the R files are, e.g.
+<code>setwd(&quot;foo/R/&quot;)</code></li>
+<li> Load the package, i.e. <code>library(&quot;foo&quot;)</code></li>
+<li> Load the R.oo package, i.e. <code>library(&quot;R.oo&quot;)</code></li>
+<li> Run the Rdoc compiler on all R files by calling
+<code>Rdoc$compile(verbose=TRUE)</code>.</li>
+</ol>
+
+<p>The latter command will identify all Rdoc comments in all R files and
+compile then to Rd files that are stored in ../man/ (relative to the
+working directory).  After all R files has been processed, all Rd files
+in ../man/ will be validated (using same tools that R CMD check uses).
+ Individual R files can be compile by specifying their pathnames,
+e.g. <code>Rdoc$compile(&quot;foo.R&quot;, verbose=TRUE)</code>.  The generated Rd files will
+contain a header of Rd comments that explicitly says that the file was
+automatically generated from which R file and that it the Rd file should
+not be edited. After compiling the Rdoc comment, rebuild/reinstall the
+package as usual.</p>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/developers/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/developers/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/developers/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

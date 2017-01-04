@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Chip type: Axiom_Exome319">Aroma: Chip type: Axiom_Exome319</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Chip type: Axiom_Exome319</h1>
+
+<h2>The Axiom Genotyping Solution</h2>
+
+<p>More at <a href="http://www.axiom.affymetrix.com/">http://www.axiom.affymetrix.com/</a>.</p>
+
+<pre><code class="r">&gt; cdf &lt;- AffymetrixCdfFile$byChipType(&quot;Axiom_Exome319&quot;, tags=&quot;r1&quot;)
+&gt; cdf
+
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/Axiom_Exome319
+Filename: Axiom_Exome319,r1.cdf
+File size: 130.05 MB (136363403 bytes)
+Chip type: Axiom_Exome319
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 992x992
+Number of cells: 984064
+Number of units: 404099
+Cells per unit: 2.44
+Number of QC units: 4
+
+&gt; unitNames &lt;- getUnitNames(cdf)
+&gt; seqToHumanReadable(grep(&quot;^AFFX-&quot;, unitNames))
+[1] &quot;1-85116&quot;
+&gt; seqToHumanReadable(grep(&quot;^AX-&quot;, unitNames))
+[1] &quot;85117-404099&quot;
+</code></pre>
+
+<p>NOTE: There are no analysis methods in aroma.affymetrix that supports
+this chip type.  There are several reasons for this, one is that the CEL
+files the Axiom platform are so called multi-channel CEL, and none of
+the preprocessing methods are prepared for this.</p>
+
+<h3>Resources</h3>
+
+<p>By Affymetrix.com:</p>
+
+<ul>
+<li>  Product page:
+<a href="http://www.affymetrix.com/catalog/prod570018/AFFY/Axiom%26%23174%3B+Exome+Genotyping+Arrays#1_1">http://www.affymetrix.com/catalog/prod570018/AFFY/Axiom%26%23174%3B+Exome+Genotyping+Arrays#1_1</a></li>
+<li>  Public annotation data: <a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GPL18760">GEO GPL18760</a> - provides CDF.</li>
+</ul>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/chipTypes/Axiom_Exome319/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/chipTypes/Axiom_Exome319/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/chipTypes/Axiom_Exome319/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): The Aroma Framework: How data files and data sets are located">Aroma: The Aroma Framework: How data files and data sets are located</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>The Aroma Framework: How data files and data sets are located</h1>
+
+<p>Author: Henrik Bengtsson<br>
+Created on: 2011-03-07<br>
+Last updated on: 2011-04-08</p>
+
+<p>This document gives detailed information on how the aroma framework
+locates data files and data sets.  It also shows how to best share data
+on as hared file system between users.</p>
+
+<div class="alert alert-warning" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign" style="font-size: 1.2em;"></span>
+In order to utilize <em>sibling root directories</em> (easy sharing of
+read-only files among users on the same file system) it is necessary to
+do 'setOption(aromaSettings, "devel/dropRootPathTags", TRUE)'.
+Future releases will make this the default.
+</div>
+
+<h2>Definitions</h2>
+
+<p><strong>FULLNAME, NAME AND TAGS:</strong></p>
+
+<p>A <strong>fullname</strong> consists of a <strong>name</strong> and optional comma-separated
+<strong>tags</strong>, e.g. the fullname &#39;HapMap270,6.0,CEU,testSet&#39; has name
+&#39;HapMap270&#39; and tags &#39;6.0,CEU,testSet&#39;.  By this convention, neither
+names nor tags can themselves contain commas.</p>
+
+<p>The default in the aroma framework is that fullnames (and therefore
+names and tags) are inferred from the filename of a file, or the data
+set directory name.  For instance, a raw CEL file with filename
+&#39;NA06985,XX.CEL&#39; hasfullname &#39;NA06985,XX&#39; with name &#39;NA06985&#39; and the
+single tag &#39;XX&#39;.  It&#39;s file extension is *.CEL.  This file may be part
+of raw data set &#39;HapMap270,6.0,CEU,testSet&#39; (fullname) with name
+&#39;HapMap270&#39; and the three tags &#39;6.0&#39;, &#39;CEU&#39;, and &#39;testSet&#39; (short
+&#39;6.0,CEU,testSet&#39;).</p>
+
+<p><strong>THE CURRENT DIRECTORY:</strong></p>
+
+<p>The <strong>current directory</strong>, aka the working directory, is the
+directory given by <code>getwd()</code>.  This is often the directory in which R and
+aroma was started.</p>
+
+<p><strong>ROOT DIRECTORIES:</strong></p>
+
+<p>A <strong>root directory</strong> is a aroma-specific directory that is available
+in the current directory and in turn contains subdirectories.  Root
+directories can be recognized by their names ending with *Data/, e.g.
+annotationData/ and rawData/.</p>
+
+<p>A <strong>main root directory</strong> is a root directory whose fullname has no
+tags.  Whenever aroma writes results to file, it always does so under a
+main root directory, which is why there also must be sufficient write
+permissions in addition to read permissions.</p>
+
+<p>A <strong>sibling root directory</strong> is a root directory whose fullname contains
+tags (Footnote #1), e.g. annotationData,shared/ and rawData,shared/.
+ Whenever aroma is locating a data file or a data set, it always
+searches the main root directory before the sibling root directories.</p>
+
+<p>Sibling root directories are useful for sharing data sets and data files
+in common location on the file system without having to give everyone
+write permissions to it.  A sibling root directory is typically setup as
+a file-system link (as all root directories always in the current
+directory) pointing to a location elsewhere on the file system.  Using
+sibling root directories this way saves overall disk space, minimizes
+redundancy, further simplifies structuring of data files, and, in
+support for reproducible research, minimizes the amount of reprocessing
+required by a group of users interested in the same data sets.</p>
+
+<p>The aroma framework will <em>never</em> write to a sibling root directory
+(Footnote #2), which also means that it is sufficient that there are
+read permissions.  Indeed, we suggest that write permissions are not
+shared for sibling root directories.  Although main root directories in
+theory could be shared, they should always be treated as if they are
+private to the user.  This minimizes the risk for race conditions where
+two users try to write to or update the same file at the same time
+(Footnote #3).</p>
+
+<h2>Annotation data</h2>
+
+<p>Whenever aroma needs to locate an annotation data file, it always
+searches the main root directory annotationData/ first.  If the file
+cannot be found there, it will then search any available sibling root
+directories in (lexicographic) order, e.g. annotationData,lab/ and
+annotationData,shared/.  If it fails to locate a file, it is often the
+case that an exception is thrown and the analysis is interrupted with an
+informative error message.</p>
+
+<p>Annotation data files are identified by their type, their chip types and
+optionally by additional tags.  The type is implicit from the class or
+method used, whereas the name and the tags are commonly arguments
+specified by the user, although in some cases also those are inferred
+indirectly.</p>
+
+<p>EXAMPLE:</p>
+
+<pre><code class="r"># Explicit set up annotation data file
+cdf &lt;- AffymetrixCdfFile$byChipType(&quot;GenomeWideSNP_6&quot;, tags=&quot;Full&quot;)
+ugp &lt;- AromaUgpFile$byChipType(&quot;GenomeWideSNP_6&quot;, tags=&quot;Full&quot;)
+
+# Implicit set up annotation data file, where the type is
+# inferred by the method name and the name and the tags are
+# inferred from the input object.
+ugp &lt;- getAromaUgpFile(cdf)
+</code></pre>
+
+<p>In the first case, aroma searches for an Affymetrix CDF file located in
+annotationData<em>/chipTypes/GenomeWideSNP_6/,where annotationData</em>/
+means that it first searches main root directory annotationData/ and
+then any sibling directories annotationData,&lt;tags&gt;/.  In the second
+case, aroma searches for an Aroma UGP file located in
+annotationData<em>/chipTypes/GenomeWideSNP_6/.  In the third case, aroma
+also searches for an Aroma UGP file located in
+annotationData</em>/chipTypes/GenomeWideSNP_6/, where the chip type is
+inferred from the CDF via getChipType(cdf).</p>
+
+<p>The convention in the aroma framework is that whenever annotation
+data files are created, they are written to the main root directory,
+that is, under annotationData/,
+e.g. annotationData/chipTypes/GenomeWideSNP_6/GenomeWideSNP_6,Full,monocell.CDF.
+ It will never write to a sibling root directory (Footnote #2).</p>
+
+<h2>Raw data sets</h2>
+
+<p>Whenever aroma tries to locate a raw data set, it always searches the
+main root directory rawData/ first, and, if not found there, then any
+available sibling root directories, e.g. rawData,shared/.</p>
+
+<p>Data sets are located by their type, their names and optional tags, and
+their chip types.  The type is implicit from the class, whereas the name
+and the tags as well as the chip type are commonly specified explicitly
+via arguments, although in some cases also those are also inferred
+indirectly.</p>
+
+<p>EXAMPLE:</p>
+
+<pre><code class="r"># Explicit specification of name, tags and chip type
+csR &lt;- AffymetrixCelSet$byName(&quot;HapMap270,6.0,CEU,testSet&quot;,
+chipType=&quot;GenomeWideSNP_6,Full&quot;)
+
+# Implicit specification of chip type (via the CDF)
+csR &lt;- AffymetrixCelSet$byName(&quot;HapMap270,6.0,CEU,testSet&quot;, cdf=cdf)
+</code></pre>
+
+<p>In both these cases, aroma searches for Affymetrix CEL files located in
+rawData<em>/HapMap270,6.0,CEU,testSet/GenomeWideSNP_6/, where rawData</em>/
+means that it first searches main root directory rawData/ and then any
+sibling directories rawData,&lt;tags&gt;/.</p>
+
+<h2>Intermediate and final data sets</h2>
+
+<p><strong><em>Currently sibling root directories are not supported for intermediate
+and final data sets and data files.</em></strong>  This means that all such data
+needs to be located under main root directories, e.g. probeData/,
+plmData/ etc.  Following the aroma-framework convention above, all
+intermediate and final data sets and data files are stored under a main
+root directories.</p>
+
+<p>EXAMPLE:</p>
+
+<pre><code class="r"># Assume that the following raw data set is located in
+# rawData,shared/HapMap270,6.0,CEU,testSet/GenomeWideSNP_6/
+csR &lt;- AffymetrixCelSet$byName(&quot;HapMap270,6.0,CEU,testSet&quot;,
+chipType=&quot;GenomeWideSNP_6,Full&quot;)
+
+# If the average array signals are not available, then they are
+# calculated and stored in a single file in
+# rawData/HapMap270,6.0,CEU,testSet/GenomeWideSNP_6/
+cfR &lt;- getAverageFile(csR)
+</code></pre>
+
+<p>Note that, if the above two steps are repeated, the data set itself will
+still be located under rawData,shared/ (because the new data set
+directory under rawData/ is considered to be empty and hence ignored),
+and the average file will be located under the main root
+directory, although the data set itself is located under a sibling root
+directory.  If it is believed that this average file is useful to
+others, then, given the correct file privileges, one could move the
+average file to the data set directory that contains the raw data.  This
+way the same averaging will never have to be calculated again by any
+user who links to this data set directory.</p>
+
+<h1>Footnotes</h1>
+
+<p>Footnote #1: Sibling root directories are currently only possible for
+annotationData/ and rawData/.</p>
+
+<p>Footnote #2: Currently, there is no protection in aroma against
+updating an existing data set/data file that is already located in a
+sibling root directory.  This means that it is possible for a user to
+setup, for instance, an UGP file located under sibling root directory
+annotationData,shared/ and then update it via methods specific to this
+class of annotation files.  Protection against such misusage can be
+obtained by making sure that the user, and hence the aroma framework,
+has no write privileges to sibling root directories.</p>
+
+<p>Footnote #3: The aroma framework creates files <em>atomically</em> by first
+writing to a temporary file, which is then renamed.  Writing files
+atomically lower the risk for race conditions, but still does not
+guarantee that there will not be any conflicts.  For instance, on file
+system such as Unix NFS, it may take up to 30 seconds before a newly
+created file is visible to all computers on the file system leaving a
+short window for such race conditions to take place.</p>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/docs/HowDataFilesAndDataSetsAreLocated/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/docs/HowDataFilesAndDataSetsAreLocated/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/docs/HowDataFilesAndDataSetsAreLocated/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

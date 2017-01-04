@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Vignette: TumorBoost - Normalization of allelic-specific copy numbers in tumors with matched normals (low-level API)">Aroma: Vignette: TumorBoost - Normalization of allelic-specific copy numbers in tumors with matched normals (low-level API)</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Vignette: TumorBoost - Normalization of allelic-specific copy numbers in tumors with matched normals (low-level API)</h1>
+
+<p>Author: Henrik Bengtsson<br>
+Created on: 2009-12-11<br>
+Last updated: 2012-02-03</p>
+
+<p>This vignette illustrates how to TumorBoost normalize the allele B
+fractions of a tumor given a matched normal using the low-level
+<code>normalizeTumorBoost()</code> method available in the <a href="http://www.bioconductor.org/packages/release/bioc/html/aroma.light.html">aroma.light</a> package.  The
+method takes the raw allele B fractions for the tumor (betaT) and the
+normal (betaN) as numerical vectors for input, and returns the
+normalized allele B fractions for the tumor (betaTN) as another vector.
+Optionally, it also accepts genotype calls.  If not specified, an
+internal naive genotyping method is used.  For more details on this
+implementation, see <code>help(normalizeTumorBoost)</code>.
+For details on the TumorBoost method, see
+<a name=cite-BengtssonH_etal_2010-TumorBoost></a><a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=20462408">Bengtsson, Neuvial, and Speed (2010)</a>.</p>
+
+<pre><code class="r">library(&quot;aroma.light&quot;)
+library(&quot;R.utils&quot;)
+
+# Load the anonymous TCGA data
+pathname &lt;- system.file(&quot;data-ex/TumorBoost,fracB,exampleData.Rbin&quot;, package=&quot;aroma.light&quot;)
+data &lt;- loadObject(pathname)
+str(data)
+
+## &#39;data.frame&#39;:   4000 obs. of  4 variables:  
+##  $ position : int  210799615 191229090 115406041 137656361 150926325
+## 182084791 3  
+## 0853337 151390258 167310970 14568632 ...  
+##  $ betaT    : num  0.00328 0.59816 0.04127 0.93768 0.05469 ...  
+##  $ betaN    : num  0.0057 0.532 0.044 0.9267 0.0319 ...  
+##  $ genotypeN: num  1 0.5 1 0 1 0 0.5 0 1 0 ...
+
+attachLocally(data)
+
+# Plot allele B fractions along the chromosome
+layout(matrix(1:4, ncol=1))
+par(mar=c(2.5,4,0.5,1)+0.1)
+ylim &lt;- c(-0.05, 1.05)
+col &lt;- (data[,&quot;genotypeN&quot;] == 1/2) + 1L
+pos &lt;- position / 1e6
+
+# Allele B fractions for the normal
+plot(pos, betaN, col=col, ylim=ylim)
+
+# Allele B fractions for the tumor (non-normalized)
+plot(pos, betaT, col=col, ylim=ylim)
+
+# TumorBoost normalization with (0, 1/2, 1)-genotype estimates
+betaTN &lt;- normalizeTumorBoost(betaT=betaT, betaN=betaN, muN=genotypeN)
+str(betaTN)
+
+## atomic [1:4000] 0.9976 0.5707 0.9973 0.011 1.0227 ...
+## - attr(*, &quot;modelFit&quot;)=List of 3
+##   ..$ method: chr &quot;normalizeTumorBoost&quot;
+##   ..$ flavor: chr &quot;v4&quot;
+##   ..$ delta : num [1:4000] -0.9943 0.0275 -0.956 0.9267 -0.9681 ...
+
+
+# TumorBoost normalization without genotype estimates
+betaTN2 &lt;- normalizeTumorBoost(betaT=betaT, betaN=betaN)
+str(betaTN2)
+
+## atomic [1:4000] -0.00242 0.57071 -0.00274 1.01096 0.02274 ...  
+##  - attr(*, &quot;modelFit&quot;)=List of 3  
+##   ..$ method: chr &quot;normalizeTumorBoost&quot;  
+##   ..$ flavor: chr &quot;v4&quot;  
+##   ..$ delta : num [1:4000] 0.0057 0.0275 0.044 -0.0733 0.0319 ...
+
+plot(pos, betaTN2, col=col, ylim=ylim)
+</code></pre>
+
+<p><img src="../../assets/images/aroma.cn%2CnormalizeTumorBoost.png" alt=""></p>
+
+<p><em>Figure: The allele B fractions for the normal sample (first row), tumor
+sample (second row), the TumorBoost normalized tumor sample using
+already estimated genotypes (third row), and the TumorBoost normalized
+tumor sample without genotypes (fourth row).  This is Illumina data on
+Chromosome 2 from a random TCGA sample (not TCGA-23-1027 used in the
+TumorBoost manuscript).</em></p>
+
+<h2>References</h2>
+
+<p><a
+name=bib-BengtssonH_etal_2010-TumorBoost></a><a href="#cite-BengtssonH_etal_2010-TumorBoost">[1]</a>
+H. Bengtsson, P. Neuvial and T. P. Speed. &quot;TumorBoost: normalization of
+allele-specific tumor copy numbers from a single pair of tumor-normal
+genotyping microarrays&quot;. Eng. In: <em>BMC bioinformatics</em> 11 (2010), p.
+245. DOI:
+<a href="http://dx.doi.org/10.1186/1471-2105-11-245">10.1186/1471-2105-11-245</a>.
+PMID:
+<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;cmd=prlinks&amp;retmode=ref&amp;id=20462408">20462408</a>.</p>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/vignettes/tumorboost-lowlevel/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/vignettes/tumorboost-lowlevel/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/vignettes/tumorboost-lowlevel/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

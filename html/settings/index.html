@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Settings">Aroma: Settings</title>
+  <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../getstarted/index.html">Get Started</a></li>
+        <li><a href="../docs/index.html">Documentation</a></li>
+        <li><a href="../features/index.html">Features</a></li>
+        <li><a href="../resources/index.html">Resources</a></li>
+        <li><a href="../forum/index.html">Forum</a></li>
+        <li><a href="../FAQ/index.html">FAQ</a></li>
+        <li><a href="../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Settings</h1>
+
+<p>This section describes global options that you set in order change the
+default behavior of the aroma framework.</p>
+
+<h2>Querying and modifying settings</h2>
+
+<p>All settings specific to the aroma packages are stored in the R list
+object <code>aromaSettings</code>. An overview of the current settings can be
+obtained as:</p>
+
+<pre><code class="r">&gt; str(as.list(aromaSettings))
+List of 4
+ $ memory:List of 2
+  ..$ ram             : num 1
+  ..$ gcArrayFrequency: num 50
+ $ rules :List of 1
+  ..$ allowAsciiCdfs: logi FALSE
+ $ output:List of 2
+  ..$ checksum           : logi FALSE
+  ..$ timestampsThreshold: num 500
+ $ models:List of 1
+  ..$ RmaPlm:List of 2
+  .. ..$ medianPolishThreshold: num [1:2] 500 6
+  .. ..$ skipThreshold        : num [1:2] 5000 1
+</code></pre>
+
+<p>A particular setting of this list structure is specified as files on a
+file system, e.g. <code>&quot;memory/ram&quot;</code>. For instance,</p>
+
+<pre><code class="r">value &lt;- getOption(aromaSettings, &quot;memory/ram&quot;)
+</code></pre>
+
+<p>will retrieve the current setting and</p>
+
+<pre><code class="r">setOption(aromaSettings, &quot;memory/ram&quot;, newValue)
+</code></pre>
+
+<p>will change the same setting.</p>
+
+<h2>Saving settings</h2>
+
+<p>After changing some of the aroma settings, they can be saved to disk
+(default <code>~/.aromaSettings</code>) such that they will be loaded automatically
+next time an aroma.* package is loaded. In order to do this, do:</p>
+
+<pre><code class="r">saveAnywhere(aromaSettings)
+</code></pre>
+
+<h2>Available Settings</h2>
+
+<h3>Memory-related settings</h3>
+
+<h4>memory/ram</h4>
+
+<p>Value: A positive double.<br>
+Default: <code>1.0</code></p>
+
+<p>Applies to: Methods processing data in chunks of cells or units, e.g.
+probe-level summarization.</p>
+
+<p>Description: A scale factor controlling the size of each chunk read into
+memory and processed in each iteration. On systems with very limited
+amount of memory it may be set to a smaller value than 1.0. On systems
+with a lot of memory, it may be set to a value greater than 1.0 to allow
+more data to be processed in each chunk, which may decrease the relative
+overhead from the file I/O.</p>
+
+<p>See also: How to &#39;<a href="../howtos/ImproveProcessingTime/index.html">Improve processing
+time</a>&#39;.</p>
+
+<h4>memory/gcArrayFrequency</h4>
+
+<p>Value: A positive integer.<br>
+Default: <code>50</code></p>
+
+<p>Applies to: Methods processing data in chunks.</p>
+
+<p>Description: When processing data in chunks temporary variables are
+allocated and discarded. The built in garbage collector (GC) of the R
+engine will automatically clean up after this when memory is needed.
+However, it may still be the case that the memory will become too
+fragmented and one wish to take a precautious approach and cleaning up
+data more frequently. This settings specifies how many iterations is
+done before calling the GC.</p>
+
+<p>Warning: This settings will be deprecated at some stage. /HB 2009-12-04</p>
+
+<h3>Statistical analysis settings</h3>
+
+<h4>models/RmaPlm/medianPolishThreshold</h4>
+
+<p>Value: Two positive integers <code>c(nbrOfCells, nbrOfArrays)</code><br>
+Default: <code>c(500, 6)</code></p>
+
+<p>Applies to: Fitting an <code>RmaPlm</code> model.</p>
+
+<p>Description: This setting specifies when the median polish estimator is
+used instead of the robust linear model estimator. The median polish is
+forced to be used if the number of arrays analyzed is (strictly) greater
+than <code>nbrOfArrays</code> and the number of cells in the probeset (unit group)
+is (strictly) greater than <code>nbrOfCells</code>.</p>
+
+<p>Motivation: When using robust linear model estimators (the default) for
+<code>RmaPlm</code>, the fitting time of a probeset will grow exponentially with
+the number of samples. It will also grow, but not as dramatically with
+the number of cells in the probeset. When the numbers samples is very
+large this will be too expensive. An alternative is then to use the
+median polish estimator instead, whose processing time is linear.</p>
+
+<h4>models/RmaPlm/skipThreshold</h4>
+
+<p>Value: Two positive integers <code>c(nbrOfCells, nbrOfArrays)</code><br>
+Default: <code>c(5000, 1)</code></p>
+
+<p>Applies to: Fitting an <code>RmaPlm</code> model.</p>
+
+<p>Description: This setting specifies when a probeset is skipped. A
+probeset (unit group) is not fitted if the number of arrays analyzed is
+(strictly) greater than <code>nbrOfCells</code> and the number of cells in the unit
+is (strictly) greater than <code>nbrOfCells</code>. When a probeset is skipped, the
+parameter estimates are set to <code>NA</code>.</p>
+
+<p>Motivation: For some CDFs there exists probesets with an extremely large
+number of cells and that will take a long time to fit. Such probesets
+have often no biological meaning, e.g. they contain cells that did not
+map to the genome or map to multiple places. This setting provides a
+convenient way to skip such probesets.</p>
+
+<h3>Rule settings</h3>
+
+<h4>rules/allowAsciiCdfs</h4>
+
+<p>Value: A logical value (<code>TRUE</code> or <code>FALSE</code>).<br>
+Default: <code>FALSE</code></p>
+
+<p>Applies to: Using/setting a CDF of an <code>AffymetrixCelSet</code>.</p>
+
+<p>Description: This setting is used to prevent the usage of ASCII CDFs,
+because they are really slow to work with and the memory overhead is
+large. When it is <code>FALSE</code> (default), only binary CDFs are accepted and
+an error will be thrown if an ASCII CDF is used. If <code>TRUE</code>, ASCII CDFs
+are accepted.<br>
+ Comment: Do not use ASCII CDFs unless really necessary. Instead,
+convert existing ASCII CDFs into binary ones.</p>
+
+<h3>Display output settings</h3>
+
+<h4>output/checksum</h4>
+
+<p>Value: A logical value (<code>TRUE</code> or <code>FALSE</code>).<br>
+Default: <code>FALSE</code><br>
+Description: NOT IMPLEMENTED</p>
+
+<h4>output/path</h4>
+
+<p>Value: A logical value (<code>TRUE</code> or <code>FALSE</code>).<br>
+Default: <code>TRUE</code><br>
+Description: NOT IMPLEMENTED</p>
+
+<h4>output/ram</h4>
+
+<p>Value: A logical value (<code>TRUE</code> or <code>FALSE</code>).<br>
+Default: <code>TRUE</code><br>
+Description: NOT IMPLEMENTED</p>
+
+<h4>output/timestampsThreshold</h4>
+
+<p>Value: An integer (including <code>Inf</code>).<br>
+Default: <code>500</code></p>
+
+<p>Applies: To the <code>print()</code> output of an <code>AffymetrixCelSet</code>.</p>
+
+<p>Description: When calling <code>print()</code> on an <code>AffymetrixCelSet</code>, the range
+of time stamps of all CEL files is reported. This requires that the
+header of each CEL file is queried, which might takes a lot of time if
+the data set is large. This setting allows you to specify the maximum
+number of arrays for which the time stamp range should be reported. If
+the data set contains more arrays, the time stamps are neither queried
+nor reported, which will be much faster for large data sets.</p>
+
+<h3>User profile settings</h3>
+
+<h4>user/initials</h4>
+
+<p>Value: A character string.<br>
+Default: <code>NULL</code></p>
+
+<h4>user/fullname</h4>
+
+<p>Value: A character string.<br>
+Default: <code>NULL</code></p>
+
+<h4>user/email</h4>
+
+<p>Value: A character string.<br>
+Default: <code>NULL</code></p>
+
+<h3>Beta-feature settings</h3>
+
+<h4>devel/dropRootPathTags</h4>
+
+<p>Value: A logical value (<code>TRUE</code> or <code>FALSE</code>).<br>
+Default: <code>FALSE</code></p>
+
+<p>Description: If <code>TRUE</code>, sibling root paths are recognized, otherwise
+ignored. For more details, see &#39;<a href="../docs/HowDataFilesAndDataSetsAreLocated/index.html">How data files and data sets are
+located</a>&#39;.</p>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/settings/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/settings/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/settings/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

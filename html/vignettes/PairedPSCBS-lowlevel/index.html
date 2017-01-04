@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Vignette: Paired parent-specific copy-number segmentation (Paired PSCBS) (low-level API after ASCRMA v2)">Aroma: Vignette: Paired parent-specific copy-number segmentation (Paired PSCBS) (low-level API after ASCRMA v2)</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Vignette: Paired parent-specific copy-number segmentation (Paired PSCBS) (low-level API after ASCRMA v2)</h1>
+
+<p>Author: Henrik Bengtsson<br>
+Created on: 2011-11-11<br>
+Last modified: 2011-11-16</p>
+
+<p>This document describes how to do parent-specific copy-number (PSCN)
+analysis on a tumor-normal pair of Affymetrix SNP microarray data.  We
+will use the two samples GSM318736 (tumor) and GSM318737 (matched
+normal) from the GEO <a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE12702">GSE12702</a> data set.
+Processing the two CEL files using allele-specific CRMA v2
+<a name=cite-BengtssonH_etal_2009-CRMAv2></a>(<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=19535535">Bengtsson, Wirapati, and Speed, 2009</a>) we obtain PSCN estimates
+(total CNs and allele B fractions), which we pass to the Paired PSCBS
+<a name=cite-OlshenA_etal_2011-PSCBS></a>(<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=21666266">Olshen, Bengtsson, Neuvial, Spellman, Olshen, and Seshan, 2011</a>) method for PSCN segmentation.
+The Paired PSCBS method is implemented in the <a href="http://cran.r-project.org/package=PSCBS">PSCBS</a> package.</p>
+
+<h2>Setup Affymetrix data set</h2>
+
+<p>Here we assume that the two CEL files GSM318736.CEL and GSM318737.CEL
+have been downloaded from GEO (<a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE12702">GSE12702</a>)
+and placed in rawData/GSE12702/Mapping250K_Nsp/.</p>
+
+<pre><code class="r">library(&quot;aroma.affymetrix&quot;)
+verbose &lt;- Arguments$getVerbose(-10, timestamp=TRUE)
+
+dataSet &lt;- &quot;GSE12702&quot;
+chipType &lt;- &quot;Mapping250K_Nsp&quot;
+
+# Load all samples (in case more samples were downloaded)
+csR &lt;- AffymetrixCelSet$byName(dataSet, chipType=chipType)
+
+# Extract tumor-normal pair of interest
+pair &lt;- c(T=&quot;GSM318736&quot;, N=&quot;GSM318737&quot;)
+csR &lt;- csR[indexOf(csR, pair)]
+print(csR)
+</code></pre>
+
+<pre><code>AffymetrixCelSet:
+Name: GSE12702
+Tags:
+Path: rawData,shared/GSE12702/Mapping250K_Nsp
+Platform: Affymetrix
+Chip type: Mapping250K_Nsp
+Number of arrays: 2
+Names: GSM318736, GSM318737 [2]
+Time period: 2008-04-04 14:07:29 -- 2008-04-04 14:39:34
+Total file size: 125.31MB
+RAM: 0.01MB
+
+AffymetrixCelSet:  
+Name: GSE12702  
+Tags:  
+Path: rawData,shared/GSE12702/Mapping250K_Nsp  
+Platform: Affymetrix  
+Chip type: Mapping250K_Nsp  
+Number of arrays: 2  
+Names: GSM318736, GSM318737 [2]  
+Time period: 2008-04-04 14:07:29 -- 2008-04-04 14:39:34  
+Total file size: 125.31MBRAM: 0.01MB
+</code></pre>
+
+<h2>Allele-specific copy-number estimates</h2>
+
+<p>Here we will use an allele-specific version of CRMA v2 to estimate total
+CNs (TCNs) and allele B fractions (BAFs) from the two CEL files.
+ASCRMA v2 will take care of signal normalization etc:</p>
+
+<pre><code class="r">res &lt;- doASCRMAv2(csR, verbose=verbose)
+</code></pre>
+
+<p>This will take a couple of minutes per array.</p>
+
+<h2>Extracting PSCN estimates for the tumor-normal pair</h2>
+
+<p>Next we need to extract TCNs and BAFs for the tumor and the matched
+normal:</p>
+
+<pre><code class="r"># Extract (total,beta) estimates for the tumor-normal pair
+data &lt;- extractPSCNArray(res$total)
+dimnames(data)[[3]] &lt;- names(pair)
+str(data)
+</code></pre>
+
+<p>Actually, at this stage the TCNs have not been standardized toward a
+reference.  Here we will calculate TCNs as C = 2*T/N where T and N are
+the total &quot;CN&quot; signals for the tumor and the matched normal,
+respectively.</p>
+
+<pre><code class="r"># Total CNs for the tumor relative to the matched normal
+CT &lt;- 2 * (data[,&quot;total&quot;,&quot;T&quot;] / data[,&quot;total&quot;,&quot;N&quot;])
+
+# Allele B fractions for the tumor
+betaT &lt;- data[,&quot;fracB&quot;,&quot;T&quot;]
+
+# Allele B fractions for the normal
+betaN &lt;- data[,&quot;fracB&quot;,&quot;N&quot;]
+</code></pre>
+
+<p>What is remaining is to get the genomic locations for these data points:</p>
+
+<pre><code class="r"># Get (chromosome, position) annotation data
+ugp &lt;- getAromaUgpFile(res$total)
+chromosome &lt;- ugp[,1,drop=TRUE]
+x &lt;- ugp[,2,drop=TRUE]
+</code></pre>
+
+<p>We now have all the PSCN data we need:</p>
+
+<pre><code class="r"># Setup data structure for Paired PSCBS
+df &lt;- data.frame(chromosome=chromosome, x=x, CT=CT, betaT=betaT, betaN=betaN)
+</code></pre>
+
+<p>which contains:</p>
+
+<pre><code>     chromosome         x       CT     betaT      betaN
+...
+1001         15 100400215 1.686268 0.5567425 0.59335160
+1002         18  51550359 2.167417 0.9406555 0.93372589
+1003          4  40121562 1.810851 0.2814923 0.19477251
+1004         18  20042465 1.812769 0.4044166 0.40466994
+1005         10  63520698 1.727487 0.8081594 0.89995509
+1006         14  67613392 1.956600 0.1247703 0.09398306
+1007         22  26759177 1.331436 0.1420923 0.07435846
+1008          8  14652812 2.712408 0.5142247 0.53429753
+1009          5  60094266 1.546932 0.6880291 0.85552192
+1010         17  45479446 1.917579 0.5122939 0.52952594
+...
+</code></pre>
+
+<h2>Parent-specific copy-number segmentation</h2>
+
+<p>We next use Paired PSCBS to segment the above PSCN estimates:</p>
+
+<pre><code class="r">library(&quot;PSCBS&quot;)
+fit &lt;- segmentByPairedPSCBS(df, verbose=verbose)
+</code></pre>
+
+<p>Note that this may take several minutes (per tumor-normal pair).</p>
+
+<p>To access the table of identified segments, use the <code>getSegments()</code> method,
+which returns a data.frame (so it can easily be written to file):</p>
+
+<pre><code class="r">segs &lt;- getSegments(fit)
+print(segs)
+</code></pre>
+
+<p>For more details on Paired PSCBS options,
+see <code>help(&quot;segmentByPairedPSCBS&quot;, package=&quot;PSCBS&quot;)</code>.</p>
+
+<p>We can plot the TCN, the decrease-of-heterozygosity (DH), and the
+minor-major CN estimates as follows:</p>
+
+<pre><code class="r">pairName &lt;- paste(pair, collapse=&quot;vs&quot;)
+chrTag &lt;- sprintf(&quot;Chr%s&quot;, seqToHumanReadable(getChromosomes(fit)))
+
+toPNG(pairName, tags=c(chrTag, &quot;PairedPSCBS&quot;), width=840, aspectRatio=0.6, {
+  plotTracks(fit)
+})
+</code></pre>
+
+<p><img src="../../assets/images/GSM318736vsGSM318737%2CChr1-24%2CPairedPSCBS.png" alt=""></p>
+
+<p><em>Figure.</em> Paired PSCBS segmentation results for the GSM318736 &amp;
+GSM318737 tumor-normal pair.</p>
+
+<h2>References</h2>
+
+<p><a
+name=bib-BengtssonH_etal_2009-CRMAv2></a><a href="#cite-BengtssonH_etal_2009-CRMAv2">[1]</a>
+H. Bengtsson, P. Wirapati and T. P. Speed. &quot;A single-array
+preprocessing method for estimating full-resolution raw copy numbers
+from all Affymetrix genotyping arrays including GenomeWideSNP 5 &amp; 6&quot;.
+Eng. In: <em>Bioinformatics (Oxford, England)</em> 25.17 (2009), pp. 2149-56.
+DOI:
+<a href="http://dx.doi.org/10.1093/bioinformatics/btp371">10.1093/bioinformatics/btp371</a>.
+PMID:
+<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;cmd=prlinks&amp;retmode=ref&amp;id=19535535">19535535</a>.</p>
+
+<p><a
+name=bib-OlshenA_etal_2011-PSCBS></a><a href="#cite-OlshenA_etal_2011-PSCBS">[2]</a>
+A. B. Olshen, H. Bengtsson, P. Neuvial, et al. &quot;Parent-specific copy
+number in paired tumor-normal studies using circular binary
+segmentation&quot;. Eng. In: <em>Bioinformatics (Oxford, England)</em> 27.15
+(2011), pp. 2038-46. DOI:
+<a href="http://dx.doi.org/10.1093/bioinformatics/btr329">10.1093/bioinformatics/btr329</a>.
+PMID:
+<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;cmd=prlinks&amp;retmode=ref&amp;id=21666266">21666266</a>.</p>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/vignettes/PairedPSCBS-lowlevel/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/vignettes/PairedPSCBS-lowlevel/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/vignettes/PairedPSCBS-lowlevel/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

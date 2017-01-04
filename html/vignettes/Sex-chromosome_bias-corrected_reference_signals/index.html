@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Vignette: Sex-chromosome bias-corrected reference signals from pooled average">Aroma: Vignette: Sex-chromosome bias-corrected reference signals from pooled average</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Vignette: Sex-chromosome bias-corrected reference signals from pooled average</h1>
+
+<p>Author: Henrik Bengtsson<br>
+Created on: 2009-09-19<br>
+Updated on: 2015-04-17</p>
+
+<p>This document illustrates how to (i) use a sample annotation file to
+specify the gender of samples, and how to (ii) calculate a pooled
+copy-number reference that is corrected for sample biases due to
+difference in sex chromosomes.  This gender-aware bias correction is
+described in Section &#39;3.2.7 Reference signals&#39; of
+<a name=cite-BengtssonH_etal_2009-CRMAv1></a><a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=18204055">Bengtsson, Irizarry, Carvalho, and Speed (2008)</a>.</p>
+
+<p>In the below figure, the top and bottom panels show chromosome X copy-number
+estimates with and without bias correction.</p>
+
+<p><img src="../../assets/images/HapMap%2C250K%2CChrX%2Cnon-bias-corrected.png" alt=""></p>
+
+<p><img src="../../assets/images/HapMap%2C250K%2CChrX%2Cbias-corrected.png" alt=""></p>
+
+<h2>Setup</h2>
+
+<p>Here we will use 10 public Mapping50K_Hind240 CEL files from the HapMap
+project.</p>
+
+<h3>Raw data</h3>
+
+<p>Download the following CEL files from the HapMap site (see the &#39;HapMap
+100K&#39; data set on Page <a href="../../datasets/index.html">Data Sets</a>):</p>
+
+<pre><code>rawData/
+  HapMap,CEU,testSet/
+    Mapping50K_Hind240/
+      NA06985_Hind_B5_3005533.CEL
+      NA06991_Hind_B6_3005533.CEL
+      NA06993_Hind_B4_4000092.CEL
+      NA06994_Hind_A7_3005533.CEL
+      NA07000_Hind_A8_3005533.CEL
+      NA07019_Hind_A12_4000092.CEL
+      NA07022_Hind_A10_4000092.CEL
+      NA07029_Hind_A9_4000092.CEL
+      NA07034_Hind_B1_4000092.CEL
+      NA07048_Hind_B3_4000092.CEL
+</code></pre>
+
+<h3>Sample annotation data</h3>
+
+<p>Download the <a href="../../data/annotationData/samples/HapMap270.saf">HapMap270.saf</a> sample annotation file (SAF) and place it in:</p>
+
+<pre><code>annotationData/
+  samples/
+    HapMap270.saf
+</code></pre>
+
+<p>For more details on what SAF files are and how to setup new ones, see
+section below.</p>
+
+<h3>Chip-type annotation data</h3>
+
+<p>Download the following annotation files (<a href="../../chipTypes/Mapping50K_Hind-and-Xba240/index.html">Mapping50K_Hind240 &amp;
+Mapping50K_Xba240</a>):</p>
+
+<pre><code>annotationData/
+  chipTypes/
+    Mapping50K_Hind240/
+      Mapping50K_Hind240.CDF
+      Mapping50K_Hind240,na26,HB20080916.ufl
+      Mapping50K_Hind240,na26,HB20080916.ugp
+</code></pre>
+
+<h2>Startup</h2>
+
+<pre><code class="r">library(&quot;aroma.affymetrix&quot;)
+library(&quot;R.devices&quot;)
+devOptions(&quot;png&quot;, width=1024)
+
+# Use a nicer palette of colors
+colors &lt;- RColorBrewer::brewer.pal(12, &quot;Paired&quot;)
+palette(colors)
+
+
+# Setup the Verbose object
+verbose &lt;- Arguments$getVerbose(-10, timestamp=TRUE)
+</code></pre>
+
+<h2>Setup of chip-type annotation data</h2>
+
+<pre><code class="r">cdf &lt;- AffymetrixCdfFile$byChipType(&quot;Mapping50K_Hind240&quot;)
+print(cdf)
+
+# Assert existence of Aroma UFL, UGP and ACS files needed
+# by the CRMA/CRMA v2 preprocessing methods
+# (these test are optional but it&#39;s helpful to check here)
+acs &lt;- getAromaCellSequenceFile(cdf)
+ugp &lt;- getAromaUgpFile(cdf)
+ufl &lt;- getAromaUflFile(cdf)
+</code></pre>
+
+<h2>Setup of sample annotation files (SAFs)</h2>
+
+<p>DISCLAIMER: The use of SAFs should be considered be in an alpha stage,
+that is, the format and the usage might change over time and backward
+compatibility is not guaranteed.  </p>
+
+<p>The SAF file format is a text-based file format that is specific to
+aroma.affymetrix.  A SAF file contains one or more records, where each
+record specify additional attributes for a unique sample, e.g. the
+gender or equivalently the ploidy of ChrX and ChrY.  Here is what the SAF
+record for HapMap sample NA06991 looks like:</p>
+
+<pre><code>name: NA06991  
+familyID: 1341  
+individualID: 2  
+fatherID: 13  
+motherID: 14  
+gender: female  
+population: CEU  
+tags: XX
+</code></pre>
+
+<p>The name attribute is used to map the record to the name (the fullname
+without the comma-separated tags) of an existing array (or vice versa).</p>
+
+<p>When loading a CEL set (including chip-effect sets), the
+annotationData/samples/ directory is scanned for *.saf files and all
+SAF records are loaded and matched against the names of the arrays
+loaded).  When a match is found, the attributes specified by the SAF
+record is automatically added to the array object.  As we will see
+below, attributes for a sample/array can be retrieved as:</p>
+
+<pre><code class="r">cf &lt;- csR[[indexOf(csR, &quot;NA06991&quot;)]]
+attrs &lt;- getAttributes(cf)
+str(attrs)
+</code></pre>
+
+<pre><code class="r">List of 9
+$ familyID    : chr &quot;1341&quot;
+$ fatherID    : chr &quot;13&quot;
+$ force       : logi FALSE
+$ gender      : chr &quot;female&quot;
+$ individualID: chr &quot;2&quot;
+$ motherID    : chr &quot;14&quot;
+$ n23         : int 2
+$ n24         : int 0
+$ population  : chr &quot;CEU&quot;
+</code></pre>
+
+<p>Special attributes &#39;n23&#39; and &#39;n24&#39; specifies the ploidy of ChrX (23) and
+ChrY (24).  These attributes are in this case inferred from the &#39;tags&#39;
+attribute (not &#39;gender&#39;), which specifies &#39;XX&#39;.  If &#39;XY&#39; was given, the
+attributes would be parsed to be n23=1 and n24=1.  An &#39;XXXY&#39; tag would
+give n23=3, and n24=1 and so on.</p>
+
+<p>Important: It is never the &#39;gender&#39; attribute that is used to infer the
+ploidy on ChrX and ChrY.  The reason for this is that genders &quot;male&quot; and
+&quot;female&quot; does not uniquely specify the number of X and Y chromosomes,
+e.g. a female may have XXX or XXY and so on.  This is a good reason for
+not talking about &quot;gender&quot; when referring to sex-chromosome ploidy.</p>
+
+<h3>Brief about the &#39;tags&#39; attribute</h3>
+
+<p>It is possible to specify the &#39;n23&#39; and &#39;n24&#39; attributes of a sample
+without using a SAF file.  For instance, by renaming a file
+&#39;NA06991.CEL&#39; to &#39;NA06991,XX.CEL&#39;, the tag &#39;XX&#39; will recognized to
+specify the ChrX and ChrY ploidy and attributes &#39;n23&#39; and &#39;n24&#39; will be
+set accordingly.</p>
+
+<p>However, in order to not have to rename the data files, the &#39;tags&#39;
+attribute of a SAF record can be used to add tags that are not specified
+by the filename itself and override (but never remove) existing ones.
+In other words, if the filename would be &#39;NA06991,XXXY.CEL&#39;, the &#39;tags&#39;
+attribute (=&#39;XX&#39;) in the SAF record would override the &#39;XXXY&#39; of the
+filename, and the inferred ploidy would be n23=2 and n24=0.</p>
+
+<p>To be more explicit, one may specify the &#39;tags&#39; attribute as &#39;tags:
+n23=2, n24=0&#39; instead of &#39;tags: XX&#39;.  This format also allows us to
+specify the ploidy of other chromosomes.  For instance:</p>
+
+<pre><code>tags: XY, n21=3
+</code></pre>
+
+<p>will set the Chr21 ploidy to 3 (trisomy 21) in addition to the ploidy on
+the sex chromosomes.</p>
+
+<h3>Creating custom SAFs</h3>
+
+<p>SAF records for multiple samples can be place in one or many *.saf
+files.  If put in the same file, then each record is considered to start
+with the &#39;name:&#39; line and end at the last non-empty line before the next
+SAF record (the next occurrence of &#39;name:&#39;).</p>
+
+<p>Currently the name of the SAF is not important as long as it has
+extension *.saf; all SAF files are scanned for matching samples.</p>
+
+<p>Please study the above HapMap SAF file for further details.</p>
+
+<p>DISCLAIMER: The SAF file format should be considered to be in alpha
+stage (=under development).  The format might change and we will not
+guarantee the code to be backward compatible, i.e. when/if the format
+changes existing SAF files probably have to be updated manually.</p>
+
+<h2>Setup of raw data set</h2>
+
+<pre><code class="r">csR &lt;- AffymetrixCelSet$byName(&quot;HapMap,CEU,testSet&quot;, cdf=cdf)
+print(getFullNames(csR))
+
+## [1] &quot;NA06985_Hind_B5_3005533&quot; &quot;NA06991_Hind_B6_3005533&quot;
+## [3] &quot;NA06993_Hind_B4_4000092&quot; &quot;NA06994_Hind_A7_3005533&quot;
+## [5] &quot;NA07000_Hind_A8_3005533&quot; &quot;NA07019_Hind_A12_4000092&quot;
+## [7] &quot;NA07022_Hind_A10_4000092&quot; &quot;NA07029_Hind_A9_4000092&quot;
+## [9] &quot;NA07034_Hind_B1_4000092&quot; &quot;NA07048_Hind_B3_4000092&quot;
+</code></pre>
+
+<p>The CEL files downloaded from HapMap has file names such as
+NA07000_Hind_A8_3005533.CEL. In order for aroma.affymetrix to
+identify &#39;NA07000&#39; as the sample name, and &#39;A8&#39; and &#39;3005533&#39; as tags
+(ignore the &#39;Hind&#39; part), we will utilize so called fullname translators
+that translates the full name to a comma-separated fullname, e.g.
+&#39;NA07000_Hind_A8_3005533&#39; to &#39;NA07000,A8,3005533&#39;.</p>
+
+<pre><code class="r">setFullNamesTranslator(csR, function(names, ...) {
+  # Turn into comma-separated tags
+  names &lt;- gsub(&quot;_&quot;, &quot;,&quot;, names)
+  # Drop any Hind/Xba tags
+  names &lt;- gsub(&quot;,(Hind|Xba)&quot;, &quot;&quot;, names)
+  names
+})
+print(getFullNames(csR))
+
+## [1] &quot;NA06985,B5,3005533&quot; &quot;NA06991,B6,3005533&quot;  
+## [3] &quot;NA06993,B4,4000092&quot; &quot;NA06994,A7,3005533&quot;  
+## [5] &quot;NA07000,A8,3005533&quot; &quot;NA07019,A12,4000092&quot;  
+## [7] &quot;NA07022,A10,4000092&quot; &quot;NA07029,A9,4000092&quot;  
+## [9] &quot;NA07034,B1,4000092&quot; &quot;NA07048,B3,4000092&quot;
+
+print(csR)
+
+## AffymetrixCelSet:
+## Name: HapMap
+## Tags: CEU,testSet
+## Path: rawData/HapMap,CEU,testSet/Mapping50K_Hind240
+## Platform: Affymetrix
+## Chip type: Mapping50K_Hind240
+## Number of arrays: 10
+## Names: NA06985, NA06991, ..., NA07048
+## Time period: 2004-01-14 14:02:08 -- 2004-02-13 11:51:01
+## Total file size: 244.78MB
+## RAM: 0.01MB
+</code></pre>
+
+<h2>Verifying ploidy of ChrX and ChrY</h2>
+
+<p>Given that there exists a SAF file as above and that the fullname
+translators correctly translates the default fullnames of the CEL files
+to comma-separated ones, aroma.affymetrix will be able to map sample
+names specified by the files to SAF records and assign the correct ChrX
+and ChrY ploidy attributes.</p>
+
+<p>To extract the &#39;n23&#39; and &#39;n24&#39; attributes from all samples, do:</p>
+
+<pre><code class="r">nXY &lt;- t(sapply(csR, function(cf) getAttributes(cf)[c(&quot;n23&quot;, &quot;n24&quot;)]))
+rownames(nXY) &lt;- getNames(csR)
+print(nXY)
+</code></pre>
+
+<p>which gives:</p>
+
+<pre><code>        n23 n24  
+NA06985 2   0  
+NA06991 2   0  
+NA06993 1   1  
+NA06994 1   1  
+NA07000 2   0  
+NA07019 2   0  
+NA07022 1   1  
+NA07029 1   1  
+NA07034 1   1  
+NA07048 1   1
+</code></pre>
+
+<h2>Preprocessing (CEL files to copy-number signals)</h2>
+
+<p>After having made sure everything above is correct, we next preprocess and summarize the raw CEL file data to obtain one copy-number signal per locus.  Here we the CRMA (v1) method (<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=18204055">Bengtsson, Irizarry, Carvalho, et al., 2008</a>).</p>
+
+<pre><code class="r">res &lt;- doCRMAv1(csR, drop=FALSE)
+cesN &lt;- res$cesN  # ChipEffectSet
+print(cesN)
+</code></pre>
+
+<p>For modern chip types, such as GenomeWideSNP_6, it&#39;s recommended to use <code>doCRMAv2()</code> instead, which processes the data using the CRMA v2 method <a name=cite-BengtssonH_etal_2009-CRMAv2></a>(<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=19535535">Bengtsson, Wirapati, and Speed, 2009</a>).</p>
+
+<p>Before continuing, lets convince ourselves that the &#39;n23&#39; and &#39;n24&#39; attributes are also reflected in the chip effects returned:</p>
+
+<pre><code class="r">nXY &lt;- t(sapply(cesN, function(cf) getAttributes(cf)[c(&quot;n23&quot;, &quot;n24&quot;)]))
+rownames(nXY) &lt;- getNames(cesN)
+print(nXY)
+</code></pre>
+
+<h2>Calculate sex-chromosome bias-corrected reference signals</h2>
+
+<pre><code class="r"># For Chr1-22 and ChrX the copy-neutral ploidy should be two.
+# If the ploidy of a sample is unknown, assume the default is two.
+ceRef &lt;- calculateBaseline(cesN, chromosomes=1:23, ploidy=2,
+                                       defaultPloidy=2, verbose=verbose)
+
+# For ChrY the ploidy of the reference should be one.  Currently our model
+# cannot adjust it to be two, because there must be at least one sample
+# with the target ploidy.
+# ceRef &lt;- calculateBaseline(cesN, chromosomes=24, ploidy=1, verbose=verbose)
+
+# The calculated baseline/reference file is a chip effect file as any other file
+print(ceRef)
+</code></pre>
+
+<h2>Segmentation using the above copy-neutral reference</h2>
+
+<pre><code class="r">cbs &lt;- CbsModel(cesN, ceRef)
+print(cbs)
+
+# Verify that the ChrX CNs are bias corrected
+M &lt;- NULL
+for (kk in 1:nbrOfArrays(cbs)) {
+  rawCNs &lt;- extractRawCopyNumbers(cbs, array=kk, chromosome=23)
+  rawCNs &lt;- as.data.frame(rawCNs)$cn
+  M &lt;- cbind(M, rawCNs)
+}
+colnames(M) &lt;- getArrays(cbs)
+
+n23 &lt;- sapply(cesN, getAttribute, &quot;n23&quot;)
+col &lt;- c(&quot;blue&quot;, &quot;red&quot;)[n23]
+Mlab &lt;- expression(log[2](theta/theta[R]))
+Mlim &lt;- c(-5,2)
+
+toPNG(&quot;ChrX&quot;, tags=c(&quot;biasCorrected&quot;), aspectRatio=0.618, {
+  boxplot(as.data.frame(M), col=col, ylim=Mlim, ylab=Mlab, las=2)
+  abline(h=0, lty=4)
+  title(&quot;Copy numbers on ChrX\n(bias corrected)&quot;)
+})
+</code></pre>
+
+<p>To do the actual segmentation, do:</p>
+
+<pre><code class="r">process(cbs, verbose=verbose)
+</code></pre>
+
+<p>See other vignettes for further details.</p>
+
+<h3>What it looks like without correction</h3>
+
+<pre><code class="r">cbs2 &lt;- CbsModel(cesN)
+print(cbs2)
+
+# Verify that the ChrX CNs are bias corrected
+M2 &lt;- NULL
+for (kk in 1:nbrOfArrays(cbs2)) {
+  rawCNs &lt;- extractRawCopyNumbers(cbs2, array=kk, chromosome=23)
+  rawCNs &lt;- as.data.frame(rawCNs)$cn
+  M2 &lt;- cbind(M2, rawCNs)
+}
+colnames(M2) &lt;- getArrays(cbs2)
+
+toPNG(&quot;ChrX&quot;, tags=c(&quot;nonCorrected&quot;), aspectRatio=0.618, {
+  boxplot(as.data.frame(M2), col=col, ylim=Mlim, ylab=Mlab, las=2)
+  abline(h=0, lty=4)
+  title(&quot;Copy numbers on ChrX\n(non-bias corrected)&quot;)
+})
+</code></pre>
+
+<h2>References</h2>
+
+<p><a
+name=bib-BengtssonH_etal_2009-CRMAv1></a><a href="#cite-BengtssonH_etal_2009-CRMAv1">[1]</a>
+H. Bengtsson, R. Irizarry, B. Carvalho, et al. &quot;Estimation and
+assessment of raw copy numbers at the single locus level&quot;. Eng. In:
+<em>Bioinformatics (Oxford, England)</em> 24.6 (2008), pp. 759-67. DOI:
+<a href="http://dx.doi.org/10.1093/bioinformatics/btn016">10.1093/bioinformatics/btn016</a>.
+PMID:
+<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;cmd=prlinks&amp;retmode=ref&amp;id=18204055">18204055</a>.</p>
+
+<p><a
+name=bib-BengtssonH_etal_2009-CRMAv2></a><a href="#cite-BengtssonH_etal_2009-CRMAv2">[2]</a>
+H. Bengtsson, P. Wirapati and T. P. Speed. &quot;A single-array
+preprocessing method for estimating full-resolution raw copy numbers
+from all Affymetrix genotyping arrays including GenomeWideSNP 5 &amp; 6&quot;.
+Eng. In: <em>Bioinformatics (Oxford, England)</em> 25.17 (2009), pp. 2149-56.
+DOI:
+<a href="http://dx.doi.org/10.1093/bioinformatics/btp371">10.1093/bioinformatics/btp371</a>.
+PMID:
+<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;cmd=prlinks&amp;retmode=ref&amp;id=19535535">19535535</a>.</p>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/vignettes/Sex-chromosome_bias-corrected_reference_signals/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/vignettes/Sex-chromosome_bias-corrected_reference_signals/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/vignettes/Sex-chromosome_bias-corrected_reference_signals/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

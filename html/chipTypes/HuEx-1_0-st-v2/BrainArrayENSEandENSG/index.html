@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Custom CDF: HuEx-1_0-st-v2 from Brainarray ENSE and ENSG">Aroma: Custom CDF: HuEx-1_0-st-v2 from Brainarray ENSE and ENSG</title>
+  <link href="../../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../../docs/index.html">Documentation</a></li>
+        <li><a href="../../../features/index.html">Features</a></li>
+        <li><a href="../../../resources/index.html">Resources</a></li>
+        <li><a href="../../../forum/index.html">Forum</a></li>
+        <li><a href="../../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Custom CDF: HuEx-1_0-st-v2 from Brainarray ENSE and ENSG</h1>
+
+<p>Author: Steve Pederson &amp; Henrik Bengtsson<br>
+Last updated: 2012-01-29</p>
+
+<pre><code class="r">&gt; cdf &lt;- AffymetrixCdfFile$byChipType(&quot;HuEx-1_0-st-v2&quot;, tags=&quot;U-ENSG,G-ENSE,v14.1,SP20120129&quot;)
+&gt; cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/HuEx-1_0-st-v2
+Filename: HuEx-1_0-st-v2,U-ENSG,G-ENSE,v14.1,SP20120129.cdf
+Filesize: 45.27MBChip type: HuEx-1_0-st-v2,U-ENSG,G-ENSE,v14.1,SP20120129
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 2560x2560
+Number of cells: 6553600
+Number of units: 35202Cells per unit: 186.17
+Number of QC units: 0
+</code></pre>
+
+<p>Downloads:</p>
+
+<ul>
+<li>  <a href="http://aroma-project.org/data/annotationData/chipTypes/HuEx-1_0-st-v2/HuEx-1_0-st-v2,U-ENSG,G-ENSE,v14.1,SP20120129.cdf.gz">HuEx-1_0-st-v2,U-ENSG,G-ENSE,v14.1,SP20120129.cdf.gz</a> -
+Custom CDF.  Contributed by Steve Pederson (School of Mathematical
+Sciences, The University of Adelaide), January 2012.</li>
+<li>  <a href="http://dl.dropbox.com/u/9309787/HuEx-1_0-st-v2%2CU-ENSG%2CG-ENSE%2Cv14.1%2CSP20120129.supportfiles.zip">HuEx-1_0-st-v2,U-ENSG,G-ENSE,v.14.1,SP20120129.supportfiles</a> -
+Contains the probe_tab file &amp; mapping of probes to genomic
+co-ordinates for genome build GRCh37/hg19.</li>
+<li>  The script used to build the above is available
+at: <a href="http://dl.dropbox.com/u/9309787/buildCustomCdf.SP20120129.R">buildCustomCdf.SP20120129.R</a></li>
+</ul>
+
+<p>Notes:</p>
+
+<ul>
+<li>  This CDF was created by taking the common probes between v14.1 of
+the Gene (ENSG) and Exon (ENSE) annotations from
+<a href="http://brainarray.mbni.med.umich.edu/brainarray/default.asp">Brainarray</a>
+(U Michigan).</li>
+<li>  Probes were placed into 289,999 groups based on common exon
+mappings.</li>
+<li>  Probes were placed into 35,202 units based on gene annotations.</li>
+<li>  Every probe maps uniquely to one group.</li>
+<li>  Every group maps uniquely to one unit.</li>
+<li>  Some groups contain more than 4 probes. For a visual summary see
+<a href="http://dl.dropbox.com/u/9309787/ProbeDistributions.png">this</a>.</li>
+</ul>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/chipTypes/HuEx-1_0-st-v2/BrainArrayENSEandENSG/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/chipTypes/HuEx-1_0-st-v2/BrainArrayENSEandENSG/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/chipTypes/HuEx-1_0-st-v2/BrainArrayENSEandENSG/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

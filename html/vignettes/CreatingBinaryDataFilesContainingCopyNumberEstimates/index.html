@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Vignette: Creating binary data files containing copy number estimates">Aroma: Vignette: Creating binary data files containing copy number estimates</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Vignette: Creating binary data files containing copy number estimates</h1>
+
+<p>Author: Henrik Bengtsson<br>
+Created on: 2009-03-23<br>
+Last updated: 2014-12-21</p>
+
+<h2>Introduction</h2>
+
+<p>This document explains how to create binary data files containing
+copy-number signals for a particular sample ran on a given chip type.
+These files can the be used by the aroma.cn framework.  The data files
+we will generate can be though of as a single-column matrix, where each
+row corresponds to one unit (locus).  This data file does not contain
+annotation data such as name the units or their genomic locations.
+Instead, such information is held in unit names files and unit genome
+position (UGP) files.  We will start by giving examples on how to use
+unit names files and a UGP files.  Then we will explain how to create
+them and finally show how to create the data files.</p>
+
+<h2>Unit names files and UGP files</h2>
+
+<p>A unit names file is a file that provides a map from a unit name to a
+unique unit index.  For Affymetrix chip types, the CDF file contains
+such a map.  However, for other platforms or in cases where there exist
+no CDF file, one can create a text-based file that provides this
+mapping.</p>
+
+<p>A UGP file is a file that provides a map from the unit index to the
+genomic location of a unit (locus).  The unit index is also implicit
+from the row index.  A UGP file is a binary file, but the content can be
+though of as a data frame with columns <code>chromosome</code> and <code>position</code>.</p>
+
+<h2>Examples</h2>
+
+<h3>Example: Affymetrix GenomeWideSNP_6,Full</h3>
+
+<p>Examples of a unit names file and a UGP file for the
+GenomeWideSNP_6,Full chip type of the Affymetrix platform are:</p>
+
+<ul>
+<li>GenomeWideSNP_6,Full.cdf (see <a href="../../FAQ/index.html">FAQ</a> 2007-05-24: Where can I download CDF files? of aroma.affymetrix)</li>
+<li><a href="http://aroma-project.org/data/annotationData/chipTypes/GenomeWideSNP_6/GenomeWideSNP_6,Full,na26,HB20080821.ugp.gz">GenomeWideSNP_6,Full,na26,HB20080821.ugp.gz</a></li>
+</ul>
+
+<p>These files has to be placed in the
+annotationData/chipTypes/GenomeWideSNP_6/ directory (exactly as
+written; case sensitive).  When placed there, they can be retrieved as:</p>
+
+<pre><code class="r">library(&quot;aroma.affymetrix&quot;)
+chipType &lt;- &quot;GenomeWideSNP_6,Full&quot;
+unf &lt;- AffymetrixCdfFile$byChipType(chipType)
+ugp &lt;- getAromaUgpFile(unf)
+</code></pre>
+
+<p>To get the unit names of units 1001-1010, do:</p>
+
+<pre><code class="r">unitNames &lt;- getUnitNames(unf, units=1001:1010)
+print(unitNames)
+
+## [1] &quot;SNP_A-4214079&quot; &quot;SNP_A-2001454&quot; &quot;SNP_A-2001478&quot; &quot;SNP_A-2001480&quot;
+## [5] &quot;SNP_A-2001481&quot; &quot;SNP_A-2001483&quot; &quot;SNP_A-2001522&quot; &quot;SNP_A-4214089&quot;
+## [9] &quot;SNP_A-2001548&quot; &quot;SNP_A-2001589&quot;
+</code></pre>
+
+<p>To get the unit indices of two units by their names, do:</p>
+
+<pre><code class="r">units &lt;- indexOf(unf, names=c(&quot;SNP_A-2001483&quot;, &quot;SNP_A-2001454&quot;))
+print(units)
+
+## [1] 6 2
+</code></pre>
+
+<p>To get the genome location of these two units, do:</p>
+
+<pre><code class="r">print(ugp[units,])
+
+##   chromosome position
+## 1          1 34064558
+## 2          1 34056705
+</code></pre>
+
+<h3>Example: Agilent HG-CGH-244A chip type</h3>
+
+<p>Examples of a unit names file and a UGP file for the HG-CGH-244A chip
+type of the Agilent platform are:</p>
+
+<ul>
+<li><a href="http://aroma-project.org/data/annotationData/chipTypes/HG-CGH-244A/HG-CGH-244A,TCGA,HB20080512,unitNames.txt.gz">HG-CGH-244A,TCGA,HB20080512,unitNames.txt.gz</a></li>
+<li><a href="http://aroma-project.org/data/annotationData/chipTypes/HG-CGH-244A/HG-CGH-244A,TCGA,HB20080512.ugp.gz">HG-CGH-244A,TCGA,HB20080512.ugp.gz</a></li>
+</ul>
+
+<p>These files has to be placed in the
+annotationData/chipTypes/HG-CGH-244A/ directory (exactly as written
+case sensitive).  When located there, they can be retrieved as:</p>
+
+<pre><code class="r">library(&quot;aroma.core&quot;)
+chipType &lt;- &quot;HG-CGH-244A&quot;
+unf &lt;- TextUnitNamesFile$byChipType(chipType)
+ugp &lt;- getAromaUgpFile(unf)
+</code></pre>
+
+<p>To get the unit names of the first 10 units, do:</p>
+
+<pre><code class="r">unitNames &lt;- getUnitNames(unf, units=1:10)
+print(unitNames)
+
+## [1] &quot;A_14_P112718&quot;   &quot;A_16_P15000916&quot; &quot;A_16_P15001074&quot; &quot;A_16_P00000012&quot;
+## [5] &quot;A_16_P00000014&quot; &quot;A_16_P00000017&quot; &quot;A_16_P00000021&quot; &quot;A_16_P00000023&quot;
+## [9] &quot;A_16_P00000027&quot; &quot;A_16_P00000033&quot;
+</code></pre>
+
+<p>To get the unit indices of two units by their names, do:</p>
+
+<pre><code class="r">units &lt;- indexOf(unf, names=c(&quot;A_16_P00000017&quot;, &quot;A_16_P15000916&quot;))
+print(units)
+
+## [1] 6 2
+</code></pre>
+
+<p>To get the genome location of these two units, do:</p>
+
+<pre><code class="r">print(ugp[units,])
+
+##   chromosome position
+## 1          1   746956
+## 2          1   554287
+</code></pre>
+
+<p>The above *,unitNames.txt file is of a generic text file format
+containing a simple header and one unit name per row such that the unit
+index is implicit from the row index.  For example, the content of the
+above file is:</p>
+
+<pre><code># platform: Agilent
+# chipType: HG-CGH-244A
+unitName
+A_14_P112718
+A_16_P15000916
+A_16_P15001074
+...
+A_16_P03808022
+</code></pre>
+
+<p>Note how the unit index is implicit from the row index, e.g. unit
+&#39;A_16_P15000916&#39; has index 2.</p>
+
+<h2>Creating a text-based unit names file</h2>
+
+<p>In order to create an UGP file, it is easiest to allocate an empty one
+from an existing unit names file.  For this reason, we start by creating
+a text-based unit names file.</p>
+
+<p>Consider that we wish to create a unit names file for the above Agilent
+HG-CGH-244A chip type and that we already have the unit names in a
+character vector named <code>unitNames</code>, e.g.</p>
+
+<pre><code class="r">str(unitNames)
+
+## chr [1:235829] &quot;A_14_P112718&quot; &quot;A_16_P15000916&quot; &quot;A_16_P15001074&quot;
+</code></pre>
+
+<p>Then we can create a text-based unit names file as follows:</p>
+
+<pre><code class="r"># The chip type of interest
+platform &lt;- &quot;Agilent&quot;
+chipType &lt;- &quot;HG-CGH-244A&quot;
+
+# The path were to store the annotation data files (cannot be different)
+rootPath &lt;- &quot;annotationData&quot;
+path &lt;- file.path(rootPath, &quot;chipTypes&quot;, chipType)
+print(path)
+## [1] &quot;annotationData/chipTypes/HG-CGH-244A&quot;
+
+# The filename of the *,unitNames.txt file (we add tags for our own record)
+tags &lt;- &quot;HB20090322&quot;
+fullname &lt;- paste(c(chipType, tags, &quot;unitNames&quot;), collapse=&quot;,&quot;)
+filename &lt;- sprintf(&quot;%s.txt&quot;, fullname)
+print(filename)
+## [1] &quot;HG-CGH-244A,HB20090322,unitNames.txt&quot;
+
+# The complete pathname of the file
+pathname &lt;- Arguments$getWritablePathname(filename, path=path)
+print(pathname)
+[1] &quot;annotationData/chipTypes/HG-CGH-244A/HG-CGH-244A,HB20080512,unitNames.txt&quot;
+
+# Generate the (unit index, unit name) map file
+cat(file=pathname, sprintf(&quot;# platform: %s\n&quot;, platform))
+cat(file=pathname, sprintf(&quot;# chipType: %s\n&quot;, chipType), append=TRUE)
+cat(file=pathname, &quot;unitName\n&quot;, append=TRUE)
+cat(file=pathname, unitNames, sep=&quot;\n&quot;, append=TRUE)
+</code></pre>
+
+<p>This file can then be retrieved by:</p>
+
+<pre><code class="r">unf &lt;- TextUnitNamesFile$byChipType(chipType, tags=tags)
+
+# Sanity check
+stopifnot(identical(getUnitNames(unf), unitNames))
+</code></pre>
+
+<h2>Creating a UGP file</h2>
+
+<p>Given a unit names file, either a text-base one or an Affymetrix CDF
+file, one can allocate an empty UGP and populate it as follows:</p>
+
+<pre><code class="r">ugp &lt;- AromaUgpFile$allocateFromUnitNamesFile(unf, tags=tags)
+print(ugp)
+
+## AromaUgpFile:
+## Name: HG-CGH-244A
+## Tags: HB20090322
+## Full name: HG-CGH-244A,HB20090322
+## Pathname: annotationData/chipTypes/HG-CGH-244A/HG-CGH-244A,HB20090322.ugp
+## File size: 1.12 MB (1179325 bytes)
+## RAM: 0.00 MB
+## Number of data rows: 235829
+## File format: v1
+## Dimensions: 235829x2
+## Column classes: integer, integer
+## Number of bytes per column: 1, 4
+## Footer: \&lt;createdOn\&gt;20090323 22:20:
+## PDT\&lt;/createdOn\&gt;\&lt;platform\&gt;Agilent\&lt;/platform\&gt;
+## \&lt;chipType\&gt;HG-CGH-244A\&lt;/chipType\&gt;
+## Chip type: HG-CGH-244A
+## Platform: Agilent
+</code></pre>
+
+<p>This UGP file is currently &quot;empty&quot;, e.g.</p>
+
+<pre><code class="r">print(ugp[1:4,])
+
+##   chromosome position
+## 1         NA       NA
+## 2         NA       NA
+## 3         NA       NA
+## 4         NA       NA
+</code></pre>
+
+<p>We can then populate the UGP file as if it was a matrix, e.g.</p>
+
+<pre><code class="r">units &lt;- c(1,4,7)
+ugp[units,1] &lt;- 1
+ugp[units,2] &lt;- c(554268, 736483, 757922)
+print(ugp[units,])
+
+##   chromosome position
+## 1          1   554268
+## 2          1   736483
+## 3          1   757922
+</code></pre>
+
+<p>Note that these updates are persistent, because they are written back to
+the UGP file.</p>
+
+<p>Make sure that you get assign loci on Chromosome X to have chromosome
+index 23.  For Chromosome Y and Chromosome M (mitochondrial DNA) you
+should use chromosome index 24 and 25, respectively.</p>
+
+<p>When done, you can see the distribution of loci per chromosome (and
+those not without known locations as <code>NA</code>s), by:</p>
+
+<pre><code>t &lt;- table(ugp[,1], exclude=NULL)
+print(t)
+
+##     1     2     3     4     5     6     7     8     9    10
+## 19260 18534 15886 13353 13244 13265 13241 10960  9403 11035
+##    11    12    13    14    15    16    17    18    19    20
+## 11435 11167  7652  8196  8008  6794  7657  5774  5977  5331
+##    21    22    23    24  &lt;NA&gt;
+##  3362  4079 10938  1293     0
+</code></pre>
+
+<p>If you made a mistake with Chromosomes X and Y, you will probably see
+zeros for those chromosomes.</p>
+
+<p>For further details on UGP files and examples on how to populate them,
+see the How To page on &#39;<a href="../../howtos/CreateUGP/index.html">Create a Unit Genome Position (UGP)
+file</a>&#39;.</p>
+
+<h2>Creating data files containing log2 CN ratios</h2>
+
+<p>Given a unit-names file, we are ready to allocate empty data files to be
+populated with copy number data.  The path to these allocated files
+should follow the standards of the Aroma framework, i.e.
+&lt;rootPath&gt;/&lt;dataSet&gt;(,&lt;tag&gt;)*/&lt;chipType&gt;/.
+There are two options for &lt;rootPath&gt;, namely, rawCnData/ and totalAndFracBData/.  Use the first one when you have only total copy numbers (TCNs), and the second one when you have both TCN data as well as allele B fractions (BAFs).</p>
+
+<pre><code class="r"># The type of chip
+chipType &lt;- &quot;HG-CGH-244A&quot;
+
+# Setup its unit names file
+unf &lt;- TextUnitNamesFile$byChipType(chipType)
+
+# The name of the data set
+dataSet &lt;- &quot;MyDataSet,tagA,tagB&quot;
+
+# The name of the sample
+sampleName &lt;- &quot;SampleA,tagA,tagB&quot;
+
+# The root path
+rootPath &lt;- c(&quot;rawCnData&quot;, &quot;totalAndFracBData&quot;)[1]
+
+# The path to the data set
+path &lt;- file.path(rootPath, dataSet, getChipType(unf, fullname=FALSE))
+
+# The filename of the data file
+filename &lt;- sprintf(&quot;%s,log2ratio,total.asb&quot;, sampleName)
+
+# Allocate an empty data file
+df &lt;- AromaUnitTotalCnBinaryFile$allocateFromUnitNamesFile(unf, filename=filename, path=path)
+
+print(df)
+
+## AromaUnitTotalCnBinaryFile:
+## Name: SampleA
+## Tags: tagA,tagB,log2ratio,total
+## Full name: SampleA,tagA,tagB,log2ratio,total
+## Pathname: rawCnData/MyDataSet,tagA,tagB/HG-CGH-244A/SampleA,tagA,tagB,log2ratio,total.asb
+## File size: 921.38 kB (943493 bytes)
+## RAM: 0.00 MB
+## Number of data rows: 235829
+## File format: v1
+## Dimensions: 235829x1
+## Column classes: double
+## Number of bytes per column: 4
+## Footer: \&lt;createdOn\&gt;20090323 22:33:
+## PDT\&lt;/createdOn\&gt;\&lt;platform\&gt;Agilent\&lt;/platform\&gt;
+## \&lt;chipType\&gt;HG-CGH-244A\&lt;/chipType\&gt;
+## Platform: Agilent
+## Chip type: HG-CGH-244A
+</code></pre>
+
+<p>Make sure it is filled with <code>NA</code>s (currently it defaults to all zeros):</p>
+
+<pre><code class="r">df[,1] &lt;- NA
+</code></pre>
+
+<p>As with a UGP file, this data file can be treated as a matrix where
+updates are persistent, because they are written back to the file.  For
+instance, assume that the CN log-ratios for the 10 first units are held
+in the numeric vector <code>M</code> of length 10.  Then do:</p>
+
+<pre><code class="r">df[1:10,1] &lt;- M
+</code></pre>
+
+<p>Another example is when one has a vector of log ratios <code>M</code> for units
+specified by unit names <code>unitNames</code>.  Then, assign these log-ratios to
+the correct rows (units) of the data files by:</p>
+
+<pre><code class="r">units &lt;- indexOf(unf, unitNames)
+df[units,1] &lt;- M
+</code></pre>
+
+<p>After having created all data files, the total CN data set can be setup
+using:</p>
+
+<pre><code class="r">dataSet &lt;- &quot;MyDataSet,tagA,tagB&quot;
+chipType &lt;- &quot;HG-CGH-244A&quot;
+
+ds &lt;- AromaUnitTotalCnBinarySet$byName(dataSet, chipType=chipType)
+</code></pre>
+
+<h2>See also</h2>
+
+<p>For more information see How to page on &#39;<a href="../../howtos/CreateUGP/index.html">Create a Unit Genome Position (UGP) file</a>&#39;.</p>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/vignettes/CreatingBinaryDataFilesContainingCopyNumberEstimates/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/vignettes/CreatingBinaryDataFilesContainingCopyNumberEstimates/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/vignettes/CreatingBinaryDataFilesContainingCopyNumberEstimates/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

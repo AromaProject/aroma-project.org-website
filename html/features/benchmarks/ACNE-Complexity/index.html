@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Benchmarks: ACNE: The complexity of the ACNE estimator is linear in the number of samples and probes">Aroma: Benchmarks: ACNE: The complexity of the ACNE estimator is linear in the number of samples and probes</title>
+  <link href="../../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../../docs/index.html">Documentation</a></li>
+        <li><a href="../../../features/index.html">Features</a></li>
+        <li><a href="../../../resources/index.html">Resources</a></li>
+        <li><a href="../../../forum/index.html">Forum</a></li>
+        <li><a href="../../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Benchmarks: ACNE: The complexity of the ACNE estimator is linear in the number of samples and probes</h1>
+
+<p>Author: Angel Rubio<br>
+Created on: 2010-05-06</p>
+
+<p>ACNE is applied to each SNP separately.  Thus, it never required more
+memory that the total amount of signals for one SNP across all samples.
+ A high-level implementation of ACNE is also available for the
+aroma.affymetrix framework, which provides an automatic way of
+processing SNPs in chunks such that the memory usage is
+bounded/constant.  Thus, ACNE can be done in aroma.affymetrix using only
+1-1.5GB of RAM, regardless of the number of arrays processed.  It is
+only the available disk space that limits the analysis.</p>
+
+<p>The complexity is each of the steps in algorithm is linear with K
+(number of probes) or I (number of samples). We have run a simulation
+for a single SNP with I=10, 20, 50, 100, 200, 500, 1000, 2000, 5000
+samples and a linear model fits perfectly the computing time (a standard
+Laptop with 2GB RAM). The y axis shows the total time per SNP. This
+simulation was performed for a 250K chip (K=20 probes per SNP). Total
+time in the summarization step can be obtained multiplying this time by
+the number of SNPs (in this case, about 80,000 seconds~=1 day for
+I=5,000 arrays).</p>
+
+<p>ACNE is linear in K and I. The most complex process (computing the
+pseudinverse of H) is proportional to the number of samples.</p>
+
+<p><img src="../../../assets/images/ACNE/ACNE,benchmark,time-vs-samples.png" alt=""></p>
+
+<p>Figure: The processing time of ACNE is proportional to the of the number
+of samples (I). The ACNE estimator was ran multiple times on simulated
+data sets with different number of samples. The presented data is the
+average times for many such runs.</p>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/features/benchmarks/ACNE-Complexity/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/features/benchmarks/ACNE-Complexity/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/features/benchmarks/ACNE-Complexity/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

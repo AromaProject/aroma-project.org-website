@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Chip type: DogSty06m520431">Aroma: Chip type: DogSty06m520431</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Chip type: DogSty06m520431</h1>
+
+<p>The DogSty06m520431 chip type is the 2nd version of a custom Canine SNP
+array.</p>
+
+<p>From Broad&#39;s <a href="http://www.broad.mit.edu/mammals/dog/caninearrayfaq.html">Canine SNP
+FAQ</a>
+(2008-07-21): &quot;The version 2 array (part number 520431) is a 5 um,
+100-format, PM probe only (20 probes/SNP) WGSA design, which can detect
+a total of 127K SNPs. These SNPs were chosen from the 2.5 million SNP
+map generated as part of the dog genome project and include the majority
+of the v1 platinum set SNPs. A &quot;v2 platinum&quot; set of 49,663 SNPs was
+selected to include accurate and robust SNPs, using a panel of &gt;10
+diverse breeds. The library file (DogSNPs520431P) has masked out the
+SNPs that are not of high quality and thus only will show results for
+the &quot;v2 platinum&quot; SNPs. Also available is the library file for all
+SNPs.&quot;.</p>
+
+<p><em>Important for aroma.affymetrix users</em>: The two CDFs available from
+Broad are named DogSty06m520431.cdf and DogSty06m520431P.cdf where the
+&#39;P&#39; indicates &#39;Platinum&#39;.  Since both CDFs refer to the same (physical)
+chip type, it is more convenient to put the in the same
+annotationData/chipType/DogSty06m520431/ directory.  For
+aroma.affymetrix to be able to locate the Platinum CDF, <strong>rename
+DogSty06m520431P.cdf to DogSty06m520431,Platinum.cdf</strong>.</p>
+
+<pre><code class="r">&gt; cdf &lt;- AffymetrixCdfFile$byChipType(&quot;DogSty06m520431&quot;)
+&gt; cdf
+
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/DogSty06m520431
+Filename: DogSty06m520431.cdf
+Filesize: 84.63MB
+Chip type: DogSty06m520431
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 1612x1612
+Number of cells: 2598544
+Number of units: 127201
+Cells per unit: 20.43
+Number of QC units: 0
+
+&gt; cdf &lt;- AffymetrixCdfFile$byChipType(&quot;DogSty06m520431,Platinum&quot;)
+&gt; cdf
+
+Path: annotationData/chipTypes/DogSty06m520431
+Filename: DogSty06m520431,Platinum.cdf
+Filesize: 33.27MB
+Chip type: DogSty06m520431,Platinum
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 1612x1612
+Number of cells: 2598544
+Number of units: 49732
+Cells per unit: 52.25
+Number of QC units: 6
+</code></pre>
+
+<h2>Resources</h2>
+
+<p>By aroma-project.org:</p>
+
+<ul>
+<li>  <a href="http://aroma-project.org/data/annotationData/chipTypes/DogSty06m520431/DogSty06m520431,Broad20080721,HB20080721.ugp.gz">DogSty06m520431,Broad20080721,HB20080721.ugp.gz</a>
+
+<ul>
+<li>Unit Genome Position (UGP) annotation file mapping to the units in
+the DogSty06m520431.CDF.  Created by: Henrik Bengtsson, 2008-07-21.
+Sources: Broad&#39;s AffyV2_all_probeset.txt (5.74MB; downloaded
+2008-07-21).</li>
+</ul></li>
+<li>  <a href="http://aroma-project.org/data/annotationData/chipTypes/DogSty06m520431/DogSty06m520431,Platinum,Broad20080721,HB20080721.ugp.gz">DogSty06m520431,Platinum,Broad20080721,HB20080721.ugp.gz</a>
+
+<ul>
+<li>Unit Genome Position (UGP) annotation file mapping to the units in
+the DogSty06m520431,Platinum.CDF.  Created by: Henrik Bengtsson,
+2008-07-21. Sources: Broad&#39;s AffyV2_all_probeset.txt (5.74MB;
+downloaded 2008-07-21).</li>
+</ul></li>
+<li>  <a href="http://aroma-project.org/data/annotationData/chipTypes/DogSty06m520431/DogSty06m520431,HB20100920.acs.gz">DogSty06m520431,HB20100920.acs.gz</a> -
+Aroma Cell Sequence (ACS) annotation file mapping cell indices to
+25-mer sequences and target strandedness.  Sources: Affymetrix
+probe_tab file (private communication).  Created by: Henrik
+Bengtsson, 2010-09-20.</li>
+</ul>
+
+<p>By Broad Institute:</p>
+
+<ul>
+<li>  <a href="http://www.broad.mit.edu/mammals/dog/caninearrayfaq.html">Support
+materials</a>
+(CDFs, annotation data for genome positions etc.)</li>
+</ul>
+
+<h2>Appendix</h2>
+
+<h3>How the UGP files were created</h3>
+
+<pre><code class="r">library(&quot;aroma.affymetrix&quot;)
+
+# Choose the CDF to create an UGP file for
+cdf &lt;- AffymetrixCdfFile$byChipType(&quot;DogSty06m520431&quot;, tags=&quot;Platinum&quot;)
+cdf &lt;- AffymetrixCdfFile$byChipType(&quot;DogSty06m520431&quot;)
+
+# Allocate empty UGP file
+ugp &lt;- AromaUgpFile$allocateFromCdf(cdf, tags=&quot;Broad20080721,HB20080721&quot;)
+
+# Read genome location data from external text file
+tab &lt;- TabularTextFile(&quot;AffyV2_all_probeset.txt&quot;, path=getPath(cdf))
+colClassPatterns &lt;- c(ProbeId=&quot;character&quot;, Chr=&quot;character&quot;, Pos=&quot;integer&quot;)
+df &lt;- readDataFrame(tab, colClassPatterns=colClassPatterns)
+
+# Coerce chromosome labels to integers
+df$Chr[df$Chr == &quot;X&quot;] &lt;- &quot;39&quot; # Turn ChrX into Chr39.
+df$Chr &lt;- as.integer(df$Chr)
+
+# Write data to UGP file
+units &lt;- indexOf(cdf, names=df$ProbeId)
+
+# Store only units existing in the CDF
+keep &lt;- !is.na(units)
+ugp[units[keep],1] &lt;- df$Chr[keep]
+ugp[units[keep],2] &lt;- df$Pos[keep]
+
+# Update UGP file footer
+footer &lt;- readFooter(ugp)
+footer$createdBy &lt;- list(fullname=&quot;Henrik Bengtsson&quot;)
+footer$srcFile &lt;- list(
+  filename=getFilename(tab),
+  filesize=getFileSize(tab),
+  checksum=getChecksum(tab)
+)
+writeFooter(ugp, footer)
+</code></pre>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/chipTypes/DogSty06m520431/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/chipTypes/DogSty06m520431/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/chipTypes/DogSty06m520431/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

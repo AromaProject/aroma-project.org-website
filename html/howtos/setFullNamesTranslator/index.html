@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): How to: Use fullname translators to rename data files">Aroma: How to: Use fullname translators to rename data files</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>How to: Use fullname translators to rename data files</h1>
+
+<p>Q: I have download a set of HapMap CEL files and they all have filenames
+like NA07000_Hind_A8_3005533.CEL.  How can I tell aroma.affymetrix
+that it is the first part NA07000 that is the sample name and the rest
+are tags?  I do not want to rename my CEL files.</p>
+
+<p>A: You can use custom translator functions to parse and translate the
+default fullnames into fullnames of your choice.  For example, assume
+you have the following data set:</p>
+
+<pre><code class="r">dsR &lt;- AffymetrixCelSet$byName(&quot;HapMap,CEU,testSet&quot;, chipType=&quot;Mapping50K_Hind240&quot;)
+print(getFullNames(dsR))
+
+## [1] &quot;NA06985_Hind_B5_3005533&quot; &quot;NA06991_Hind_B6_3005533&quot;
+## [3] &quot;NA06993_Hind_B4_4000092&quot; &quot;NA06994_Hind_A7_3005533&quot;
+## [5] &quot;NA07000_Hind_A8_3005533&quot; &quot;NA07019_Hind_A12_4000092&quot;
+## [7] &quot;NA07022_Hind_A10_4000092&quot; &quot;NA07029_Hind_A9_4000092&quot;
+## [9] &quot;NA07034_Hind_B1_4000092&quot; &quot;NA07048_Hind_B3_4000092&quot;
+</code></pre>
+
+<p>The CEL files downloaded from HapMap has file names such as
+NA07000_Hind_A8_3005533.CEL.  In order for aroma.affymetrix to
+identify &#39;NA07000&#39; as the sample name, and &#39;A8&#39; and &#39;3005533&#39; as tags
+(ignoring the &#39;Hind&#39; part), use a function to translates the full name
+to a comma-separated fullname, e.g. &#39;NA07000_Hind_A8_3005533&#39; to
+&#39;NA07000,A8,3005533&#39;.</p>
+
+<pre><code class="r">setFullNamesTranslator(dsR, function(names, ...) {
+ # Turn into comma-separated tags
+ names &lt;- gsub(&quot;_&quot;, &quot;,&quot;, names)
+ # Drop any Hind/Xba tags
+ names &lt;- gsub(&quot;,(Hind|Xba)&quot;, &quot;&quot;, names)
+ names
+})
+
+print(getFullNames(dsR))
+
+## [1] &quot;NA06985,B5,3005533&quot; &quot;NA06991,B6,3005533&quot;  
+## [3] &quot;NA06993,B4,4000092&quot; &quot;NA06994,A7,3005533&quot;  
+## [5] &quot;NA07000,A8,3005533&quot; &quot;NA07019,A12,4000092&quot;  
+## [7] &quot;NA07022,A10,4000092&quot; &quot;NA07029,A9,4000092&quot;  
+## [9] &quot;NA07034,B1,4000092&quot; &quot;NA07048,B3,4000092&quot;
+
+print(dsR)
+
+## AffymetrixCelSet:
+## Name: HapMap
+## Tags: CEU,testSet
+## Path: rawData/HapMap,CEU,testSet/Mapping50K_Hind240
+## Platform: Affymetrix
+## Chip type: Mapping50K_Hind240
+## Number of arrays: 10
+## Names: NA06985, NA06991, ..., NA07048
+## Time period: 2004-01-14 14:02:08 -- 2004-02-13 11:51:01
+## Total file size: 244.78MB
+## RAM: 0.01MB
+</code></pre>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/howtos/setFullNamesTranslator/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/howtos/setFullNamesTranslator/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/howtos/setFullNamesTranslator/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

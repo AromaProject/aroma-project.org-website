@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): How to: Create a CDF file from scratch (or from CLF and PGF files)">Aroma: How to: Create a CDF file from scratch (or from CLF and PGF files)</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>How to: Create a CDF file from scratch (or from CLF and PGF files)</h1>
+
+<p>Author: Elizabeth Purdom (pruned by Henrik Bengtsson)<br>
+Created on: 2008-12-19<br>
+Last updated: 2014-01-22</p>
+
+<p>I am collecting here functions that Mark Robinson and I have developed
+to create CDFs from scratch. Ultimately the goal will be to create
+single R functions, but right now these are functions that make up a
+series of steps (not all of which are in Perl).</p>
+
+<p>An example of steps for Ensembl CDF for the exon array:</p>
+
+<ol>
+<li> Download the Ensembl Annotation with <a href="http://www.bioconductor.org/packages/release/bioc/html/biomaRt.html">biomaRt</a> and use it
+to map the Affymetrix <strong>probesets</strong> (exons) to the gene boundaries in
+Ensembl using
+<a href="../../share/scripts/third-party/archive/20090212/annotateProbesets.R">annotateProbesets.R</a></li>
+<li> Make single file of all probes and their mapping with
+<a href="../../share/scripts/third-party/archive/20090212/convertProbesetCSV_differentInput.pl">convertProbesetCSV_differentInput.pl</a>
+(i.e. now map the corresponding probes)</li>
+<li> Create CDF with
+<a href="../../share/scripts/third-party/archive/20090624/flat2Cdf.R">flat2Cdf.R</a></li>
+</ol>
+
+<p>To filter, see example below.</p>
+
+<h2>Make CDF (Main File)</h2>
+
+<p>The main file
+<a href="../../share/scripts/third-party/archive/20090624/flat2Cdf.R">flat2Cdf.R</a>
+contains <code>flat2Cdf()</code> for making the CDF, which is a function in R that
+takes a &#39;flat&#39; file and converts it to a binary CDF file. The flat file
+is a tab-delimited file with each row corresponding to a probe to be
+included in the CDF.  Right now the format of a &#39;flat&#39; file is a bit
+rigid.</p>
+
+<p>It must be:</p>
+
+<ul>
+<li>  tab-delimited</li>
+<li>  have a header row</li>
+<li>  A column &#39;X&#39; and &#39;Y&#39; with the x,y coordinates of a file (there is an
+argument that allows to pass other names, but not really tested yet)</li>
+<li>  A column identifying a probe to a group and a column identifying a
+probe to a unit (for exon arrays, group=exon, unit=gene; for gene
+arrays, unit=group=gene); these identifications will the group and
+unit names respectively.</li>
+<li>  Other columns are allowed and will be ignored.</li>
+</ul>
+
+<pre><code>Example:  
+Probe_ID        X       Y       Probe_Sequence  Group_ID
+Unit_ID  
+15      14      0       TCTCCAGTGAAGTGCACATTGCTCA       3029044
+ENSG00000106144  
+17      16      0       TGATCGCCTGTCTGCAGATAGGGCA       2400195
+ENSG00000090432  
+29      28      0       TGTAGCTACATGAGGTCTCAGCAGT       2690968
+ENSG00000121577  
+34      33      0       TGGGATGAATGATCAGGAACTGCTG       3032901
+ENSG00000130226  
+35      34      0       TCTGGAAATGCATCAGGGACATCTG       3087574
+ENSG00000155975  
+51      50      0       TATGACAGGATAGCACCAGACGAGC       2808483
+ENSG00000112992  
+58      57      0       TGAGTACGAATGTGCATCTTCAGTC       2783822
+ENSG00000138738  
+59      58      0       TATGTGACTGGATTGCAAGTCTCTC       2403372
+ENSG00000158161  
+62      61      0       CATGTAGATCTATGCCAGTTGAATC       2507416
+ENSG00000048991
+</code></pre>
+
+<p>The R function takes the following arguments:</p>
+
+<ul>
+<li>  <code>filename</code>: of flat file</li>
+<li>  <code>chipType</code>: the chip type of the CDF</li>
+<li>  <code>tags</code>: tags to add to the chip type</li>
+<li>  <code>ucol</code>: integer giving the column with the unit id</li>
+<li>  <code>gcol</code>: integer giving the column with the group id (can be same as unit id)</li>
+<li>  <code>col.class</code>: column classes of file (see help on <code>read.table()</code>);</li>
+<li>  <code>splitn</code>: parameter that controls the number of initial chunks that
+are unwrapped (number of characters of unit names used to keep units
+together for initial chunks)</li>
+<li>  <code>rows</code>: number of rows on the array<br>
+<code>cols</code>: number of columns on the array</li>
+<li>  <code>xynames</code>: names for the X,Y columns</li>
+</ul>
+
+<p>Example (within R):</p>
+
+<pre><code class="r">flat2Cdf(file=&quot;hjay.r1.flat&quot;, chipType=&quot;hjay&quot;, tag=&quot;r1,TC&quot;)
+</code></pre>
+
+<h2>Convert Affymetrix annotation to Flat file (Perl)</h2>
+
+<p>Affymetrix generally has one file that gives the probe to probeset
+identification. Then there might be a separate file that relates probesets
+to genes. This information must be combined to get a single flat file
+for <code>flat2Cdf()</code>. The Perl script
+<a href="../../share/scripts/third-party/archive/20090212/convertProbesetCSV_differentInput.pl">convertProbesetCSV_differentInput.pl</a> converts
+these files to an output &#39;flat&#39; file. This may not work for all input (I
+use the file *.probe.tab from Affymetrix).</p>
+
+<p>It takes 3 arguments:</p>
+
+<ol>
+<li> a file with the probeset assignments to genes (comma-delimited, one
+row per probeset)</li>
+<li> file with probe assignments to probesets (tab-delimited, one row per
+probe, e.g. *.probe.tab)</li>
+<li> outfile name (will be tab-delimited)</li>
+</ol>
+
+<p>Optional arguments concerning the first file:</p>
+
+<pre><code>-p column with the probeset (default 1)
+-g column with the genes (default 2)
+</code></pre>
+
+<p>Example (system command line; one row):</p>
+
+<pre><code class="sh">convertProbesetCSV_differentInput.pl ensembl2affy.csv MoEx-1_0-st-v1.probe.tab MoEnsembl50.flat -p 1 -g 6
+</code></pre>
+
+<h2>Map probesets to outside gene definition</h2>
+
+<p>The <code>annotateProbesets()</code> function (R
+script <a href="../../share/scripts/third-party/archive/20090212/annotateProbesets.R">annotateProbesets.R</a>) is
+for taking Affymetrix&#39;s probesets (&#39;psr&#39;) and mapping them to a
+different gene definition. This might be a bit exon array specific. It
+was designed for Human Ensembl annotation, though I used it for Mouse.
+It could be extended to be just probes, perhaps.</p>
+
+<p>This is an R function with the following arguments:</p>
+
+<ul>
+<li>  <code>probesetFile</code>: file name with the psr regions</li>
+<li>  <code>exonBoundariesFile</code>: file name of delimited file with the exon
+boundaries that you want to map the probesets to (new gene
+definitions)</li>
+<li>  <code>probesetFileParameters</code>, <code>exonBoundariesFileParameters</code>: list of
+parameters to pass to <code>read.table()</code> in reading the file; note that
+<code>header=TRUE</code> and <code>stringsAsFactors=FALSE</code> are hard-coded in and can not
+be changed by user (and should not be passed in this argument)</li>
+<li>  <code>probesetFileNames</code>: vector of the header (names) of the necessary
+columns to match the probeset to the annotation (see default
+assignments to see what these are). This allows the user to have a
+file with different headers, which will be detected and converted to
+the standard headers in the default. Note that the order of this
+argument is ESSENTIAL. Also, the sixth value (by default <code>NA</code>) can be
+an additional column (like level); it is only used to table the
+matching and non-matching probesets in the verbose output, so is not
+essential. All columns will be returned in the final output (though
+in different order)</li>
+<li>  <code>exonFileNames</code>: similar to probesetFileNames, but see default to see
+the specifics for the <code>exonBoundariesFile</code>. Note that if
+gene_id=exon_id, and the stop and start are the boundaries of the
+gene, it should just map to the gene and not coding region specific.</li>
+<li>  <code>overlapType</code>: either a character vector specifying overlap type or a
+user-defined function that returns the fraction of overlap of a set
+of genes (untested, see internal code to see operation of function).
+If character vector, should be either <code>&quot;none&quot;</code> (no adjustment),
+<code>&quot;probeset&quot;</code> (percentage of probeset overlap in the resulting merged
+gene), <code>&quot;coding&quot;</code> (untested -- the percentage of coding overlap as
+fraction of coding length of resulting merged gene), or <code>&quot;genomic&quot;</code>
+(untested-the percentage of genomic overlap as fraction of length of
+the resulting merged gene)</li>
+<li>  <code>overlapCutoff</code>: between 0 and 1; the required shared region required to
+merge genes together (as defined by <code>overlapType</code> function); if genes
+are not merged, the overlapping probesets are removed.</li>
+</ul>
+
+<p>Some strange assumptions about the files (should be fixed...):</p>
+
+<ul>
+<li>  &#39;probesets&#39; file assumes Affymetrix format for chromosome data:
+chr1, chr2, etc. and +/- for strand</li>
+<li>  assume numeric for chromosomes in exonBoundaries (1-24)...; and -1/1
+for strand</li>
+<li>  assumes that X,Y is encoded as 23,24 in exonBoundaries...very human
+specific, should be careful</li>
+</ul>
+
+<p>Description of the overlapping strategy (It is run after probesets are
+assigned to genes based on the inputted <code>exonBoundariesFile</code>.)</p>
+
+<ol>
+<li> If <code>overlapType</code> is <code>&quot;none&quot;</code> there is no further action done (and
+probesets can be assigned to multiple genes)</li>
+<li> When there is overlap (defined as probesets assigned to multiple
+genes, and not based on the external exon boundaries), there is an
+initial scan that creates groups of genes that overlap (if A
+overlaps B and B overlaps C, but C does not overlap A, then A,B,C are
+still all included in an overlapping group).</li>
+<li> For each group, the % that are common to all of the genes in the
+group is calculated based on the function given by <code>overlapType</code>.</li>
+<li> If this % is greater or equal to <code>overlapCutoff</code> then the genes in the
+group (and <em>all</em> of their probesets, regardless of which gene they
+are from) are merged into one gene.</li>
+<li> Otherwise all of the genes are kept distinct and <em>any</em> overlapping
+probesets are removed.</li>
+<li> <code>overlapCutoff=1</code> means that only genes with 100% overlap (as defined
+by the function in <code>overlapType</code>) are merged and otherwise probesets
+mapped to multiple genes are removed.</li>
+<li> <code>overlapCutoff &gt; 1</code> means there is absolutely no merging of genes, even
+if 100% equivalent (note: error is returned if <code>overlapType</code> returns
+&gt; 1)</li>
+<li> The merged gene has a name that is the concatenation of the names of
+the genes in the set: &quot;Gene1.Gene2.Gene3&quot; etc.</li>
+</ol>
+
+<p>Example Usage:</p>
+
+<pre><code class="r">path &lt;- &quot;HumanEnsembl50Build&quot;
+probesetName &lt;- file.path(path, &quot;HuEx-1_0-st-v2.na26.hg18.probeset.csv&quot;)
+annotExonBoundaries &lt;- file.path(path, &quot;exonBoundaries_proteinCoding_20080819.txt&quot;)
+
+colClasses &lt;- rep(&quot;NULL&quot;, 39); # 39=number of columns in HuEx-1_0-st-v2.naXX.hg18.probeset.csv
+colClasses[c(1:5,16)] &lt;- NA;   # the columns that I want to pull in
+overlapType &lt;- &quot;probeset&quot;
+overlapCutoff &lt;- 1.0
+pbsetHeaderNames &lt;- c(&quot;probeset_id&quot;, &quot;seqname&quot;, &quot;strand&quot;, &quot;start&quot;, &quot;stop&quot;, &quot;level&quot;)
+exonHeaderNames &lt;- c(&quot;gene_id&quot;, &quot;exon_id&quot;, &quot;chr&quot;, &quot;strand&quot;, &quot;start&quot;, &quot;end&quot;)
+annotateProbesets(probesetFile=probesetName,
+    exonBoundariesFile=annotExonBoundaries,
+    probesetFileParameters=list(sep=&quot;,&quot;, colClasses=colClasses, comment.char=&quot;#&quot;),
+    probesetFileNames=pbsetHeaderNames,
+    exonBoundariesFileParameters=list(sep=&quot;\t&quot;, colClasses=NA, comment.char=&quot;#&quot;),
+    exonBoundariesFileNames=exonHeaderNames,
+    overlapType=overlapType, overlapCutoff=overlapCutoff,
+    outdir=path, verbose=TRUE)
+</code></pre>
+
+<h2>Filter probes (Perl)</h2>
+
+<p>If you already have an existing flat file, you might want to create a
+new CDF with just a subset of the probes.  The Perl
+script <a href="../../share/scripts/third-party/archive/20090212/selectProbes.pl">selectProbes.pl</a> takes
+a starting flat file and a file with the xy coordinates of the probes to
+keep and returns a new flat file.</p>
+
+<p>The program takes 3 arguments:</p>
+
+<ol>
+<li> the file with the original probe to probeset and unit assignments
+(ie.flat file)</li>
+<li> file with new probes to keep (x,y in column 1 and 2 respectively)</li>
+<li> outfile name</li>
+</ol>
+
+<p>Then if I want to filter out some probes based on my own analysis of my
+data, I can write these probes to a file</p>
+
+<pre><code class="r">cells &lt;- unlist(ensb50NOvHuCells, use.names=FALSE)
+probeValues &lt;- readRawData(secLgNHuOnHu_HM, indices=cells, fields=c(&quot;xy&quot;,&quot;intensities&quot;))
+probeValues$geneId &lt;- rep(names(ensb50NOvHuCells), times=perGeneProbeCountHu)
+probeValues$Indices &lt;- cells
+write.table(probeValues[myProbes,c(&quot;x&quot;,&quot;y&quot;)], file=&quot;probeFile.txt&quot;, col.names=TRUE, row.names=FALSE, quote=FALSE, sep=&quot;\t&quot;)
+</code></pre>
+
+<p>Then in command line:</p>
+
+<pre><code class="sh">selectProbes.pl HuEnsembl50_nooverlap.flat probeFile.txt probeFile.flat
+</code></pre>
+
+<p>Then back to R:</p>
+
+<pre><code class="r">flat2Cdf(file=probeFile.flat, chipType=&quot;HuEx-1_0-st-v2&quot;, tags=&quot;U-Ensembl50,G-Affy,customMH,joint,80PctLowMo,80PctHighHu,EP&quot;, col.class=c(&quot;integer&quot;, &quot;character&quot;)[c(1,1,1,2,2,2)], splitn=5)
+</code></pre>
+
+<p>Then the CDF must be moved to the correct annotationData/chipTypes/
+subdirectory.</p>
+
+<h2>Combine Affymetrix CLF and PGF file formats</h2>
+
+<p>Affymetrix sometimes provides CLF and PGF files. These are not necessary
+fixed formats. CLF files (that I have) are tab-delimited, each line a
+probe with three columns corresponding to 1) Probe id 2) x position 3) y
+position. PGF files are not tab-delimited files, but rather nested and
+give the assignment of probes to probesets.</p>
+
+<pre><code>#level0=probeset_id\\ttype\\tprobeset_name
+  #level1=\\tatom_id\\texon_position&quot;
+  #level2=\\t\\tprobe_id\\ttype\\tgc_count\\tprobe_length\\tinterrogation_position\\tprobe_sequence&quot;
+</code></pre>
+
+<p>For example:</p>
+
+<pre><code>1\\t\\tPSR150003628_x_st
+  \\t1\\t130
+  \\t\\t5892621\\tpm:st\\t16\\t25\\t13\\tGTCCTCCTCTACGAGGCTCTCGTCC
+
+\\t2\\t155
+  \\t\\t4734090\\tpm:st\\t17\\t25\\t13\\tTCCGCGTCTCTCACGCCCTCGTCCT
+  \\t3\\t161
+  \\t\\t3931023\\tpm:st\\t15\\t25\\t13\\tTCTCTCACGCCCTCGTCCTCTCTGA
+</code></pre>
+
+<p>The Perl script <a href="../../share/scripts/third-party/archive/20090212/combineProbeInfo.pl">combineProbeInfo.pl</a> creates
+a single tab-delimited file with each row for a probe that looks like
+this after read into R. (This is the same format as the BGP).</p>
+
+<pre><code>##   probeset_id type     probeset_name atom_id exon_position probe_id type.1 gc_count
+## 1           1   NA PSR150003628_x_st       1           130 5892621  pm:st       16
+## 2           1   NA PSR150003628_x_st       2           155 4734090  pm:st       17
+## 3           1   NA PSR150003628_x_st       3           161 3931023  pm:st       15
+## 4           1   NA PSR150003628_x_st       4            70 3244040  pm:st       12
+## 5           1   NA PSR150003628_x_st       5            78 5124413  pm:st       13
+##   probe_length  interrogation_position            probe_sequence    x    y  
+## 1           25                      13 GTCCTCCTCTACGAGGCTCTCGTCC 2060 2301  
+## 2           25                      13 TCCGCGTCTCTCACGCCCTCGTCCT  649 1849  
+## 3           25                      13 TCTCTCACGCCCTCGTCCTCTCTGA 1422 1535  
+## 4           25                      13 CACCTTTTGTTAGTCCGGAACTCAG  519 1267  
+## 5           25                      13 GTTAGTCCGGAACTCAGAGGAATCG 1852 2001
+</code></pre>
+
+<p>The program takes 1 argument which is the prefix, then looks for the
+files &lt;prefix&gt;.pgf and &lt;prefix&gt;.clf. It creates the file
+&lt;prefix&gt;.probeflat with the per probe info and also &lt;prefix&gt;.psr
+which is a tab-delimited file with each row corresponding to a probeset
+in the CLF/PGF, and the columns giving the name and probeset id.</p>
+
+<p>Currently there are not really checks that the PGF and the CLF contain
+the same information.</p>
+
+<p>Note there are no further &#39;unit&#39;/gene groupings here.  The Perl
+script <a href="../../share/scripts/third-party/archive/20090212/addGeneId.pl">addGeneId.pl</a> can
+take this file plus another probeset-&gt;Gene mapping file and add the
+necessary column with that information.</p>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/howtos/create_CDF_from_scratch/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/howtos/create_CDF_from_scratch/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/howtos/create_CDF_from_scratch/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

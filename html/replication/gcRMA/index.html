@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Replication: GCRMA (background, normalization & summarization)">Aroma: Replication: GCRMA (background, normalization & summarization)</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Replication: GCRMA (background, normalization &amp; summarization)</h1>
+
+<p>Author: Mark Robinson and Henrik Bengtsson<br>
+Created: 2009-05-17<br>
+Last modified: 2010-02-05</p>
+
+<h2>Description</h2>
+
+<p>This test verifies that <a href="http://cran.r-project.org/package=aroma.affymetrix">aroma.affymetrix</a> can reproduce the GCRMA <a name=cite-WuZ_etal_2004-GCRMA></a>(<a href="http://ideas.repec.org/p/bep/jhubio/1001.html">Wu, Irizarry, Gentleman, Murillo, and Spencer, 2004</a>) chip-effect estimates as estimated by the <a href="http://www.bioconductor.org/packages/release/bioc/html/gcrma.html">gcrma</a> package.</p>
+
+<h2>Data set</h2>
+
+<pre><code>rawData/  
+  Affymetrix-HeartBrain/  
+   HG-U133_Plus_2/  
+    u1332plus_ivt_cerebellum_A.CEL [13555904 bytes]  
+    u1332plus_ivt_cerebellum_B.CEL [13550687 bytes]  
+    u1332plus_ivt_cerebellum_C.CEL [13551860 bytes]  
+    u1332plus_ivt_heart_A.CEL      [13554731 bytes]  
+    u1332plus_ivt_heart_B.CEL      [13553255 bytes]  
+    u1332plus_ivt_heart_C.CEL      [13551203 bytes]
+</code></pre>
+
+<p>Source: Affymetrix Tissue samples, 2007.  See Affymetrix data sets for
+chip type <a href="../../chipTypes/HG-U133_Plus_2/index.html">HG-U133_Plus_2</a>.</p>
+
+<h2>Script</h2>
+
+<h3>GCRMA estimates by aroma.affymetrix</h3>
+
+<pre><code class="r">library(&quot;aroma.affymetrix&quot;)
+cs &lt;- AffymetrixCelSet$byName(&quot;Affymetrix-HeartBrain&quot;, chipType=&quot;HG-U133_Plus_2&quot;)
+
+# GCRMA background correction
+bc &lt;- GcRmaBackgroundCorrection(cs)
+csB &lt;- process(bc)
+
+# RMA quantile normalization
+qn &lt;- QuantileNormalization(csB, typesToUpdate=&quot;pm&quot;)
+csN &lt;- process(qn)
+
+# RMA probe summarization
+plm &lt;- RmaPlm(csN, flavor=&quot;oligo&quot;)
+fit(plm)
+
+# Extract chip effects on the log2 scale
+ces &lt;- getChipEffectSet(plm)
+theta &lt;- extractMatrix(ces)
+rownames(theta) &lt;- getUnitNames(cdf)
+theta &lt;- log2(theta)
+</code></pre>
+
+<h3>GCRMA estimate by gcrma</h3>
+
+<pre><code class="r">library(&quot;gcrma&quot;);  # gcrma()
+raw &lt;- ReadAffy(filenames=getPathnames(cs))
+es &lt;- gcrma(raw, verbose=TRUE)
+theta0 &lt;- exprs(es)
+</code></pre>
+
+<h3>Results</h3>
+
+<pre><code class="r"># Reorder the aroma.affymetrix estimates
+o &lt;- match(rownames(theta0), rownames(theta))
+theta &lt;- theta[o,]
+
+# (a) Assert correlations
+cors &lt;- sapply(1:ncol(theta), FUN=function(cc) cor(theta[,cc],
+theta0[,cc]))
+print(cors)
+print(range(cors))
+stopifnot(all(cors &gt; 0.99995))
+
+# (b) Assert differences
+e &lt;- (theta - theta0)
+stopifnot(mean(as.vector(e\^2)) &lt; 1e-3)
+stopifnot(sd(as.vector(e\^2)) &lt; 1e-3)
+stopifnot(quantile(abs(e), 0.99) &lt; 0.05)
+stopifnot(max(abs(e)) &lt; 0.085)
+
+# (c) Visual comparison
+layout(matrix(1:9, ncol=3, byrow=TRUE))
+xlab &lt;- expression(log[2](theta[gcrma]))
+ylab &lt;- expression(log[2](theta[aroma.affymetrix]))
+for (kk in seq(length=ncol(theta))) {
+  main &lt;- colnames(theta)[kk]
+  plot(theta0[,kk], theta[,kk], pch=&quot;.&quot;, xlab=xlab, ylab=ylab,
+main=main)
+  abline(0,1, col=&quot;blue&quot;)
+}
+xlab &lt;- expression(log[2](theta[aroma.affymetrix]/theta[gcrma]))
+plotDensity(e, xlab=xlab);
+</code></pre>
+
+<p><img src="../../assets/images/replication/replication-gcrma%2Cgcrma.png" alt=""></p>
+
+<p><em>Figure: (Top six panels): Scatter plots comparing the chip-effect
+estimates (on the log2 scale) from aroma.affymetrix with the ones from
+gcrma.  (Bottom panel): The density of the log2-ratios between
+aroma.affymetrix and gcrma chip-effect estimates for the six arrays.</em></p>
+
+<h2>References</h2>
+
+<p><a name=bib-WuZ_etal_2004-GCRMA></a><a href="#cite-WuZ_etal_2004-GCRMA">[1]</a> Z.
+Wu, R. Irizarry, R. Gentleman, et al. <em>A Model Based Background
+Adjustment for Oligonucleotide Expression Arrays</em>. Johns Hopkins
+University Dept. of Biostatistics Working Paper Series 1001. Berkeley
+Electronic Press, Jul. 2004. URL:
+<a href="http://ideas.repec.org/p/bep/jhubio/1001.html">http://ideas.repec.org/p/bep/jhubio/1001.html</a>.</p>
+
+<h2>Appendix</h2>
+
+<h3>Session information</h3>
+
+<pre><code class="r">R version 2.10.1 Patched (2010-01-12 r50990)  
+i386-pc-mingw32
+
+locale:
+[1] LC_COLLATE=English_United States.1252
+[2] LC_CTYPE=English_United States.1252
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C
+[5] LC_TIME=English_United States.1252
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base
+
+other attached packages:
+[1] hgu133plus2probe_2.5.0 AnnotationDbi_1.8.1
+oligoClasses_1.8.0
+[4] hgu133plus2cdf_2.5.0   preprocessCore_1.8.0   gcrma_2.18.1
+[7] Biobase_2.6.1          aroma.affymetrix_1.4.3 aroma.apd_0.1.7
+[10] affxparser_1.18.0      R.huge_0.2.0           aroma.core_1.4.4
+[13] aroma.light_1.15.1     matrixStats_0.1.9      R.rsp_0.3.6
+[16] R.filesets_0.7.4       digest_0.4.2           R.cache_0.2.0
+[22] oligo_1.10.0           affyPLM_1.22.0         affy_1.24.2
+[25] R.methodsS3_1.1.0
+
+loaded via a namespace (and not attached):
+[1] affyio_1.14.0      Biostrings_2.14.11 DBI_0.2-4
+IRanges_1.4.11
+[5] RSQLite_0.7-1      splines_2.10.1     tools_2.10.1i386-pc-mingw32
+</code></pre>
+
+<h3>Redundancy test script</h3>
+
+<p>The above script is part of redundancy test suite executed at every new
+release:</p>
+
+<pre><code class="r">path &lt;- system.file(&quot;testScripts/replication/chipTypes/HG-U133_Plus_2&quot;, package=&quot;aroma.affymetrix&quot;)
+filename &lt;- &quot;12.doGCRMA_vs_gcrma.R&quot;
+pathname &lt;- file.path(path, filename)
+source(pathname)
+</code></pre>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/replication/gcRMA/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/replication/gcRMA/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/replication/gcRMA/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

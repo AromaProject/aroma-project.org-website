@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): How to: Extract probeset summaries (chip effects) as a data frame">Aroma: How to: Extract probeset summaries (chip effects) as a data frame</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>How to: Extract probeset summaries (chip effects) as a data frame</h1>
+
+<p>Chip effects can be read as a data frame by calling:</p>
+
+<pre><code class="r">data &lt;- extractDataFrame(ces, addNames=TRUE)
+</code></pre>
+
+<p>The first column is always the units, and the last columns are always
+the arrays.</p>
+
+<p>Note that this will load all data requested into memory.</p>
+
+<h2>Example: HG-U133_Plus_2</h2>
+
+<pre><code class="r">ces &lt;- getChipEffectSet(plm)
+print(ces)
+
+## ChipEffectSet:  
+## Name: Affymetrix-HeartBrain  
+## Tags: RBC,QN,RMA  
+## Path: plmData/Affymetrix-HeartBrain,RBC,QN,RMA/HG-U133_Plus_2  
+## Platform: Affymetrix  
+## Chip type: HG-U133_Plus_2,monocell  
+## Number of arrays: 3  
+## Names: heart_A, heart_B, heart_C  
+## Time period: 2009-08-12 22:21:59 -- 2009-08-12 22:21:59  
+## Total file size: 1.73MB  
+## RAM: 0.01MB  
+## Parameters: (probeModel: chr &quot;pm&quot;)
+
+data &lt;- extractDataFrame(ces, units=1401:1406, addNames=TRUE)
+print(data)
+
+##      unitName groupName unit group cell    heart_A    heart_B    heart_C
+## 1 201811_x_at           1401     1 1401   50.35944   50.97249   44.04873
+## 2 201812_s_at           1402     1 1402 1247.74109 1182.60449 1151.22278
+## 3 201813_s_at           1403     1 1403   83.30342   81.10368   69.86592
+## 4   201814_at           1404     1 1404   56.92453   65.28267   54.34821
+## 5 201815_s_at           1405     1 1405   23.72381   31.87461   27.95008
+## 6 201816_s_at           1406     1 1406  343.54056  326.27948  272.80453
+</code></pre>
+
+<h2>Example: HuEx-1_0-st-v2</h2>
+
+<p>Illustration: Different number of exons (groups/probesets) per gene
+(unit).</p>
+
+<pre><code class="r">ces &lt;- getChipEffectSet(plm)
+print(ces)
+
+## ExonChipEffectSet:  
+## Name: Affymetrix-HeartBrain  
+## Tags: RBC,QN,RMA  
+## Path: plmData/Affymetrix-HeartBrain,RBC,QN,RMA/HuEx-1_0-st-v2  
+## Platform: Affymetrix  
+## Chip type: HuEx-1_0-st-v2,coreR3,A20071112,EP,monocell  
+## Number of arrays: 3  
+## Names: cerebellum_A, cerebellum_B, cerebellum_C  
+## Time period: 2009-10-05 23:54:34 -- 2009-10-05 23:54:34  
+## Total file size: 8.15MB  
+## RAM: 0.01MB  
+## Parameters: (probeModel: chr &quot;pm&quot;, mergeGroups: logi FALSE)
+
+
+data &lt;- extractDataFrame(ces, units=101:103, addNames=TRUE)
+print(data)
+
+##    unitName groupName unit group cell cerebellum_A cerebellum_B cerebellum_C
+## 1   2323743   2323744  101     1 1679       4.9773       3.2216       4.6035
+## 2   2323743   2323745  101     2 1680      28.0082      33.4840      24.9815
+## 3   2323743   2323746  101     3 1681      81.8853      84.7152      90.6801
+## 4   2323743   2323747  101     4 1682      59.3300      78.0417     101.1745
+## 5   2323743   2323748  101     5 1683      11.2939      26.5029      22.1576
+## 6   2323743   2323749  101     6 1684      23.0034      20.3482      19.2598
+## 7   2323774   2323775  102     1 1685       9.7513       8.6798       8.3373
+## 8   2323774   2323776  102     2 1686     126.7435     169.5813     157.2981
+## 9   2323774   2323777  102     3 1687      76.9862     111.4743      79.5220
+## 10  2323774   2323778  102     4 1688      75.9090      77.9127      56.6610
+## 11  2323774   2323779  102     5 1689      39.8756      52.8681      47.4996
+## 12  2323774   2323780  102     6 1690      21.5192      38.1660      36.6005
+## 13  2323774   2323781  102     7 1691      69.1406      83.8591      97.5679
+## 14  2323774   2323782  102     8 1692      68.3016      83.6700      80.9289
+## 15  2323774   2323783  102     9 1693       3.0645       8.2662       8.9555
+## 16  2323790   2323791  103     1 1694       8.0941      10.9351      10.2943
+## 17  2323790   2323792  103     2 1695      45.5133      59.4548      85.2261
+## 18  2323790   2323793  103     3 1696      13.2537      24.0905      11.6845
+## 19  2323790   2323798  103     4 1697      12.4343      15.8386      12.4253
+## 20  2323790   2323799  103     5 1698       6.8943       7.3441       5.2567
+</code></pre>
+
+<h2>Example: GenomeWideSNP_6</h2>
+
+<p>Illustration: Each SNP (unit) has (thetaA, thetaB) groups and each CN
+probe (unit) has only a theta group.</p>
+
+<pre><code class="r">ces &lt;- getChipEffectSet(plm)
+print(ces)
+
+## CnChipEffectSet:
+## Name: HapMap270
+## Tags: 6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG
+## Path:
+## plmData/HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG/GenomeWideSNP_6
+## Platform: Affymetrix
+## Chip type: GenomeWideSNP_6,Full,monocell
+## Number of arrays: 3
+## Names: NA06985, NA06991, NA06993
+## Time period: 2009-10-17 00:49:05 -- 2009-10-17 00:49:05
+## Total file size: 80.85MB
+## RAM: 0.01MB
+## Parameters: (probeModel: chr &quot;pm&quot;, mergeStrands: logi TRUE,
+## combineAlleles: logi FALSE)
+
+
+data &lt;- extractDataFrame(ces, units=c(2101:2104,935590:935594), addNames=TRUE)
+print(data)
+
+##         unitName groupName   unit group    cell  NA06985  NA06991  NA06993
+## 1  SNP_A-2228193         A   2101     1    3580  4518.85  4922.25  5225.94
+## 2  SNP_A-2228193         T   2101     2    3581   522.05   522.58   725.81
+## 3  SNP_A-4234307         A   2102     1    3582  9581.92  5727.58  1274.12
+## 4  SNP_A-4234307         G   2102     2    3583   503.43  2966.96  6061.83
+## 5  SNP_A-2229035         C   2103     1    3584   420.19  4732.66  8462.53
+## 6  SNP_A-2229035         T   2103     2    3585  7162.17  4731.73   207.93
+## 7  SNP_A-2229692         A   2104     1    3586   768.96  1477.57  1134.00
+## 8  SNP_A-2229692         G   2104     2    3587  1117.02   358.71   419.36
+## 9      CN_477984           935590     1 1876054  8724.15  7612.26  8564.70
+## 10     CN_473963           935591     1 1876055  7947.55  5970.75  6425.55
+## 11     CN_473964           935592     1 1876056 12863.29 12642.58 12712.78
+## 12     CN_473965           935593     1 1876057 14373.10 11287.04 10031.57
+## 13     CN_497981           935594     1 1876058 23424.00 26139.35 17312.84
+</code></pre>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/howtos/extractDataFrame/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/howtos/extractDataFrame/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/howtos/extractDataFrame/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

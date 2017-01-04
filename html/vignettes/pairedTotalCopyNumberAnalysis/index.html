@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Vignette: Paired total copy-number analysis">Aroma: Vignette: Paired total copy-number analysis</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Vignette: Paired total copy-number analysis</h1>
+
+<p>Author: Pierre Neuvial<br>
+Created on: 2010-08-03<br>
+Last updated: 2010-09-24</p>
+
+<h2>Setup</h2>
+
+<p>If this is your first analysis within the aroma project, please make sure to first read the &#39;<a href="../../setup/index.html">Setup</a>&#39; and &#39;<a href="../../definitions/index.html">Definition</a>&#39; pages.  This will explain the importance of following a well defined directory structure and file names.  <em>Understanding this is important and will save you a lot of time</em>.</p>
+
+<h3>Raw data</h3>
+
+<pre><code>rawData/
+  Lee10Lung/
+    GenomeWideSNP_6/
+      GSM517071.CEL, GSM517072.CEL
+  GSE20584/
+    GenomeWideSNP_6/
+      GSM517071.CEL, GSM517072.CEL
+</code></pre>
+
+<p>These GenomeWideSNP_6 CEL files are available from GEO under <a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE20584">GSE20584</a>.</p>
+
+<h3>Annotation data</h3>
+
+<p>Affymetrix provides two different CDF files for the GenomeWideSNP_6
+chip type, namely the &quot;default&quot; and &quot;full&quot; CDF.  The full CDF contains
+what the default one does plus more.  We are always using the full CDF.
+If we want to do filtering, we do it afterward.</p>
+
+<pre><code>annotationData/
+  chipTypes/
+    GenomeWideSNP_6/
+      GenomeWideSNP_6,Full.cdf
+      GenomeWideSNP_6,Full,na26,HB20080821.ugp
+      GenomeWideSNP_6,Full,na26,HB20080722.ufl
+      GenomeWideSNP_6,Full,HB20080710.acs
+</code></pre>
+
+<p>Note that the CDF was renamed from *.Full.cdf to *,Full.cdf (with a
+comma).  The UGP, UFL, and ACS files are special aroma.affymetrix
+annotation files available from 
+&#39;<a href="../../chipTypes/GenomeWideSNP_6/index.html">GenomeWideSNP_6</a>&#39;.  The CDF file is
+available from Affymetrix inside the &quot;Library Files&quot; (via the same
+page).</p>
+
+<h2>Analysis startup</h2>
+
+<pre><code class="r">library(&quot;aroma.affymetrix&quot;)
+verbose &lt;- Arguments$getVerbose(-8, timestamp=TRUE)
+# Don&#39;t display too many decimals.
+options(digits=4)
+</code></pre>
+
+<h2>Preprocessing using CRMA v2</h2>
+
+<p>Here we will use the CRMA v2 <a name=cite-BengtssonH_etal_2009-CRMAv2></a>(<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=19535535">Bengtsson, Wirapati, and Speed, 2009</a>) method to estimate copy numbers.</p>
+
+<pre><code class="r">dataSet &lt;- &quot;GSE20584&quot;
+chipType &lt;- &quot;GenomeWideSNP_6&quot;
+cdf &lt;- AffymetrixCdfFile$byChipType(chipType, tags=&quot;Full&quot;)
+dsList &lt;- doCRMAv2(dataSet, cdf=cdf, combineAlleles=FALSE, verbose=verbose)
+dsC &lt;- dsList$total
+print(dsC)
+</code></pre>
+
+<p>This gives</p>
+
+<pre><code>AromaUnitTotalCnBinarySet:
+Name: GSE20584
+Tags: ACC,ra,-XY,BPN,-XY,AVG,FLN,-XY
+Full name: GSE20584,ACC,ra,-XY,BPN,-XY,AVG,FLN,-XY
+Number of files: 2
+Names: GSM517071, GSM517072 [2]
+Path (to the first file): totalAndFracBData/GSE20584,ACC,ra,-XY,BPN,-XY,AVG,FLN,-XY/GenomeWideSNP_6
+Total file size: 14.35 MB
+RAM: 0.00MB
+</code></pre>
+
+<p>Note, above we use the allele-specific version of CRMA v2 (<code>combineAlleles=FALSE</code>). Alternatively, one could do</p>
+
+<pre><code class="r">dsC &lt;- doASCRMAv2(dataSet, cdf=cdf, verbose=verbose)
+print(dsC)
+</code></pre>
+
+<p>to get total intensity estimates directly, but since you may want to look at allele-specific estimates in the future, we calculate allele-specific CNs already now.</p>
+
+<h3>Splitting the data set in (tumor, normal) pairs</h3>
+
+<p>In this example, we have only one pair: &quot;GSM517071&quot; is the tumor sample,
+and &quot;GSM517072&quot; is the normal sample.</p>
+
+<pre><code class="r"># Split data set in (tumor, normal) pair
+idxT &lt;- match(&quot;GSM517071&quot;, getNames(dsC))
+dsT &lt;- dsC[idxT]
+
+idxN &lt;- match(&quot;GSM517072&quot;, getNames(dsC))
+dsN &lt;- dsC[idxN]
+</code></pre>
+
+<p>This can be adapted to cases where several tumor/normal pairs are
+available.</p>
+
+<h3>Setting up paired CBS model</h3>
+
+<pre><code class="r">cns &lt;- CbsModel(dsT, dsN)
+print(cns)
+</code></pre>
+
+<p>which gives</p>
+
+<pre><code>CbsModel
+Name: GSE20584
+Tags: ACC,ra,-XY,BPN,-XY,AVG,FLN,-XY,paired
+Chip type (virtual): GenomeWideSNP_6
+Path: cbsData/GSE20584,ACC,ra,-XY,BPN,-XY,AVG,FLN,-XY,paired/GenomeWideSNP_6
+Number of chip types: 1
+Sample &amp; reference file pairs:
+Chip type #1 of 1 (&#39;GenomeWideSNP_6&#39;):
+Sample data set:
+AromaUnitTotalCnBinarySet:
+Name: GSE20584
+Tags: ACC,ra,-XY,BPN,-XY,AVG,FLN,-XY
+Full name: GSE20584,ACC,ra,-XY,BPN,-XY,AVG,FLN,-XY
+Number of files: 1
+Names: GSM517071 [1]
+Path (to the first file):
+totalAndFracBData/GSE20584,ACC,ra,-XY,BPN,-XY,AVG,FLN,-XY/GenomeWideSNP_6
+Total file size: 7.18 MB
+RAM: 0.00MB
+Reference data set/file:
+AromaUnitTotalCnBinarySet:
+Name: GSE20584
+Tags: ACC,ra,-XY,BPN,-XY,AVG,FLN,-XY
+Full name: GSE20584,ACC,ra,-XY,BPN,-XY,AVG,FLN,-XY
+Number of files: 1
+Names: GSM517072 [1]
+Path (to the first file): totalAndFracBData/GSE20584,ACC,ra,-XY,BPN,-XY,AVG,FLN,-XY/GenomeWideSNP_6
+Total file size: 7.18 MB
+RAM: 0.00MB
+</code></pre>
+
+<p>This tells us that GSM517071 is used as the &quot;Sample&quot; and &quot;GSM517072 as
+the &quot;Reference&quot;.</p>
+
+<p>At this stage the segmentation has not been performed yet; we have this
+far only setup the CBS model.  To run the segmentation on one
+chromosome, do:</p>
+
+<pre><code class="r"># Perform CBS segmentation on one chromosome
+fit(cns, chromosome=12, verbose=verbose)
+</code></pre>
+
+<p>To run the segmentation on all chromosomes (sequentially), do:</p>
+
+<pre><code class="r"># Perform CBS segmentation for all chromosomes
+fit(cns, verbose=verbose)
+</code></pre>
+
+<h3>Extracting segmentation results</h3>
+
+<pre><code class="r">regDatList &lt;- getRegions(cns, chromosome=12)
+regDat &lt;- regDatList[[1]]
+regDat[1:10, 1:5]
+</code></pre>
+
+<p>This gives</p>
+
+<pre><code>   chromosome    start     stop    mean count
+1          12    20704   739460  0.6830   440
+2          12   739525   744291  1.5144    16
+3          12   745616  1767217  0.7499   613
+4          12  1770996  5119549  0.6473  2714
+5          12  5122506  7192288  0.3636  1419
+6          12  7192988  8447961  0.4240   599
+7          12  8449756  8485921 -0.0008    23
+8          12  8486162 13374527  0.4269  3444
+9          12 13375092 13839537  0.3822   502
+10         12 13843034 19572213  0.7679  3573
+</code></pre>
+
+<h3>Displaying results of copy number analysis using ChromosomeExplorer</h3>
+
+<pre><code class="r"># Link the ChromosomeExplorer to the segmentation model
+ce &lt;- ChromosomeExplorer(cns)
+print(ce)
+
+# Fit the model for a few chromosomes
+process(ce, chromosomes=c(12, 13, 17), verbose=verbose)
+</code></pre>
+
+<p><img src="../../assets/images/GSM517071,total,chr12,x0002.png" alt="Chromosome Explorer results of total copy number analysis of a tumor/normal pair"></p>
+
+<p><em>Figure: Total copy number estimates along chromosome 12 in tumor-normal
+pair GSM517071 vs GSM517072.</em></p>
+
+<h2>References</h2>
+
+<p><a
+name=bib-BengtssonH_etal_2009-CRMAv2></a><a href="#cite-BengtssonH_etal_2009-CRMAv2">[1]</a>
+H. Bengtsson, P. Wirapati and T. P. Speed. &quot;A single-array
+preprocessing method for estimating full-resolution raw copy numbers
+from all Affymetrix genotyping arrays including GenomeWideSNP 5 &amp; 6&quot;.
+Eng. In: <em>Bioinformatics (Oxford, England)</em> 25.17 (2009), pp. 2149-56.
+DOI:
+<a href="http://dx.doi.org/10.1093/bioinformatics/btp371">10.1093/bioinformatics/btp371</a>.
+PMID:
+<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;cmd=prlinks&amp;retmode=ref&amp;id=19535535">19535535</a>.</p>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/vignettes/pairedTotalCopyNumberAnalysis/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/vignettes/pairedTotalCopyNumberAnalysis/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/vignettes/pairedTotalCopyNumberAnalysis/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

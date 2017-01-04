@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): How to: Create a CDF (and associated) files from a BpMap file (tiling arrays)">Aroma: How to: Create a CDF (and associated) files from a BpMap file (tiling arrays)</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>How to: Create a CDF (and associated) files from a BpMap file (tiling arrays)</h1>
+
+<p>Author: Mark Robinson (pruned by Henrik Bengtsson)<br>
+Created on: 2009-01-14<br>
+Last updated: 2012-06-21</p>
+
+<p>Below is a set of commands used to created the CDF file and all the
+other associated files for the Human Promoter tiling array.  The
+starting point is a BPMAP (binary probe mapping) file.  You can get a
+BPMAP file from Affymetrix.  However, if you wish to run the MAT
+normalization, you&#39;ll need a &quot;matchscore&quot; for each probe.  The
+matchscore is the number of times that probe maps exactly to the human
+genome.  The BPMAP files that you can download from the <a href="http://liulab.dfci.harvard.edu/MAT/Download.htm">MAT Download
+Page</a> have the
+matchscore within them.</p>
+
+<p>You will also need to know the number of rows (of probes physically on
+the chip) in order to get the indexing right.  If you don&#39;t have this
+handy, look at the output of <code>readCelHeader()</code> (from the <a href="http://www.bioconductor.org/packages/release/bioc/html/affxparser.html">affxparser</a> package) for a CEL data file that you have.</p>
+
+<pre><code class="r">library(&quot;aroma.affymetrix&quot;)
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# BPMAP to CDF (and PPS)
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+bpmapFile &lt;- &quot;Hs_PromPR_v01-3_NCBIv36.NR.bpmap&quot;
+chipType &lt;- &quot;Hs_PromPR_v02&quot;
+path &lt;- &quot;.&quot;
+pathname &lt;- bpmapCluster2Cdf(bpmapFile, chipType=chipType, rows=2166, cols=2166, verbose=-20)
+# Writes Hs_PromPR_v02.cdf and Hs_PromPR_v02.pps to directory &#39;path&#39;.
+
+# Move the CDF file into the &#39;annotationData/chipTypes/Hs_PromPR_v02&#39; directory
+destPath &lt;- file.path(&quot;annotationData&quot;, &quot;chipTypes&quot;, chipType)
+destPathname &lt;- Arguments$getWritablePathname(pathname, path=destPath)
+file.rename(pathname, destPathname)
+
+# Setup the CDF
+cdf &lt;- AffymetrixCdfFile$byChipType(chipType)
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# BPMAP+CDF to ACS (cell sequences)
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+acs &lt;- AromaCellSequenceFile$allocateFromCdf(cdf, tags=&quot;&quot;, verbose=-80)
+importFromBpMap(acs, bpmapFile, rows=2166, verbose=-80)
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# BPMAP+CDF to ACM (cell match scores)
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+acm &lt;- AromaCellMatchScoreFile$allocateFromCdf(cdf, tags=&quot;&quot;, verbose=-80)
+importFromBpMap(acm, bpmapFile, rows=2166, verbose=-80)
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Create a &quot;unique&quot; CDF
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Rearranges the data so that multimap probes are copied into separate &quot;cells&quot;.
+cdfU &lt;- getUniqueCdf(cdf)
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Create an ACP (cell, chromosome, position) file
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+pathname &lt;- gsub(&quot;.cdf&quot;, &quot;.pps&quot;, getPathname(cdf), fixed=TRUE)
+positions &lt;- unlist(loadObject(pathname), use.names=FALSE)
+cells &lt;- getCellIndices(cdfU, stratifyBy=&quot;pm&quot;, unlist=TRUE, useNames=TRUE)
+# Sanity check
+stopifnot(length(cells) == length(positions))
+
+# Infer the chromosome indices
+# (Note these exact commands may need to be modified for non-human chips)
+chr &lt;- gsub(&quot;FROM.*&quot;, &quot;&quot;, names(cells))
+chrIdx &lt;- gsub(&quot;chr&quot;, &quot;&quot;, chr)
+chrIdx[chr == &quot;X&quot;] &lt;- 23
+chrIdx[chr == &quot;Y&quot;] &lt;- 24
+chrIdx[chr == &quot;M&quot;] &lt;- 25
+chrIdx &lt;- as.integer(chrIdx)
+
+# Create ACP file
+acp &lt;- AromaCellPositionFile$allocateFromCdf(cdfU, verbose=verbose)
+acp[cells,1] &lt;- chrIdx
+acp[cells,2] &lt;- positions
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Calculate local CpG density around each probe (useful for MeDIP-chip data)
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+library(&quot;MEDME&quot;)
+library(&quot;BSgenome.Hsapiens.UCSC.hg18&quot;)
+
+nbrOfCells &lt;- length(cells)
+dummy &lt;- matrix(rnorm(n=2*nbrOfCells), nrow=nbrOfCells, ncol=2L)
+rownames(dummy) &lt;- paste(chr, positions, sep=&quot;.&quot;)
+
+keep &lt;- which(chr != 25)
+mms &lt;- new(&quot;MEDMEset&quot;, chr=chr[keep], pos=positions[keep], logR=dummy[keep,,drop=FALSE], organism=&quot;hsa&quot;)
+
+# Choose a reasonable window size here (based on the size of hybridized fragments?)
+cg600 &lt;- CGcount(data=mms, wsize=600)@CGcounts
+
+# Write to ACC file
+acc &lt;- AromaCellCpgFile$allocateFromCdf(cdfU, verbose=verbose)
+acc[cells[keep],1] &lt;- cg600
+</code></pre>
+
+<p>Alternatively, you can just download these files from
+&#39;<a href="../../chipTypes/Hs_PromPR_v02/index.html">Hs_PromPR_v02</a>&#39; and place them in the
+annotationData/chipTypes/Hs_PromPR_v02/ directory.</p>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/howtos/bpmapCluster2Cdf/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/howtos/bpmapCluster2Cdf/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/howtos/bpmapCluster2Cdf/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

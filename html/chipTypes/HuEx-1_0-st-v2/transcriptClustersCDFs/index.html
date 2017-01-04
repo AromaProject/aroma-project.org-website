@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): HuEx-1_0-st-v2: Affymetrix transcript clusters definitions">Aroma: HuEx-1_0-st-v2: Affymetrix transcript clusters definitions</title>
+  <link href="../../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../../docs/index.html">Documentation</a></li>
+        <li><a href="../../../features/index.html">Features</a></li>
+        <li><a href="../../../resources/index.html">Resources</a></li>
+        <li><a href="../../../forum/index.html">Forum</a></li>
+        <li><a href="../../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>HuEx-1_0-st-v2: Affymetrix transcript clusters definitions</h1>
+
+<p>Author: Elizabeth Purdom, Mark Robinson, Ken Simpson<br>
+Created on: 2007-12-03<br>
+Last updated: 2012-08-30</p>
+
+<p>Affymetrix provides clusterings of the exon probesets that are meant to
+roughly correspond to genes (see Affymetrix documentation). An advantage
+of these groupings of the exons is that each exon and probe is uniquely
+mapped to only one transcript cluster. For exon array analysis, we would
+like a special CDF which maps transcript cluster IDs to exon
+IDs.Affymetrix does not provide a CDF for these mappings, but Ken
+Simpson created such CDFs based on the design-time annotation. However,
+Affymetrix updates these definitions quarterly, so these definitions no
+longer correspond to the definitions that users of Affymetrix&#39;s software
+would get. Elizabeth Purdom has created updated CDFs based on Affymetrix
+annotation and will plan to keep these update.</p>
+
+<p>Note that Affymetrix classifies each probeset (exon) as to its
+reliability, based on which annotation supports it. The classifications
+are &quot;core&quot;,&quot;extended&quot;,&quot;full&quot;, &quot;free&quot;, and &quot;ambiguous&quot; with &quot;core&quot; being
+the most reliable. To do analysis constrained to only these definitions,
+use the corresponding CDF. Note that if you are going to switch back and
+forth, you should probably define a tag in your call so that your
+results are not copied over.  See Page &#39;<a href="../../../definitions/namesAndTags/index.html">Fullnames, names and tags of directories and files</a>&#39; and thread &#39;<a href="http://groups.google.com/group/aroma-affymetrix/browse_thread/thread/5717296b0d573588/ad3da39388164587#ad3da39388164587">tag</a>&#39; (Dec 5, 2007). Because there will be future revisions, the string &#39;Rx&#39; is added to the end to indicate the revision and allow a shorter way of identify the CDF than the date, for example in tagging.</p>
+
+<h2>NetAffx Nov. 12, 2007 (R3)</h2>
+
+<p>Author: Elizabeth Purdom, UC Berkeley.<br>
+Created on: 2007-11-12</p>
+
+<ul>
+<li>  <a href="http://aroma-project.org/data/annotationData/chipTypes/HuEx-1_0-st-v2/HuEx-1_0-st-v2,coreR3,A20071112,EP.cdf.gz">HuEx-1_0-st-v2,coreR3,A20071112,EP.CDF</a> - Core probesets: 18,708 units/transcript clusters, 284,258 groups/probesets, and 1,082,385 probes.</li>
+<li>  <a href="http://aroma-project.org/data/annotationData/chipTypes/HuEx-1_0-st-v2/HuEx-1_0-st-v2,extendedR3,A20071112,EP.cdf.gz">HuEx-1_0-st-v2,extendedR3,A20071112,EP.CDF</a> - Extended + Core probesets: 147,476 units/transcript clusters, 804,085 groups/probesets, and 3,095,094 probes.</li>
+<li>  <a href="http://aroma-project.org/data/annotationData/chipTypes/HuEx-1_0-st-v2/HuEx-1_0-st-v2,fullR3,A20071112,EP.cdf.gz">HuEx-1_0-st-v2,fullR3,A20071112,EP.CDF</a> -
+Full + Extended + Core probesets: 297,051 units/transcript clusters and 1,381,294 groups/probesets.</li>
+<li>  <a href="http://aroma-project.org/data/annotationData/chipTypes/HuEx-1_0-st-v2/HuEx-1_0-st-v2,mainR3,A20071112,EP.cdf.gz">HuEx-1_0-st-v2,mainR3,A20071112,EP.CDF</a> -
+All &#39;main&#39; design probesets (so includes &#39;free&#39; and &#39;ambiguous&#39; probesets): 312,355 units/transcript clusters and 1,400,703 groups/probesets.</li>
+<li>  <a href="http://aroma-project.org/data/annotationData/chipTypes/HuEx-1_0-st-v2/HuEx-1_0-st-v2,controlR3,A20071112,EP.cdf.gz">HuEx-1_0-st-v2,controlR2,A20071112,EP.CDF</a> - All &#39;control&#39; probesets: 121 units and 24,809 groups. This consists of all control probes and what ever &#39;transcript cluster&#39; groupings Affymetrix designated. This file may be updated to be more informative as I explore its contents more.</li>
+</ul>
+
+<h2>NetAffx Sept. 14, 2007 (R2)</h2>
+
+<p>Author: Elizabeth Purdom, UC Berkeley.<br>
+Created on: 2007-09-14</p>
+
+<p>&quot;I used the file &#39;HuEx-1_0-st-v2.na23.hg18.probeset.csv&#39; to map the
+probesets defined in Affymetrix&#39;s default CDF into transcript
+clusters.  Note that I did not use definitions at the probe level, so if
+probes are mapped to different probesets in the updated annotation, I
+would have missed this (I do not think this is the case). One probeset
+in the current annotation is not contained in Affymetrix&#39;s default CDF,
+otherwise all probesets in the annotation file matched a probeset in the
+Affymetrix default CDF; I have not investigated this one probeset yet, though
+I think that it was also the case for Ken&#39;s conversion based on notes I
+received from him.&quot; /Elizabeth Purdom (2007-12-03).</p>
+
+<ul>
+<li>  <a href="http://bcgc.lbl.gov/cdfFiles/HuEx-1_0-st-v2,A20070914,EP/HuEx-1_0-st-v2,coreR2,A20070914,EP.cdf">HuEx-1_0-st-v2,coreR2,A20070914,EP.CDF</a> [38MB] Core probesets: 18,708 units/transcript clusters, 284,258 groups/probesets, and 1,082,385 probes.</li>
+<li>  <a href="http://bcgc.lbl.gov/cdfFiles/HuEx-1_0-st-v2,A20070914,EP/HuEx-1_0-st-v2,extendedR2,A20070914,EP.cdf">HuEx-1_0-st-v2,extendedR2,A20070914,EP.CDF</a> [116MB] Extended + Core probesets: 147,476 units/transcript clusters, 804,085 groups/probesets, and 3,095,094 probes.</li>
+<li>  <a href="http://bcgc.lbl.gov/cdfFiles/HuEx-1_0-st-v2,A20070914,EP/HuEx-1_0-st-v2,fullR2,A20070914,EP.cdf">HuEx-1_0-st-v2,fullR2,A20070914,EP.CDF</a> [200MB] Full + Extended + Core probesets: 297,051 units/transcript clusters and 1,381,294 groups/probesets.</li>
+<li>  <a href="http://bcgc.lbl.gov/cdfFiles/HuEx-1_0-st-v2,A20070914,EP/HuEx-1_0-st-v2,mainR2,A20070914,EP.cdf">HuEx-1_0-st-v2,mainR2,A20070914,EP.CDF</a> [200MB]  All &#39;main&#39; design probesets (so includes &#39;free&#39; and &#39;ambiguous&#39; probesets): 312,355 units/transcript clusters and 1,400,703 groups/probesets.</li>
+<li>  <a href="http://bcgc.lbl.gov/cdfFiles/HuEx-1_0-st-v2,A20070914,EP/HuEx-1_0-st-v2,controlR2,A20070914,EP.cdf">HuEx-1_0-st-v2,controlR2,A20070914,EP.CDF</a> [2MB] All &#39;control&#39; probesets: 121 units and 24,809 groups. This consists of all control probes and what ever &#39;transcript cluster&#39; groupings Affymetrix designated. This file may be updated to be more informative as I explore its contents more.</li>
+</ul>
+
+<p>Download all: <a href="http://bcgc.lbl.gov/cdfFiles/HuEx-1_0-st-v2,A20070914,EP/HuEx-1_0-st-v2,R2,A20070914,EP.zip">HuEx-1_0-st-v2,R2,A20070914,EP.zip</a></p>
+
+<p>Note: Above files are hosted by Berkeley Cancer Genome Center.</p>
+
+<h2>Design-time annotation</h2>
+
+<p>Author: Ken Simpson, WEHI.<br>
+Created on: 2007-??-??</p>
+
+<p>&quot;I used the file &#39;HuEx-1_0-st-v2.r2.dt1.hg18.core.mps&#39;, downloaded from
+the Affymetrix web site, to create a list of transcript-exon mappings.  This
+was used to pull out the cell indices corresponding to each transcript,
+and new CDFs.&quot; /Ken Simpson, 2007-02-21.</p>
+
+<p>&quot;Note that these annotations have some problems. In particular, there
+are a set of probes that are each mapped to multiple probesets. This is
+not the case for the NetAffx files above so far. The source for this
+problem has not been discovered. See thread &#39;<a href="http://groups.google.com/group/aroma-affymetrix/browse_thread/thread/3111b959174ffe9c#">My problem with the residuals --
+solved??</a>&#39; (October 18, 2007) for the hazards this will create. If there is a desire for CDFs corresponding to the design-time annotation rather than
+the updated annotation above, please contact me and I might see if I can
+correct this problem.&quot; /Elizabeth Purdom (2007-12-03).</p>
+
+<ul>
+<li>  <a href="http://bioinf.wehi.edu.au/folders/ken/exon/HuEx-1_0-st-v2,core.cdf">HuEx-1_0-st-v2,core.CDF</a> [32MB] Contains 22,011 transcripts as the units/transcript
+clusters, and 224,741 exons/probesets as the groups within each transcript.</li>
+<li>  <a href="http://bioinf.wehi.edu.au/folders/ken/exon/HuEx-1_0-st-v2,extended.cdf">HuEx-1_0-st-v2,extended.CDF</a> [86MB] core+extended probesets.</li>
+<li>  <a href="http://bioinf.wehi.edu.au/folders/ken/exon/HuEx-1_0-st-v2,full.cdf">HuEx-1_0-st-v2,full.CDF</a> [143MB] core+extended+full probesets.</li>
+</ul>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/chipTypes/HuEx-1_0-st-v2/transcriptClustersCDFs/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/chipTypes/HuEx-1_0-st-v2/transcriptClustersCDFs/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/chipTypes/HuEx-1_0-st-v2/transcriptClustersCDFs/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

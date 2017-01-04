@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): How to: Extract probeset summaries (chip effects) as a 'Biobase' ExpressionSet object">Aroma: How to: Extract probeset summaries (chip effects) as a 'Biobase' ExpressionSet object</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>How to: Extract probeset summaries (chip effects) as a &#39;Biobase&#39; ExpressionSet object</h1>
+
+<h2>ChipEffectSet as ExpressionSet</h2>
+
+<p>Chip-effect sets can be exported as an ExpressionSet object (defined in
+the <a href="http://www.bioconductor.org/packages/release/bioc/html/Biobase.html">Biobase</a> package) by calling:</p>
+
+<pre><code class="r">eset &lt;- extractExpressionSet(ces)
+</code></pre>
+
+<p>The extracted object will be annotated with as much information as
+possible at the time of the call.  Note that this will load all data in
+to memory.</p>
+
+<h3>Example</h3>
+
+<pre><code class="r">ces &lt;- getChipEffectSet(plm)
+print(ces)
+
+## ChipEffectSet:
+## Name: Affymetrix-HeartBrain
+## Tags: RBC,QN,RMA
+## Path: plmData/Affymetrix-HeartBrain,RBC,QN,RMA/HG-U133_Plus_2
+## Platform: Affymetrix
+## Chip type: HG-U133_Plus_2,monocell
+## Number of arrays: 6
+## Names: u1332plus_ivt_cerebellum_A, u1332plus_ivt_cerebellum_B, u1332plus_ivt_cerebellum_C, ..., u1332plus_ivt_heart_C [6]
+## Time period: 2011-07-09 17:20:17 -- 2011-07-09 17:20:18
+## Total file size: 3.45MB
+## RAM: 0.01MB
+## Parameters: (probeModel: chr &quot;pm&quot;)
+
+eset &lt;- extractExpressionSet(ces)
+print(eset)
+
+## ExpressionSet (storageMode: lockedEnvironment)
+## assayData: 54675 features, 6 samples
+##   element names: exprs
+## protocolData: none
+## phenoData: none
+## featureData: none
+## experimentData: use &#39;experimentData(object)&#39;
+## Annotation:
+
+sampleNames(eset)
+
+## [1] &quot;u1332plus_ivt_cerebellum_A&quot; &quot;u1332plus_ivt_cerebellum_B&quot;
+## [3] &quot;u1332plus_ivt_cerebellum_C&quot; &quot;u1332plus_ivt_heart_A&quot;
+## [5] &quot;u1332plus_ivt_heart_B&quot;      &quot;u1332plus_ivt_heart_C&quot;
+
+featureNames(eset)[101:110]
+## [1] &quot;200018_at&quot;   &quot;200019_s_at&quot; &quot;200020_at&quot;   &quot;200021_at&quot;   &quot;200022_at&quot;
+## [6] &quot;200023_s_at&quot; &quot;200024_at&quot;   &quot;200025_s_at&quot; &quot;200026_at&quot;   &quot;200027_at&quot;
+</code></pre>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/howtos/extractExpressionSet/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/howtos/extractExpressionSet/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/howtos/extractExpressionSet/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

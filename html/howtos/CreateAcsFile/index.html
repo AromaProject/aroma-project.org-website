@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): How to: Create an Aroma Cell Sequence (ACS) file">Aroma: How to: Create an Aroma Cell Sequence (ACS) file</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>How to: Create an Aroma Cell Sequence (ACS) file</h1>
+
+<p>Author: Henrik Bengtsson<br>
+Last updated: 2012-06-15</p>
+
+<h2>Aroma ACS files</h2>
+
+<p>Aroma ACS files are binary files storing probe sequences for a
+particular chip type.  The contains a (cell, probe sequence, strand) map
+in a tabular format, where the cells are implicit, that is, they are not
+stored in the file but instead the index of the rows corresponds to the
+index of the cells.</p>
+
+<p>Note that, contrary to many other chip type annotation files, the
+probe-sequence annotation never changes (except for correction of
+errors) and remains the same through-out the life time of a chip type.
+ However, in order to differentiate different version of ACS files in
+case they are updated, we still suggest to use a tag reflecting when and
+by whom it was created.</p>
+
+<h3>Example of using an ACS file</h3>
+
+<pre><code class="r">acs &lt;- AromaCellSequenceFile$byChipType(&quot;GenomeWideSNP_6&quot;)
+cells &lt;- c(100:103, 9848:9851)
+seqs &lt;- readSequences(acs, cells=cells)
+print(seqs)
+
+## [1] &quot;GCCACACTATGTCTTATTGGTTACA&quot; &quot;CCAACCATTCATTATGTAGGTCCGT&quot;
+## [3] &quot;CCAACCATTCATTGTGTAGGTCCGT&quot; &quot;CCATACCTCGATTGTGGTGGTAGTT&quot;
+## [5] NA                          &quot;ATCTGCCCAGTGGACCAGCACAGAG&quot;
+## [7] &quot;ATCTGCCCAATGGACCAGCACAGAG&quot; &quot;CTTCAATGACCAGACTGGACGAATA&quot;
+
+
+seqs &lt;- readSequenceMatrix(acs, cells=cells, positions=10:15)
+print(seqs)
+
+##       [,1] [,2] [,3] [,4] [,5] [,6]
+##  [1,] &quot;T&quot;  &quot;G&quot;  &quot;T&quot;  &quot;C&quot;  &quot;T&quot;  &quot;T&quot;
+##  [2,] &quot;C&quot;  &quot;A&quot;  &quot;T&quot;  &quot;T&quot;  &quot;A&quot;  &quot;T&quot;
+##  [3,] &quot;C&quot;  &quot;A&quot;  &quot;T&quot;  &quot;T&quot;  &quot;G&quot;  &quot;T&quot;
+##  [4,] &quot;G&quot;  &quot;A&quot;  &quot;T&quot;  &quot;T&quot;  &quot;G&quot;  &quot;T&quot;
+##  [5,] NA   NA   NA   NA   NA   NA
+##  [6,] &quot;G&quot;  &quot;T&quot;  &quot;G&quot;  &quot;G&quot;  &quot;A&quot;  &quot;C&quot;
+##  [8,] &quot;C&quot;  &quot;C&quot;  &quot;A&quot;  &quot;G&quot;  &quot;A&quot;  &quot;C&quot;
+## attr(,&quot;map&quot;)
+##     A    C    G    T
+## 00 01 02 03 04
+</code></pre>
+
+<h3>Example of creating an ACS file</h3>
+
+<h4>Example #1 - Import from an Affymetrix probe-tab file</h4>
+
+<p>After having downloaded and extracted the Affymetrix probe tab file for
+the chip type, then place it in the correct annotationData/ directory.
+ This way it will be automatically found.</p>
+
+<pre><code class="r">chipType &lt;- &quot;Mapping50K_Hind240&quot;
+ptb &lt;- AffymetrixProbeTabFile$byChipType(chipType)
+print(ptb)
+
+## AffymetrixProbeTabFile:
+## Name: Mapping50K_Hind240
+## Tags:
+## Full name: Mapping50K_Hind240
+## Pathname: annotationData/chipTypes/Mapping50K_Hind240/Mapping50K_Hind240.probe_tab
+## RAM: 0.01 MB
+## Number of data rows: NA
+## Columns [NA]:
+## Number of text lines: NA
+
+
+# Allocate ACS of same chip type and probe dimensions as the CDF
+cdf &lt;- AffymetrixCdfFile$byChipType(chipType)
+acs &lt;- AromaCellSequenceFile$allocateFromCdf(cdf, tags=&quot;HB20091208&quot;)
+print(acs)
+
+## AromaCellSequenceFile:
+## Name: Mapping50K_Hind240
+## Tags: HB20091208
+## Full name: Mapping50K_Hind240,HB20091208
+## Pathname: annotationData/chipTypes/Mapping50K_Hind240/Mapping50K_Hind240,HB20091208.acs
+## File size: 63.48 MB (66560262 bytes)
+## RAM: 0.00 MB
+## Number of data rows: 2560000
+## File format: v1
+## Dimensions: 2560000x26
+## Column classes: raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw
+## Number of bytes per column: 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+## Footer: 20091209 20:47:56 PSTAffymetrixMapping50K_Hind240
+## Chip type: Mapping50K_Hind240
+## Platform: Affymetrix
+
+
+# Import from the probe-tab file (which contains only PMs).  This will also update the file footer.
+importFrom(acs, ptb, keepSequenceLengths=25, verbose=-10)
+
+
+# For chips with MMs, infer them from the PM sequences (will give an error if no MMs)
+inferMmFromPm(acs, cdf=cdf, verbose=-10)
+</code></pre>
+
+<h3>Example #2 - Import from a custom tabular data file</h3>
+
+<p>Consider a custom chip type &#39;MitoP-2r520651&#39; for which we have the probe
+sequences in the following tab-delimited file:</p>
+
+<pre><code class="r">chipType &lt;- &quot;MitoP-2r520651&quot;
+cdf &lt;- AffymetrixCdfFile$byChipType(chipType)
+db &lt;- TabularTextFile(&quot;MitoP-2r520651_probeSequences.txt&quot;, path=getPath(cdf))
+print(db)
+
+## TabularTextFile:
+## Name: MitoP-2r520651_probeSequences
+## Tags:
+## Full name: MitoP-2r520651_probeSequences
+## Pathname: annotationData/chipTypes/MitoP-2r520651/MitoP-2r520651_probeSequences.txt
+## File size: 414.74 MB (434886759 bytes)
+## RAM: 0.01 MB
+## Number of data rows: NA
+## Columns [7]: &#39;Probe Set Name&#39;, &#39;Probe X&#39;, &#39;Probe Y&#39;, &#39;Probe Interrogation Position&#39;, &#39;Probe Sequence&#39;, &#39;Target Strandedness&#39;, &#39;Probe Type&#39;
+## Number of text lines: NA
+</code></pre>
+
+<p>Just to give the details of this example file:</p>
+
+<pre><code class="r">print(readLines(db, n=4))
+[1] &quot;Probe Set Name\tProbe X\tProbe Y\tProbe Interrogation Position\tProbe Sequence\tTarget Strandedness\tProbe Type&quot;
+[2] &quot;ENSE00000931001\t6\t0\t95\tTTATTGGCGTGTCTACTGATCCAGC\tAntisense\tMM&quot;
+[3] &quot;ENSE00000931001\t7\t0\t95\tTTATTGGCGTGTTTACTGATCCAGC\tAntisense\tPM&quot;
+[4] &quot;ENSE00001310320\t8\t0\t23\tTTTGATAGGTGTCTGAATTCCAGTT\tAntisense\tMM&quot;
+
+# In order to assign sequences to the ACS file, we need the (x,y) probe coordinate
+# in addition to the sequence.  We also need the strand information (if available).
+# We could read all columns, but for large files it is more efficient to read only the
+# columns of interest.
+colClassPattern &lt;- c(&quot;^Probe (X|Y)&quot;=&quot;integer&quot;, &quot;^(Probe Sequence|Target Strandedness)$&quot;=&quot;character&quot;)
+df &lt;- readDataFrame(db, colClassPattern=colClassPattern)
+print(df[1:3,])
+
+##   Probe X Probe Y            Probe Sequence Target Strandedness
+## 1       6       0 TTATTGGCGTGTCTACTGATCCAGC           Antisense
+## 2       7       0 TTATTGGCGTGTTTACTGATCCAGC           Antisense
+## 3       8       0 TTTGATAGGTGTCTGAATTCCAGTT           Antisense
+
+# The ACS format can only hold 25-mers.  However, the input data file
+# contains a few exceptions to this:
+lens &lt;- nchar(df[[&quot;Probe Sequence&quot;]])
+print(table(lens))
+##      19      21      23      25
+##      72     208    5856 6534912
+
+# So, we&#39;ll only keep sequences that are 25-mers
+df &lt;- df[(lens == 25),]
+
+# Translate (x,y) to cell indices
+# More: help(&quot;2. Cell coordinates and cell indices&quot;, package=&quot;affxparser&quot;).
+x &lt;- df[[&quot;Probe X&quot;]]
+y &lt;- df[[&quot;Probe Y&quot;]]
+cells &lt;- nbrOfColumns(cdf) * y + x + 1L
+str(cells)
+## num [1:6534912] 7 8 9 10 19 20 21 22 23 24 ...
+
+# Extract sequences and target strand
+seqs &lt;- df[[&quot;Probe Sequence&quot;]]
+strands &lt;- df[[&quot;Target Strandedness&quot;]]
+
+# Allocate empty ACS file
+acs &lt;- AromaCellSequenceFile$allocateFromCdf(cdf, tags=&quot;HB20091208&quot;)
+print(acs)
+
+# Assign sequences and target strands to ACS file*
+updateSequences(acs, cells=cells, seqs=seqs, verbose=-10)
+updateTargetStrands(acs, cells=cells, strands=strands, verbose=-10)
+
+# Update the file footer
+footer &lt;- readFooter(acs)
+footer$srcFile &lt;- list(filename=getFilename(db), checksum=getChecksum(db))
+footer$createdBy &lt;- list(name=&quot;Henrik Bengtsson&quot;, email=&quot;foo@stat.berkeley.edu&quot;)
+writeFooter(acs, footer)
+
+# Done
+print(acs)
+
+## AromaCellSequenceFile:
+## Name: MitoP-2r520651
+## Tags: HB20091208
+## Full name: MitoP-2r520651,HB20091208
+## Pathname: annotationData/chipTypes/MitoP-2r520651/MitoP-2r520651,HB20091208.acs
+## File size: 162.50 MB (170394079 bytes)
+## RAM: 0.00 MB
+## File format: v1
+## Dimensions: 6553600x26
+## Column classes: raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw
+## Number of bytes per column: 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+## Footer: 20091209 21:43:55 PSTAffymetrixMitoP-2r520651MitoP-2r520651_probeSequences.txt94e1610d112228e0d51efceac19de17d
+## Henrik Beng...@stat.berkeley.edu
+## Chip type: MitoP-2r520651
+## Platform: Affymetrix
+</code></pre>
+
+<h3>Footnotes:</h3>
+
+<p>If you run out of memory while assigning the sequences, you can do it
+in chunks which is more memory efficient, e.g.</p>
+
+<pre><code class="r">dummy &lt;- lapplyInChunks(seq(along=cells), function(rr) {
+  updateSequences(acs, cells=cells[rr], seqs=seqs[rr], verbose=-10)
+}, chunkSize=500e3)
+</code></pre>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/howtos/CreateAcsFile/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/howtos/CreateAcsFile/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/howtos/CreateAcsFile/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

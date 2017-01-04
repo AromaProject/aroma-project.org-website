@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Chip type: ax13339">Aroma: Chip type: ax13339</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Chip type: ax13339</h1>
+
+<div class="alert alert-info" role="alert">
+  <span class="glyphicon glyphicon-flag" style="font-size: 1.2em;"></span>
+There exists little information on this chip type, but it "appears" (see
+reference below) to be the Early Access version of the 10K SNP chip.
+<em>I would appreciate any further comments/references about this chip type from anyone who knows.  /Henrik 2008-07-04</em>
+</div>
+
+<p>In Zhao X et al. (2004), the ax13339 chip type is referred to as &quot;XbaI
+mapping array 130&quot; (p 3061), which further indicates that this is an
+early version of the Mapping10K_Xba131 and the successor
+Mapping10K_Xba142.</p>
+
+<h2>ax13339</h2>
+
+<pre><code class="r">&gt; cdf &lt;- AffymetrixCdfFile$byChipType(&quot;ax13339&quot;)
+&gt; cdf
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/ax13339
+Filename: ax13339.CDF
+Filesize: 8.22MB
+Chip type: ax13339
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 712x712
+Number of cells: 506944
+Number of units: 10043
+Cells per unit: 50.48
+Number of QC units: 9
+</code></pre>
+
+<p>Comparing to the Mapping10K_Xba131 chip type, we note that they have
+the same dimensions but different number of units.  This could mean that
+the two chip types ax13339 and Mapping10K_Xba131 are identical, but
+that the annotation has been updated.</p>
+
+<p>All units are listed as &#39;CustomSeq&#39; (unit type 1) units, whereas for the
+10K SNP chips we should see &#39;Genotyping&#39; (unit type 2) units:</p>
+
+<pre><code class="r">&gt; unitTypes &lt;- getUnitTypes(cdf)
+&gt; print(table(unitTypes))
+unitTypes
+   1
+10043
+</code></pre>
+
+<h2>Resources</h2>
+
+<p>By dChip.org:</p>
+
+<ul>
+<li>  CDF, dChip genome information file:
+<a href="http://www.hsph.harvard.edu/cli/complab/dchip/snp.htm">http://www.hsph.harvard.edu/cli/complab/dchip/snp.htm</a></li>
+</ul>
+
+<p>By Harvard:</p>
+
+<ul>
+<li>  CDF, dChip genome information file &amp; other genomic annotation files:
+<a href="http://research.dfci.harvard.edu/meyersonlab/snp/snp.htm">http://research.dfci.harvard.edu/meyersonlab/snp/snp.htm</a> (under
+&#39;Data download&#39;)</li>
+</ul>
+
+<h2>References</h2>
+
+<p>[Affymetrix 2007] Affymetrix, <em>Improved gridding algorithms in AGCC
+produce equivalent biological results</em>, White paper,
+2007(?). URL: <a href="http://www.affymetrix.com/support/technical/whitepapers/agcc_gridding_whitepaper.pdf">http://www.affymetrix.com/support/technical/whitepapers/agcc_gridding_whitepaper.pdf</a></p>
+
+<p>[GEO-GPL3400] GEO, <em>Platform GPL3400: Affymetrix GeneChip Mapping
+Pre-Release 10K Array (ax13339)</em>, August 29, 2006.
+URL: <a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GPL3400">http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GPL3400</a></p>
+
+<p>[LiC_2008] Cheng Li, <em>dChip: SNP array data processing</em>, July 2008.
+URL: <a href="http://www.hsph.harvard.edu/cli/complab/dchip/">http://www.hsph.harvard.edu/cli/complab/dchip/</a></p>
+
+<p>[Lindblad-Toh et al. 2000] Lindblad-Toh K et al.,
+<em>Loss-of-heterozygosity analysis of small-cell lung carcinomas using
+single-nucleotide polymorphism arrays,</em> Nature Biotechnology  18,
+1001-1005, 2000. [DOI:10.1038/79269]</p>
+
+<p>[McCann et al. 2007] McCann et al., <em>ChIP on SNP-chip for genome-wide
+analysis of human histone H4 hyperacetylation</em>. BMC Genomics<em>,</em>
+<strong>2007</strong><em>, 8</em>, 322. [PMID: <a href="http://www.ncbi.nlm.nih.gov/pubmed/17868463">17868463</a>]</p>
+
+<p>[Zhao X et al. 2004] Zhao X et al., <em>An Integrated View of Copy Number
+and Allelic Alterations in the Cancer Genome Using Single Nucleotide
+Polymorphism Arrays</em>, Cancer Research, 64, 3060-3071, May 2004.</p>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/chipTypes/ax13339/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/chipTypes/ax13339/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/chipTypes/ax13339/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

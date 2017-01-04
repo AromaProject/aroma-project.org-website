@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Vignette: Empirical probe-signal densities and rank-based quantile normalization">Aroma: Vignette: Empirical probe-signal densities and rank-based quantile normalization</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Vignette: Empirical probe-signal densities and rank-based quantile normalization</h1>
+
+<p>Author: Henrik Bengtsson<br>
+Created on: 2009-09-17<br>
+Last updated: 2011-02-05</p>
+
+<p>This document illustrated (i) how to create density plots of raw and
+normalized probe signals and (ii) the result of rank-based quantile
+normalization stratified by probe type.</p>
+
+<h2>Setup</h2>
+
+<p>Here we will use 10 public Mapping50K_Hind240 CEL files from the HapMap
+project.</p>
+
+<h3>Raw data</h3>
+
+<p>Download the following CEL files from the HapMap site (see the &#39;HapMap
+100K&#39; data set on Page <a href="../../datasets/index.html">Data Sets</a>):</p>
+
+<pre><code>rawData/
+  HapMap,CEU,testSet/
+    Mapping50K_Hind240/
+      NA06985_Hind_B5_3005533.CEL
+      NA06991_Hind_B6_3005533.CEL
+      NA06993_Hind_B4_4000092.CEL
+      NA06994_Hind_A7_3005533.CEL
+      NA07000_Hind_A8_3005533.CEL
+      NA07019_Hind_A12_4000092.CEL
+      NA07022_Hind_A10_4000092.CEL
+      NA07029_Hind_A9_4000092.CEL
+      NA07034_Hind_B1_4000092.CEL
+      NA07048_Hind_B3_4000092.CEL
+</code></pre>
+
+<h3>Annotation data</h3>
+
+<p>Download the following annotation files (<a href="../../chipTypes/Mapping50K_Hind-and-Xba240/index.html">Mapping50K_Hind240 &amp;
+Mapping50K_Xba240</a>):</p>
+
+<pre><code>annotationData/
+  chipTypes/
+    Mapping50K_Hind240/
+      Mapping50K_Hind240.CDF
+      Mapping50K_Hind240,na26,HB20080916.ufl
+      Mapping50K_Hind240,na26,HB20080916.ugp
+</code></pre>
+
+<h2>Startup</h2>
+
+<pre><code class="r">library(&quot;aroma.affymetrix&quot;)
+library(&quot;R.devices&quot;)
+devOptions(&quot;png&quot;, width=1024)
+
+# Use a nicer palette of colors
+colors &lt;- RColorBrewer::brewer.pal(12, &quot;Paired&quot;)
+palette(colors)
+
+# Setup the Verbose object
+verbose &lt;- Arguments$getVerbose(-10, timestamp=TRUE)
+</code></pre>
+
+<h2>Setup of raw data set</h2>
+
+<pre><code class="r">cdf &lt;- AffymetrixCdfFile$byChipType(&quot;Mapping50K_Hind240&quot;)
+print(cdf)
+
+gi &lt;- getGenomeInformation(cdf)
+print(gi)
+</code></pre>
+
+<h2>Setup of raw data set</h2>
+
+<pre><code class="r">csR &lt;- AffymetrixCelSet$byName(&quot;HapMap,CEU,testSet&quot;, cdf=cdf)
+print(getFullNames(csR))
+
+## [1] &quot;NA06985_Hind_B5_3005533&quot;  &quot;NA06991_Hind_B6_3005533&quot;
+## [3] &quot;NA06993_Hind_B4_4000092&quot;  &quot;NA06994_Hind_A7_3005533&quot;
+## [5] &quot;NA07000_Hind_A8_3005533&quot;  &quot;NA07019_Hind_A12_4000092&quot;
+## [7] &quot;NA07022_Hind_A10_4000092&quot; &quot;NA07029_Hind_A9_4000092&quot;
+## [9] &quot;NA07034_Hind_B1_4000092&quot;  &quot;NA07048_Hind_B3_4000092&quot;
+</code></pre>
+
+<p>The CEL files downloaded from HapMap has file names such as
+NA07000_Hind_A8_3005533.CEL. In order for aroma.affymetrix to
+identify &#39;NA07000&#39; as the sample name, and &#39;A8&#39; and &#39;3005533&#39; as tags
+(ignore the &#39;Hind&#39; part), we will utilize so called fullname translators
+that translates the full name to a comma-separated fullname, e.g.
+&#39;NA07000_Hind_A8_3005533&#39; to &#39;NA07000,A8,3005533&#39;.</p>
+
+<pre><code class="r">setFullNamesTranslator(csR, function(names, ...) {
+  # Turn into comma-separated tags
+  names &lt;- gsub(&quot;_&quot;, &quot;,&quot;, names)
+  # Drop any Hind/Xba tags
+  names &lt;- gsub(&quot;,(Hind|Xba)&quot;, &quot;&quot;, names)
+  names
+})
+print(getFullNames(csR))
+
+## [1] &quot;NA06985,B5,3005533&quot;  &quot;NA06991,B6,3005533&quot;
+## [3] &quot;NA06993,B4,4000092&quot;  &quot;NA06994,A7,3005533&quot;
+## [5] &quot;NA07000,A8,3005533&quot;  &quot;NA07019,A12,4000092&quot;
+## [7] &quot;NA07022,A10,4000092&quot; &quot;NA07029,A9,4000092&quot;
+## [9] &quot;NA07034,B1,4000092&quot;  &quot;NA07048,B3,4000092&quot;
+
+print(csR)
+
+## AffymetrixCelSet:
+## Name: HapMap
+## Tags: CEU,testSet
+## Path: rawData/HapMap,CEU,testSet/Mapping50K_Hind240
+## Platform: Affymetrix
+## Chip type: Mapping50K_Hind240
+## Number of arrays: 10
+## Names: NA06985, NA06991, ..., NA07048
+## Time period: 2004-01-14 14:02:08 -- 2004-02-13 11:51:01
+## Total file size: 244.78MB
+## RAM: 0.01MB
+</code></pre>
+
+<h2>Brief about different types of probes</h2>
+
+<p>On Affymetrix arrays, there are different types of probes (cells). The
+most well known are perfect-match (PM) and mismatch (MM) probes. In
+addition to these, there are also QC probes, e.g. so called
+landing-light probes and chequered-flag probes etc.</p>
+
+<p>One can query the CDF for the indices of the cells for each type. If one
+ask for &quot;all&quot;, then <em>all</em> cells on the array are returned.</p>
+
+<pre><code class="r">types &lt;- c(&quot;all&quot;, &quot;pmmm&quot;, &quot;pm&quot;, &quot;mm&quot;)
+cells &lt;- lapply(types, FUN=function(type) identifyCells(cdf, types=type))
+names(cells) &lt;- types
+str(cells)
+##  $ all : int [1:2560000] 1 2 3 4 5 6 7 8 9 10 ...
+##  $ pmmm: int [1:2291560] 1606 1607 1609 1610 1611 1613 1614 1615
+##  $ pm  : int [1:1145780] 1606 1607 1609 1610 1611 1613 1614 1615
+##  $ mm  : int [1:1145780] 3206 3207 3209 3210 3211 3213 3214 3215
+</code></pre>
+
+<p>As we will see next, one can specify these types also when plotting the
+empirical densities and when doing quantile normalization.</p>
+
+<h2>Raw probe-signal densities</h2>
+
+<p>The <code>plotDensity()</code> method for an AffymetrixCelSet estimates and draws
+smooth empirical density functions for each array in set. It is possible
+to stratify by probe type (see above) by setting the <code>types</code> argument.
+For instance, <code>types=&quot;all&quot;</code> uses <em>all</em> probes on the chip (regardless of
+CDF used), <code>types=&quot;pmmm&quot;</code> uses all PM &amp; MM probes, <code>types=&quot;pm&quot;</code> only the PM
+probes etc.  The following code illustrates how to use the <code>types</code>
+argument with <code>plotDensity()</code>.  See the below figure of the result.</p>
+
+<pre><code class="r">cols &lt;- seq(along=types)
+
+toPNG(&quot;plotDensity&quot;, tags=c(kk, &quot;raw&quot;), aspectRatio=0.618, {
+  for (kk in seq(along=types)) {
+    plotDensity(csR, types=types[kk], col=cols[kk], subset=NULL,
+                lwd=2, ylim=c(0,0.45), add=(kk &gt; 1))
+  }
+  legend(&quot;topleft&quot;, col=cols, lwd=4, types)
+  title(&quot;Raw probe signals&quot;)
+})
+</code></pre>
+
+<h2>Rank-based quantile normalization</h2>
+
+<p>The QuantileNormalization class provide methods for doing rank-based
+quantile normalization of probe signals. By specifying argument
+<code>typesToUpdates</code> one can specify what type of probes should be
+normalized (and used in the model fitting). All other probe signals are
+left unchanged. The default is <code>typesToUpdates=&quot;all&quot;</code>, but any of <code>&quot;pmmm&quot;</code>,
+<code>&quot;pm&quot;</code> and <code>&quot;mm&quot;</code> can also be used.  The following code illustrates how the
+different values produce different results.  The results are depicted in
+the four panels in the below Figure.</p>
+
+<p><img src="../../assets/images/QN/HapMap%2CCEU%2CtestSet%2CHind240%2CQN%2Call%2Cdensity.png" alt=""></p>
+
+<p>Figure 2A.</p>
+
+<p><img src="../../assets/images/QN/HapMap%2CCEU%2CtestSet%2CHind240%2CQN%2Cpmmm%2Cdensity.png" alt=""></p>
+
+<p>Figure 2B.</p>
+
+<p><img src="../../assets/images/QN/HapMap%2CCEU%2CtestSet%2CHind240%2CQN%2Cpm%2Cdensity.png" alt=""></p>
+
+<p>Figure 2C.</p>
+
+<p><img src="../../assets/images/QN/HapMap%2CCEU%2CtestSet%2CHind240%2CQN%2Cmm%2Cdensity.png" alt=""></p>
+
+<p>Figure 2D.</p>
+
+<pre><code class="r">for (type in types) {
+  verbose &amp;&amp; enter(verbose, &quot;Rank-based quantile normalization on &quot;, type, &quot; probes&quot;)
+  verbose &amp;&amp; cat(verbose, &quot;typesToUpdate: &quot;, type)
+  qn &lt;- QuantileNormalization(csR, typesToUpdate=type, tags=c(&quot;*&quot;, type))
+  print(qn)
+  csN &lt;- process(qn, verbose=verbose)
+
+  toPNG(&quot;plotDensity&quot;, tags=c(&quot;QN&quot;, type), aspectRatio=0.618, {
+    # Plot the type normalized-by last.
+    kks &lt;- match(c(setdiff(types, type), type), types)
+    for (kk in kks) {
+      plotDensity(csN, types=types[kk], subset=NULL, col=cols[kk], lwd=2, ylim=c(0,0.45), add=(kk != kks[1]));
+    }
+    legend(&quot;topleft&quot;, col=cols, lwd=4, types)
+    title(sprintf(&quot;QuantileNormalization(..., typesToUpdate=\&quot;%s\&quot;)&quot;, type))
+  })
+
+  verbose &amp;&amp; exit(verbose)
+}
+</code></pre>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/vignettes/probe-signal_densities_and_rank-based_quantile_normalization/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/vignettes/probe-signal_densities_and_rank-based_quantile_normalization/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/vignettes/probe-signal_densities_and_rank-based_quantile_normalization/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

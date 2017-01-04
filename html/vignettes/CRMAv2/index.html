@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Vignette: Estimation of total copy numbers using the CRMA v2 method (10K-CytoScanHD)">Aroma: Vignette: Estimation of total copy numbers using the CRMA v2 method (10K-CytoScanHD)</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Vignette: Estimation of total copy numbers using the CRMA v2 method (10K-CytoScanHD)</h1>
+
+<p>Author: Henrik Bengtsson<br>
+Created on: 2008-12-09<br>
+Last updated on: 2014-12-21</p>
+
+<p>This document describes in detail how to estimate total copy numbers
+(CNs) in aroma.affymetrix according to the CRMA v2 method described in
+<a name=cite-BengtssonH_etal_2009-CRMAv2></a><a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=19535535">Bengtsson, Wirapati, and Speed (2009)</a>.  All the steps of CRMA v2
+will be done one by one and the output of each step will be discussed.
+ If you wish to run CRMA v2 without going through the details, see
+the <a href="../../blocks/doCRMAv2/index.html">doCRMAv2()</a> function, which
+wraps up all of the below in one call.</p>
+
+<p>The CRMA v2 method is a preprocessing and probe summarization method
+that provides full-resolution raw total copy-number estimates, by the
+following steps:</p>
+
+<ol>
+<li>Calibration for crosstalk between allele probe pairs (PMA, PMB).</li>
+<li>Normalization for 25-mer nucleotide-position probe sequence effects.</li>
+<li>Robust probe-summarization on replicated PMs with PM=PMA+PMB for SNPs.</li>
+<li>Normalization for PCR fragment-length effects on summary signals.</li>
+<li>Calculation of full-resolution (raw) total copy numbers, e.g. 
+C = theta/thetaR, where theta and thetaR are probe summaries (chip
+effects) for the test sample and reference.</li>
+</ol>
+
+<p>A major advantage of CRMA v2 compared to CRMA v1 <a name=cite-BengtssonH_etal_2009-CRMAv1></a>(<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=18204055">Bengtsson, Irizarry, Carvalho, and Speed, 2008</a>), is that especially for GenomeWideSNP_5 and GenomeWideSNP_6 it is a truly single-array preprocessing method.  This means that the results will be identical regardless whether arrays are processed in batches or separately, which is especially convenient when new samples arrives over time.
+It is possible, for the price of
+slightly less good copy number estimates, to also process older chip
+types in the same truly single-array approach using CRMA v2, e.g.
+Mapping250K_Nsp.  If one wish to obtain the maximum performance for
+those chip types, then one needs to model the probe-affinities as well,
+which is done by replacing the robust average model in probe
+summarization (Step 3) with a robust log-additive model, as in CRMA v1.
+ For more information, see Section &#39;Step 3 - Probe summarization&#39; below.</p>
+
+<p>Six (6) Affymetrix GenomeWideSNP_6 arrays from the HapMap project will
+be used to illustrate the necessary steps in aroma.affymetrix.</p>
+
+<h2>Setup</h2>
+
+<p>If this is your first analysis within the aroma project, please make
+sure to first read the &#39;<a href="../../setup/index.html">Setup</a>&#39; and
+&#39;<a href="../../definitions/index.html">Definition</a>&#39; pages.  This will explain the importance
+of following a well defined directory structure and file names.
+<em>Understanding this is important and will save you a lot of time</em>.</p>
+
+<h3>Raw data</h3>
+
+<pre><code>rawData/
+  HapMap270,6.0,CEU,testSet/
+    GenomeWideSNP_6/
+      NA06985.CEL, NA06991.CEL, NA06993.CEL, NA06994.CEL, NA07000.CEL, NA07019.CEL
+</code></pre>
+
+<p>These GenomeWideSNP_6 CEL files are available from Affymetrix part of a
+larger HapMap data set, cf. online Page &#39;<a href="../../datasets/index.html">Data Sets</a>&#39;.</p>
+
+<h3>Annotation data</h3>
+
+<p>Affymetrix provides two different CDF files for the GenomeWideSNP_6
+chip type, namely the &quot;default&quot; and &quot;full&quot; CDF.  The full CDF contains
+what the default one does plus more.  We are always using the full CDF.
+If we want to do filtering, we do it afterward.</p>
+
+<pre><code>annotationData/
+  chipTypes/
+    GenomeWideSNP_6/
+      GenomeWideSNP_6,Full.cdf
+      GenomeWideSNP_6,Full,na26,HB20080821.ugp
+      GenomeWideSNP_6,Full,na26,HB20080722.ufl
+      GenomeWideSNP_6,HB20080710.acs
+</code></pre>
+
+<p><em>Note that *.Full.cdf have to be renamed to *,Full.cdf (w/ a comma).</em></p>
+
+<p>The UGP, UFL, and ACS files are special aroma.affymetrix annotation
+files available on Page <a href="../../chipTypes/GenomeWideSNP_6/index.html">GenomeWideSNP_6</a>.
+The CDF file is available from Affymetrix inside the &quot;Library Files&quot;
+(via the same page).</p>
+
+<h2>Analysis startup</h2>
+
+<pre><code class="r">library(&quot;aroma.affymetrix&quot;)
+log &lt;- verbose &lt;- Arguments$getVerbose(-8, timestamp=TRUE)
+# Don&#39;t display too many decimals.
+options(digits=4)
+</code></pre>
+
+<h3>Verifying annotation data files</h3>
+
+<p>Before we continue, the following asserts that the annotation files
+(CDF, UGP, UFL, and ACS) can be found.  This test is not required,
+because aroma.affymetrix will locate them in the background, but it will
+help troubleshooting if there are any problem.</p>
+
+<p>We start by locating the CDF:</p>
+
+<pre><code class="r">cdf &lt;- AffymetrixCdfFile$byChipType(&quot;GenomeWideSNP_6&quot;, tags=&quot;Full&quot;)
+print(cdf)
+</code></pre>
+
+<p>which gives:</p>
+
+<pre><code>AffymetrixCdfFile:
+Path: annotationData/chipTypes/GenomeWideSNP_6
+Filename: GenomeWideSNP_6,Full.CDF
+Filesize: 470.44MB
+File format: v4 (binary; XDA)
+Chip type: GenomeWideSNP_6,Full
+Dimension: 2572x2680
+Number of cells: 6892960
+Number of units: 1881415
+Cells per unit: 3.66
+Number of QC units: 4
+RAM: 0.00MB
+</code></pre>
+
+<pre><code class="r">gi &lt;- getGenomeInformation(cdf)
+print(gi)
+
+UgpGenomeInformation:
+Name: GenomeWideSNP_6
+Tags: Full,na26,HB20080821
+Pathname:
+annotationData/chipTypes/GenomeWideSNP_6/GenomeWideSNP_6,Full,na26,HB20080821.ugp
+File size: 8.97MB
+RAM: 0.00MB
+Chip type: GenomeWideSNP_6,Full
+</code></pre>
+
+<pre><code class="r">si &lt;- getSnpInformation(cdf)
+print(si)
+
+UflSnpInformation:
+Name: GenomeWideSNP_6
+Tags: Full,na26,HB20080722
+Pathname:
+annotationData/chipTypes/GenomeWideSNP_6/GenomeWideSNP_6,Full,na26,HB20080722.ufl
+File size: 7.18MB
+RAM: 0.00MB
+Chip type: GenomeWideSNP_6,Full
+Number of enzymes: 2
+</code></pre>
+
+<pre><code class="r">acs &lt;- AromaCellSequenceFile$byChipType(getChipType(cdf, fullname=FALSE))
+print(acs)
+
+AromaCellSequenceFile:
+Name: GenomeWideSNP_6
+Tags: HB20080710
+Pathname: annotationData/chipTypes/GenomeWideSNP_6
+/GenomeWideSNP_6,HB20080710.acs
+File size: 170.92MB
+RAM: 0.00MB
+Number of data rows: 6892960
+File format: v1
+Dimensions: 6892960x26
+Column classes: raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw,
+raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw, raw
+Number of bytes per column: 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+Footer: &lt;createdOn&gt;20080710 22:47:02
+PDT&lt;/createdOn&gt;&lt;platform&gt;Affymetrix&lt;/platform&gt;
+&lt;chipType&gt;GenomeWideSNP_6&lt;/chipType&gt;&lt;srcFile&gt;
+&lt;filename&gt;GenomeWideSNP_6.probe_tab&lt;/filename&gt;&lt;filesize&gt;341479928&lt;/filesize&gt;
+&lt;checksum&gt;2037c033c09fd8f7c06bd042a77aef15&lt;/checksum&gt;&lt;/srcFile&gt;
+&lt;srcFile2&gt;&lt;filename&gt;GenomeWideSNP_6.CN_probe_tab&lt;/filename&gt;
+&lt;filesize&gt;96968290&lt;/filesize&gt;
+&lt;checksum&gt;3dc2d3178f5eafdbea9c8b6eca88a89c&lt;/checksum&gt;&lt;/srcFile2&gt;
+Chip type: GenomeWideSNP_6
+Platform: Affymetrix
+</code></pre>
+
+<h2>Declaring the raw data set</h2>
+
+<p>The following will setup the CEL set <em>using the full CDF</em> specified
+above:</p>
+
+<pre><code class="r">cdf &lt;- AffymetrixCdfFile$byChipType(&quot;GenomeWideSNP_6&quot;, tags=&quot;Full&quot;)
+csR &lt;- AffymetrixCelSet$byName(&quot;HapMap270,6.0,CEU,testSet&quot;, cdf=cdf)
+print(csR)
+
+AffymetrixCelSet:
+Name: HapMap270
+Tags: 6.0,CEU,testSet
+Path: rawData/HapMap270,6.0,CEU,testSet/GenomeWideSNP_6
+Platform: Affymetrix
+Chip type: GenomeWideSNP_6,Full
+Number of arrays: 6
+Names: NA06985, NA06991, ..., NA07019
+Time period: 2007-03-06 12:13:04 -- 2007-03-06 19:17:16
+Total file size: 395.13MB
+RAM: 0.01MB
+</code></pre>
+
+<h3>Quality assessment</h3>
+
+<pre><code class="r">cs &lt;- csR
+par(mar=c(4,4,1,1)+0.1)
+plotDensity(cs, lwd=2, ylim=c(0,0.40))
+stext(side=3, pos=0, getFullName(cs))
+</code></pre>
+
+<p><img src="../../assets/images/CRMAv2%2CHapMap%2CGWS6%2Cdensity%2Craw.png" alt=""></p>
+
+<p><em>Figure: The empirical densities for each of the arrays in the data set
+before any calibration.</em></p>
+
+<h2>Step 1 - Calibration for crosstalk between allele probe pairs</h2>
+
+<pre><code class="r">acc &lt;- AllelicCrosstalkCalibration(csR, model=&quot;CRMAv2&quot;)
+print(acc)
+
+AllelicCrosstalkCalibration:
+Data set: HapMap270
+Input tags: 6.0,CEU,testSet
+User tags: *
+Asterisk (&#39;*&#39;) tags: ACC,ra,-XY
+Output tags: 6.0,CEU,testSet,ACC,ra,-XY
+Number of files: 6 (395.13MB)
+Platform: Affymetrix
+Chip type: GenomeWideSNP_6,Full
+Algorithm parameters: (rescaleBy: chr &quot;all&quot;, targetAvg: num 2200,
+subsetToAvg: chr &quot;-XY&quot;, mergeShifts: logi TRUE, B: int 1, flavor: chr
+&quot;sfit&quot;, algorithmParameters:List of 3, ..$ alpha: num [1:8] 0.1 0.075
+0.05 0.03 0.01 0.0025 0.001 0.0001, ..$ q: num 2, ..$ Q: num 98)
+Output path:
+probeData/HapMap270,6.0,CEU,testSet,ACC,ra,-XY/GenomeWideSNP_6
+Is done: FALSE
+RAM: 0.00MB
+</code></pre>
+
+<pre><code class="r">csC &lt;- process(acc, verbose=verbose)
+print(csC)
+
+AffymetrixCelSet:
+Name: HapMap270
+Tags: 6.0,CEU,testSet,v2,ACC,ra,-XY
+Path: probeData/HapMap270,6.0,CEU,testSet,ACC,ra,-XY/GenomeWideSNP_6
+Platform: Affymetrix
+Chip type: GenomeWideSNP_6,Full
+Number of arrays: 6
+Names: NA06985, NA06991, ..., NA07019
+Time period: 2008-11-28 16:03:45 -- 2008-11-28 16:36:42
+Total file size: 394.42MB
+RAM: 0.01MB
+</code></pre>
+
+<p><em>Comment</em>: When processing 6.0 arrays, it is likely that the input CEL
+files are in the (new) AGCC/Calvin file format.  Since aroma.affymetrix
+can currently only read such files but not write them, the
+calibrated/normalized data is stored as binary/XDA CEL file.  Because of
+this &quot;conversion&quot;, the creation of the CEL files will take some time.
+Downstream analysis will work on binary/XDA CEL files, which is much
+faster.</p>
+
+<pre><code class="r">cs &lt;- csC
+par(mar=c(4,4,1,1)+0.1)
+plotDensity(cs, lwd=2, ylim=c(0,0.40))
+stext(side=3, pos=0, getFullName(cs))
+</code></pre>
+
+<p><img src="../../assets/images/CRMAv2%2CHapMap%2CGWS6%2Cdensity%2CACC.png" alt=""></p>
+
+<p><em>Figure: The empirical densities for each of the arrays in the data set
+after crosstalk calibration.</em></p>
+
+<pre><code class="r">array &lt;- 1
+xlim &lt;- c(-500,15000)
+plotAllelePairs(acc, array=array, pairs=1:6, what=&quot;input&quot;, xlim=xlim/3)
+</code></pre>
+
+<p><img src="../../assets/images/CRMAv2%2CHapMap%2CGWS6%2CNA06985%2Ccrosstalk%2Craw.png" alt=""></p>
+
+<p><em>Figure: Allele probe pair intensities (PMA,PMB) of array NA06985 for
+the six nucleotide pairs (A,C), (A,G), (A,T), (C,G), (C,T), and (G,T).
+Data shown is before calibration.</em></p>
+
+<pre><code class="r">plotAllelePairs(acc, array=array, pairs=1:6, what=&quot;output&quot;, xlim=xlim)
+</code></pre>
+
+<p><img src="../../assets/images/CRMAv2%2CHapMap%2CGWS6%2CNA06985%2Ccrosstalk%2CACC.png" alt="">* *</p>
+
+<p><em>Figure: Allele probe pair intensities (PMA,PMB) of array NA06985 for
+the six nucleotide pairs (A,C), (A,G), (A,T), (C,G), (C,T), and (G,T).
+Data shown is after calibration.</em></p>
+
+<h2>Step 2 - Normalization for nucleotide-position probe sequence effects</h2>
+
+<p>By using argument <code>target=&quot;zero&quot;</code>, no reference is required.  Otherwise,
+the average file will be used as the reference.</p>
+
+<pre><code class="r">bpn &lt;- BasePositionNormalization(csC, target=&quot;zero&quot;)
+print(bpn)
+
+BasePositionNormalization:
+Data set: HapMap270
+Input tags: 6.0,CEU,testSet,ACC,ra,-XY
+User tags: *
+Asterisk (&#39;*&#39;) tags: BPN,-XY
+Output tags: 6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY
+Number of files: 6 (394.42MB)
+Platform: Affymetrix
+Chip type: GenomeWideSNP_6,Full
+Algorithm parameters: (unitsToFit: chr &quot;-XY&quot;, typesToFit: chr &quot;pm&quot;,
+unitsToUpdate: NULL, typesToUpdate: chr &quot;pm&quot;, shift: num 0, target: chr
+&quot;zero&quot;, model: chr &quot;smooth.spline&quot;, df: int 5)
+Output path:
+probeData/HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY/GenomeWideSNP_6
+Is done: FALSE
+RAM: 0.00MB
+</code></pre>
+
+<pre><code class="r">csN &lt;- process(bpn, verbose=verbose)
+print(csN)
+
+AffymetrixCelSet:
+Name: HapMap270
+Tags: 6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY
+Path:
+probeData/HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY/GenomeWideSNP_6
+Platform: Affymetrix
+Chip type: GenomeWideSNP_6,Full
+Number of arrays: 6
+Names: NA06985, NA06991, ..., NA07019
+Time period: 2008-11-28 16:03:45 -- 2008-11-28 16:36:42
+Total file size: 394.42MB
+RAM: 0.01MB
+</code></pre>
+
+<p>Benchmarking: Depending on system, this takes approximately
+2-8min/array.</p>
+
+<pre><code class="r">cs &lt;- csN
+par(mar=c(4,4,1,1)+0.1)
+plotDensity(cs, lwd=2, ylim=c(0,0.40))
+stext(side=3, pos=0, getFullName(cs))
+</code></pre>
+
+<p><img src="../../assets/images/CRMAv2%2CHapMap%2CGWS6%2Cdensity%2CACC%2CBPN.png" alt=""></p>
+
+<p><em>Figure: The empirical densities for each of the arrays in the data set
+after crosstalk calibration and nucleotide-position normalization.</em></p>
+
+<pre><code class="r">array &lt;- 1
+xlim &lt;- c(-500,15000)
+acc2 &lt;- AllelicCrosstalkCalibration(csN)
+plotAllelePairs(acc2, array=array, pairs=1:6, what=&quot;input&quot;, xlim=1.5*xlim)
+</code></pre>
+
+<p><img src="../../assets/images/CRMAv2%2CHapMap%2CGWS6%2CNA06985%2Ccrosstalk%2CACC%2CBPN.png" alt=""></p>
+
+<p><em>Figure: Allele probe pair intensities (PMA,PMB) of array NA06985 for the
+six nucleotide pairs (A,C), (A,G), (A,T), (C,G), (C,T), and (G,T).  Data
+shown is after crosstalk calibration and nucleotide-position
+normalization.  Note how the heterozygote arms are along the diagonals,
+that is, there is a balance in the allele A and allele B signal for
+heterozygotes.  This is (on purpose) not corrected for in the allelic
+crosstalk calibration.</em></p>
+
+<h2>Step 3 - Probe summarization</h2>
+
+<p>Next we summarize the probe level data unit by unit.  For SNPs we have
+the option to model either the total CN signals (<code>combineAlleles=TRUE</code>) or
+allele-specific signals (<code>combineAlleles=FALSE</code>).  Here we fit total CN
+signals.</p>
+
+<pre><code class="r">plm &lt;- AvgCnPlm(csN, mergeStrands=TRUE, combineAlleles=TRUE)
+print(plm)
+
+AvgCnPlm:
+Data set: HapMap270
+Chip type: GenomeWideSNP_6,Full
+Input tags: 6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY
+Output tags: 6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B
+Parameters: (probeModel: chr &quot;pm&quot;; shift: num 0; flavor: chr &quot;median&quot;
+mergeStrands: logi TRUE; combineAlleles: logi TRUE).
+Path:
+plmData/HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B/GenomeWideSNP_6
+RAM: 0.00MB
+</code></pre>
+
+<p><em>Comment on the probe-summarization model:</em><br>
+ AvgCnPlm summarizes probes by taking the robust average <em>without
+modeling probe affinities</em>.  This makes sense for the GenomeWideSNP_5
+and GenomeWideSNP_6 chip types where all replicated probes in a probe
+set are identical technical replicates which we expect to have the same
+probe affinities.  Since all probe affinities are the same, the
+probe-affinity terms vanish if we consider multi-array models such as
+the log-additive one of RmaCnPlm.  For earlier chip types (10K-500K) it
+still make sense to use the RmaCnPlm class. To use the latter, just
+replace AvgCnPlm with RmaCnPlm above.</p>
+
+<pre><code class="r">if (length(findUnitsTodo(plm)) &gt; 0) {
+  # Fit CN probes quickly (~5-10s/array + some overhead)
+  units &lt;- fitCnProbes(plm, verbose=verbose)
+  str(units)
+  # int [1:945826] 935590 935591 935592 935593 935594 935595 ...
+
+  # Fit remaining units, i.e. SNPs (~5-10min/array)
+  units &lt;- fit(plm, verbose=verbose)
+  str(units)
+}
+
+ces &lt;- getChipEffectSet(plm)
+print(ces)
+
+CnChipEffectSet:
+Name: HapMap270
+Tags: 6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B
+Path:
+plmData/HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B/GenomeWideSNP_6
+Platform: Affymetrix
+Chip type: GenomeWideSNP_6,Full,monocell
+Number of arrays: 6
+Names: NA06985, NA06991, ..., NA07019
+Time period: 2008-11-29 21:46:31 -- 2008-11-29 21:46:32
+Total file size: 161.70MB
+RAM: 0.01MB
+Parameters: (probeModel: chr &quot;pm&quot;, mergeStrands: logi TRUE,
+combineAlleles: logi TRUE)
+</code></pre>
+
+<h2>Step 4 - Normalization for PCR fragment-length effects</h2>
+
+<p>Similarly to how we normalized for the probe-sequence effects, we will
+here normalize for PCR fragment-length effects by using a <code>&quot;zero&quot;</code>
+target.  This will avoid using the average (chip effects) as a
+reference.  Thus, this step is also truly single-array by nature.</p>
+
+<pre><code class="r">fln &lt;- FragmentLengthNormalization(ces, target=&quot;zero&quot;)
+print(fln)
+
+FragmentLengthNormalization:
+Data set: HapMap270
+Input tags: 6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B
+User tags: *
+Asterisk (&#39;*&#39;) tags: FLN,-XY
+Output tags: 6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY
+Number of files: 6 (161.70MB)
+Platform: Affymetrix
+Chip type: GenomeWideSNP_6,Full,monocell
+Algorithm parameters: (subsetToFit: chr &quot;-XY&quot;, onMissing: chr &quot;median&quot;,
+.target: chr &quot;zero&quot;, shift: num 0)
+Output path:
+plmData/HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY/GenomeWideSNP_6
+Is done: FALSE
+RAM: 0.00MB
+</code></pre>
+
+<pre><code class="r">cesN &lt;- process(fln, verbose=verbose)
+print(cesN)
+
+CnChipEffectSet:
+Name: HapMap270
+Tags: 6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY
+Path:
+plmData/HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY/GenomeWideSNP_6
+Platform: Affymetrix
+Chip type: GenomeWideSNP_6,Full,monocell
+Number of arrays: 6
+Names: NA06985, NA06991, ..., NA07019
+Time period: 2008-11-29 21:46:31 -- 2008-11-29 21:46:32
+Total file size: 161.70MB
+RAM: 0.01MB
+Parameters: (probeModel: chr &quot;pm&quot;, mergeStrands: logi TRUE,
+combineAlleles: logi TRUE)
+</code></pre>
+
+<h2>Step 5 - Calculation of raw copy numbers</h2>
+
+<p>The above <code>cesN</code> object contains chip-effect estimates according to the
+CRMA v2 method (<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=19535535">Bengtsson, Wirapati, and Speed, 2009</a>).  In this
+section we will show how to calculate raw copy numbers relative to a
+reference.  Note that several of the downstream methods, such as
+segmentation methods, will do this automatically/internally and
+therefore it is often not necessary to do this manually.</p>
+
+<h3>Deciding on a reference</h3>
+
+<p>There are two common use cases for CN analysis; either one do (i) a
+paired analysis where each sample is coupled with a unique reference
+(e.g. tumor/normal) or (ii) a non-paired analysis where each sample use
+the same common reference.  When a common reference is used, it is often
+the average of a pool of samples.  Here we will show how to do the
+latter.</p>
+
+<h3>Calculating the robust average of all samples</h3>
+
+<p>To calculate the robust average of chip effects across all existing
+samples (i=1,2,...,I), that is,</p>
+
+<p>theta_Rj = median_i {theta_ij}</p>
+
+<p>for each unit j=1,2,...,J.  This calculation can be done as:</p>
+
+<pre><code>ceR &lt;- getAverageFile(cesN, verbose=verbose)
+print(ceR)
+
+CnChipEffectFile:
+Name: .average-intensities-median-mad
+Tags: 036dedb6629c761a032d97b5c23bc278
+Pathname:
+plmData/HapMap270,6.0,CEU,testSet,ACC,ra,-XY,BPN,-XY,AVG,A+B,FLN,-XY/GenomeWideSNP_6/.average-intensities-median-mad,036dedb6629c761a032d97b5c23bc278.CEL
+File size: 26.95MB
+RAM: 0.01MB
+File format: v4 (binary; XDA)
+Platform: Affymetrix
+Chip type: GenomeWideSNP_6,Full,monocell
+Timestamp: 2008-12-09 14:40:43
+Parameters: (probeModel: chr &quot;pm&quot;, mergeStrands: logi TRUE,
+combineAlleles: logi TRUE)
+</code></pre>
+
+<p>From the output we learn that <code>ceR</code> is a CnChipEffectFile just like the
+other arrays in the <code>cesN</code> set.  From now on we can treat it as if it
+was the output a hybridization although it is actually the average over
+many.  The main difference is that this one is likely to have more
+precise chip effects (because of the averaging over many estimates).</p>
+
+<h3>Extracting chip-effect estimates</h3>
+
+<p>The next step is to calculate the relative copy numbers:</p>
+
+<p>C_ij = 2*theta_ij / theta_Rj</p>
+
+<p>where we assume the copy-neutral state has two (2) copies.  In order to
+calculate this, we need to extract theta_ij and theta_Rj.</p>
+
+<h4>Example: A single unit in one sample</h4>
+
+<p>Consider array i=3 and unit j=987. We can then extract these values as:</p>
+
+<pre><code class="wysiwyg-syntaxhl brush: r;fontsize: 100; first-line: 1;">ce &lt;- cesN[[3]]  # Array #3
+theta &lt;- extractTheta(ce, unit=987)
+thetaR &lt;- extractTheta(ceR, unit=987)
+C &lt;- 2*theta/thetaR
+print(C)
+          [,1]
+[1,] 1.917
+</code></pre>
+
+<p>Thus, for array #3 (NA06993) and unit #987 (SNP_A-4268099), the
+estimated total raw copy number is C=1.92.  If the DNA extract is
+homogeneous (containing only the same normal cells), we expect this to
+correspond to a truly diploid locus.</p>
+
+<p>If we look at the individual theta and thetaR estimates,</p>
+
+<pre><code>print(c(theta, thetaR))
+ [1] 2570 2681
+</code></pre>
+
+<p>we find that, on average (robust), an array has chip-effect signal 2681
+(on the intensity scale).  This is the signal we expect a copy neutral
+event at this particular locus to have.</p>
+
+<h4>Example: A small region on chromosome 2 in one sample</h4>
+
+<p>Next we are interested in the distribution of raw copy number {C_ij} in
+a small region on chromosome 2 in sample NA06991.</p>
+
+<pre><code class="r"># Identification of units in Chr 2:81-86MB and their positions
+cdf &lt;- getCdf(cesN)
+gi &lt;- getGenomeInformation(cdf)
+units &lt;- getUnitsOnChromosome(gi, chromosome=2, region=c(81,86)*1e6)
+pos &lt;- getPositions(gi, units=units)
+
+# Retrieving CN estimates of the reference in the above region
+ceR &lt;- getAverageFile(cesN)
+thetaR &lt;- extractTheta(ceR, units=units)
+
+# Retrieving the corresponding estimates of sample NA06985
+ce &lt;- cesN[[indexOf(cesN, &quot;NA06985&quot;)]]
+theta &lt;- extractTheta(ce, units=units)
+
+# Calculate the relative CNs
+C &lt;- 2*theta/thetaR
+
+# Plotting data along genome par(mar=c(3,4,2,1)+0.1)
+plot(pos/1e6, C, pch=&quot;.&quot;, cex=3, ylim=c(0,4))
+stext(side=3, pos=0, getName(ce))
+stext(side=3, pos=1, &quot;Chr2&quot;)
+</code></pre>
+
+<p><img src="../../assets/images/CRMAv2%2CHapMap%2CGWS6%2CNA06985%2CChr2%2C81-86Mb%2CTCN.png" alt=""></p>
+
+<p><em>Figure: Copy number estimates in a 5.0Mb region on Chr2 for sample
+NA06985.  There is a clear deletion at 83.1-83.7Mb.</em></p>
+
+<h2>Conclusions</h2>
+
+<p>We have shown how to estimate full-resolution (&quot;raw&quot;) total copy numbers
+using the CRMA v2 method presented in  (<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=19535535">Bengtsson, Wirapati, and Speed, 2009</a>).  These
+estimates can be used for various purposes, where segmentation for
+identifying CN regions is the most common one.  For details on how to
+apply downstream methods, see other aroma.affymetrix vignettes.</p>
+
+<h2>See also</h2>
+
+<ul>
+<li> <a href="../../blocks/doCRMAv2/index.html"><code>doCRMAv2()</code></a> - a convenient wrapper that runs CRMA v2 in one call.</li>
+</ul>
+
+<h2>References</h2>
+
+<p><a
+name=bib-BengtssonH_etal_2009-CRMAv1></a><a href="#cite-BengtssonH_etal_2009-CRMAv1">[1]</a>
+H. Bengtsson, R. Irizarry, B. Carvalho, et al. &quot;Estimation and
+assessment of raw copy numbers at the single locus level&quot;. Eng. In:
+<em>Bioinformatics (Oxford, England)</em> 24.6 (2008), pp. 759-67. DOI:
+<a href="http://dx.doi.org/10.1093/bioinformatics/btn016">10.1093/bioinformatics/btn016</a>.
+PMID:
+<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;cmd=prlinks&amp;retmode=ref&amp;id=18204055">18204055</a>.</p>
+
+<p><a
+name=bib-BengtssonH_etal_2009-CRMAv2></a><a href="#cite-BengtssonH_etal_2009-CRMAv2">[2]</a>
+H. Bengtsson, P. Wirapati and T. P. Speed. &quot;A single-array
+preprocessing method for estimating full-resolution raw copy numbers
+from all Affymetrix genotyping arrays including GenomeWideSNP 5 &amp; 6&quot;.
+Eng. In: <em>Bioinformatics (Oxford, England)</em> 25.17 (2009), pp. 2149-56.
+DOI:
+<a href="http://dx.doi.org/10.1093/bioinformatics/btp371">10.1093/bioinformatics/btp371</a>.
+PMID:
+<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;cmd=prlinks&amp;retmode=ref&amp;id=19535535">19535535</a>.</p>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/vignettes/CRMAv2/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/vignettes/CRMAv2/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/vignettes/CRMAv2/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

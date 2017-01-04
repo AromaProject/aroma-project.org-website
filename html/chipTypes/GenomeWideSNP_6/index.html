@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Chip type: GenomeWideSNP_6">Aroma: Chip type: GenomeWideSNP_6</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Chip type: GenomeWideSNP_6</h1>
+
+<h2>Genome-Wide Human SNP Array 6.0</h2>
+
+<p>Affymetrix&#39; press release: <em>Affymetrix Sets New Standard in Genotyping
+With Genome-Wide Human SNP Array 6.0</em>, <a href="http://www.corporate-ir.net/ireye/ir_site.zhtml?ticker=AFFX&amp;script=410&amp;layout=-6&amp;item_id=1004567">May 21,
+2007</a>.</p>
+
+<p>From the press release: &quot;The Affymetrix SNP Array 6.0 contains more than
+900,000 single nucleotide polymorphisms (SNPs) and more than 946,000
+non-polymorphic probes for the detection of copy number variation.
+[...]&quot;.</p>
+
+<p>The design of the 6.0 is better than 5.0.  For instance, for SNPs the
+allele A and allele B probes where not necessarily aligned in target
+sequence on the 5.0 chip, but is (again) on the 6.0 chip.</p>
+
+<p>The Affymetrix SNP 6.0 Array interrogates 934,946 SNPs and 946,371 CNPs
+totalling 1,878,317 loci.</p>
+
+<p>Enzymes Nsp and Sty are used in parallel in the assay and the amplified
+targets are mixed together at the very end.  For this reason, some of
+the probes on the array are targeting sequences that may sit on
+fragments cut by either enzymes or both.  According to Jim Veitch
+(Affymetrix, 2007-10-22): the SNP probes occur in a Nsp, Sty or Nsp+Sty
+fragment, but the CN probes occur only Nsp and Nsp+Sty fragments (not
+Sty-alone fragments).</p>
+
+<p>The Broad Institute has a Research News article &#39;<a href="http://www.broad.mit.edu/news/1059">A unique collaboration
+between Cambridge and Silicon
+Valley</a>&#39; (Sept 7, 2008), which gives
+some background on how the GenomeWideSNP_5 and GenomeWideSNP_6 chip
+types were developed as part of a collaboration between Affymetrix and
+the Broad Institute.</p>
+
+<p>Early versions of this chip type are GenomeWideEx_6 and
+GenomeWideEx_6_v2.</p>
+
+<h2>GenomeWideSNP_6.Full</h2>
+
+<p>This is the CDF file that is recommended and supported by
+aroma.affymetrix.  <em>Note, make sure to rename it such that you replace
+the dot with a comma.</em></p>
+
+<pre><code class="r">&gt; cdf &lt;- AffymetrixCdfFile$byChipType(&quot;GenomeWideSNP_6&quot;, tags=&quot;Full&quot;)
+&gt; print(cdf)
+
+AffymetrixCdfFile:
+Path: annotationData/chipTypes/GenomeWideSNP_6
+Filename: GenomeWideSNP_6,Full.CDF
+Filesize: 470.44MB
+Chip type: GenomeWideSNP_6,Full
+RAM: 0.00MB
+File format: v4 (binary; XDA)
+Dimension: 2572x2680
+Number of cells: 6892960
+Number of units: 1881415
+Cells per unit: 3.66
+Number of QC units: 4
+
+&gt; print(getChecksum(cdf))
+[1] &quot;3fbe0f6e7c8a346105238a3f3d10d4ec&quot;
+</code></pre>
+
+<h2>Resources</h2>
+
+<p>By aroma-project.org:</p>
+
+<ul>
+<li>  <a href="http://aroma-project.org/data/annotationData/chipTypes/GenomeWideSNP_6/GenomeWideSNP_6,Full,na33,hg19,dbSNP137,HB20140118.ufl.gz">GenomeWideSNP_6,Full,na33,hg19,dbSNP137,HB20140118.ufl.gz</a> (<a href="http://aroma-project.org/data/annotationData/chipTypes/GenomeWideSNP_6/GenomeWideSNP_6,na33,hg19,dbSNP137,HB20140118.ufl.gz">GenomeWideSNP_6,na33,hg19,dbSNP137,HB20140118.ufl.gz</a>)
+
+<ul>
+<li>Unit Fragment-Length (UFL) annotation file mapping to the units in
+the GenomeWideSNP_6.Full.CDF (GenomeWideSNP_6.CDF). Human Genome
+build v37 (hg19). Sources: Affymetrix NetAffx CSV files
+GenomeWideSNP_6.cn.na33.annot.csv (868MB) and
+GenomeWideSNP_6.na33.annot.csv (1.38GB).  Created by: Henrik
+Bengtsson, 2014-01-18.</li>
+</ul></li>
+<li>  <a href="http://aroma-project.org/data/annotationData/chipTypes/GenomeWideSNP_6/GenomeWideSNP_6,Full,na33,hg19,dbSNP137,HB20140118.ugp.gz">GenomeWideSNP_6,Full,na33,hg19,dbSNP137,HB20140118.ugp.gz</a> (<a href="http://aroma-project.org/data/annotationData/chipTypes/GenomeWideSNP_6/GenomeWideSNP_6,na33,hg19,dbSNP137,HB20140118.ugp.gz">GenomeWideSNP_6,na33,hg19,dbSNP137,HB20140118.ugp.gz</a>)
+
+<ul>
+<li>Unit Genome Position (UGP) annotation file mapping to the units in
+the GenomeWideSNP_6.Full.CDF (GenomeWideSNP_6.CDF). Human Genome
+build v37 (hg19). Sources: Affymetrix NetAffx CSV files
+GenomeWideSNP_6.cn.na33.annot.csv (868MB) and
+GenomeWideSNP_6.na33.annot.csv (1.38GB). Created by: Henrik
+Bengtsson, 2014-01-18.</li>
+</ul></li>
+<li>  <a href="http://aroma-project.org/data/annotationData/chipTypes/GenomeWideSNP_6/GenomeWideSNP_6,HB20080710.acs.gz">GenomeWideSNP_6,HB20080710.acs.gz</a> -
+Aroma Cell Sequence (ACS) annotation file mapping cell indices to
+25-mer sequences and target strandedness.  Sources: Affymetrix
+probe_tab file.  Created by: Henrik Bengtsson, 2008-07-10.</li>
+</ul>
+
+<p>By Affymetrix.com:</p>
+
+<ul>
+<li>  Product
+page: <a href="http://www.affymetrix.com/support/technical/byproduct.affx?product=genomewidesnp_6">http://www.affymetrix.com/support/technical/byproduct.affx?product=genomewidesnp_6</a></li>
+<li>  <a href="http://www.affymetrix.com/support/technical/datasheets/genomewide_snp5_datasheet.pdf" title="http://www.affymetrix.com/support/technical/datasheets/500k datasheet.pdf">Datasheet</a></li>
+<li>  Support Material: <a href="http://www.affymetrix.com/support/technical/byproduct.affx?product=genomewidesnp_6">Genome-Wide Human SNP Array 6.0 - Support
+Materials</a> (SNP
+annotation files with SNP positions, dbSNP ID, fragment lengths etc.
+Probe sequences.)</li>
+</ul>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/chipTypes/GenomeWideSNP_6/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/chipTypes/GenomeWideSNP_6/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/chipTypes/GenomeWideSNP_6/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

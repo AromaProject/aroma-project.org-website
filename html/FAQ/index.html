@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Frequently Asked Questions">Aroma: Frequently Asked Questions</title>
+  <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../getstarted/index.html">Get Started</a></li>
+        <li><a href="../docs/index.html">Documentation</a></li>
+        <li><a href="../features/index.html">Features</a></li>
+        <li><a href="../resources/index.html">Resources</a></li>
+        <li><a href="../forum/index.html">Forum</a></li>
+        <li><a href="../FAQ/index.html">FAQ</a></li>
+        <li><a href="../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Frequently Asked Questions</h1>
+
+<p><em>FAQ. 2010-06-29: Why do so few methods have a help() page?</em></p>
+
+<p>A: The main source of documentation for the aroma framework, is the
+<a href="http://www.aroma-project.org/">http://www.aroma-project.org/</a> website.  What is documented there, is
+well maintained, tested and supported.  The <code>help()</code> pages available that
+comes with the different aroma.* packages are mainly for developers and
+much less to for end users.  Several methods and classes do not even
+have such help pages.  The main reason is lack of resources to write but
+also maintain such documentation.  Please consider
+<a href="../getinvolved/index.html">contributing</a> to the online as well as help-page
+documentation.</p>
+
+<p><em>FAQ. 2008-03-26: Why do you not want to answer questions sent to your
+private email address?</em></p>
+
+<p>A: Please post all questions related to aroma.affymetrix to its dedicated
+<a href="../forum/index.html">mailing list</a>.
+This way there is a chance that others also can help out
+with your problem/question, which means that you hopefully get a reply
+quicker.  All questions and answers are archived and searchable online.
+Because of this, we can then refer to already answered questions by
+replying with a link.  Moreover, this way the chances for finding
+answers online increase.  So, please understand this when I ask you to
+repost your question to the mailing list.  It will not only save me but
+everyone a lot of time.</p>
+
+<p><em>FAQ. 2007-07-13: Hmm... why does R crash (core dump)?</em></p>
+
+<p>A: This is most likely due to a corrupt CDF or CEL file that the
+affxparser package is trying to read, e.g. zero-size or incomplete
+files.  The solution is to turn on as much verbose output as possible so
+that the corrupt file can be located and removed.  Unfortunately we
+cannot control for this at the moment, because it is due to the
+underlying Fusion SDK native library that affxparser is using, not R or
+aroma.affymetrix.  Hopefully it will be more robust in the future.
+However, we have added some sanity checks to avoid the most obvious
+corrupt files.</p>
+
+<p><em>FAQ. 2007-07-09: How do I convert an ASCII CDF into a binary CDF?</em></p>
+
+<p>A: Working with binary CDFs is <em>much faster</em> and much more memory
+efficient.  You can convert an ASCII CDF into a binary CDF using the
+<code>convertCdf()</code> function in affxparser.</p>
+
+<p><em>FAQ. 2007-05-24: Where can I download CDF files</em></p>
+
+<p>A: The CDF file for a given chip type is available in so called &quot;Library
+Files&quot; at the corresponding &quot;Support Materials&quot; page on the Affymetrix
+website.  You may find links to those Affymetrix pages via the <a href="../chipTypes/index.html">Chip
+types</a> pages.</p>
+
+<p><em>FAQ. 2007-03-07: Where is the file cache located?</em></p>
+
+<p>A: The call <code>getCacheRootPath()</code> will tell you where the root directory of
+the file cache is located on your system.  All of the cache files
+created by the package is under subdirectory aroma.affymetrix/.  You can
+use <code>setCacheRootPath()</code> to change the root directory.</p>
+
+<p><em>FAQ. 2007-02-14: The NnnExplorer does not seem to work?</em></p>
+
+<p>A: The NnnExplorer:s, such as ChromosomeExplorer and ArrayExplorer, are
+developed for modern web browser.  If it does not work on your browser,
+make sure to update and if that does not help, please let us know.</p>
+
+<p><em>FAQ. 2007-02-13: Why is aroma.affymetrix slow?</em></p>
+
+<p>A: The package is <em>not</em> slow ;) Seriously, it is designed to deal with
+any-sized data sets by keeping data on file rather than in memory.  In
+other words, we do pay a price from I/O of data.  For most algorithms
+this means that data is read twice instead of once, but that extra
+overhead is not large.  <em>However, you will experience that it takes a
+long time when you process a new chip type for the first time</em>.  This is
+because the package needs to create a customized CDF file (&quot;monocell
+CDF&quot;), which takes time.  As soon as this is created, you should not
+expect to see any longer delays.  Moreover, to improve on speed, the
+package caches (to file or in memory) results from calls that are
+computational expensive and are likely to be done again, either in the
+same session or in a future session.  You will see that this caching
+further speeds things up.  Also, make sure to use the verbose arguments
+to see what is going on when the package appears to &quot;get stuck&quot;.
+<em>Update 2008-11-04</em>:  See also the &#39;<a href="../howtos/ImproveProcessingTime/index.html">Improving processing
+time</a>&#39; how to page.</p>
+
+<p><em>FAQ. 2007-02-09: What is a monocell CDF?</em></p>
+
+<p>A: A monocell CDF is a CDF that has been extracted automatically from
+the &quot;main&quot; CDF and it can be identified by its name *,monocell.cdf.
+It only contains one cell per unit group.  Monocell CDFs are used to
+store chip-effect estimates of two-way PLMs.   A monocell CDF is created
+automatically if missing.  This may take everything from a few minutes
+to an hour.  However, is only done once per chip type.</p>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/FAQ/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/FAQ/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/FAQ/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

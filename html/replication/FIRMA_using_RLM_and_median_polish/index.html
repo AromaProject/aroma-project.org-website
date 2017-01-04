@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="R, Bioconductor, Affymetrix">
+  <meta name="author" content="Henrik Bengtsson">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="../../assets/ico/favicon.png">
+  <title title="The Aroma Project (Aroma): Replicate: FIRMA when using RLM and median polish">Aroma: Replicate: FIRMA when using RLM and median polish</title>
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/cbc-tweaks.css" rel="stylesheet">
+  <link href="../../assets/css/r_highlight.css" rel="stylesheet">
+  <script src="../../assets/js/r_highlight.js"></script>
+</head>
+<body>
+<a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="topnavbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="../../index.html" title="The Aroma Project">Aroma</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="../../getstarted/index.html">Get Started</a></li>
+        <li><a href="../../docs/index.html">Documentation</a></li>
+        <li><a href="../../features/index.html">Features</a></li>
+        <li><a href="../../resources/index.html">Resources</a></li>
+        <li><a href="../../forum/index.html">Forum</a></li>
+        <li><a href="../../FAQ/index.html">FAQ</a></li>
+        <li><a href="../../developers/index.html">Developers' Corner</a></li>
+        <li><a href="../../about/index.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<div class="bs-docs-header" id="content">
+<div class="container">
+<h1>Replicate: FIRMA when using RLM and median polish</h1>
+
+<p>Author: Mark Robinson<br>
+Created on: 2009-03-28<br>
+Last updated: 2009-10-21</p>
+
+<p>Christian Stratowa had been asking some questions about whether FIRMA
+<a name=cite-PurdomE_etal_2008-FIRMA></a>(<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=18573797">Purdom, Simpson, Robinson, Conboy, Lapuk, and Speed, 2008</a>) could be used with median polish
+estimates (as opposed to the current standard of using <a href="http://www.bioconductor.org/packages/release/bioc/html/affyPLM.html">affyPLM</a>
+-- robust linear model -- estimates).  He has
+written some test code to implement FIRMA based on either and compared
+the results.  I have shared his code (tidied up by Henrik Bengtsson) and
+results below:</p>
+
+<pre><code class="r">firma &lt;- function(m, method=c(&quot;rlm&quot;, &quot;mdp&quot;)) {
+## function to compute FIRMA scores (adapted from aroma.affymetrix)
+## m:      dataframe containing normalized probe intensities (linear
+scale)
+##         with 1.column containing the transcript_cluster_id
+##         and 2. column containing the corresponding probeset_ids
+## method: fitting model, one of &quot;rlm&quot; or &quot;mdp&quot;
+  require(&quot;matrixStats&quot;) || throw(&quot;Package not loaded: matrixStats&quot;)
+
+  # Argument &#39;method&#39;:
+    method &lt;- match.arg(method)
+
+  ## convert expression levels to log2
+  y &lt;- as.matrix(log2(m[,3:ncol(m)]))
+
+  ## dimensions
+  K &lt;- nrow(y)   # number of probes
+  I &lt;- ncol(y)   # number of arrays
+
+  ## fit log-additive model
+  if (method == &quot;rlm&quot;) {
+     fit &lt;- .Call(&quot;R_rlm_rma_default_model&quot;, y, 0, 1.345,
+                  PACKAGE=&quot;preprocessCore&quot;)
+  } else if (method == &quot;mdp&quot;) {
+     mp &lt;- medpolish(y, trace.iter=FALSE)
+     fit &lt;- list(Estimates = c(mp$overall + mp$col,  mp$row),
+                 StdErrors = rep(0, length(c(mp$row, mp$col))))
+  } # if
+
+  ## extract parameters
+  est &lt;- fit$Estimates
+  se  &lt;- fit$StdErrors
+
+  ## chip effects
+  beta &lt;- est[1:I]
+
+  ## probe affinities
+  if (K == 1) {
+     ## if only one probe must have affinity=1 since sum constraint
+     alpha &lt;- 0
+  } else {
+     ## affinities sum to zero (on log scale)
+     alpha &lt;- est[(I+1):length(est)]
+     alpha[length(alpha)] &lt;- -sum(alpha[1:(length(alpha)-1)])
+  } # if
+
+  ## estimates on the intensity scale
+  theta &lt;- 2\^beta
+  phi   &lt;- 2\^alpha
+
+  ## calculate residuals
+  phi   &lt;- matrix(phi,   nrow=K, ncol=I, byrow=FALSE)
+  theta &lt;- matrix(theta, nrow=K, ncol=I, byrow=TRUE)
+  yhat  &lt;- phi*theta
+  eps   &lt;- (2\^y) / yhat  # RMA uses y/yhat
+
+  ## estimate of standard error
+  z &lt;- log2(eps)
+  z &lt;- unlist(z, use.names=FALSE)
+  u.mad &lt;- mad(z, center=0)
+
+  ## get probeset_ids
+  id &lt;- unique(m[,2])
+
+  ## FIRMA scores
+  fs &lt;- sapply(id, function(unitName) {
+    rr &lt;- which(m[,2] == unitName)
+    z &lt;- eps[rr,,drop=FALSE]
+    z &lt;- log2(z) / u.mad
+    colMedians(z)
+  })
+  fs &lt;- t(fs)
+  rownames(fs) &lt;- id
+
+  fs
+} # firma()
+</code></pre>
+
+<p>Then the following commands will give the image below.</p>
+
+<pre><code class="r">library(&quot;preprocessCore&quot;)
+score.mdp &lt;- firma(unr, &quot;mdp&quot;)
+score.rml &lt;- firma(unr, &quot;rlm&quot;)
+
+par(pty=&quot;m&quot;, mfcol=c(3,2), mar=c(5,5,4,2))
+for (ii in 1:6) {
+  plot(score.rml[,ii], type=&quot;l&quot;, ylim=c(-3,5),
+       main=colnames(score.rml)[ii], xlab=&quot;Probeset&quot;, ylab=&quot;Score&quot;)
+  abline(h=0, lty=3)
+  lines(score.mdp[,ii], lty=2)
+}
+</code></pre>
+
+<p><img src="../../assets/images/firmaplots6.png" alt=""></p>
+
+<p><em>Figure: FIRMA scores for 30 probesets when using RLM (solid) and median
+polish (dashed) estimators to fit the FIRMA model.</em></p>
+
+<h2>References</h2>
+
+<p><a
+name=bib-PurdomE_etal_2008-FIRMA></a><a href="#cite-PurdomE_etal_2008-FIRMA">[1]</a>
+E. Purdom, K. M. Simpson, M. D. Robinson, et al. &quot;FIRMA: a method for
+detection of alternative splicing from exon array data&quot;. Eng. In:
+<em>Bioinformatics (Oxford, England)</em> 24.15 (2008), pp. 1707-14. DOI:
+<a href="http://dx.doi.org/10.1093/bioinformatics/btn284">10.1093/bioinformatics/btn284</a>.
+PMID:
+<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;cmd=prlinks&amp;retmode=ref&amp;id=18573797">18573797</a>.</p>
+
+<p><a
+name=bib-BengtssonH_etal_2009-CRMAv2></a><a href="#cite-BengtssonH_etal_2009-CRMAv2">[2]</a>
+H. Bengtsson, P. Wirapati and T. P. Speed. &quot;A single-array
+preprocessing method for estimating full-resolution raw copy numbers
+from all Affymetrix genotyping arrays including GenomeWideSNP 5 &amp; 6&quot;.
+Eng. In: <em>Bioinformatics (Oxford, England)</em> 25.17 (2009), pp. 2149-56.
+DOI:
+<a href="http://dx.doi.org/10.1093/bioinformatics/btp371">10.1093/bioinformatics/btp371</a>.
+PMID:
+<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;cmd=prlinks&amp;retmode=ref&amp;id=19535535">19535535</a>.</p>
+</div>
+</div> 
+</div> 
+
+<div id="filler"></div>
+
+
+<div id="push"></div> 
+<div id="footer" style="height: auto;">
+  <div class="container">
+<p class="muted credit" style="font-size: small;">
+  The Aroma Project
+  <span class="printonly">(http://www.aroma-project.org/)</span>
+  ::
+  © Henrik Bengtsson
+  ::
+  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+
+  <span style="float: right;">
+  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/replication/FIRMA_using_RLM_and_median_polish/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  &nbsp;
+  <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/replication/FIRMA_using_RLM_and_median_polish/index.md.rsp" id="edit"
+  target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+  &nbsp;
+  <a href="http://v1.aroma-project.org/replication/FIRMA_using_RLM_and_median_polish/" id="old-page"
+  target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+  </span>
+</p>
+
+  </div>
+</div>
+
+<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="../../assets/js/post-jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="../../assets/js/post-bootstrap.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-11999401-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>
