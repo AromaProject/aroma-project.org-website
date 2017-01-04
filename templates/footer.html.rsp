@@ -2,7 +2,7 @@
   The Aroma Project
   <span class="printonly">(http://<%@string name="site_domain"%>/)</span>
   ::
-  © <%@string name="site_copyright"%>
+  &copy; <%@string name="site_copyright"%>
   ::
   Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
 
