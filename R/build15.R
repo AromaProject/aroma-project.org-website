@@ -3,6 +3,9 @@ R.utils::use("R.utils")
 sourceDirectory("templates/R/")
 #source("templates/R/aliases.R")
 
+options(warn = 1L)
+
+
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Parse options
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -148,3 +151,4 @@ if (input == "content,tmp") {
 } else {
   throw("Unknown '--input' value: ", input)
 }
+
