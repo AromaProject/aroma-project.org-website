@@ -56,7 +56,7 @@ specify the gender of samples, and how to (ii) calculate a pooled
 copy-number reference that is corrected for sample biases due to
 difference in sex chromosomes.  This gender-aware bias correction is
 described in Section &#39;3.2.7 Reference signals&#39; of
-<a name=cite-BengtssonH_etal_2009-CRMAv1></a><a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=18204055">Bengtsson, Irizarry, Carvalho, and Speed (2008)</a>.</p>
+<a name=cite-BengtssonH_etal_2009-CRMAv1></a><a href="https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=18204055">Bengtsson, Irizarry, Carvalho, and Speed (2008)</a>.</p>
 
 <p>In the below figure, the top and bottom panels show chromosome X copy-number
 estimates with and without bias correction.</p>
@@ -327,14 +327,14 @@ NA07048 1   1
 
 <h2>Preprocessing (CEL files to copy-number signals)</h2>
 
-<p>After having made sure everything above is correct, we next preprocess and summarize the raw CEL file data to obtain one copy-number signal per locus.  Here we the CRMA (v1) method (<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=18204055">Bengtsson, Irizarry, Carvalho, et al., 2008</a>).</p>
+<p>After having made sure everything above is correct, we next preprocess and summarize the raw CEL file data to obtain one copy-number signal per locus.  Here we the CRMA (v1) method (<a href="https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=18204055">Bengtsson, Irizarry, Carvalho, et al., 2008</a>).</p>
 
 <pre><code class="r">res &lt;- doCRMAv1(csR, drop=FALSE)
 cesN &lt;- res$cesN  # ChipEffectSet
 print(cesN)
 </code></pre>
 
-<p>For modern chip types, such as GenomeWideSNP_6, it&#39;s recommended to use <code>doCRMAv2()</code> instead, which processes the data using the CRMA v2 method <a name=cite-BengtssonH_etal_2009-CRMAv2></a>(<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=19535535">Bengtsson, Wirapati, and Speed, 2009</a>).</p>
+<p>For modern chip types, such as GenomeWideSNP_6, it&#39;s recommended to use <code>doCRMAv2()</code> instead, which processes the data using the CRMA v2 method <a name=cite-BengtssonH_etal_2009-CRMAv2></a>(<a href="https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=19535535">Bengtsson, Wirapati, and Speed, 2009</a>).</p>
 
 <p>Before continuing, lets convince ourselves that the &#39;n23&#39; and &#39;n24&#39; attributes are also reflected in the chip effects returned:</p>
 
@@ -419,7 +419,8 @@ toPNG(&quot;ChrX&quot;, tags=c(&quot;nonCorrected&quot;), aspectRatio=0.618, {
 name=bib-BengtssonH_etal_2009-CRMAv1></a><a href="#cite-BengtssonH_etal_2009-CRMAv1">[1]</a>
 H. Bengtsson, R. Irizarry, B. Carvalho, et al. &quot;Estimation and
 assessment of raw copy numbers at the single locus level&quot;. Eng. In:
-<em>Bioinformatics (Oxford, England)</em> 24.6 (2008), pp. 759-67. DOI:
+<em>Bioinformatics (Oxford, England)</em> 24.6 (Mar. 2008), pp. 759-67. ISSN:
+1367-4811. DOI:
 <a href="http://dx.doi.org/10.1093/bioinformatics/btn016">10.1093/bioinformatics/btn016</a>.
 PMID:
 <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;cmd=prlinks&amp;retmode=ref&amp;id=18204055">18204055</a>.</p>
@@ -429,8 +430,8 @@ name=bib-BengtssonH_etal_2009-CRMAv2></a><a href="#cite-BengtssonH_etal_2009-CRM
 H. Bengtsson, P. Wirapati and T. P. Speed. &quot;A single-array
 preprocessing method for estimating full-resolution raw copy numbers
 from all Affymetrix genotyping arrays including GenomeWideSNP 5 &amp; 6&quot;.
-Eng. In: <em>Bioinformatics (Oxford, England)</em> 25.17 (2009), pp. 2149-56.
-DOI:
+Eng. In: <em>Bioinformatics (Oxford, England)</em> 25.17 (Sep. 2009), pp.
+2149-56. ISSN: 1367-4811. DOI:
 <a href="http://dx.doi.org/10.1093/bioinformatics/btp371">10.1093/bioinformatics/btp371</a>.
 PMID:
 <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;cmd=prlinks&amp;retmode=ref&amp;id=19535535">19535535</a>.</p>
@@ -448,7 +449,7 @@ PMID:
   The Aroma Project
   <span class="printonly">(http://www.aroma-project.org/)</span>
   ::
-  © Henrik Bengtsson
+  &copy; Henrik Bengtsson
   ::
   Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
 

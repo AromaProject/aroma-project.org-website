@@ -53,7 +53,7 @@ Last updated: 2014-12-21</p>
 
 <div class="alert alert-warning" role="alert">
   <span class="glyphicon glyphicon-exclamation-sign" style="font-size: 1.2em;"></span>
-This document presents the original CRMA (v1) method.  It was later replaced by the CRMA v2 method <a id='cite-BengtssonH_etal_2009-CRMAv2'></a>(<a href='http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;cmd=prlinks&amp;retmode=ref&amp;id=19535535'>Bengtsson, Wirapati, and Speed, 2009</a>).
+This document presents the original CRMA (v1) method.  It was later replaced by the CRMA v2 method <a id='cite-BengtssonH_etal_2009-CRMAv2'></a>(<a href='https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;cmd=prlinks&amp;retmode=ref&amp;id=19535535'>Bengtsson, Wirapati, and Speed, 2009</a>).
 CRMA v2 was designed for newer versions of chip types (e.g. GenomeWideSNP_6), which were not available when CRMA v1 was developed.  CRMA v1 was designed for older generation of chip types, e.g. Mapping10K_Xba142, Mapping50K_Hind240 and Mapping250K_Nsp.  Furthermore, CRMA v2 is a single-array method, whereas CRMA v1 is a multi-array method.
 </div>
 
@@ -108,9 +108,10 @@ Department of Statistics, University of California, Berkeley, Feb. 2008.</p>
 <p>H. Bengtsson, R. Irizarry, B. Carvalho, et al.
 &ldquo;Estimation and assessment of raw copy numbers at the single locus level&rdquo;.
 Eng.
-In: <em>Bioinformatics (Oxford, England)</em> 24.6 (2008), pp. 759-67.
+In: <em>Bioinformatics (Oxford, England)</em> 24.6 (Mar. 2008), pp. 759-67.
+ISSN: 1367-4811.
 DOI: <a href="http://dx.doi.org/10.1093/bioinformatics/btn016">10.1093/bioinformatics/btn016</a>.
-PMID: <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;cmd=prlinks&amp;retmode=ref&amp;id=18204055">18204055</a>.</p>
+PMID: <a href="https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;cmd=prlinks&amp;retmode=ref&amp;id=18204055">18204055</a>.</p>
 
   </li>
  </ul>
@@ -265,7 +266,7 @@ RAM: 0.06MB
 
 <h3>Normalizing</h3>
 
-<p>Comment: In <a name=cite-BengtssonH_etal_2009-CRMAv1></a><a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=18204055">Bengtsson, Irizarry, Carvalho, and Speed (2008)</a>,
+<p>Comment: In <a name=cite-BengtssonH_etal_2009-CRMAv1></a><a href="https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=18204055">Bengtsson, Irizarry, Carvalho, and Speed (2008)</a>,
 we show that it is better to do
 allelic-crosstalk calibration and use quantile normalization as an
 optional follow-up step.  However, since this example was prepared
@@ -410,7 +411,7 @@ combineAlleles: logi TRUE)
 <h2>Identification of copy-number regions (CNRs)</h2>
 
 <p>The Gain and Loss Analysis of DNA (GLAD) model by
-<a name=cite-HupeP_etal_2004-GLAD></a>(<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=15381628">Hupe, Stransky, Thiery, Radvanyi, and Barillot, 2004</a>) can be applied to
+<a name=cite-HupeP_etal_2004-GLAD></a>(<a href="https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=15381628">Hupe, Stransky, Thiery, Radvanyi, and Barillot, 2004</a>) can be applied to
 <em>raw copy numbers</em> (CNs).  For each location, the raw CN
 is calculated as the chip effect relative to the chip effect of a normal
 reference sample.  If no reference sample is available, a robust average
@@ -483,7 +484,7 @@ Reference file:
 <h3>Extracting raw copy numbers</h3>
 
 <p><em>This subsection is optional and may be skipped.</em>
-Given any CopyNumberChromosomalModel, including GladModel, it is possible to extract raw copy numbers (log-ratios as defined in <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=18204055">Bengtsson, Irizarry, Carvalho, et al. (2008)</a>) as follows:</p>
+Given any CopyNumberChromosomalModel, including GladModel, it is possible to extract raw copy numbers (log-ratios as defined in <a href="https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=18204055">Bengtsson, Irizarry, Carvalho, et al. (2008)</a>) as follows:</p>
 
 <pre><code class="r">rawCNs &lt;- extractRawCopyNumbers(glad, array=1, chromosome=1)
 print(rawCNs)
@@ -580,7 +581,8 @@ PMID:
 name=bib-BengtssonH_etal_2009-CRMAv1></a><a href="#cite-BengtssonH_etal_2009-CRMAv1">[2]</a>
 H. Bengtsson, R. Irizarry, B. Carvalho, et al. &quot;Estimation and
 assessment of raw copy numbers at the single locus level&quot;. Eng. In:
-<em>Bioinformatics (Oxford, England)</em> 24.6 (2008), pp. 759-67. DOI:
+<em>Bioinformatics (Oxford, England)</em> 24.6 (Mar. 2008), pp. 759-67. ISSN:
+1367-4811. DOI:
 <a href="http://dx.doi.org/10.1093/bioinformatics/btn016">10.1093/bioinformatics/btn016</a>.
 PMID:
 <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;cmd=prlinks&amp;retmode=ref&amp;id=18204055">18204055</a>.</p>
@@ -590,8 +592,8 @@ name=bib-BengtssonH_etal_2009-CRMAv2></a><a href="#cite-BengtssonH_etal_2009-CRM
 H. Bengtsson, P. Wirapati and T. P. Speed. &quot;A single-array
 preprocessing method for estimating full-resolution raw copy numbers
 from all Affymetrix genotyping arrays including GenomeWideSNP 5 &amp; 6&quot;.
-Eng. In: <em>Bioinformatics (Oxford, England)</em> 25.17 (2009), pp. 2149-56.
-DOI:
+Eng. In: <em>Bioinformatics (Oxford, England)</em> 25.17 (Sep. 2009), pp.
+2149-56. ISSN: 1367-4811. DOI:
 <a href="http://dx.doi.org/10.1093/bioinformatics/btp371">10.1093/bioinformatics/btp371</a>.
 PMID:
 <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;cmd=prlinks&amp;retmode=ref&amp;id=19535535">19535535</a>.</p>
@@ -609,7 +611,7 @@ PMID:
   The Aroma Project
   <span class="printonly">(http://www.aroma-project.org/)</span>
   ::
-  © Henrik Bengtsson
+  &copy; Henrik Bengtsson
   ::
   Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
 

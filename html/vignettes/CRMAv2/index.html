@@ -53,7 +53,7 @@ Last updated on: 2014-12-21</p>
 
 <p>This document describes in detail how to estimate total copy numbers
 (CNs) in aroma.affymetrix according to the CRMA v2 method described in
-<a name=cite-BengtssonH_etal_2009-CRMAv2></a><a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=19535535">Bengtsson, Wirapati, and Speed (2009)</a>.  All the steps of CRMA v2
+<a name=cite-BengtssonH_etal_2009-CRMAv2></a><a href="https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=19535535">Bengtsson, Wirapati, and Speed (2009)</a>.  All the steps of CRMA v2
 will be done one by one and the output of each step will be discussed.
  If you wish to run CRMA v2 without going through the details, see
 the <a href="../../blocks/doCRMAv2/index.html">doCRMAv2()</a> function, which
@@ -73,7 +73,7 @@ C = theta/thetaR, where theta and thetaR are probe summaries (chip
 effects) for the test sample and reference.</li>
 </ol>
 
-<p>A major advantage of CRMA v2 compared to CRMA v1 <a name=cite-BengtssonH_etal_2009-CRMAv1></a>(<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=18204055">Bengtsson, Irizarry, Carvalho, and Speed, 2008</a>), is that especially for GenomeWideSNP_5 and GenomeWideSNP_6 it is a truly single-array preprocessing method.  This means that the results will be identical regardless whether arrays are processed in batches or separately, which is especially convenient when new samples arrives over time.
+<p>A major advantage of CRMA v2 compared to CRMA v1 <a name=cite-BengtssonH_etal_2009-CRMAv1></a>(<a href="https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=18204055">Bengtsson, Irizarry, Carvalho, and Speed, 2008</a>), is that especially for GenomeWideSNP_5 and GenomeWideSNP_6 it is a truly single-array preprocessing method.  This means that the results will be identical regardless whether arrays are processed in batches or separately, which is especially convenient when new samples arrives over time.
 It is possible, for the price of
 slightly less good copy number estimates, to also process older chip
 types in the same truly single-array approach using CRMA v2, e.g.
@@ -520,7 +520,7 @@ combineAlleles: logi TRUE)
 <h2>Step 5 - Calculation of raw copy numbers</h2>
 
 <p>The above <code>cesN</code> object contains chip-effect estimates according to the
-CRMA v2 method (<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=19535535">Bengtsson, Wirapati, and Speed, 2009</a>).  In this
+CRMA v2 method (<a href="https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=19535535">Bengtsson, Wirapati, and Speed, 2009</a>).  In this
 section we will show how to calculate raw copy numbers relative to a
 reference.  Note that several of the downstream methods, such as
 segmentation methods, will do this automatically/internally and
@@ -641,7 +641,7 @@ NA06985.  There is a clear deletion at 83.1-83.7Mb.</em></p>
 <h2>Conclusions</h2>
 
 <p>We have shown how to estimate full-resolution (&quot;raw&quot;) total copy numbers
-using the CRMA v2 method presented in  (<a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=19535535">Bengtsson, Wirapati, and Speed, 2009</a>).  These
+using the CRMA v2 method presented in  (<a href="https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=19535535">Bengtsson, Wirapati, and Speed, 2009</a>).  These
 estimates can be used for various purposes, where segmentation for
 identifying CN regions is the most common one.  For details on how to
 apply downstream methods, see other aroma.affymetrix vignettes.</p>
@@ -658,7 +658,8 @@ apply downstream methods, see other aroma.affymetrix vignettes.</p>
 name=bib-BengtssonH_etal_2009-CRMAv1></a><a href="#cite-BengtssonH_etal_2009-CRMAv1">[1]</a>
 H. Bengtsson, R. Irizarry, B. Carvalho, et al. &quot;Estimation and
 assessment of raw copy numbers at the single locus level&quot;. Eng. In:
-<em>Bioinformatics (Oxford, England)</em> 24.6 (2008), pp. 759-67. DOI:
+<em>Bioinformatics (Oxford, England)</em> 24.6 (Mar. 2008), pp. 759-67. ISSN:
+1367-4811. DOI:
 <a href="http://dx.doi.org/10.1093/bioinformatics/btn016">10.1093/bioinformatics/btn016</a>.
 PMID:
 <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;cmd=prlinks&amp;retmode=ref&amp;id=18204055">18204055</a>.</p>
@@ -668,8 +669,8 @@ name=bib-BengtssonH_etal_2009-CRMAv2></a><a href="#cite-BengtssonH_etal_2009-CRM
 H. Bengtsson, P. Wirapati and T. P. Speed. &quot;A single-array
 preprocessing method for estimating full-resolution raw copy numbers
 from all Affymetrix genotyping arrays including GenomeWideSNP 5 &amp; 6&quot;.
-Eng. In: <em>Bioinformatics (Oxford, England)</em> 25.17 (2009), pp. 2149-56.
-DOI:
+Eng. In: <em>Bioinformatics (Oxford, England)</em> 25.17 (Sep. 2009), pp.
+2149-56. ISSN: 1367-4811. DOI:
 <a href="http://dx.doi.org/10.1093/bioinformatics/btp371">10.1093/bioinformatics/btp371</a>.
 PMID:
 <a href="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;cmd=prlinks&amp;retmode=ref&amp;id=19535535">19535535</a>.</p>
@@ -687,7 +688,7 @@ PMID:
   The Aroma Project
   <span class="printonly">(http://www.aroma-project.org/)</span>
   ::
-  © Henrik Bengtsson
+  &copy; Henrik Bengtsson
   ::
   Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
 
