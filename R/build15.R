@@ -16,11 +16,20 @@ assert_no_plain_UTF8 <- function(x) {
     msg <- sprintf("ENCODING ERROR: Detected NA character strings in %s:\n%s\n", sQuote(name), paste(lines, collapse = "\n"))
     throw(msg)
   }
+  
   if (any(grepl("<U+", x, fixed = TRUE))) {
     bad <- rep("   ", times = length(x))
     bad[grep("<U+", x)] <- "==>"
     lines <- sprintf("%s%3d: %s", bad, seq_along(x), sQuote(x))
     msg <- sprintf("ENCODING ERROR: Detected non-encoded UTF-8 character as plain text (e.g. '<U+00E9>') in %s:\n%s\n", sQuote(name), paste(lines, collapse = "\n"))
+    throw(msg)
+  }
+
+  if (any(grepl("<[0-9a-f]{2}>", x, fixed = FALSE))) {
+    bad <- rep("   ", times = length(x))
+    bad[grep("<[0-9a-f]{2}>", x)] <- "==>"
+    lines <- sprintf("%s%3d: %s", bad, seq_along(x), sQuote(x))
+    msg <- sprintf("ENCODING ERROR: Detected non-encoded non-ASCII character as plain text (e.g. '<c3>') in %s:\n%s\n", sQuote(name), paste(lines, collapse = "\n"))
     throw(msg)
   }
 }
