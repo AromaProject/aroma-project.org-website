@@ -131,6 +131,9 @@ biblist_clear <- function() {
 } # biblist_clear()
 
 biblist <- function(.opts=list(check.entries = FALSE, sorting = "ynt"), clear=TRUE, ...) {
+  ## WORKAROUND: RefManageR::format() does not work with encoding = "UTF-8"
+  oopts <- options(encoding = "native.enc")
+  on.exit(options(oopts))
   PrintBibliography(references, .opts=.opts, ...)
   if (clear) biblist_clear()
 } # biblist()
