@@ -140,19 +140,17 @@ URL: [**http://www.hapmap.org/**](http://www.hapmap.org/)
 
  **HapMap: 270** **Affymetrix** **Mapping 100K HapMap samples**  
 Description: All 270 HapMap Phase II (CEU, CHB+JPT, YRI) 100K samples.  
-URL: <http://www.hapmap.org/downloads/raw_data/affy100k/>
+URL: <ftp://ftp.ncbi.nlm.nih.gov/hapmap/raw_data/affy100k/>
 
 **HapMap: 270** **Affymetrix** **Mapping 500K HapMap samples**  
 Chip type(s): Mapping250K_Nsp, Mapping250K_Sty  
 Description: All 270 HapMap Phase II (CEU, CHB+JPT, YRI) 500K samples.  
-URL: <http://www.hapmap.org/downloads/raw_data/affy500k/>
+URL: <ftp://ftp.ncbi.nlm.nih.gov/hapmap/raw_data/affy500k/>
 
 **HapMap: 1200+ Affymetrix GenomeWideSNP_6 HapMap samples**  
 Chip type(s): GenomeWideSNP_6  
-Description: 1200+ HapMap Phase III (many different populations) GWS6
-samples.  
-URL:
-[http://www.hapmap.org/downloads/raw_data/hapmap3_affy6.0/ ](http://www.hapmap.org/downloads/raw_data/hapmap3_affy6.0/)
+Description: 1200+ HapMap Phase III (many different populations) GWS6 samples.  
+URL: <ftp://ftp.ncbi.nlm.nih.gov/hapmap/raw_data/hapmap3_affy6.0>
 
 
 
