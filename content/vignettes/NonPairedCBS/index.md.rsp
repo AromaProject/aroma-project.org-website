@@ -8,7 +8,7 @@ This document explains how to do total copy-number (CN) segmentation on
 a CN data set, how to export the segmentation results to tabular text
 files.
 
-## Prepreprocessing
+## Preprocessing
 
 We assume that locus-specific CN estimates have already been obtained
 via one of many CN preprocessing methods (e.g.

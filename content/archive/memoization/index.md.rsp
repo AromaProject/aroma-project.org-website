@@ -11,7 +11,7 @@ It is kept here because some webpages links to it.
 There are several computations in aroma.affymetrix that generate
 identical output and are repeated between method calls or even
 analysis sessions.  In order to speed up such repeated calculations,
-the package caches results using a techique referred to as
+the package caches results using a technique referred to as
 [memoization](http://en.wikipedia.org/wiki/Memoization).  You will
 typically notice that the first time you analyze a new type of chip,
 some computations takes a long time, but the second time it is much

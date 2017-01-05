@@ -4,7 +4,7 @@ Author: Elizabeth Purdom, Mark Robinson, Ken Simpson
 Created on: 2007-12-03  
 Last updated: 2012-08-30
 
-Affymetrix provides clusterings of the exon probesets that are meant to
+Affymetrix provides clustering of the exon probesets that are meant to
 roughly correspond to genes (see Affymetrix documentation). An advantage
 of these groupings of the exons is that each exon and probe is uniquely
 mapped to only one transcript cluster. For exon array analysis, we would

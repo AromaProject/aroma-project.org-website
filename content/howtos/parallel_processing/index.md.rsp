@@ -5,7 +5,7 @@ Created on: 2016-01-11
 Last updated: 2017-01-03
 
 
-Parallel processing is supported in Aroma since January 2016 with the release of aroma.affymetrix 3.0.0.  The default is to process data sequentially (synchronously), but with a single change in setting, it is possible to process data in parallel (asynchroneously) on the current machine or on a cluster of compute node.  The mechanism for synchronously/asynchronously processing is automatically handled by the [future] package.
+Parallel processing is supported in Aroma since January 2016 with the release of aroma.affymetrix 3.0.0.  The default is to process data sequentially (synchronously), but with a single change in setting, it is possible to process data in parallel (asynchronously) on the current machine or on a cluster of compute node.  The mechanism for synchronously/asynchronously processing is automatically handled by the [future] package.
 
 As shown below, the `future::plan()` function can be used to control how data is processed.  I suggest that you add this to your `~/.Rprofile` file, or to a project-specific one `./.Rprofile` in the working directory.  This way you don't have to edit your scripts and therefore they should be able to run anywhere regardless of computational resources.
 
