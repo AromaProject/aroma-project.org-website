@@ -11,7 +11,12 @@ count <- 1L
 <%
   ref <- references[[kk]]
   if (!any(grepl(pattern, ref$author))) next
-  md <- format(ref, style="markdown")
+  md <- local({
+    ovalue <- Sys.getlocale("LC_CTYPE")
+    on.exit(Sys.setlocale("LC_CTYPE", ovalue))
+    Sys.setlocale("LC_CTYPE", "en_US.UTF-8")
+    format(ref, style="markdown")
+  })
   md0 <<- md
   md <- sub("[1] ", "", md, fixed=TRUE)
   md <- gsub("..", ".", md, fixed=TRUE)
@@ -20,6 +25,14 @@ count <- 1L
     keywords <- trim(unlist(strsplit(keywords, split="[,;]")))
     md <- sprintf("%s  \nKeywords: %s", md, paste(keywords, collapse="; "))
   }
+
+  ## Sanity check
+  if (any(grepl("<[0-9a-f]{2}>", md, fixed = FALSE))) {
+    msg <- sprintf("ENCODING ERROR: Detected non-encoded non-ASCII character in reference #%d :\n%s\n%s\n", kk, paste(md, collapse = "\n"), paste(capture.output(str(ref)), collapse = "\n"))
+    assign("ref", ref, envir = globalenv())
+	throw(msg)
+  }
+
   printf("[%d] %s\n\n", count, md)
   count <- count + 1L
 %>

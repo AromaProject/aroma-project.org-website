@@ -8,7 +8,12 @@ BibOptions(check.entries=FALSE)
 BibOptions(style="markdown")
 
 ## Load references
-references <- ReadBib("assets/references/references.bib")
+references <- local({
+  ovalue <- Sys.getlocale("LC_CTYPE")
+  on.exit(Sys.setlocale("LC_CTYPE", ovalue))
+#  Sys.setlocale("LC_CTYPE", "en_US.UTF-8")
+  ReadBib("assets/references/references.bib")
+})
 
 ## Sort
 references <- sort(references, sorting="ydnt")
