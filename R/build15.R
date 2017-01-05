@@ -2,6 +2,7 @@ R.utils::use("R.utils")
 
 options(warn = 1L)
 options(encoding = "iso-8859-1")
+options(encoding = "UTF-8")
 
 ## WORKAROUND:
 ## With 'en_US.UTF-8' (default on Ubuntu 16.04) we get invalid
@@ -85,7 +86,7 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
       mcat("Read raw body ...\n")
       body_raw <- readLines2(fileS, warn=FALSE, encoding = encoding)
       assert_no_plain_UTF8(body_raw)
-      
+
       # Convert any non-ASCII strings into UTF-8 strings
       body_raw <- iconv(body_raw, from = encoding, to="UTF-8")
       mprintf("Encoding of raw body: %s\n", hpaste(unique(sQuote(Encoding(body_raw)))))
