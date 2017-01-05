@@ -14,10 +14,12 @@
   <%-- Edit link --%>
   <a href="<%=editURL%>" id="edit"
   target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
+<%---  
   &nbsp;
   <%-- Link to page on old site --%>
   <a href="http://v1.aroma-project.org/<%=url.path%>" id="old-page"
   target="_blank"><span class="glyphicon glyphicon-time" title="Go to old page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Go to old page</span></a>
+---%>
   </span>
 </p>
 
