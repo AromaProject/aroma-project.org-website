@@ -1,0 +1,79 @@
+@TechReport{BengtssonH_etal_2008-aroma.affymetrix,
+  Title                    = {{aroma.affymetrix}: A generic framework in {R} for analyzing small to very large {Affymetrix} data sets in bounded memory},
+  Author                   = {H. Bengtsson and K. Simpson and J. Bullard and K. Hansen},
+  Institution              = {Department of Statistics, University of California, Berkeley},
+  Year                     = {2008},
+  Month                    = {February},
+  Number                   = {745},
+  Abstract                 = {Summary: We have developed a cross-platform open-source framework for analyzing Affymetrix data sets consisting of 1 to 1,000s of arrays. By working directly with CDF and CEL files (standard Affymetrix file formats) most chip types are automatically supported, e.g. expression, SNP, and exon arrays. The package provides methods for low-level analysis such as background correction of different kinds, allelic cross-talk calibration, quantile and affine normalization, PCR fragment-length and GC-content normalization, probe-level summarization such as robust log-additive and multiplicative modeling, as well as a set of methods for high-level analysis, e.g. chromosomal segmentation and alternative splicing. Results can be exported to dynamical HTML reports for easy navigation of a large set of arrays both offline and online. All algorithms have been optimized to run in bounded memory (as low as 500MB of RAM) by either redesigning the algorithms or by processing data in chunks. Transformed data and parameter estimates are stored on file in standard file formats, which in turn minimizes the memory overhead, but also makes them immediately accessible to other software. Moreover, storing intermediate results in persistent memory makes computational expensive analyses more robust against system failures and allows for quick resumes. In addition to making common algorithms readily available, this package was designed to allow for quicker development of novel models and incorporation of existing ones, such as Bioconductor methods, and be prepared for future chip types.
+
+Availability: Software, documentation, examples and a user forum are available at http://www.braju.com/R/aroma.affymetrix/.},
+  Keywords                 = {aroma.affymetrix; preprocessing; normalization; quality control; background correction; probe-sequence normalization; quantile normalization; probeset summarization}
+}
+
+
+@InProceedings{BengtssonH_2003-R.oo,
+  Title                    = {The {R.oo} package - Object-Oriented Programming with References Using Standard {R} Code},
+  Author                   = {Bengtsson, Henrik},
+  Booktitle                = {Proceedings of the 3rd International Workshop on Distributed Statistical Computing (DSC 2003)},
+  Year                     = {2003},
+
+  Address                  = {Vienna, Austria},
+  Editor                   = {Kurt Hornik and Friedrich Leisch and Achim Zeileis},
+
+  ISSN                     = {1609-395X},
+  Url                      = {http://www.ci.tuwien.ac.at/Conferences/DSC-2003/},
+  Keywords                 = {R.methodsS3, R.oo, S3}
+}
+
+
+@TechReport{BengtssonH_2002-PlateEffects,
+  Title                    = {Identification and normalization of plate effects in {cDNA} microarray data},
+  Author                   = {Bengtsson, Henrik},
+  Institution              = MatStatLU,
+  Year                     = {2002},
+  Number                   = {2002:28},
+  Type                     = {{Preprints in Mathematical Sciences}},
+
+  Comment                  = {LUTFMS-5027-2002},
+  HowPublished             = {http://www.maths.lth.se/publications/},
+  ISSN                     = {1403-9338},
+  Keywords                 = {print-tip normalization; print-order effects; plate-order effects}
+}
+
+
+
+
+
+
+@TechReport{WuZ_etal_2004-GCRMA,
+  author                   = {Zhijin Wu and Rafael Irizarry and Robert Gentleman and Francisco Martinez Murillo and Forrest Spencer},
+  title                    = {{A Model Based Background Adjustment for Oligonucleotide Expression Arrays}},
+  year                     = 2004,
+  month                    = Jul,
+  institution              = {Berkeley Electronic Press},
+  type                     = {Johns Hopkins University Dept. of Biostatistics Working Paper Series},
+  url                      = {http://ideas.repec.org/p/bep/jhubio/1001.html},
+  number                   = {1001},
+  abstract                 = { High density oligonucleotide expression arrays are widely used in many areas of biomedical research. Affymetrix GeneChip arrays are the most popular. In the Affymetrix system, a fair amount of further pre-processing and data reduction occurs following the image processing step. Statistical procedures developed by academic groups have been successful at improving the default algorithms provided by the Affymetrix system. In this paper we present a solution to one of the pre-processing steps, background adjustment, based on a formal statistical framework. Our solution greatly improves the performance of the technology in various practical applications.Affymetrix GeneChip arrays use short oligonucleotides to probe for genes in an RNA sample. Typically each gene will be represented by 11-20 pairs of oligonucleotide probes. The first component of these pairs is referred to as a perfect match probe and is designed to hybridize only with transcripts from the intended gene (specific hybridization). However, hybridization by other sequences (non-specific hybridization) is unavoidable. Furthermore, hybridization strengths are measured by a scanner that introduces optical noise. Therefore, the observed intensities need to be adjusted to give accurate measurements of specific hybridization. One approach to adjusting is to pair each perfect match probe with a mismatch probe that is designed with the intention of measuring non-specific hybridization. The default adjustment, provided as part of the Affymetrix system, is based on the difference between perfect match and mismatch probe intensities. We have found that this approach can be improved via the use of estimators derived from a statistical model that use probe sequence information. The model is based on simple hybridization theory from molecular biology and experiments specifically designed to help develop it.A final step in the pre-processing of these arrays is to combine the 11-20 probe pair intensities,after background a},
+  keywords                 = {Affymetric Gene Chip; Empirical Bayes; Sequence Information; GC Content, GCRMA},
+}
+
+
+@Article{HupeP_etal_2004-GLAD,
+  title = {Analysis of array CGH data: from signal ratio to gain and loss of DNA regions},
+  author = {Philippe Hupe and Nicolas Stransky and Jean-Paul Thiery and Francois Radvanyi and Emmanuel Barillot},
+  year = {2004}, 
+  journal = {Bioinformatics (Oxford, England)},
+  volume = {20},
+  number = {18},
+  pages = {3413-22},
+  eprint = {15381628},
+  doi = {10.1093/bioinformatics/bth418},
+  language = {eng},
+  abstract = {MOTIVATION: Genomic DNA regions are frequently lost or gained during tumor progression. Array Comparative Genomic Hybridization (array CGH) technology makes it possible to assess these changes in DNA in cancers, by comparison with a normal reference. The identification of systematically deleted or amplified genomic regions in a set of tumors enables biologists to identify genes involved in cancer progression because tumor suppressor genes are thought to be located in lost genomic regions and oncogenes, in gained regions. Array CGH profiles should also improve the classification of tumors. The achievement of these goals requires a methodology for detecting the breakpoints delimiting altered regions in genomic patterns and assigning a status (normal, gained or lost) to each chromosomal region.
+RESULTS: We have developed a methodology for the automatic detection of breakpoints from array CGH profile, and the assignment of a status to each chromosomal region. The breakpoint detection step is based on the Adaptive Weights Smoothing (AWS) procedure and provides highly convincing results: our algorithm detects 97, 100 and 94% of breakpoints in simulated data, karyotyping results and manually analyzed profiles, respectively. The percentage of correctly assigned statuses ranges from 98.9 to 99.8% for simulated data and is 100% for karyotyping results. Our algorithm also outperforms other solutions on a public reference dataset.
+AVAILABILITY: The R package GLAD (Gain and Loss Analysis of DNA) is available upon request.},
+  eprinttype = {pubmed},
+  keywords = {GLAD; segmentation method},
+}

@@ -1,0 +1,344 @@
+@Article{OrtizM_etal_2012-CalMaTe,
+  title = {CalMaTe: a method and software to improve allele-specific copy number of SNP arrays for downstream segmentation},
+  author = {Maria Ortiz-Estevez and Ander Aramburu and Henrik Bengtsson and Pierre Neuvial and Angel Rubio},
+  year = {2012},
+  month = {Jul},
+  journal = {Bioinformatics (Oxford, England)},
+  volume = {28},
+  number = {13},
+  pages = {1793-4},
+  eprint = {22576175},
+  doi = {10.1093/bioinformatics/bts248},
+  language = {eng},
+  issn = {1367-4811},
+  abstract = {SUMMARY: CalMaTe calibrates preprocessed allele-specific copy number estimates (ASCNs) from DNA microarrays by controlling for single-nucleotide polymorphism-specific allelic crosstalk. The resulting ASCNs are on average more accurate, which increases the power of segmentation methods for detecting changes between copy number states in tumor studies including copy neutral loss of heterozygosity. CalMaTe applies to any ASCNs regardless of preprocessing method and microarray technology, e.g. Affymetrix and Illumina.
+AVAILABILITY: The method is available on CRAN (http://cran.r-project.org/) in the open-source R package calmate, which also includes an add-on to the Aroma Project framework (http://www.aroma-project.org/).},
+  eprinttype = {pubmed},
+  keywords = {CalMaTe; multi-array method},
+}
+
+@InCollection{NeuvialP_etal_2011-chapter,
+  doi = {10.1007/978-3-642-16345-6_11},
+  url = {http://dx.doi.org/10.1007/978-3-642-16345-6_11},
+  year = {2011},
+  publisher = {Springer Science + Business Media},
+  pages = {225--255},
+  author = {Pierre Neuvial and Henrik Bengtsson and Terence P. Speed},
+  title = {Statistical Analysis of Single Nucleotide Polymorphism Microarrays in Cancer Studies},
+  booktitle = {Handbook of Statistical Bioinformatics},
+}
+
+@Article{OlshenA_etal_2011-PSCBS,
+  title = {Parent-specific copy number in paired tumor-normal studies using circular binary segmentation},
+  author = {Adam B Olshen and Henrik Bengtsson and Pierre Neuvial and Paul T Spellman and Richard A Olshen and Venkatraman E Seshan},
+  year = {2011},
+  month = {Aug},
+  journal = {Bioinformatics (Oxford, England)},
+  volume = {27},
+  number = {15},
+  pages = {2038-46},
+  eprint = {21666266},
+  doi = {10.1093/bioinformatics/btr329},
+  language = {eng},
+  issn = {1367-4811},
+  abstract = {MOTIVATION: High-throughput techniques facilitate the simultaneous measurement of DNA copy number at hundreds of thousands of sites on a genome. Older techniques allow measurement only of total copy number, the sum of the copy number contributions from the two parental chromosomes. Newer single nucleotide polymorphism (SNP) techniques can in addition enable quantifying parent-specific copy number (PSCN). The raw data from such experiments are two-dimensional, but are unphased. Consequently, inference based on them necessitates development of new analytic methods.
+METHODS: We have adapted and enhanced the circular binary segmentation (CBS) algorithm for this purpose with focus on paired test and reference samples. The essence of paired parent-specific CBS (Paired PSCBS) is to utilize the original CBS algorithm to identify regions of equal total copy number and then to further segment these regions where there have been changes in PSCN. For the final set of regions, calls are made of equal parental copy number and loss of heterozygosity (LOH). PSCN estimates are computed both before and after calling.
+RESULTS: The methodology is evaluated by simulation and on glioblastoma data. In the simulation, PSCBS compares favorably to established methods. On the glioblastoma data, PSCBS identifies interesting genomic regions, such as copy-neutral LOH.
+AVAILABILITY: The Paired PSCBS method is implemented in an open-source R package named PSCBS, available on CRAN (http://cran.r-project.org/).},
+  eprinttype = {pubmed},
+  keywords = {PSCBS; parent-specific copy numbers; segmentation; tumor-normal samples; paired; non-paired; single-patient method},
+}
+
+@Article{OrtizM_etal_2012-ACNE,
+  title = {ACNE: a summarization method to estimate allele-specific copy numbers for Affymetrix SNP arrays},
+  author = {Maria Ortiz-Estevez and Henrik Bengtsson and Angel Rubio},
+  year = {2010},
+  month = {Aug},
+  journal = {Bioinformatics (Oxford, England)},
+  volume = {26},
+  number = {15},
+  pages = {1827-33},
+  eprint = {20529889},
+  doi = {10.1093/bioinformatics/btq300},
+  language = {eng},
+  issn = {1367-4811},
+  abstract = {MOTIVATION: Current algorithms for estimating DNA copy numbers (CNs) borrow concepts from gene expression analysis methods. However, single nucleotide polymorphism (SNP) arrays have special characteristics that, if taken into account, can improve the overall performance. For example, cross hybridization between alleles occurs in SNP probe pairs. In addition, most of the current CN methods are focused on total CNs, while it has been shown that allele-specific CNs are of paramount importance for some studies. Therefore, we have developed a summarization method that estimates high-quality allele-specific CNs.
+RESULTS: The proposed method estimates the allele-specific DNA CNs for all Affymetrix SNP arrays dealing directly with the cross hybridization between probes within SNP probesets. This algorithm outperforms (or at least it performs as well as) other state-of-the-art algorithms for computing DNA CNs. It better discerns an aberration from a normal state and it also gives more precise allele-specific CNs.
+AVAILABILITY: The method is available in the open-source R package ACNE, which also includes an add on to the aroma.affymetrix framework (http://www.aroma-project.org/).},
+  eprinttype = {pubmed},
+  keywords = {ACNE; multi-array method},
+}
+
+@Article{BengtssonH_etal_2010-TumorBoost,
+  title = {TumorBoost: normalization of allele-specific tumor copy numbers from a single pair of tumor-normal genotyping microarrays},
+  author = {Henrik Bengtsson and Pierre Neuvial and Terence P Speed},
+  year = {2010},
+  journal = {BMC bioinformatics},
+  volume = {11},
+  pages = {245},
+  eprint = {20462408},
+  doi = {10.1186/1471-2105-11-245},
+  language = {eng},
+  issn = {1471-2105},
+  abstract = {BACKGROUND: High-throughput genotyping microarrays assess both total DNA copy number and allelic composition, which makes them a tool of choice for copy number studies in cancer, including total copy number and loss of heterozygosity (LOH) analyses. Even after state of the art preprocessing methods, allelic signal estimates from genotyping arrays still suffer from systematic effects that make them difficult to use effectively for such downstream analyses.
+RESULTS: We propose a method, TumorBoost, for normalizing allelic estimates of one tumor sample based on estimates from a single matched normal. The method applies to any paired tumor-normal estimates from any microarray-based technology, combined with any preprocessing method. We demonstrate that it increases the signal-to-noise ratio of allelic signals, making it significantly easier to detect allelic imbalances.
+CONCLUSIONS: TumorBoost increases the power to detect somatic copy-number events (including copy-neutral LOH) in the tumor from allelic signals of Affymetrix or Illumina origin. We also conclude that high-precision allelic estimates can be obtained from a single pair of tumor-normal hybridizations, if TumorBoost is combined with single-array preprocessing methods such as (allele-specific) CRMA v2 for Affymetrix or BeadStudio's (proprietary) XY-normalization method for Illumina. A bounded-memory implementation is available in the open-source and cross-platform R package aroma.cn, which is part of the Aroma Project (http://www.aroma-project.org/).},
+  eprinttype = {pubmed},
+  keywords = {TumorBoost; paired tumor-normal samples; single-patient method},
+}
+
+@Article{BengtssonH_etal_2009-CRMAv2,
+  title = {A single-array preprocessing method for estimating full-resolution raw copy numbers from all Affymetrix genotyping arrays including GenomeWideSNP 5 & 6},
+  author = {Henrik Bengtsson and Pratyaksha Wirapati and Terence P Speed},
+  year = {2009},
+  month = {Sep},
+  journal = {Bioinformatics (Oxford, England)},
+  volume = {25},
+  number = {17},
+  pages = {2149-56},
+  eprint = {19535535},
+  doi = {10.1093/bioinformatics/btp371},
+  language = {eng},
+  issn = {1367-4811},
+  abstract = {MOTIVATION: High-resolution copy-number (CN) analysis has in recent years gained much attention, not only for the purpose of identifying CN aberrations associated with a certain phenotype, but also for identifying CN polymorphisms. In order for such studies to be successful and cost effective, the statistical methods have to be optimized. We propose a single-array preprocessing method for estimating full-resolution total CNs. It is applicable to all Affymetrix genotyping arrays, including the recent ones that also contain non-polymorphic probes. A reference signal is only needed at the last step when calculating relative CNs.
+RESULTS: As with our method for earlier generations of arrays, this one controls for allelic crosstalk, probe affinities and PCR fragment-length effects. Additionally, it also corrects for probe sequence effects and co-hybridization of fragments digested by multiple enzymes that takes place on the latest chips. We compare our method with Affymetrix's CN5 method and the dChip method by assessing how well they differentiate between various CN states at the full resolution and various amounts of smoothing. Although CRMA v2 is a single-array method, we observe that it performs as well as or better than alternative methods that use data from all arrays for their preprocessing. This shows that it is possible to do online analysis in large-scale projects where additional arrays are introduced over time.},
+  eprinttype = {pubmed},
+  keywords = {CRMA v2; single-array method},
+}
+
+@Article{Robinson_etal_2009-FIRMAGene,
+  title = {Differential splicing using whole-transcript microarrays},
+  author = {Mark D Robinson and Terence P Speed},
+  year = {2009},
+  journal = {BMC bioinformatics},
+  volume = {10},
+  pages = {156},
+  eprint = {19463149},
+  doi = {10.1186/1471-2105-10-156},
+  language = {eng},
+  issn = {1471-2105},
+  abstract = {BACKGROUND: The latest generation of Affymetrix microarrays are designed to interrogate expression over the entire length of every locus, thus giving the opportunity to study alternative splicing genome-wide. The Exon 1.0 ST (sense target) platform, with versions for Human, Mouse and Rat, is designed primarily to probe every known or predicted exon. The smaller Gene 1.0 ST array is designed as an expression microarray but still interrogates expression with probes along the full length of each well-characterized transcript. We explore the possibility of using the Gene 1.0 ST platform to identify differential splicing events.
+RESULTS: We propose a strategy to score differential splicing by using the auxiliary information from fitting the statistical model, RMA (robust multichip analysis). RMA partitions the probe-level data into probe effects and expression levels, operating robustly so that if a small number of probes behave differently than the rest, they are downweighted in the fitting step. We argue that adjacent poorly fitting probes for a given sample can be evidence of differential splicing and have designed a statistic to search for this behaviour. Using a public tissue panel dataset, we show many examples of tissue-specific alternative splicing. Furthermore, we show that evidence for putative alternative splicing has a strong correspondence between the Gene 1.0 ST and Exon 1.0 ST platforms.
+CONCLUSION: We propose a new approach, FIRMAGene, to search for differentially spliced genes using the Gene 1.0 ST platform. Such an analysis complements the search for differential expression. We validate the method by illustrating several known examples and we note some of the challenges in interpreting the probe-level data.Software implementing our methods is freely available as an R package.},
+  eprinttype = {pubmed},
+  keywords = {FIRMAGene; multi-array method},
+}
+
+@Article{BengtssonH_etal_2009-MSCN,
+  title = {A single-sample method for normalizing and combining full-resolution copy numbers from multiple platforms, labs and analysis methods},
+  author = {Henrik Bengtsson and Amrita Ray and Paul Spellman and Terence P Speed},
+  year = {2009},
+  month = {Apr},
+  journal = {Bioinformatics (Oxford, England)},
+  volume = {25},
+  number = {7},
+  pages = {861-7},
+  eprint = {19193730},
+  doi = {10.1093/bioinformatics/btp074},
+  language = {eng},
+  issn = {1367-4811},
+  abstract = {MOTIVATION: The rapid expansion of whole-genome copy number (CN) studies brings a demand for increased precision and resolution of CN estimates. Recent studies have obtained CN estimates from more than one platform for the same set of samples, and it is natural to want to combine the different estimates in order to meet this demand. Estimates from different platforms show different degrees of attenuation of the true CN changes. Similar differences can be observed in CNs from the same platform run in different labs, or in the same lab, with different analytical methods. This is the reason why it is not straightforward to combine CN estimates from different sources (platforms, labs and analysis methods).
+RESULTS: We propose a single-sample multi source normalization that brings full-resolution CN estimates to the same scale across sources. The normalized CNs are such that for any underlying CN level, their mean level is the same regardless of the source, which make them better suited for being combined across sources, e.g. existing segmentation methods may be used to identify aberrant regions. We use microarray-based CN estimates from 'The Cancer Genome Atlas' (TCGA) project to illustrate and validate the method. We show that the normalized and combined data better separate two CN states at a given resolution. We conclude that it is possible to combine CNs from multiple sources such that the resolution becomes effectively larger, and when multiple platforms are combined, they also enhance the genome coverage by complementing each other in different regions.
+AVAILABILITY: A bounded-memory implementation is available in aroma.cn.},
+  eprinttype = {pubmed},
+  keywords = {MSCN; multi-source copy-number normalization; single-patient method},
+}
+
+@Article{BengtssonH_etal_2009-CRMAv1,
+  title = {Estimation and assessment of raw copy numbers at the single locus level},
+  author = {H Bengtsson and R Irizarry and B Carvalho and T P Speed},
+  year = {2008},
+  month = {Mar},
+  journal = {Bioinformatics (Oxford, England)},
+  volume = {24},
+  number = {6},
+  pages = {759-67},
+  eprint = {18204055},
+  doi = {10.1093/bioinformatics/btn016},
+  language = {eng},
+  issn = {1367-4811},
+  abstract = {MOTIVATION: Although copy-number aberrations are known to contribute to the diversity of the human DNA and cause various diseases, many aberrations and their phenotypes are still to be explored. The recent development of single-nucleotide polymorphism (SNP) arrays provides researchers with tools for calling genotypes and identifying chromosomal aberrations at an order-of-magnitude greater resolution than possible a few years ago. The fundamental problem in array-based copy-number (CN) analysis is to obtain CN estimates at a single-locus resolution with high accuracy and precision such that downstream segmentation methods are more likely to succeed.
+RESULTS: We propose a preprocessing method for estimating raw CNs from Affymetrix SNP arrays. Its core utilizes a multichip probe-level model analogous to that for high-density oligonucleotide expression arrays. We extend this model by adding an adjustment for sequence-specific allelic imbalances such as cross-hybridization between allele A and allele B probes. We focus on total CN estimates, which allows us to further constrain the probe-level model to increase the signal-to-noise ratio of CN estimates. Further improvement is obtained by controlling for PCR effects. Each part of the model is fitted robustly. The performance is assessed by quantifying how well raw CNs alone differentiate between one and two copies on Chromosome X (ChrX) at a single-locus resolution (27kb) up to a 200kb resolution. The evaluation is done with publicly available HapMap data.
+AVAILABILITY: The proposed method is available as part of an open-source R package named aroma.affymetrix. Because it is a bounded-memory algorithm, any number of arrays can be analyzed.},
+  eprinttype = {pubmed},
+  keywords = {CRMA v1; multi-array method},
+}
+
+@Article{PurdomE_etal_2008-FIRMA,
+  title = {FIRMA: a method for detection of alternative splicing from exon array data},
+  author = {E Purdom and K M Simpson and M D Robinson and J G Conboy and A V Lapuk and T P Speed},
+  year = {2008},
+  month = {Aug},
+  journal = {Bioinformatics (Oxford, England)},
+  volume = {24},
+  number = {15},
+  pages = {1707-14},
+  eprint = {18573797},
+  doi = {10.1093/bioinformatics/btn284},
+  language = {eng},
+  issn = {1367-4811},
+  abstract = {MOTIVATION: Analyses of EST data show that alternative splicing is much more widespread than once thought. The advent of exon and tiling microarrays means that researchers now have the capacity to experimentally measure alternative splicing on a genome wide level. New methods are needed to analyze the data from these arrays.
+RESULTS: We present a method, finding isoforms using robust multichip analysis (FIRMA), for detecting differential alternative splicing in exon array data. FIRMA has been developed for Affymetrix exon arrays, but could in principle be extended to other exon arrays, tiling arrays or splice junction arrays. We have evaluated the method using simulated data, and have also applied it to two datasets: a panel of 11 human tissues and a set of 10 pairs of matched normal and tumor colon tissue. FIRMA is able to detect exons in several genes confirmed by reverse transcriptase PCR.
+AVAILABILITY: R code implementing our methods is contributed to the package aroma.affymetrix.},
+  eprinttype = {pubmed},
+  keywords = {FIRMA; gene expressions; exon-specific expressions; multi-array method},
+}
+
+@Article{RobinsonM_etal_2007-comparison,
+  title = {A comparison of Affymetrix gene expression arrays},
+  author = {Mark D Robinson and Terence P Speed},
+  year = {2007},
+  journal = {BMC bioinformatics},
+  volume = {8},
+  pages = {449},
+  eprint = {18005448},
+  doi = {10.1186/1471-2105-8-449},
+  language = {eng},
+  issn = {1471-2105},
+  abstract = {BACKGROUND: Affymetrix GeneChips are an important tool in many facets of biological research. Recently, notable design changes to the chips have been made. In this study, we use publicly available data from Affymetrix to gauge the performance of three human gene expression arrays: Human Genome U133 Plus 2.0 (U133), Human Exon 1.0 ST (HuEx) and Human Gene 1.0 ST (HuGene).
+RESULTS: We studied probe-, exon- and gene-level reproducibility of technical and biological replicates from each of the 3 platforms. The U133 array has larger feature sizes so it is no surprise that probe-level variances are smaller, however the larger number of probes per gene on the HuGene array seems to produce gene-level summaries that have similar variances. The gene-level summaries of the HuEx array are less reproducible than the other two, despite having the largest average number of probes per gene. Greater than 80% of the content on the HuEx arrays is expressed at or near background. Biological variation seems to have a smaller effect on U133 data. Comparing the overlap of differentially expressed genes, we see a high overall concordance among all 3 platforms, with HuEx and HuGene having greater overlap, as expected given their design. We performed an analysis of detection rates and area under ROC curves using an experiment made up of several mixtures of 2 human tissues. Though it appears that the HuEx array has worse performance in terms of detection rates, all arrays have similar ability to separate differentially expressed and non-differentially expressed genes.
+CONCLUSION: Despite noticeable differences in the probe-level reproducibility, gene-level reproducibility and differential expression detection are quite similar across the three platforms. The HuEx array, an all-encompassing array, has the flexibility of measuring all known or predicted exonic content. However, the HuEx array induces poorer reproducibility for genes with fewer exons. The HuGene measures just the well-annotated genome content and appears to perform well. The U133 array, though not able to measure across the full length of a transcript, appears to perform as well as the newer designs on the set of genes common to all 3 platforms.},
+  eprinttype = {pubmed},
+}
+
+@Article{CarvalhoB_etal_2006-CRLMM,
+  title = {Exploration, normalization, and genotype calls of high-density oligonucleotide SNP array data},
+  author = {Benilton Carvalho and Henrik Bengtsson and Terence P Speed and Rafael A Irizarry},
+  year = {2007},
+  month = {Apr},
+  journal = {Biostatistics (Oxford, England)},
+  volume = {8},
+  number = {2},
+  pages = {485-99},
+  eprint = {17189563},
+  doi = {10.1093/biostatistics/kxl042},
+  language = {eng},
+  issn = {1465-4644},
+  abstract = {In most microarray technologies, a number of critical steps are required to convert raw intensity measurements into the data relied upon by data analysts, biologists, and clinicians. These data manipulations, referred to as preprocessing, can influence the quality of the ultimate measurements. In the last few years, the high-throughput measurement of gene expression is the most popular application of microarray technology. For this application, various groups have demonstrated that the use of modern statistical methodology can substantially improve accuracy and precision of the gene expression measurements, relative to ad hoc procedures introduced by designers and manufacturers of the technology. Currently, other applications of microarrays are becoming more and more popular. In this paper, we describe a preprocessing methodology for a technology designed for the identification of DNA sequence variants in specific genes or regions of the human genome that are associated with phenotypes of interest such as disease. In particular, we describe a methodology useful for preprocessing Affymetrix single-nucleotide polymorphism chips and obtaining genotype calls with the preprocessed data. We demonstrate how our procedure improves existing approaches using data from 3 relatively large studies including the one in which large numbers of independent calls are available. The proposed methods are implemented in the package oligo available from Bioconductor.},
+  eprinttype = {pubmed},
+  keywords = {CRLMM; genotyping; multi-array method},
+}
+
+@Article{BengtssonHossjer_2006-affine,
+  title = {Methodological study of affine transformations of gene expression data with proposed robust non-parametric multi-dimensional normalization method},
+  author = {Henrik Bengtsson and Ola H{\"o}ssjer},
+  year = {2006},
+  journal = {BMC bioinformatics},
+  volume = {7},
+  pages = {100},
+  eprint = {16509971},
+  doi = {10.1186/1471-2105-7-100},
+  language = {eng},
+  issn = {1471-2105},
+  abstract = {BACKGROUND: Low-level processing and normalization of microarray data are most important steps in microarray analysis, which have profound impact on downstream analysis. Multiple methods have been suggested to date, but it is not clear which is the best. It is therefore important to further study the different normalization methods in detail and the nature of microarray data in general.
+RESULTS: A methodological study of affine models for gene expression data is carried out. Focus is on two-channel comparative studies, but the findings generalize also to single- and multi-channel data. The discussion applies to spotted as well as in-situ synthesized microarray data. Existing normalization methods such as curve-fit ({"}lowess{"}) normalization, parallel and perpendicular translation normalization, and quantile normalization, but also dye-swap normalization are revisited in the light of the affine model and their strengths and weaknesses are investigated in this context. As a direct result from this study, we propose a robust non-parametric multi-dimensional affine normalization method, which can be applied to any number of microarrays with any number of channels either individually or all at once. A high-quality cDNA microarray data set with spike-in controls is used to demonstrate the power of the affine model and the proposed normalization method.
+CONCLUSION: We find that an affine model can explain non-linear intensity-dependent systematic effects in observed log-ratios. Affine normalization removes such artifacts for non-differentially expressed genes and assures that symmetry between negative and positive log-ratios is obtained, which is fundamental when identifying differentially expressed genes. In addition, affine normalization makes the empirical distributions in different channels more equal, which is the purpose of quantile normalization, and may also explain why dye-swap normalization works or fails. All methods are made available in the aroma package, which is a platform-independent package for R.},
+  eprinttype = {pubmed},
+  keywords = {affine normalization; single-array method},
+}
+
+@Article{BengtssonBengtsson_2004-morph,
+  title = {Microarray image analysis: background estimation using quantile and morphological filters},
+  author = {Anders Bengtsson and Henrik Bengtsson},
+  year = {2006},
+  journal = {BMC bioinformatics},
+  volume = {7},
+  pages = {96},
+  eprint = {16504173},
+  doi = {10.1186/1471-2105-7-96},
+  language = {eng},
+  issn = {1471-2105},
+  abstract = {BACKGROUND: In a microarray experiment the difference in expression between genes on the same slide is up to 103 fold or more. At low expression, even a small error in the estimate will have great influence on the final test and reference ratios. In addition to the true spot intensity the scanned signal consists of different kinds of noise referred to as background. In order to assess the true spot intensity background must be subtracted. The standard approach to estimate background intensities is to assume they are equal to the intensity levels between spots. In the literature, morphological opening is suggested to be one of the best methods for estimating background this way.
+RESULTS: This paper examines fundamental properties of rank and quantile filters, which include morphological filters at the extremes, with focus on their ability to estimate between-spot intensity levels. The bias and variance of these filter estimates are driven by the number of background pixels used and their distributions. A new rank-filter algorithm is implemented and compared to methods available in Spot by CSIRO and GenePix Pro by Axon Instruments. Spot's morphological opening has a mean bias between -47 and -248 compared to a bias between 2 and -2 for the rank filter and the variability of the morphological opening estimate is 3 times higher than for the rank filter. The mean bias of Spot's second method, morph.close.open, is between -5 and -16 and the variability is approximately the same as for morphological opening. The variability of GenePix Pro's region-based estimate is more than ten times higher than the variability of the rank-filter estimate and with slightly more bias. The large variability is because the size of the background window changes with spot size. To overcome this, a non-adaptive region-based method is implemented. Its bias and variability are comparable to that of the rank filter.
+CONCLUSION: The performance of more advanced rank filters is equal to the best region-based methods. However, in order to get unbiased estimates these filters have to be implemented with great care. The performance of morphological opening is in general poor with a substantial spatial-dependent bias.},
+  eprinttype = {pubmed},
+  keywords = {image analysis; background correction; single-array method},
+}
+
+@Article{BengtssonH_etal_2004-multiscan,
+  title = {Calibration and assessment of channel-specific biases in microarray data with extended dynamical range},
+  author = {Henrik Bengtsson and G{\"o}ran J{\"o}nsson and Johan Vallon-Christersson},
+  year = {2004},
+  month = {Nov},
+  journal = {BMC bioinformatics},
+  volume = {5},
+  pages = {177},
+  eprint = {15541170},
+  doi = {10.1186/1471-2105-5-177},
+  language = {eng},
+  issn = {1471-2105},
+  abstract = {BACKGROUND: Non-linearities in observed log-ratios of gene expressions, also known as intensity dependent log-ratios, can often be accounted for by global biases in the two channels being compared. Any step in a microarray process may introduce such offsets and in this article we study the biases introduced by the microarray scanner and the image analysis software.
+RESULTS: By scanning the same spotted oligonucleotide microarray at different photomultiplier tube (PMT) gains, we have identified a channel-specific bias present in two-channel microarray data. For the scanners analyzed it was in the range of 15-25 (out of 65,535). The observed bias was very stable between subsequent scans of the same array although the PMT gain was greatly adjusted. This indicates that the bias does not originate from a step preceding the scanner detector parts. The bias varies slightly between arrays. When comparing estimates based on data from the same array, but from different scanners, we have found that different scanners introduce different amounts of bias. So do various image analysis methods. We propose a scanning protocol and a constrained affine model that allows us to identify and estimate the bias in each channel. Backward transformation removes the bias and brings the channels to the same scale. The result is that systematic effects such as intensity dependent log-ratios are removed, but also that signal densities become much more similar. The average scan, which has a larger dynamical range and greater signal-to-noise ratio than individual scans, can then be obtained.
+CONCLUSIONS: The study shows that microarray scanners may introduce a significant bias in each channel. Such biases have to be calibrated for, otherwise systematic effects such as intensity dependent log-ratios will be observed. The proposed scanning protocol and calibration method is simple to use and is useful for evaluating scanner biases or for obtaining calibrated measurements with extended dynamical range and better precision. The cross-platform R package aroma, which implements all described methods, is available for free from http://www.maths.lth.se/bioinformatics/.},
+  eprinttype = {pubmed},
+  keywords = {multiscan calibration; single-array method},
+}
+
+@TechReport{BengtssonH_etal_2008-aroma.affymetrix,
+  title = {{aroma.affymetrix}: A generic framework in {R} for analyzing small to very large {Affymetrix} data sets in bounded memory},
+  author = {H. Bengtsson and K. Simpson and J. Bullard and K. Hansen},
+  institution = {Department of Statistics, University of California, Berkeley},
+  year = {2008},
+  month = {February},
+  number = {745},
+  abstract = {Summary: We have developed a cross-platform open-source framework for analyzing Affymetrix data sets consisting of 1 to 1,000s of arrays. By working directly with CDF and CEL files (standard Affymetrix file formats) most chip types are automatically supported, e.g. expression, SNP, and exon arrays. The package provides methods for low-level analysis such as background correction of different kinds, allelic cross-talk calibration, quantile and affine normalization, PCR fragment-length and GC-content normalization, probe-level summarization such as robust log-additive and multiplicative modeling, as well as a set of methods for high-level analysis, e.g. chromosomal segmentation and alternative splicing. Results can be exported to dynamical HTML reports for easy navigation of a large set of arrays both offline and online. All algorithms have been optimized to run in bounded memory (as low as 500MB of RAM) by either redesigning the algorithms or by processing data in chunks. Transformed data and parameter estimates are stored on file in standard file formats, which in turn minimizes the memory overhead, but also makes them immediately accessible to other software. Moreover, storing intermediate results in persistent memory makes computational expensive analyses more robust against system failures and allows for quick resumes. In addition to making common algorithms readily available, this package was designed to allow for quicker development of novel models and incorporation of existing ones, such as Bioconductor methods, and be prepared for future chip types.
+
+Availability: Software, documentation, examples and a user forum are available at http://www.braju.com/R/aroma.affymetrix/.},
+  keywords = {aroma.affymetrix; preprocessing; normalization; quality control; background correction; probe-sequence normalization; quantile normalization; probeset summarization},
+}
+
+@InProceedings{BengtssonH_2003-R.oo,
+  title = {The {R.oo} package - Object-Oriented Programming with References Using Standard {R} Code},
+  author = {Henrik Bengtsson},
+  booktitle = {Proceedings of the 3rd International Workshop on Distributed Statistical Computing (DSC 2003)},
+  year = {2003},
+  address = {Vienna, Austria},
+  editor = {Kurt Hornik and Friedrich Leisch and Achim Zeileis},
+  issn = {1609-395X},
+  url = {http://www.ci.tuwien.ac.at/Conferences/DSC-2003/},
+  keywords = {R.methodsS3, R.oo, S3},
+}
+
+@TechReport{BengtssonH_2002-PlateEffects,
+  title = {Identification and normalization of plate effects in {cDNA} microarray data},
+  author = {Henrik Bengtsson},
+  institution = {MatStatLU},
+  year = {2002},
+  number = {2002:28},
+  type = {{Preprints in Mathematical Sciences}},
+  comment = {LUTFMS-5027-2002},
+  howpublished = {http://www.maths.lth.se/publications/},
+  issn = {1403-9338},
+  keywords = {print-tip normalization; print-order effects; plate-order effects},
+}
+
+@TechReport{WuZ_etal_2004-GCRMA,
+  author = {Zhijin Wu and Rafael Irizarry and Robert Gentleman and Francisco Martinez Murillo and Forrest Spencer},
+  title = {{A Model Based Background Adjustment for Oligonucleotide Expression Arrays}},
+  year = {2004},
+  month = {Jul},
+  institution = {Berkeley Electronic Press},
+  type = {Johns Hopkins University Dept. of Biostatistics Working Paper Series},
+  url = {http://ideas.repec.org/p/bep/jhubio/1001.html},
+  number = {1001},
+  abstract = { High density oligonucleotide expression arrays are widely used in many areas of biomedical research. Affymetrix GeneChip arrays are the most popular. In the Affymetrix system, a fair amount of further pre-processing and data reduction occurs following the image processing step. Statistical procedures developed by academic groups have been successful at improving the default algorithms provided by the Affymetrix system. In this paper we present a solution to one of the pre-processing steps, background adjustment, based on a formal statistical framework. Our solution greatly improves the performance of the technology in various practical applications.Affymetrix GeneChip arrays use short oligonucleotides to probe for genes in an RNA sample. Typically each gene will be represented by 11-20 pairs of oligonucleotide probes. The first component of these pairs is referred to as a perfect match probe and is designed to hybridize only with transcripts from the intended gene (specific hybridization). However, hybridization by other sequences (non-specific hybridization) is unavoidable. Furthermore, hybridization strengths are measured by a scanner that introduces optical noise. Therefore, the observed intensities need to be adjusted to give accurate measurements of specific hybridization. One approach to adjusting is to pair each perfect match probe with a mismatch probe that is designed with the intention of measuring non-specific hybridization. The default adjustment, provided as part of the Affymetrix system, is based on the difference between perfect match and mismatch probe intensities. We have found that this approach can be improved via the use of estimators derived from a statistical model that use probe sequence information. The model is based on simple hybridization theory from molecular biology and experiments specifically designed to help develop it.A final step in the pre-processing of these arrays is to combine the 11-20 probe pair intensities,after background a},
+  keywords = {Affymetric Gene Chip; Empirical Bayes; Sequence Information; GC Content, GCRMA},
+}
+
+@Article{HupeP_etal_2004-GLAD,
+  title = {Analysis of array CGH data: from signal ratio to gain and loss of DNA regions},
+  author = {Philippe Hupe and Nicolas Stransky and Jean-Paul Thiery and Francois Radvanyi and Emmanuel Barillot},
+  year = {2004},
+  journal = {Bioinformatics (Oxford, England)},
+  volume = {20},
+  number = {18},
+  pages = {3413-22},
+  eprint = {15381628},
+  doi = {10.1093/bioinformatics/bth418},
+  language = {eng},
+  abstract = {MOTIVATION: Genomic DNA regions are frequently lost or gained during tumor progression. Array Comparative Genomic Hybridization (array CGH) technology makes it possible to assess these changes in DNA in cancers, by comparison with a normal reference. The identification of systematically deleted or amplified genomic regions in a set of tumors enables biologists to identify genes involved in cancer progression because tumor suppressor genes are thought to be located in lost genomic regions and oncogenes, in gained regions. Array CGH profiles should also improve the classification of tumors. The achievement of these goals requires a methodology for detecting the breakpoints delimiting altered regions in genomic patterns and assigning a status (normal, gained or lost) to each chromosomal region.
+RESULTS: We have developed a methodology for the automatic detection of breakpoints from array CGH profile, and the assignment of a status to each chromosomal region. The breakpoint detection step is based on the Adaptive Weights Smoothing (AWS) procedure and provides highly convincing results: our algorithm detects 97, 100 and 94% of breakpoints in simulated data, karyotyping results and manually analyzed profiles, respectively. The percentage of correctly assigned statuses ranges from 98.9 to 99.8% for simulated data and is 100% for karyotyping results. Our algorithm also outperforms other solutions on a public reference dataset.
+AVAILABILITY: The R package GLAD (Gain and Loss Analysis of DNA) is available upon request.},
+  eprinttype = {pubmed},
+  keywords = {GLAD; segmentation method},
+}

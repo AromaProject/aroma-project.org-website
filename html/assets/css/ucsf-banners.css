@@ -1,0 +1,153 @@
+/* Layout */
+.top-banner, .top-banner div {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.top-banner {
+    background: #052049;
+    height: 32px;
+    font-family: "Helvetica Neue", "arial", sans-serif;
+    font-size: 14px;
+    text-align: center;
+    width: 100%;
+}
+
+.top-banner .inner {
+    margin: 0 auto;
+    width: 1230px;
+}
+
+.top-banner div.inner div {
+    float: left;
+    padding: 8px 0 7px 30px;
+    text-align: left;
+}
+
+.top-banner.logo div.inner div {
+    padding: 10px 0 13px 0;
+}
+
+.top-banner.logo,.top-banner.logo .inner,.top-banner.logo div.inner div {
+    height: 40px;
+}
+
+.top-banner div.inner div.nav {
+    float: right;
+    padding-right: 16px;
+    text-align: right;
+}
+
+.top-banner ul, .top-banner li {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+.top-banner a {
+    color: #ffffff;
+    display: inline;
+    text-decoration: none;
+}
+
+.top-banner a:hover {
+    color: #cccccc;
+    text-decoration: none;
+}
+
+.top-banner a:focus {
+    color: #cccccc;
+    text-decoration: none;
+}
+
+.top-banner.logo .inner .logo {
+    width: 45px;
+    height: 40px;
+    background-image: url("../images/ucsf-logo-banner_179x88.png");
+    background-size: 45px 22px;
+    background-position: 18px 0px;
+    background-repeat: no-repeat;
+    padding-left: 83px;
+    visibility: hidden;
+}
+
+.top-banner-menu a {
+    padding: 0 14px;
+}
+
+/* Variations */
+.top-banner.arial {
+    font-family: arial,sans-serif;
+}
+
+.top-banner.teal {
+    background: #18a3ac;
+}
+
+.top-banner.green {
+    background: #90bd31;
+}
+
+.top-banner.blue {
+    background: #178ccb;
+}
+
+.top-banner.orange {
+    background: #f48024;
+}
+
+.top-banner.grey {
+    background: #b4b9bf;
+}
+
+.top-banner.purple {
+    background: #716fb2;
+}
+
+.top-banner.red {
+    background: #ec1848;
+}
+
+.top-banner.yellow {
+    background: #ffdd00;
+}
+
+.top-banner.white {
+    background: #ffffff;
+}
+
+.top-banner.yellow a,.top-banner.white a {
+    color: #000000;
+}
+
+/* Responsive */
+@media screen and (min-width:660px) {
+    .top-banner .inner {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width:659px) {
+    .top-banner.logo, .top-bannlier.logo .inner, .top-banner.logo div.inner div {
+        height: 40px;
+    }
+
+    .top-banner .inner {
+        width: 100%;
+    }
+
+    .top-banner div.inner div {
+        height: 30px;
+        padding: 8px 0 8px 30px;
+        width: 100%;
+    }
+
+    .top-banner.logo div.inner div {
+        padding: 10px 0 8px 0;
+    }
+
+    .top-banner .logo span,.top-banner div.inner div.nav {
+        display: none;
+    }
+}
