@@ -1,10 +1,15 @@
 R.utils::use("R.utils")
 
-sourceDirectory("templates/R/")
-#source("templates/R/aliases.R")
-
 options(warn = 1L)
 options(encoding = "iso-8859-1")
+
+## WORKAROUND:
+## With 'en_US.UTF-8' (default on Ubuntu 16.04) we get invalid
+## UTF-8 chararacter string.
+Sys.setlocale("LC_CTYPE", "C")
+
+sourceDirectory("templates/R/")
+#source("templates/R/aliases.R")
 
 assert_no_plain_UTF8 <- function(x) {
   name <- substitute(x)
@@ -44,11 +49,6 @@ force <- ecget(force=FALSE, inherits=FALSE)
 verbose <- ecget(verbose=FALSE, inherits=FALSE)
 verbose <- -100
 mstr(list(args=list(input=input, pattern=pattern, force=force)))
-
-## WORKAROUND:
-## With 'en_US.UTF-8' (default on Ubuntu 16.04) we get invalid
-## UTF-8 chararacter string.
-Sys.setlocale("LC_CTYPE", "C")
 
 tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), dest="html", encoding=getOption("encoding"), force=FALSE, verbose=FALSE) {
   use("R.rsp")
@@ -139,7 +139,7 @@ tohtml <- function(path=".", root=c("scraped/5.rsp", "content,tmp", "content"), 
       })
       mprintf("Encoding of RSP processed body: %s\n", hpaste(unique(sQuote(Encoding(body_md)))))
       stopifnot(all(Encoding(body_md) %in% c("unknown", "UTF-8")))
-      assign("body_md", body_md, envir = globalenv())
+      assign("body_md0", body_md, envir = globalenv())
 
       ## WORKAROUND: R.rsp outputs UTF-8 characters as "<U+NNNN>" strings,
       ## whereas ideally they should be outputted as '\uNNNN' characters.
