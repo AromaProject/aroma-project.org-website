@@ -2,7 +2,7 @@
 
 Author: Henrik Bengtsson  
 Created on: 2016-01-11  
-Last updated: 2017-01-03
+Last updated: 2017-02-20
 
 
 Parallel processing is supported in Aroma since January 2016 with the release of aroma.affymetrix 3.0.0.  The default is to process data sequentially (synchronously), but with a single change in setting, it is possible to process data in parallel (asynchronously) on the current machine or on a cluster of compute node.  The mechanism for synchronously/asynchronously processing is automatically handled by the [future] package.
@@ -11,9 +11,9 @@ As shown below, the `future::plan()` function can be used to control how data is
 
 
 ## Non-parallel processing
-The default is _single-core processing_ via synchronous "eager" futures. This can be explicit set as:
+The default is _single-core processing_ via sequential futures. This can be explicit set as:
 ```r
-future::plan("eager")
+future::plan("sequential")
 ```
 
 ## Multiprocess processing
