@@ -26,6 +26,8 @@ pkgs <- c("aroma.affymetrix", "aroma.cn", "aroma.core", "R.filesets", "PSCBS", "
   [NEWS](http://bioconductor.org/packages/release/bioc/news/aroma.light/NEWS)
 - [affxparser](http://bioconductor.org/packages/affxparser):
   [NEWS](http://bioconductor.org/packages/release/bioc/news/affxparser/NEWS)
+- [sfit](https://github.com/HenrikBengtsson/sfit):
+  [NEWS](https://raw.githubusercontent.com/HenrikBengtsson/sfit/master/NEWS)
 - aroma - Are you looking for the original aroma package that
   processes spotted microarrays? Then please see its
   [installation](<%=pathTo('/packages/aroma/')%>) instructions.
