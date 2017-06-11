@@ -49,7 +49,7 @@
 
 <p>Author: Henrik Bengtsson<br>
 Created on: 2008-11-04<br>
-Last updates: 2010-11-22</p>
+Last updates: 2017-06-10</p>
 
 <p>The time it takes to process a data set can be important, especially
 when the data set is large or many alternative methods are explored.
@@ -76,7 +76,7 @@ issue</a>&#39;
 
 <h2>Enable parallel processing</h2>
 
-<p>It is possible to process data in parallel on a local machine or on compute cluster.  To enable <em>multicore processing</em> on the current machine, use <code>future::plan(&quot;multicore&quot;)</code>.  For more details, see How to &#39;<a href="../../howtos/parallel_processing/index.html">Process data in parallel</a>&#39;.</p>
+<p>It is possible to process data in parallel on a local machine or on compute cluster.  To enable <em>parallel processing</em> on the current machine, use <code>future::plan(&quot;multiprocess&quot;)</code>.  For more details, see How to &#39;<a href="../../howtos/parallel_processing/index.html">Process data in parallel</a>&#39;.</p>
 
 <h2>Allow more memory to be used</h2>
 
@@ -98,7 +98,7 @@ fit(plm)
 </code></pre>
 
 <p>If argument <code>ram</code> is greater than one, more memory is used than the
-default (<code>ram=1.0</code>), and vice versa for small values.  For more details,
+default (<code>ram = 1.0</code>), and vice versa for small values.  For more details,
 see &#39;<a href="../../settings/index.html">Settings</a>&#39;. Since there in each chunk is some overhead
 from reading and especially writing data and results, using larger
 chunks will speed up the processing to some extend.  There is a
@@ -107,13 +107,13 @@ system-specific upper limit where the payoff is no longer noticeable.</p>
 <p>User success stories:</p>
 
 <ul>
-<li>  A user with 128GB RAM, reports a 5x speedup by using <code>ram=200</code> while
-still only using 4GB of RAM.  All in all this user manage to speed
+<li>  A user with 128 GiB RAM, reports a 5x speedup by using <code>ram = 200</code> while
+still only using 4 GiB of RAM.  All in all this user manage to speed
 up the processing 65-70 times(!); Thread &#39;<a href="http://groups.google.com/group/aroma-affymetrix/browse_thread/thread/6d51a4bb43f1d360#">Running aroma.affymetrix
 on a large dataset and time/space
 issue</a>&#39;
 (2010-01-11).</li>
-<li>  A user with 32GB RAM, reports a 30% speedup by using <code>ram=10</code>: Thread
+<li>  A user with 32 GiB RAM, reports a 30% speedup by using <code>ram = 10</code>: Thread
 &#39;<a href="http://groups.google.com/group/aroma-affymetrix/browse_thread/thread/9d36fe1e6efbc22f/af7feba0658242f6">Processing problem with RmaCnPlm() for 338
 samples</a>&#39;
 (2008-07-07).</li>
@@ -176,14 +176,14 @@ the same analysis or over a long period of time, the package caches
 those results in files (and sometime in memory) by a process called
 &#39;memoization&#39;.   In other words, the package caches computational
 expensive results for reuse in the future.   For instance, when querying
-the CDF for the cell indices of a subset of units, the 2nd time you
+the CDF for the cell indices of a subset of units, the second time you
 request the same set of units, the result is almost instant, e.g.</p>
 
-<pre><code class="r">system.time(cells &lt;- getCellIndices(cdf, units=1:1000))
+<pre><code class="r">system.time(cells &lt;- getCellIndices(cdf, units = 1:1000))
 ##  user  system elapsed  
 ##  0.68    0.04    0.77
 
-system.time(cells &lt;- getCellIndices(cdf, units=1:1000))
+system.time(cells &lt;- getCellIndices(cdf, units = 1:1000))
 ##  user  system elapsed  
 ##  0.02    0.01    0.01
 </code></pre>

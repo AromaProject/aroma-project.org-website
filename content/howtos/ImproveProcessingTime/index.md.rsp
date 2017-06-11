@@ -2,7 +2,7 @@
 
 Author: Henrik Bengtsson  
 Created on: 2008-11-04  
-Last updates: 2010-11-22
+Last updates: 2017-06-10
 
 The time it takes to process a data set can be important, especially
 when the data set is large or many alternative methods are explored.
@@ -28,7 +28,7 @@ User success stories:
 
 ## Enable parallel processing
 
-It is possible to process data in parallel on a local machine or on compute cluster.  To enable _multicore processing_ on the current machine, use `future::plan("multicore")`.  For more details, see How to '[Process data in parallel](<%=pathTo('/howtos/parallel_processing/')%>)'.
+It is possible to process data in parallel on a local machine or on compute cluster.  To enable _parallel processing_ on the current machine, use `future::plan("multiprocess")`.  For more details, see How to '[Process data in parallel](<%=pathTo('/howtos/parallel_processing/')%>)'.
 
 
 
@@ -53,7 +53,7 @@ fit(plm)
 ```
 
 If argument `ram` is greater than one, more memory is used than the
-default (`ram=1.0`), and vice versa for small values.  For more details,
+default (`ram = 1.0`), and vice versa for small values.  For more details,
 see '[Settings](<%=pathTo('/settings/')%>)'. Since there in each chunk is some overhead
 from reading and especially writing data and results, using larger
 chunks will speed up the processing to some extend.  There is a
@@ -61,13 +61,13 @@ system-specific upper limit where the payoff is no longer noticeable.
 
 User success stories:
 
--   A user with 128GB RAM, reports a 5x speedup by using `ram=200` while
-    still only using 4GB of RAM.  All in all this user manage to speed
+-   A user with 128 GiB RAM, reports a 5x speedup by using `ram = 200` while
+    still only using 4 GiB of RAM.  All in all this user manage to speed
     up the processing 65-70 times(!); Thread '[Running aroma.affymetrix
     on a large dataset and time/space
     issue](http://groups.google.com/group/aroma-affymetrix/browse_thread/thread/6d51a4bb43f1d360#)'
     (2010-01-11).
--   A user with 32GB RAM, reports a 30% speedup by using `ram=10`: Thread
+-   A user with 32 GiB RAM, reports a 30% speedup by using `ram = 10`: Thread
     '[Processing problem with RmaCnPlm() for 338
     samples](http://groups.google.com/group/aroma-affymetrix/browse_thread/thread/9d36fe1e6efbc22f/af7feba0658242f6)'
     (2008-07-07).
@@ -136,15 +136,15 @@ the same analysis or over a long period of time, the package caches
 those results in files (and sometime in memory) by a process called
 'memoization'.   In other words, the package caches computational
 expensive results for reuse in the future.   For instance, when querying
-the CDF for the cell indices of a subset of units, the 2nd time you
+the CDF for the cell indices of a subset of units, the second time you
 request the same set of units, the result is almost instant, e.g.
 
 ```r
-system.time(cells <- getCellIndices(cdf, units=1:1000))
+system.time(cells <- getCellIndices(cdf, units = 1:1000))
 ##  user  system elapsed  
 ##  0.68    0.04    0.77
 
-system.time(cells <- getCellIndices(cdf, units=1:1000))
+system.time(cells <- getCellIndices(cdf, units = 1:1000))
 ##  user  system elapsed  
 ##  0.02    0.01    0.01
 ```
