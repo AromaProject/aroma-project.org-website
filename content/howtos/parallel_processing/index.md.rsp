@@ -2,7 +2,7 @@
 
 Author: Henrik Bengtsson  
 Created on: 2016-01-11  
-Last updated: 2017-02-20
+Last updated: 2017-06-10
 
 
 Parallel processing is supported in Aroma since January 2016 with the release of aroma.affymetrix 3.0.0.  The default is to process data sequentially (synchronously), but with a single change in setting, it is possible to process data in parallel (asynchronously) on the current machine or on a cluster of compute node.  The mechanism for synchronously/asynchronously processing is automatically handled by the [future] package.
@@ -25,24 +25,25 @@ That's it!  After this, methods in Aroma that support parallel processing will a
 
 If supported, the above will process data using multiple _forked_ R processes ("multicore"), otherwise, on for instance Microsoft Windows, it will process the data using multiple _background_ R processes ("multisession").
 
-The number of parallel processes utilized is given by `future::availableCores()`.  This function looks at a set of commonly used R options and system environment variables to infer the number of core available / assigned to the R session.  If no such settings are available, it will fall back to the total number of cores available on the machine as reported by `parallel::detectCores()`.  The easiest way to control these settings is to use `options(mc.cores=n)`.  See `help("availableCores", package="future")` for more details.
+The number of parallel processes utilized is given by `future::availableCores()`.  This function looks at a set of commonly used R options and system environment variables to infer the number of core available / assigned to the R session.  If no such settings are available, it will fall back to the total number of cores available on the machine as reported by `parallel::detectCores()`.  The easiest way to control these settings is to use `options(mc.cores = n)`.  See `help("availableCores", package = "future")` for more details.
 
 
 
 ## Ad hoc cluster processing
 To process data using _multiple R sessions running on different machines_, use something like:
 ```r
-future::plan("cluster", workers=c("n1", "n4", "n4", "n6", "n7"))
+future::plan("cluster", workers = c("n1", "n4", "n4", "n6", "n7"))
 ```
 
 
 ## Job scheduler processing
-To process data on compute clusters via job schedulers such as Torque/PBS, install the [future.BatchJobs] package and specify:
+To process data on compute clusters via job schedulers such as Torque/PBS, install the [future.batchtools] package and specify:
 ```r
-future::plan(future.BatchJobs::batchjobs_torque)
+future::plan(future.batchtools::batchtools_torque)
 ```
-There are similar settings for other job schedulers, e.g. Slurm and SGE.  For full details on how to configure BatchJobs, please see the [future.BatchJobs] vignette. 
+There are similar settings for other job schedulers, e.g. Slurm and SGE.  For full details on how to configure batchtools, please see the [future.batchtools] vignette.
 
 
 [future]: https://cran.r-project.org/package=future
+[future.batchtools]: https://cran.r-project.org/package=future.batchtools
 [future.BatchJobs]: https://cran.r-project.org/package=future.BatchJobs
