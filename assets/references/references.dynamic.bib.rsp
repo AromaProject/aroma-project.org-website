@@ -2,21 +2,47 @@
 R.utils::use("RefManageR")
 BibOptions(check.entries=FALSE)
 
-reference <- function(search, ...) {
-  if (grepl("^[0-9]{8}$", search)) {
-    ref <- GetPubMedByID(search)
-  } else {
-    ref <- ReadCrossRef(search, limit=1L)
-  }
-  args <- list(...)
-  if (length(names(args)) > 0L) {
-    for (key in names(args)) {
-      argsT <- list(x=ref, name=key, value=args[[key]])
-      ref <- do.call(`$<-`, args=argsT)
+reference <- local({
+  ## cache
+  db <- list()
+  
+  function(search, ...) {
+    ref <- db[[search]]
+    if (!is.null(ref)) return(ref)
+
+    message(sprintf("Querying reference %s online ...", sQuote(search)))
+
+    ref <- tryCatch({
+      if (grepl("^[0-9]{8}$", search)) {
+        mth <- "RefManageR::GetPubMedByID"
+        RefManageR::GetPubMedByID(search)
+      } else {
+        mth <- "RefManageR::ReadCrossRef"
+        RefManageR::ReadCrossRef(search, limit=1L)
+      }
+    }, error = function(ex) {
+      msg <- sprintf("ERROR in %s() on %s: Failed to collection information online: %s", mth, Sys.time(), sQuote(search))
+      warning(msg, call. = FALSE, immediate. = TRUE)
+      RefManageR::BibEntry(bibtype="misc", title=msg)
+    })
+
+    if (inherits(ref, "error")) return(NA_character_)
+
+    args <- list(...)
+    if (length(names(args)) > 0L) {
+      for (key in names(args)) {
+        argsT <- list(x=ref, name=key, value=args[[key]])
+        ref <- do.call(`$<-`, args=argsT)
+      }
     }
+
+    message(sprintf("Querying reference %s online ... done", sQuote(search)))
+
+    db[[search]] <<- ref
+
+    ref
   }
-  ref
-} # reference()
+}) # reference()
 
 <%--------------------------------------------------------------------
   REFERENCES BY US
