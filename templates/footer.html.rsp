@@ -1,14 +1,14 @@
 <p class="muted credit" style="font-size: small;">
   The Aroma Project
-  <span class="printonly">(http://<%@string name="site_domain"%>/)</span>
+  <span class="printonly">(https://<%@string name="site_domain"%>/)</span>
   ::
   &copy; <%@string name="site_copyright"%>
   ::
-  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+  Powered by <a href="https://cran.r-project.org/package=R.rsp">RSP</a>
 
   <span style="float: right;">
   <%-- Link to W3 HTML validations --%>
-  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://<%@string
+  <a href="https://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=https://<%@string
   name="site_domain"%>/<%=url.path%>" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
   &nbsp;
   <%-- Edit link --%>
