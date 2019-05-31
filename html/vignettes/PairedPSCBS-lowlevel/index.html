@@ -54,17 +54,17 @@ Last modified: 2011-11-16</p>
 <p>This document describes how to do parent-specific copy-number (PSCN)
 analysis on a tumor-normal pair of Affymetrix SNP microarray data.  We
 will use the two samples GSM318736 (tumor) and GSM318737 (matched
-normal) from the GEO <a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE12702">GSE12702</a> data set.
+normal) from the GEO <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE12702">GSE12702</a> data set.
 Processing the two CEL files using allele-specific CRMA v2
 <a name=cite-BengtssonH_etal_2009-CRMAv2></a>(<a href="https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=19535535">Bengtsson, Wirapati, and Speed, 2009</a>) we obtain PSCN estimates
 (total CNs and allele B fractions), which we pass to the Paired PSCBS
 <a name=cite-OlshenA_etal_2011-PSCBS></a>(<a href="https://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&amp;amp;cmd=prlinks&amp;amp;retmode=ref&amp;amp;id=21666266">Olshen, Bengtsson, Neuvial, Spellman, Olshen, and Seshan, 2011</a>) method for PSCN segmentation.
-The Paired PSCBS method is implemented in the <a href="http://cran.r-project.org/package=PSCBS">PSCBS</a> package.</p>
+The Paired PSCBS method is implemented in the <a href="https://cran.r-project.org/package=PSCBS">PSCBS</a> package.</p>
 
 <h2>Setup Affymetrix data set</h2>
 
 <p>Here we assume that the two CEL files GSM318736.CEL and GSM318737.CEL
-have been downloaded from GEO (<a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE12702">GSE12702</a>)
+have been downloaded from GEO (<a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE12702">GSE12702</a>)
 and placed in rawData/GSE12702/Mapping250K_Nsp/.</p>
 
 <pre><code class="r">library(&quot;aroma.affymetrix&quot;)
@@ -244,14 +244,14 @@ PMID:
   <div class="container">
 <p class="muted credit" style="font-size: small;">
   The Aroma Project
-  <span class="printonly">(http://www.aroma-project.org/)</span>
+  <span class="printonly">(https://www.aroma-project.org/)</span>
   ::
   &copy; Henrik Bengtsson
   ::
-  Powered by <a href="http://cran.r-project.org/package=R.rsp">RSP</a>
+  Powered by <a href="https://cran.r-project.org/package=R.rsp">RSP</a>
 
   <span style="float: right;">
-  <a href="http://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=http://www.aroma-project.org/vignettes/PairedPSCBS-lowlevel/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
+  <a href="https://validator.w3.org/check?st=1;outline=1;verbose=1;group=1&amp;uri=https://www.aroma-project.org/vignettes/PairedPSCBS-lowlevel/" aria-label="Validate HTML" id="validate-page" target="_blank"><span class="glyphicon glyphicon-check" title="Validate HTML" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Validate HTML</span></a>
   &nbsp;
   <a href="https://github.com/AromaProject/aroma.project.org-website/tree/master/content/vignettes/PairedPSCBS-lowlevel/index.md.rsp" id="edit"
   target="_blank"><span class="glyphicon glyphicon-edit" title="Edit page" aria-hidden="true"></span><span class="sr-only sr-only-focusable">Edit page</span></a>
@@ -268,7 +268,7 @@ PMID:
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="../../assets/js/post-jquery.js"></script>
-<script src="https://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 <script src="../../assets/js/post-bootstrap.js"></script>
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
