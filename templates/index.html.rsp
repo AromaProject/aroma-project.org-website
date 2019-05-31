@@ -64,9 +64,9 @@
 
 <%--- Bootstrap core JavaScript ---%>
 <%--- Placed at the end of the document so the pages load faster ---%>
-<script src="<%@string name="jquery_url"%>/jquery.min.js"></script>
+<script src="<%=pathTo('assets/js/jquery.min.js')%>"></script>
 <script src="<%=pathTo('assets/js/post-jquery.js')%>"></script>
-<script src="<%@string name="bootstrap_url"%>/js/bootstrap.min.js"></script>
+<script src="<%=pathTo('assets/js/bootstrap.min.js')%>"></script>
 <script src="<%=pathTo('assets/js/post-bootstrap.js')%>"></script>
 <%-- <%@include file="link-annotation.html.rsp"%> --%>
 <%-- Include any extras that the page wish to add to the end --%>
