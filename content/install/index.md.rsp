@@ -19,13 +19,13 @@ approach)
 pkgs <- c("aroma.affymetrix", "aroma.cn", "aroma.core", "R.filesets", "PSCBS", "future", "future.BatchJobs", "future.batchtools")
 %>
 <% for (pkg in pkgs) { %>
-- [<%=pkg%>](http://cran.r-project.org/package=<%=pkg%>): 
-  [NEWS](http://cran.r-project.org/web/packages/<%=pkg%>/NEWS)
+- [<%=pkg%>](https://cran.r-project.org//package=<%=pkg%>): 
+  [NEWS](https://cran.r-project.org//web/packages/<%=pkg%>/NEWS)
 <% } %>
-- [aroma.light](http://bioconductor.org/packages/aroma.light):
-  [NEWS](http://bioconductor.org/packages/release/bioc/news/aroma.light/NEWS)
-- [affxparser](http://bioconductor.org/packages/affxparser):
-  [NEWS](http://bioconductor.org/packages/release/bioc/news/affxparser/NEWS)
+- [aroma.light](https://bioconductor.org//packages/aroma.light):
+  [NEWS](https://bioconductor.org//packages/release/bioc/news/aroma.light/NEWS)
+- [affxparser](https://bioconductor.org//packages/affxparser):
+  [NEWS](https://bioconductor.org//packages/release/bioc/news/affxparser/NEWS)
 - [sfit](https://github.com/HenrikBengtsson/sfit):
   [NEWS](https://raw.githubusercontent.com/HenrikBengtsson/sfit/master/NEWS)
 - aroma - Are you looking for the original aroma package that
@@ -34,7 +34,7 @@ pkgs <- c("aroma.affymetrix", "aroma.cn", "aroma.core", "R.filesets", "PSCBS", "
 
 ## Requirements
 
--   Software: [R](http://www.r-project.org/)
+-   Software: [R](https://www.r-project.org//)
 -   Operating system: Linux, OS X, Windows, ... (any that runs R)
 -   Memory: Minimum 500 MiB of RAM. Recommended \> 1 GiB.
 -   Disk space: Roughly 3-5 times the total size of your raw data files.
@@ -42,7 +42,7 @@ pkgs <- c("aroma.affymetrix", "aroma.cn", "aroma.core", "R.filesets", "PSCBS", "
 ## License
 
 Unless stated otherwise, the aroma.* and R.* packages are distributed
-under the [LGPL v2.1](http://www.gnu.org/licenses/lgpl-2.1.html)
+under the [LGPL v2.1](https://www.gnu.org//licenses/lgpl-2.1.html)
 license, and the documentation on this site is published under the [GFPL
-v1.3](http://www.gnu.org/copyleft/fdl.html) license. Copyright holder is
+v1.3](https://www.gnu.org//copyleft/fdl.html) license. Copyright holder is
 Henrik Bengtsson and/or the original author of the artifact.

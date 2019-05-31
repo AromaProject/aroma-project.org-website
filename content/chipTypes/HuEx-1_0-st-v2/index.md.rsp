@@ -39,7 +39,7 @@ clustering of exons into gene models. There are also a number of
 strange probesets corresponding to control probes which can contain VERY
 large numbers of probes per probeset and significantly slow down RMA
 fitting.  See Thread '[Ram option is aroma
-Options](http://groups.google.com/group/aroma-affymetrix/browse_thread/thread/ddf66c8f33b37544#)'
+Options](https://groups.google.com//group/aroma-affymetrix/browse_thread/thread/ddf66c8f33b37544#)'
 (Nov 8, 2007), for examples. These probesets should be removed or one of
 the CDFs below which do not contain them should be used.
 
@@ -56,7 +56,7 @@ is only in the control probes; "There is only a minor difference between
 the v1 and the v2 library files and it has to do with the manufacturing
 controls on the array. There is no difference with the probes
 interrogating the exons between v1 and v2.", cf. Thread '[Discussion on
-affymetrix-defined-transcript-clusters](http://groups.google.com/group/aroma-affymetrix/browse_thread/thread/6b3e53d3036d2515)'
+affymetrix-defined-transcript-clusters](https://groups.google.com//group/aroma-affymetrix/browse_thread/thread/6b3e53d3036d2515)'
 (Nov 25-Dec 2, 2008).  We don't have details on the exact differences
 and we don't have access to the HuEx-1_0-st.v1.CDF (please fwd if you
 have it), but from Affymetrix' feedback it sounds like one could use the

@@ -3,7 +3,7 @@
 *FAQ. 2010-06-29: Why do so few methods have a help() page?*
 
 A: The main source of documentation for the aroma framework, is the
-<http://www.aroma-project.org/> website.  What is documented there, is
+<https://www.aroma-project.org//> website.  What is documented there, is
 well maintained, tested and supported.  The `help()` pages available that
 comes with the different aroma.* packages are mainly for developers and
 much less to for end users.  Several methods and classes do not even

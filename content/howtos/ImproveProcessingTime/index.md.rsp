@@ -22,7 +22,7 @@ User success stories:
 
 -   User reports 15x improvement: Thread '[Running aroma.affymetrix on a
     large dataset and time/space
-    issue](http://groups.google.com/group/aroma-affymetrix/browse_thread/thread/6d51a4bb43f1d360#)'
+    issue](https://groups.google.com//group/aroma-affymetrix/browse_thread/thread/6d51a4bb43f1d360#)'
     (2010-01-11).
 
 
@@ -65,11 +65,11 @@ User success stories:
     still only using 4 GiB of RAM.  All in all this user manage to speed
     up the processing 65-70 times(!); Thread '[Running aroma.affymetrix
     on a large dataset and time/space
-    issue](http://groups.google.com/group/aroma-affymetrix/browse_thread/thread/6d51a4bb43f1d360#)'
+    issue](https://groups.google.com//group/aroma-affymetrix/browse_thread/thread/6d51a4bb43f1d360#)'
     (2010-01-11).
 -   A user with 32 GiB RAM, reports a 30% speedup by using `ram = 10`: Thread
     '[Processing problem with RmaCnPlm() for 338
-    samples](http://groups.google.com/group/aroma-affymetrix/browse_thread/thread/9d36fe1e6efbc22f/af7feba0658242f6)'
+    samples](https://groups.google.com//group/aroma-affymetrix/browse_thread/thread/9d36fe1e6efbc22f/af7feba0658242f6)'
     (2008-07-07).
 
 

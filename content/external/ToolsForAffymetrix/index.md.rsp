@@ -58,7 +58,7 @@ GUI)
 Algorithms for the GeneChip Human Mapping Array Sets*, Whitepaper,
 Affymetrix, 2006.  
  See also: H. Bengtsson, [HB's Guide to CNAT
-v4.0](http://docs.google.com/Doc?id=dddzqd53_14txntqs), 2007.
+v4.0](https://docs.google.com//Doc?id=dddzqd53_14txntqs), 2007.
 
 ## Affymetrix GTC (Affymetrix Genotyping Console Software)
 
@@ -124,7 +124,7 @@ URL: <http://wellerlab.uncc.edu/ArrayInitiative/>
 
 Description: "Available Bioconductor Software for Processing
 Oligonucleotide Arrays"  
- URL: <http://bioconductor.org/docs/workflows/oligoarrays/>
+ URL: <https://bioconductor.org//docs/workflows/oligoarrays/>
 
 ## Birdsuite
 
@@ -184,7 +184,7 @@ Chip types: 100K, 500K.
 Operating system: Windows  
 URL: <http://www.genome.umin.jp/>  
 References: *CancerRes*; 65(14), 6071-79 (2005).  
-See also: H. Bengtsson, [HB's Guide to CNAG v2](http://docs.google.com/Doc?docid=dddzqd53_17r2zdbq), 2007.
+See also: H. Bengtsson, [HB's Guide to CNAG v2](https://docs.google.com//Doc?docid=dddzqd53_17r2zdbq), 2007.
 
 ## dChip (dChipSNP)
 
@@ -202,10 +202,10 @@ loss-of-heterozygosity data, Bioinformatics, 2004, 20, 1233-40.  (3) C.
 Li et al., Major copy proportion analysis of tumor samples using SNP
 arrays. BMC Bioinformatics, 2008, 9:204.  
 See also: H. Bengtsson, [HB's Guide to
-dChip](http://docs.google.com/Doc?id=dddzqd53_28gzfkkg), 2005-2007.  
+dChip](https://docs.google.com//Doc?id=dddzqd53_28gzfkkg), 2005-2007.  
 Note: The dChipSNP (not dChip) executable is obsolete, cf. dChip thread
 '[How to cite dChip
-etc?](http://groups.google.com/group/dchip-software/browse_thread/thread/ebc6bcf2c8212cce#)',
+etc?](https://groups.google.com//group/dchip-software/browse_thread/thread/ebc6bcf2c8212cce#)',
 Feb 16, 2010.
 
 ## EXALT (EXpression signature AnaLysis Tool)
@@ -258,7 +258,7 @@ Authors: Pique-Regi et al.
 alterations (CNA) from array data. [...]"  
  Chip types: Generic segmentation method applicable to all raw CNs.  
  Operating system: ?  
- URL: <http://groups.google.com/group/gadaproject>  
+ URL: <https://groups.google.com//group/gadaproject>  
  References: (1) Pique-Regi R and Gonzalez JR: "R-Gada: a package for
 fast and parallel detection of copy number on multiple samples and
 visualization",  Bioinformatics , Submitted Dec 2008, (2) Pique-Regi R,
@@ -466,7 +466,7 @@ Gene IDs and microarray probe IDs for eight major gene expression
 platforms."  
 Operating system: Online service as well as R package  
 URL: <http://qbrc.swmed.edu/software/probemapper-live/>  
-URL: <http://cran.r-project.org/web/packages/probemapper/>
+URL: <https://cran.r-project.org//web/packages/probemapper/>
 
 
 
@@ -597,7 +597,7 @@ Author: Robert Scharpf et al.
 What: "Hidden Markov model for identifying chromosomal alterations in
 high-throughput SNP arrays."  
 Chip types: Affymetrix, ...  
-URL: <http://www.bioconductor.org/packages/release/bioc/html/VanillaICE.html>
+URL: <https://www.bioconductor.org//packages/release/bioc/html/VanillaICE.html>
 
 ## X:MAP
 

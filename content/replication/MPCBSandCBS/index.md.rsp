@@ -68,13 +68,13 @@ will directly reflect the results of the `segmentByNnn()` methods.
 The R script that simulates CNs and runs the different segmentation
 methods can be downloaded/seen here:
 
-<http://r-forge.r-project.org/plugins/scmsvn/viewcvs.php/*checkout*/pkg/aroma.core/incl/RawGenomicSignals.SEG.Rex?rev=1922&root=aroma-dots>
+<https://r-forge.r-project.org/plugins/scmsvn/viewcvs.php/*checkout*/pkg/aroma.core/incl/RawGenomicSignals.SEG.Rex?rev=1922&root=aroma-dots>
 
 You can even run this directly from R as:
 
 ```r
 library("aroma.core")
-source("http://r-forge.r-project.org/plugins/scmsvn/viewcvs.php/*checkout*/pkg/aroma.core/incl/RawGenomicSignals.SEG.Rex?rev=1922&root=aroma-dots")
+source("https://r-forge.r-project.org/plugins/scmsvn/viewcvs.php/*checkout*/pkg/aroma.core/incl/RawGenomicSignals.SEG.Rex?rev=1922&root=aroma-dots")
 ```
 
 and you should get a plot similar to the above.
@@ -84,7 +84,7 @@ as:
 
 ```
 library("aroma.core")
-load(url("http://www.aroma-project.org/xfer/MPCBS/mpcbs,bug.RData"))
+load(url("https://www.aroma-project.org//xfer/MPCBS/mpcbs,bug.RData"))
 ```
 
 ## Session information

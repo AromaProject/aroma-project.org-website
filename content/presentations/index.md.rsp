@@ -27,7 +27,7 @@ Slides (25): [pdf](<%=pathTo('/share/presentations/BengtssonH_20110322-ENAR2011.
 
 2010-11-10: Henrik Bengtsson, *Greatly improved parent-specific tumor copy numbers with DNA microarrays when a matched normal is available*, [International Cancer Genome Consortium](http://www.icgc.org/) (ICGC), conference call, 60 minutes.
 
-2010-09-30: Pierre Neuvial, *Statistical analysis of single nucleotide polymorphism microarrays in cancer studies*, [Workshop in Biostatistics](http://med.stanford.edu/biostatistics/workshop.html), Stanford University, CA.  
+2010-09-30: Pierre Neuvial, *Statistical analysis of single nucleotide polymorphism microarrays in cancer studies*, [Workshop in Biostatistics](https://med.stanford/.edu/biostatistics/workshop.html), Stanford University, CA.  
 Slides (60): [pdf](<%=pathTo('/share/presentations/NeuvialP_20100930-StanfordBiostatisticsWorkshop.pdf')%>) [7.7Mb].
 
 2010-08-18: Pierre Neuvial, *Greatly improved allele-specific tumor copy numbers with DNA microarrays when a matched normal is available*, CSB 2010 (International Conference on Computational Systems Bioinformatics), Stanford University, CA, USA.  
@@ -67,7 +67,7 @@ Slides: [ppt](<%=pathTo('/share/presentations/BengtssonH_20080124-MBI_Ohio.ppt')
 2007-09-13: Henrik Bengtsson, *Estimating chromosomal copy numbers from Affymetrix SNP & CN chips*, Statistics and Genomics Seminar, UC Berkeley.  
  Slides: [ppt](<%=pathTo('/share/presentations/BengtssonH_20070913-CRMA6.ppt')%>) [3.3Mb], [pdf](<%=pathTo('/share/presentations/BengtssonH_20070913-CRMA6.pdf')%>) [1.7Mb]
 
-2007-08-07: Henrik Bengtsson, *aroma.affymetrix - Analysis of small to very large Affymetrix data sets*, [BioC2007](http://www.bioconductor.org/workshops/2007/BioC2007) lab session, 13:00-15:00, August 7, 2007, Fred Hutchinson Cancer Research Center, Seattle, US.  
+2007-08-07: Henrik Bengtsson, *aroma.affymetrix - Analysis of small to very large Affymetrix data sets*, [BioC2007](https://www.bioconductor.org//workshops/2007/BioC2007) lab session, 13:00-15:00, August 7, 2007, Fred Hutchinson Cancer Research Center, Seattle, US.  
  Slides: [pdf](<%=pathTo('/share/presentations/BengtssonH_20070807-BioC2007lab.pdf')%>) [0.5Mb], Suppl. slides: [pdf](<%=pathTo('/share/presentations/BengtssonH_20070807-BioC2007sup.pdf')%>) [0.9Mb], [ppt](<%=pathTo('/share/presentations/BengtssonH_20070807-BioC2007sup.ppt')%>) [3.4Mb]  
  Cut'n'paste code: [src](<%=pathTo('/share/presentations/BengtssonH_20070807-BioC2007cutnpaste.R')%>) [9kb]
 

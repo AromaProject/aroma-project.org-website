@@ -68,7 +68,7 @@ processing enormously if modeled.  There is
 not currently a 'cleaned-up' version of Affymetrix's default CDF that
 does all the probesets but without these problem probesets. There are
 also some possible omissions in Affymetrix's default CDF (see
-[discussion](http://groups.google.com/group/aroma-affymetrix/browse_thread/thread/86e48eff1e7bd457/c892034d3061d32f?lnk=gst&q=miRNA#c892034d3061d32f))
+[discussion](https://groups.google.com//group/aroma-affymetrix/browse_thread/thread/86e48eff1e7bd457/c892034d3061d32f?lnk=gst&q=miRNA#c892034d3061d32f))
 and these omissions are carried through to the custom CDFs as well.
 
 It is highly recommended that you "tag" your results every time you
@@ -76,7 +76,7 @@ switch CDFs (including the first time you start your analysis if with a
 custom CDF). You can add a tag at each major step of the analysis.
 Otherwise you can run into problems if you later use a different CDF.
 See following
-[discussion](http://groups.google.com/group/aroma-affymetrix/browse_thread/thread/606ce66d425d2fae#)
+[discussion](https://groups.google.com//group/aroma-affymetrix/browse_thread/thread/606ce66d425d2fae#)
 for explanation and examples of tagging.
 
 ## Low-level analysis

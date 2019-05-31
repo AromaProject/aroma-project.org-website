@@ -13,7 +13,7 @@ Requirements: Cross platform, aroma.affymetrix
 References: [M. Ortiz-Estevez, H. Bengtsson, A. Rubio, ACNE: a
 summarization method to estimate allele-specific copy numbers for
 Affymetrix SNP arrays, Bioinformatics, 2010](<%=pathTo('/publications')%>).  
-URL: <http://r-forge.r-project.org/R/?group_id=587>
+URL: <https://r-forge.r-project.org/R/?group_id=587>
 
 ### Add on: CalMaTe
 
@@ -28,7 +28,7 @@ Requirements: Cross platform, aroma.core
 References: [Ortiz-Estevez et al., CalMaTe: A method and software to
 improve allele-specific copy number of SNP arrays for downstream
 segmentation, Bioinformatics, 2012](<%=pathTo('/publications/')%>).  
-URL: <http://r-forge.r-project.org/R/?group_id=587>
+URL: <https://r-forge.r-project.org/R/?group_id=587>
 
 ### Add on: FIRMAGene
 
@@ -40,7 +40,7 @@ Title: FIRMAGene - differential splicing for Affymetrix Gene 1.0 ST
  References: [M. Robinson and TS. Speed, Differential splicing using
 whole-transcript microarrays, BMC
 Bioinformatics, 2009](<%=pathTo('/publications/')%>).  
- URL: <http://r-forge.r-project.org/R/?group_id=424>  
+ URL: <https://r-forge.r-project.org/R/?group_id=424>  
 URL: <http://bioinf.wehi.edu.au/folders/firmagene/>
 
 ### Add on: GADA (Genome Alteration Detection Analysis)
@@ -57,7 +57,7 @@ Monso-Varona J,Ortega A, Seeger RC, Triche TJ, Asgharzadeh S: "Sparse
 representation and Bayesian detection of the genome copy number
 alterations from microarray data", *Bioinformatics*, Feb 2008  
 URL: <https://r-forge.r-project.org/R/?group_id=915>  
-URL: <http://groups.google.com/group/gadaproject>  
+URL: <https://groups.google.com//group/gadaproject>  
 URL: <http://biron.usc.edu/~piquereg/GADA/>
 
 
@@ -84,7 +84,7 @@ array tools package utilizes an Excel front end. Scientists are familiar
 with Excel and utilizing Excel as the front end makes the system
 portable and not tied to any database. [...]"  
 References:   
-URL: <http://linus.nci.nih.gov/BRB-ArrayTools.html>
+URL: <https://linus./nci.nih.gov/BRB-ArrayTools.html>
 
 ### Expander
 
@@ -137,8 +137,8 @@ tastyAroma project provides scripts for the integration of analysis
 results into a web portal, relying on libraries of the Progenetix
 project.  
 References:   
-URL: <http://www.progenetix.net/>  
-URL: <http://www.progenetix.net/progenetixWiki/pmwiki.php/TastyAroma/TastyAroma>
+URL: <https://www.progenetix.net//>  
+URL: <https://www.progenetix.net//progenetixWiki/pmwiki.php/TastyAroma/TastyAroma>
 
 ### Repitools
 
