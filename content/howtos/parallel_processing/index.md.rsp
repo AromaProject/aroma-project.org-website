@@ -46,4 +46,3 @@ There are similar settings for other job schedulers, e.g. Slurm and SGE.  For fu
 
 [future]: https://cran.r-project.org/package=future
 [future.batchtools]: https://cran.r-project.org/package=future.batchtools
-[future.BatchJobs]: https://cran.r-project.org/package=future.BatchJobs
