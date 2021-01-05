@@ -52,7 +52,8 @@
 <p>To install or update aroma.affymetrix and all required and recommended
 packages, start R and do:</p>
 
-<pre><code class="r">source(&#39;https://callr.org/install#aroma.affymetrix&#39;)
+<pre><code class="r">if (.Platform$OS.type == &quot;windows&quot;) options(url.method = &quot;libcurl&quot;)
+source(&quot;https://callr.org/install#aroma.affymetrix&quot;)
 </code></pre>
 
 <p>That&#39;s it. (You can install any CRAN and Bioconductor package using this
