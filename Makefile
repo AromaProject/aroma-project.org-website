@@ -58,6 +58,12 @@ build_both: build_content_tmp
 #=====================================================================
 # Build site
 #=====================================================================
+PACKAGES=bibtex R.rsp markdown
+packages:
+	for pkg in $(PACKAGES); do \
+	  $(R_SCRIPT) -e "if (!requireNamespace('$$pkg', quietly=TRUE)) install.packages('$$pkg')"; \
+	done
+
 assets/references/references.bib:
 	$(R_SCRIPT) "R/build_references.R"
 
