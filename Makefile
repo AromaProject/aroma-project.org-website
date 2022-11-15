@@ -36,6 +36,9 @@ HTML_FILES := $(wildcard html/*.html html/*/*.html html/*/*/*.html)
 #=====================================================================
 all: build
 
+news: content/news.html
+	touch content/index.md.rsp
+	$(MAKE) build
 
 #=====================================================================
 # Scrape, old build etc.
